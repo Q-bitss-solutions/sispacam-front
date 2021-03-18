@@ -1,0 +1,42 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: frontend-chained-s2i
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: frontend-nginx:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    dockerfile: "FROM docker-registry.default.svc:5000/openshift/nginx:1.14 \n## Copy
+      our nginx config\nCOPY nginx-oscp.conf .\n## copy over the artifacts in dist
+      folder to default nginx public folder\nCOPY dist/ ./dist\nUSER root\nRUN mv
+      dist/index.html . && \\\n    mv nginx-oscp.conf /etc/opt/rh/rh-nginx114/nginx/nginx.conf\nUSER
+      1001\nEXPOSE 8080\nCMD [\"nginx\", \"-g\", \"daemon off;\"]"
+    images:
+    - as: null
+      from:
+        kind: ImageStreamTag
+        name: cr-front:latest
+      paths:
+      - destinationDir: .
+        sourcePath: /opt/app-root/src/dist
+      - destinationDir: .
+        sourcePath: /opt/app-root/src/nginx-oscp.conf
+    type: Dockerfile
+  strategy:
+    dockerStrategy:
+      from:
+        kind: DockerImage
+        name: image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.14
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - type: ConfigChange
+status:
+  lastVersion: 12
