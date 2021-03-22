@@ -1,68 +1,99 @@
 <template>
     <div class="col-md-12 mx-auto">
         <div class="row">
-            <h3>Registro de Obra</h3>
+            <h3>Alta de caminos</h3>
             <hr class="red">
             <form role="form">
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label class="control-label" for="email-01">Estado</label>
-                        <ejs-combobox :dataSource='dataItem' :fields='dataFields' placeholder='Selecciona un pais'
+                        <ejs-combobox :dataSource='dataItem' :fields='dataFields' placeholder='Selecciona un estado'
                         :change='onCountryChange' ref='comboboxInstance'>
                         </ejs-combobox>
                     </div>
                     <div class="col-sm-6">
                         <label class="control-label" for="municipio">Municipio</label>
                     <ejs-combobox :dataSource='stateDataItem' :fields='stateDataFields' 
-                    placeholder='Selecciona un estado' :enabled='enableCombobox' :query='childDataQuery' >
+                    placeholder='Selecciona un municipio' :enabled='enableCombobox' :query='childDataQuery' >
                     </ejs-combobox>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        <label class="control-label" for="region">Número del INEGI</label>
-                        <input class="form-control" id="region" placeholder="" type="number">
+                        <label class="control-label" for="region"></label>
+                        <!--input class="form-control" id="region" placeholder="" type="number"-->
                     </div>
                     <div class="col-sm-6">
-                        <label class="control-label" for="region">Región</label>
-                        <input class="form-control" id="region" placeholder="" type="text">
+                        <label class="control-label" for="region">Loclidad</label>
+                        <ejs-combobox :dataSource='stateDataItem' :fields='stateDataFields' 
+                        placeholder='Selecciona una localidad' :enabled='enableCombobox' :query='childDataQuery' >
+                        </ejs-combobox>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <label class="control-label" for="region">Comunidad Indígena</label>
-                        <div class="radio form-control">
-                            <label>
-                                <input type="radio" name="radio-01" value="opcion-01" checked="checked"> Sí
-                            </label>
-                            <label>
-                                <input type="radio" name="radio-01" value="opcion-02" checked="checked"> No
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="control-label" for="municipio">Grado de marginación</label>
-                        <select class="form-control" id="municipio">
-                            <option>xxxxxxxxx</option>
-                            <option>xxxxxxxxx</option>
-                            <option>xxxxxxxxx</option>
-                            <option>xxxxxxxxx</option>
-                            <option>xxxxxxxxx</option>
-                        </select>
-                    </div>
+                <br>
+                <hr class="red">
+                <h4>Datos a nivel municipal</h4>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>Tipo de Población</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>Región</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>Ubicación</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th> &nbsp; </th>
+                            <th> &nbsp;  </th>
+                        </tr>
+                        <br>
+                        <tr>
+                            <th>Grado de marginación</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>Población indígena</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>Población total</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <br>
+                        <tr>
+                            <th>Clave INEGI estado</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th>Clave INEGI municipio</th>
+                            <td><input type="text"></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
-
+                <br>
                 <div class="form-group">
                     <button class="btn btn-primary pull-right" type="submit">Enviar</button>
                 </div>
@@ -77,22 +108,23 @@
 <script>
 import Vue from "vue";
 import {ComboBoxPlugin} from "@syncfusion/ej2-vue-dropdowns";
-import { Query } from '@syncfusion/ej2-data';
+import {DataManager, WebApiAdaptor} from "@syncfusion/ej2-data";
 Vue.use(ComboBoxPlugin);
 
 export default Vue.extend({
   data: function() {
+    const newLocal='http://10.33.151.219:8001/api/v1/estado/';
     return {
       eneableCombobox: false,
       childDataQuery: null,
-      dataItem:[
-        { CountryName: 'Aguascalientes', CountryId: '1' },
-        { CountryName: 'Baja California', CountryId: '2' },
-        { CountryName: 'Campeche', CountryId: '4' },
-        { CountryName: 'Coahuila de Zaragoza', CountryId: '5' },
-        { CountryName: 'Colima', CountryId: '6' }
-      ],
-      dataFields: { text: 'CountryName', value: 'CountryId' },
+      
+      dataItem: new DataManager({
+        url: newLocal,
+        adaptor: new WebApiAdaptor,
+        crossDomain: true
+      }),
+      dataFields: { text: 'nom_agee', value: 'cve_agee' },
+
       stateDataItem:[
         { StateName: 'Cosío', StateId: '004', CountryId: '1' },
         { StateName: 'El Llano', StateId: '010', CountryId: '1' },
