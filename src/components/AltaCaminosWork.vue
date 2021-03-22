@@ -111,6 +111,7 @@ import {ComboBoxPlugin} from "@syncfusion/ej2-vue-dropdowns";
 import {DataManager, WebApiAdaptor} from "@syncfusion/ej2-data";
 Vue.use(ComboBoxPlugin);
 
+
 export default Vue.extend({
   data: function() {
     const newLocal='http://10.33.151.219:8001/api/v1/estado/';
