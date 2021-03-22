@@ -1,4 +1,4 @@
-<template>
+<template>  
   <div id="app" class="container vertical-buffer">
     <button type="button" class="btn btn-primary" v-on:click="showDiv('Register')">Registro de Obra</button>
     <button type="button" class="btn btn-primary" v-on:click="showDiv('Analysis')">Análisis de Obra</button>
