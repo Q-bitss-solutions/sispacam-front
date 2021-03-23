@@ -7,15 +7,27 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label class="control-label" for="email-01">Estado</label>
-                        <ejs-combobox :dataSource='dataItem' :fields='dataFields' placeholder='Selecciona un estado'
-                        :change='onCountryChange' ref='comboboxInstance'>
+                        <ejs-combobox 
+                          :dataSource="estadosData"
+                          :fields="estadosFields"
+                          placeholder="Selecciona un estado"
+                          :change="alCambiarEstado"
+                          :enabled="estadosHabilitado"
+                          v-model="estado"
+                        >
                         </ejs-combobox>
                     </div>
                     <div class="col-sm-6">
                         <label class="control-label" for="municipio">Municipio</label>
-                    <ejs-combobox :dataSource='stateDataItem' :fields='stateDataFields' 
-                    placeholder='Selecciona un municipio' :enabled='enableCombobox' :query='childDataQuery' >
-                    </ejs-combobox>
+                        <ejs-combobox 
+                          :dataSource="municipiosData"
+                          :fields="municipiosFields"
+                          placeholder="Selecciona un municipio"
+                          :change="alCambiarMunicipio"
+                          :enabled="municipiosHabilitado"
+                          v-model="municipio"
+                        >
+                        </ejs-combobox>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -24,10 +36,16 @@
                         <!--input class="form-control" id="region" placeholder="" type="number"-->
                     </div>
                     <div class="col-sm-6">
-                        <label class="control-label" for="region">Loclidad</label>
-                        <ejs-combobox :dataSource='stateDataItem' :fields='stateDataFields' 
-                        placeholder='Selecciona una localidad' :enabled='enableCombobox' :query='childDataQuery' >
-                        </ejs-combobox>
+                        <label class="control-label" for="region">Localidad</label>
+                        <ejs-multiselect
+                          :dataSource="localidadesData"
+                          :fields="localidadesFields"
+                          placeholder="Selecciona una localidad"
+                          :change="alCambiarLocalidades"
+                          :enabled="localidadesHabilitado"
+                          v-model="localidades"
+                        >
+                        </ejs-multiselect>
                     </div>
                 </div>
                 <br>
@@ -45,7 +63,14 @@
                         <tbody>
                         <tr>
                             <th>Tipo de Población</th>
-                            <td><input type="text"></td>
+                            <td>
+                              <ejs-combobox 
+                                :dataSource="poblaciónIndigenaData"
+                                :fields="poblacionIndigenaFields"
+                                placeholder="Selecciona la opción que corresponda al tipo de población"
+                              >
+                              </ejs-combobox>
+                            </td>
                         </tr>
                         <tr>
                             <th>Región</th>
@@ -62,13 +87,22 @@
                         <br>
                         <tr>
                             <th>Grado de marginación</th>
-                            <td><input type="text"></td>
+                            <td>
+                              <ejs-combobox 
+                                :dataSource="marginacionData"
+                                :fields="marginacionFields"
+                                placeholder="Selecciona el grado de marginación"
+                              >
+                              </ejs-combobox>
+                            </td>
                         </tr>
                         <tr>
                             <th>Población indígena</th>
-                            <td><input type="text"></td>
+                            <td>
+                              <input type="number">
+                            </td>
                         </tr>
-                        <tr>
+                        <tr v-if="localidades.length === 0">
                             <th>Población total</th>
                             <td><input type="text"></td>
                         </tr>
@@ -79,11 +113,11 @@
                         <br>
                         <tr>
                             <th>Clave INEGI estado</th>
-                            <td><input type="text"></td>
+                            <td>{{ estado }}</td>
                         </tr>
                         <tr>
                             <th>Clave INEGI municipio</th>
-                            <td><input type="text"></td>
+                            <td>{{ municipio }}</td>
                         </tr>
                         <tr>
                             <th></th>
@@ -107,46 +141,140 @@
 
 <script>
 import Vue from "vue";
-import {ComboBoxPlugin} from "@syncfusion/ej2-vue-dropdowns";
-import {DataManager, WebApiAdaptor} from "@syncfusion/ej2-data";
-Vue.use(ComboBoxPlugin);
+import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import { DataManager, Query } from "@syncfusion/ej2-data";
+import axios from "axios";
 
+Vue.use(ComboBoxPlugin);
+Vue.use(MultiSelectPlugin);
+
+const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
 
 export default Vue.extend({
   data: function() {
-    const newLocal='http://10.33.151.219:8001/api/v1/estado/';
     return {
-      eneableCombobox: false,
-      childDataQuery: null,
-      
-      dataItem: new DataManager({
-        url: newLocal,
-        adaptor: new WebApiAdaptor,
-        crossDomain: true
-      }),
-      dataFields: { text: 'nom_agee', value: 'cve_agee' },
+      estado: null,
+      estadosHabilitado: false,
+      estadosData: new DataManager([]),
+      estadosFields: { text: 'nom_agee', value: 'cve_agee' },
 
-      stateDataItem:[
-        { StateName: 'Cosío', StateId: '004', CountryId: '1' },
-        { StateName: 'El Llano', StateId: '010', CountryId: '1' },
-        { StateName: 'Mexicali', StateId: '002', CountryId: '2' },
-        { StateName: 'Tecate', StateId: '003', CountryId: '2' },
-        { StateName: 'Champotón', StateId: '105', CountryId: '4' },
-        { StateName: 'Calakmul', StateId: '106', CountryId: '4' },
-        { StateName: 'Abasolo', StateId: '107', CountryId: '5' },
-        { StateName: 'Allende', StateId: '108', CountryId: '5' },
-        { StateName: 'Armería', StateId: '109', CountryId: '6' },
-        { StateName: 'Minatitlán', StateId: '110', CountryId: '6' }
-      ],
-      stateDataFields: {text: 'StateName', value: 'StateId'},
-      enableCombobox: false,
+      municipio: null,
+      municipiosHabilitado: false,
+      municipiosData: new DataManager([]),
+      municipiosFields: { text: 'nom_agem', value: 'cve_agem' },
+
+      localidades: [],
+      localidadesHabilitado: false,
+      localidadesData: new DataManager([]),
+      localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
+
+      poblacion: 0,
+
+      marginacion: null,
+      marginacionData: new DataManager([
+        { id: '1', name: 'MUY ALTO' },
+        { id: '2', name: 'ALTO' },
+        { id: '3', name: 'MEDIO' },
+        { id: '4', name: 'BAJO' },
+      ]),
+      marginacionFields: { text: 'name', value: 'id' },
+
+      poblacionIndigena: null,
+      poblacionIndigenaData: new DataManager([
+        { id: '1', name: 'Municipio con población indígena dispersa' },
+        { id: '2', name: 'Municipio indígena' },
+        { id: '3', name: 'Municipio sin población indígena' },
+        { id: '4', name: 'Población con presencia indígena' },
+        { id: '5', name: 'Población indígena' },
+        { id: '6', name: 'Población indígena dispersa' },
+      ]),
+      poblacionIndigenaFields: { text: '', value: '' },
     };
   },
   methods: {
-    onCountryChange: function(args) {
-      this.enableCombobox = true;
-      this.childDataQuery = new Query().where('CountryId', 'equal', args.value);
+    async obtenerEstados() {
+      try {
+        this.estadosHabilitado = false;
+        const url = `${API}/api/v1/estado/`;
+        const response = await axios.get(url);
+        const results = response.data.results;
+        this.estadosData = new DataManager(results);
+        this.estadosHabilitado = true;
+        this.estado = null;
+      } catch (err) {
+          if (err.response) {
+          console.log("Server Error:", err)
+        } else if (err.request) {
+          console.log("Network Error:", err)
+        } else {
+          console.log("Client Error:", err)
+        }
+      }
+    },
+    async obtenerMunicipios(cve_agee) {
+      try {
+        this.municipiosHabilitado = false;
+        const url = `${API}/api/v1/municipio/?cve_agee=${cve_agee}`;
+        const response = await axios.get(url);
+        const results = response.data;
+        this.municipiosData = new DataManager(results);
+        this.municipiosData 
+        this.municipiosHabilitado = true;
+        this.municipio = null;
+      } catch (err) {
+          if (err.response) {
+          console.log("Server Error:", err)
+        } else if (err.request) {
+          console.log("Network Error:", err)
+        } else {
+          console.log("Client Error:", err)
+        }
+      }
+    },
+    async obtenerLocalidad(cve_agee, cve_agem) {
+      try {
+        this.localidadesHabilitado = false;
+        const url = `${API}/api/v1/localidad/?cve_agee=${cve_agee}&cve_agem=${cve_agem}`;
+        const response = await axios.get(url);
+        const results = response.data;
+        this.localidadesData = new DataManager(results);
+        this.localidadesHabilitado = true;
+        this.localidades = [];
+        this.recalcularPoblacionTotal();
+      } catch (err) {
+          if (err.response) {
+          console.log("Server Error:", err)
+        } else if (err.request) {
+          console.log("Network Error:", err)
+        } else {
+          console.log("Client Error:", err)
+        }
+      }
+    },
+    recalcularPoblacionTotal() {
+      if (this.localidades.length > 0) {
+
+      } else {
+      }
+      console.log(
+        this.localidadesData.executeLocal(),
+        this.localidades);
+    },
+    alCambiarEstado: function() {
+      this.localidadesData = new DataManager([]);
+      this.localidadesHabilitado = false;
+
+      this.obtenerMunicipios(this.estado);
+    },
+    alCambiarMunicipio: function() {
+      this.obtenerLocalidad(this.estado, this.municipio);
+    },
+    alCambiarLocalidades: function () {
+      this.recalcularPoblacionTotal();
     }
+  },
+  mounted() {
+    this.obtenerEstados();
   }
 });
 </script>
