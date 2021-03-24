@@ -165,7 +165,7 @@ import axios from "axios";
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
 
-const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
+const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
 
 export default Vue.extend({
   data: function() {
