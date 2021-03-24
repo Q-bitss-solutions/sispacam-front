@@ -65,7 +65,7 @@
                             <th>Tipo de Población</th>
                             <td>
                               <ejs-combobox 
-                                :dataSource="poblaciónIndigenaData"
+                                :dataSource="poblacionIndigenaData"
                                 :fields="poblacionIndigenaFields"
                                 placeholder="Selecciona la opción que corresponda al tipo de población"
                               >
@@ -102,9 +102,9 @@
                               <input type="number">
                             </td>
                         </tr>
-                        <tr v-if="localidades.length === 0">
+                        <tr>
                             <th>Población total</th>
-                            <td><input type="text"></td>
+                            <td>{{ poblacion }}</td>
                         </tr>
                         <tr>
                             <th></th>
@@ -123,6 +123,23 @@
                             <th></th>
                             <th></th>
                         </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-responsive" v-if="localidadesTabla.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Población</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="i in localidadesTabla" :key="i.id">
+                                <td>{{ i.nom_loc }}</td>
+                                <td>{{ i.pob }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -167,6 +184,7 @@ export default Vue.extend({
       localidadesHabilitado: false,
       localidadesData: new DataManager([]),
       localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
+      localidadesTabla: [],
 
       poblacion: 0,
 
@@ -252,13 +270,20 @@ export default Vue.extend({
       }
     },
     recalcularPoblacionTotal() {
+      const localidadesData = this.localidadesData.executeLocal(new Query());
       if (this.localidades.length > 0) {
-
+        this.localidadesTabla = localidadesData
+          .filter(a => this.localidades.includes(a.cve_loc));
+        this.poblacion = localidadesData
+          .filter(a => this.localidades.includes(a.cve_loc))
+          .map(a => a.pob)
+          .reduce((a, b) => (a + b), 0);
       } else {
+        this.localidadesTabla = [];
+        this.poblacion = localidadesData
+          .map(a => a.pob)
+          .reduce((a, b) => (a + b), 0);
       }
-      console.log(
-        this.localidadesData.executeLocal(),
-        this.localidades);
     },
     alCambiarEstado: function() {
       this.localidadesData = new DataManager([]);
