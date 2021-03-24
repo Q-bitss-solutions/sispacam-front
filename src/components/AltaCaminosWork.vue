@@ -206,7 +206,7 @@ export default Vue.extend({
         { id: '5', name: 'Población indígena' },
         { id: '6', name: 'Población indígena dispersa' },
       ]),
-      poblacionIndigenaFields: { text: '', value: '' },
+      poblacionIndigenaFields: { text: 'name', value: 'id' },
     };
   },
   methods: {
