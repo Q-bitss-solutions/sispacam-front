@@ -12,7 +12,7 @@
 <script>
   import RegisterWork from './components/RegisterWork.vue'
   import AnalysisWork from "./components/AnalysisWork"
-  import AltaCaminosWork from './components/AltaCaminosWork.vue'
+  import AltaCaminosWork from './components/AltaDeCaminos/AltaCaminosWork.vue'
 
   export default {
     name: 'app',
