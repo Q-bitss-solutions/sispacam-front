@@ -48,8 +48,17 @@
                         </ejs-multiselect>
                     </div>
                 </div>
+
+
+
                 <br>
+
+
+
                 <hr class="red">
+
+
+
                 <h4>Datos a nivel municipal</h4>
 
                 <div class="table-responsive">
@@ -103,7 +112,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Población total</th>
+                            <th>Población total de localidades</th>
                             <td>{{ poblacion }}</td>
                         </tr>
                         <tr>
@@ -306,5 +315,5 @@ export default Vue.extend({
 
 
 <style>
-@import url(https://cdn.syncfusion.com/ej2/material.css);
+
 </style>

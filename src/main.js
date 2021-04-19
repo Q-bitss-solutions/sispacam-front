@@ -3,6 +3,7 @@ import App from './App.vue'
 import axios from 'axios'
 import Vuelidate from "vuelidate";
 import IdleVue from 'idle-vue'
+import router from './router'
 
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(Vuelidate);
@@ -14,5 +15,6 @@ Vue.use(IdleVue, {
 Vue.use(require('vue-moment'));
 
 new Vue({
-  render: h => h(App),
+  router,
+  render: h => h(App)
 }).$mount('#app')

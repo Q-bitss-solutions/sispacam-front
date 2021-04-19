@@ -1,36 +1,30 @@
-<template>  
-  <div id="app" class="container vertical-buffer">
-    <button type="button" class="btn btn-primary" v-on:click="showDiv('Register')">Registro de Obra</button>
-    <button type="button" class="btn btn-primary" v-on:click="showDiv('Analysis')">Análisis de Obra</button>
-    <button type="button" class="btn btn-primary" v-on:click="showDiv('AltaCaminos')">Alta de caminos</button>
-    <RegisterWork v-if="showElement == 'Register'"/>
-    <AnalysisWork v-if="showElement == 'Analysis'"/>
-    <AltaCaminosWork v-if="showElement == 'AltaCaminos'"/>
+<template>
+  <div id="app" class="container top-buffer-submenu">
+    <router-view/>
+    <div class="row">&nbsp;</div>
+    <footer class="gobmx-footer">     
+   </footer>
   </div>
 </template>
 
-<script>
-  import RegisterWork from './components/RegisterWork.vue'
-  import AnalysisWork from "./components/AnalysisWork"
-  import AltaCaminosWork from './components/AltaDeCaminos/AltaCaminosWork.vue'
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
 
-  export default {
-    name: 'app',
-    data() {
-      return {
-        showElement: null,
-      };
-    },
-    components: {
-      AnalysisWork,
-      RegisterWork,
-      AltaCaminosWork
-    },
-    methods: {
-      showDiv(data){
-        this.showElement = data;
-        console.log(this.showElement)
-      }
-    }
-  }
-</script>
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>
