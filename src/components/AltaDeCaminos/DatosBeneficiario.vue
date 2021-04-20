@@ -36,11 +36,11 @@
                     <br>
                     <tr>
                         <div class="col-sm-4">
-                            <label class="control-label" for="region">Núm. Exterior</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
-                        </div>
-                        <div class="col-sm-4">
                             <label class="control-label" for="region">Calle</label>
+                            <input class="form-control" id="region" placeholder="" type="text">
+                        </div>                        
+                        <div class="col-sm-4">
+                            <label class="control-label" for="region">Núm. Exterior</label>
                             <input class="form-control" id="region" placeholder="" type="text">
                         </div>
                         <div class="col-sm-4">

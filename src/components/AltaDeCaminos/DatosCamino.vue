@@ -1,4 +1,5 @@
 <template>
+<div>
 <table id="datosCamino" class="tableContenido" width="100%" border="0">
     <tr>
         <td>
@@ -60,66 +61,103 @@
 
             <div class="form-group">  
                 
-                <div class="col-md-4"> <label>Longitud total(km):</label>
+                <div class="col-md-4"> 
+                    <label>Longitud total(km):</label>
                     <div> 
-                        <ejs-numerictextbox  :value="value" :min="min" :max="max"></ejs-numerictextbox>                       
+                        <ejs-numerictextbox  
+                            placeholder="Longitud total(km)"
+                            :showSpinButton='false'
+                            v-model="fLongitdTotal" 
+                            :min="min" 
+                            :max="max">
+                        </ejs-numerictextbox>                       
                     </div>
                 </div> 
                 <div class="col-md-4">
-                    <label>Longitud a pavimentar(km):</label>
-                    <input id="longitudPavimentarCamino" name="longitudCamino" class="form-control" value="" type="text"
-                        placeholder="Longitud a pavimentar(km)">
+                    <label>Longitud a pavimentar 2019-2024(km):</label>
+                    <div>
+                        <ejs-numerictextbox  
+                            placeholder="Longitud a pavimentar 2019-2014(km)"
+                            v-model="fLongitdTotalAPavimentar" 
+                            :min="min"                             
+                            :max="max"
+                            :showSpinButton='false'>
+                        </ejs-numerictextbox> 
+                    </div>
                 </div>
-                <div class="col-md-4"> <label>Ancho del Camin:</label>
-                    <select id="anchoCamino" name="anchoCamino" class="form-control">
-                        <option selected="selected" value="">Selecciona el ancho del camino</option>        
-                    </select>
+                <div class="col-md-4"> 
+                    <label>Ancho del Camino:</label>
+                        <ejs-combobox 
+                        :dataSource="anchoCaminoData"
+                        :fields="anchoCaminoFields"
+                        placeholder="Selecciona el ancho del camino"
+                        >
+                        </ejs-combobox> 
                 </div>     
              </div> 
         
             <div class="col-md-12 help-block"/>
-            <div class="form-group">
-                <div class="col-md-12"> 
-                    <label>Ubicación:</label>
-                    <div> 
-                        <textarea id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                            placeholder="Ingrese la ubicación Camino" ></textarea>
-                    </div>
-                </div> 
-            </div>
-            <div class="col-md-12 help-block"/>
-            <div class="form-group">
-                <div class="col-md-12"> 
-                    <label>Caracteristicas actuales del camino:</label>    
-                    <div> 
-                        <textarea id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                            placeholder="Ingrese las caracteristicas del camino" >
-                        </textarea>
-                    </div>                                
+        
+        </td>
+    </tr>
+</table>
+<table width="100%" border="0">
+    <tr>
+        <td>
+        <div class="form-group col-md-12">
+                <label>Ubicación:</label>
+                <div> 
+                    <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
+                        placeholder="Ingrese la ubicación Camino" rows="3" ></textarea>
                 </div>
             </div>
+        </td>
+    </tr> 
+</table>    
+<table width="100%" border="0">
+<tr>
+    <td>
+        <div class="form-group">
+            <div class="col-md-12"> 
+                <label>Caracteristicas actuales del camino:</label>    
+                <div> 
+                    <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
+                        placeholder="Ingrese las caracteristicas del camino" >
+                    </textarea>
+                </div>                                
+            </div>
+        </div>
+    </td>
+</tr>
+</table>   
+
+<table width="100%" border="0">
+    <tr>
+        <td>
             <div class="col-md-12 help-block"/>
             <div class="form-group">
                 <div class="col-md-12"> 
                     <label>Beneficios del Camino</label>
                     <div>
-                        <textarea id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
+                        <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
                             placeholder="Ingrese los beneficios del camino" >
                         </textarea>                    
                     </div>
                 </div>
-            </div>
-        
+            </div>            
         </td>
-    </tr>
+    </tr>    
 </table>
+</div>
 </template>
 
 <script>
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
-
+import { ComboBoxPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import { DataManager } from "@syncfusion/ej2-data";
 import Vue from "vue";
 
+Vue.use(ComboBoxPlugin);
 Vue.use(NumericTextBoxPlugin);
 
 export default {
@@ -133,60 +171,23 @@ export default {
         return {
             tipoCamino: null,
             otroTipoCamino: '',
-            fLongitudTotalCamino: 0.00,
-            pfLongitudTotalCamino: 0.00,
-            value: 0,
-            min: 1,
-            max: 100,            
+            fLongitdTotal: null,
+            fLongitdTotalAPavimentar: null,
+            min: 0,
+            max: 999999,   
+            anchoCaminoFields: { text: 'name', value: 'id' },     
+            anchoCaminoData: new DataManager([
+                { id: '1', name: '4' },
+                { id: '2', name: '4.5' },
+                { id: '3', name: '5' },
+                { id: '4', name: '5.5' },
+                { id: '5', name: '6' },
+            ]),                
 
         }
     },
-    methods:{
-   handleInput (k, e) {
-       console.log('handle')
-       console.log(e)           
-      const charCode = e.keyCode;
-      console.log('charCode')
-      console.log(charCode)    
-      const code = [16,37,39,48,49,50,51,52,53,54,55,56,57]
-      console.log(code.includes(charCode))
-      if (!code.includes(charCode)) {
-          console.log('ifff')
-          console.log(this.pfLongitudTotalCamino)
-          this.fLongitudTotalCamino =  this.pfLongitudTotalCamino
-         return;  
-      }else{    
-          this.calcula(this.fLongitudTotalCamino)
-          //this.pLongitudTotalCamino =  this.fLongitudTotalCamino          
-          //setTimeout(() =>  this.calcula(this.fLongitudTotalCamino), 3000)
-         
-      }
-      
-    },    
-    calcula(e) {
-        console.log('calcula')
-        console.log(e)
-        let stringValue = parseFloat(e.replace(/[^\d\.]/g, ""))
-        console.log(stringValue)
-        if (isNaN(stringValue)) {
-                    stringValue = 0
-                }
-        const decimals = 2;
-        const thousandsSeparator = ',';
-        const rounded =  Math.round(stringValue * (10 ^ decimals)) / (10 ^ decimals)
-        console.log('rounded')
-        console.log(rounded)
-        let result = stringValue.toFixed(decimals).toString();
-        console.log('result')
-        console.log(result)
-        if(thousandsSeparator) {
-            result = result.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator)
-            }
-        console.log('result: ',result )
-        this.fLongitudTotalCamino =  result;  
-        this.pfLongitudTotalCamino = this.fLongitudTotalCamino;
-        console.log('prev: ' ,this.pfLongitudTotalCamino)     
-    }
+    methods:{   
+
     }
 }
 </script>
@@ -199,5 +200,22 @@ export default {
 .form-control-nombreCamino{
     width: 50%;
  
+}
+
+.e-input[disabled],
+.e-input-group .e-input[disabled],
+.e-input-group.e-control-wrapper .e-input[disabled],
+.e-input-group.e-disabled,
+.e-input-group.e-control-wrapper.e-disabled,
+.e-float-input input[disabled],
+.e-float-input.e-control-wrapper input[disabled],
+.e-float-input textarea[disabled],
+.e-float-input.e-control-wrapper textarea[disabled],
+.e-float-input.e-disabled,
+.e-float-input.e-control-wrapper.e-disabled {
+  -webkit-text-fill-color: #555;
+  background: #eee;
+  color: #999;
+  border-color: #ccc;
 }
 </style>

@@ -11,8 +11,8 @@ service.interceptors.response.use(
         if (response.status === 200) {
             return response.data;
         } else {
-            Promise.reject();
-            console.log(error);t();
+          console.log(error);    
+          Promise.reject();                    
         }
     },
     error => {
@@ -34,8 +34,6 @@ service.interceptors.response.use(
             const code = message.substr(message.length - 3)
             message = 'Backend interface' + code + 'Exception'
           }
-          //Vue.prototype.$baseMessage(message || `后端接口未知异常`, 'error')
-          console.log('hasta aqui')
           console.log(message)
           return Promise.reject(message)
         }

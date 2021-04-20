@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@syncfusion/ej2-bootstrap-theme": "^19.1.56",
     "@syncfusion/ej2-data": "^18.4.46",
     "@syncfusion/ej2-vue-dropdowns": "^18.4.48",
     "@syncfusion/ej2-vue-inputs": "^19.1.54",

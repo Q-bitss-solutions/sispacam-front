@@ -36,8 +36,8 @@
                         </ejs-combobox>                        
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-md-6">
                     </div>                    
                     <div class="col-md-6">
                         <label class="control-label" for="region">Localidad</label>
@@ -57,9 +57,6 @@
                     </div>                    
                 </div>
 
-
-                <div class="col-md-2">
-                </div>
                 <div>
                     <h2>Datos a nivel municipal</h2>
                     <hr class="red">
@@ -116,27 +113,35 @@
                     <div class="col-md-6">  
                         <input v-model.number="icveEstadoInegi" class="form-control" type="number" disabled>  
                      </div>   
-                     <div class="col-md-12 help-block"></div>
-                    <div class="col-md-6">
-                        <label>No. Localidades del Municipio:</label>
-                    </div>          
-                    <div class="col-md-6">  
-                        <input v-model.number="iLocalidadesMunicipio" class="form-control" type="number" disabled>  
-                     </div>
-                     <div class="col-md-12 help-block"></div>    
-                    <div class="col-md-6">
-                        <label>No. Poblaci&oacute;n del Municipio:</label>
-                    </div>          
-                    <div class="col-md-6">  
-                        <input v-model.number="iPoblacionMunicipio" class="form-control" type="number" disabled>  
-                     </div>  
                      <div class="col-md-12 help-block"></div>    
                     <div class="col-md-6">
                         <label>Clave INEGI municipio:</label>
                     </div>          
                     <div class="col-md-6">  
-                        <input v-model.number="icveMunicipio" class="form-control" type="number" disabled>  
+                        <input id="icveMunicipio" v-model.number="icveMunicipio" class="form-control" type="number" disabled>  
                      </div> 
+                     
+                    <div class="col-md-12 help-block"></div> 
+                   <div class="col-md-6">
+                        <label>No. Localidades del Municipio:</label>
+                    </div>          
+                    <div class="col-md-6">  
+                        <input id="noLocalidadesMun" v-model.number="iLocalidadesMunicipio" class="form-control" type="number" disabled>  
+                    </div>    
+                     <div class="col-md-12 help-block"></div>    
+                    <div class="col-md-6">
+                        <label>No. Poblaci&oacute;n del Municipio:</label>
+                    </div>          
+                    <div class="col-md-6"> 
+                        <ejs-numerictextbox                                        
+                            format='n' 
+                            :showSpinButton='false'
+                            v-model.number="iPoblacionMunicipio" 
+                            :enabled='false'
+                            value="0">                                            
+                        </ejs-numerictextbox>                        
+                     </div>  
+
                      <div class="col-md-12 help-block"></div>  
                      <div class="col-md-12 help-block"></div>  
                      <div class="col-md-12 help-block"></div>                                                                                  	                                                                                                                                          
@@ -149,8 +154,15 @@
                                     <th class="col-md-6">
                                         <label>Población total de localidades:</label>
                                     </th>
-                                    <th class="col-md-6">
-                                        <input v-model.number="iPoblacionTotalLocalidades" class="form-control" type="number" disabled> 
+                                    <th class="col-md-6">                                        
+                                        <ejs-numerictextbox                                             
+                                            format='n' 
+                                            :showSpinButton='false'
+                                            v-model.number="iPoblacionTotalLocalidades" 
+                                            :enabled='false'
+                                            aria-disabled='false'
+                                            value="0">                                            
+                                        </ejs-numerictextbox>
                                     </th>
                                 </tr>
                                  <tr>
@@ -160,8 +172,9 @@
                                 </thead>
                                 <tbody>
                                         <tr v-for="i in localidadesTabla" :key="i.id">
+
                                             <td class="col-md-6">{{ i.nom_loc }}</td>
-                                            <td class="col-md-6">{{ i.pob }}</td>
+                                            <td class="col-md-6">{{ formatNum(i.pob) }}</td>
                                         </tr>                                                     
                                 </tbody>                                                                                                                    
                          </table>
@@ -177,10 +190,12 @@
 
 <script>
 import Vue from "vue";
+import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager, Query } from "@syncfusion/ej2-data";
 import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
 
+Vue.use(NumericTextBoxPlugin);
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
 
@@ -329,6 +344,10 @@ export default {
             this.localidadesHabilitado = false;
             this.localidades = [];
             this.localidadesTabla = [];
+        },
+
+        formatNum(num){
+            return new Intl.NumberFormat().format(num);
         }
     },
     
@@ -343,10 +362,13 @@ export default {
     }
 
 }
-</script>
+</script> 
 
 <style>
-@import url(https://cdn.syncfusion.com/ej2/material.css);
+@import "./../../../node_modules/@syncfusion/ej2-bootstrap-theme/styles/bootstrap.css";
+/*
+@import "ej2/base/bootstrap.scss";
+*/
 h2 {
     display: block;
     font-size: 1.5em;
@@ -356,5 +378,12 @@ h2 {
     margin-inline-end: 0px;
     font-weight: bold;
 }
+.e-control.e-numerictextbox.e-lib.e-input{
+    color: black !important;
+    font-size: 18px;
+    border: 0px ;
+}
+
+
 
 </style>

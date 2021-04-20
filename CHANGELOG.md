@@ -4,8 +4,15 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 El formato se basa en [Keep a Changelog] (https://keepachangelog.com/en/1.0.0/),
 y este proyecto se adhiere a [Semantic Versioning] (https://semver.org/spec/v2.0.0.html).
 
-## [0.0.2] - 2021-04-19
 
+
+## [0.0.3] - 2021-04-20
+
+## Agregar
+- [HU-CDGC-78](https://jira.sct.gob.mx/browse/CDGC-78) Se agrega el formato de separación por coma y a dos decimales miles a los campos __Longitud__, __Longitud a pavimentar__.
+
+
+## [0.0.2] - 2021-04-19
 ## Eliminar
 - [HU-CDGC-73](https://jira.sct.gob.mx/browse/CDGC-73) Se elimina la sección de "Registro de Obra"
 
