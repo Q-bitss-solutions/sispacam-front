@@ -13,15 +13,15 @@
                 <label>Estrategia Gobierno Federal:</label>
                 <div>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="ciit" value="ciit"  name="ciit"> 
+                        <input type="checkbox" id="ciit" value="ciit"  name="ciit" v-model="ciit"> 
                         CIIT
                     </label>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" > 
+                        <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" v-model="trenMaya"> 
                         Tren Maya
                     </label>               
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="caminosOriginales" value="caminosOriginales" name="caminosOriginales" > 
+                        <input type="checkbox" id="caminosOriginales" value="caminosOriginales" name="caminosOriginales" v-model="caminosOriginales"> 
                         Caminos Originales
                     </label>                                                             
                 </div>
@@ -31,16 +31,16 @@
                 <label for="tipoCamino">Tipo de Camino:</label>
                 <div id="tipoCamino">
                     <label class="radio-inline">
-                        <input v-model="tipoCamino" type="radio" id="cabecera" name="tipoCamino" value="cabecera" v> Cabecera
+                        <input v-model="tipoCamino" type="radio" id="cabecera" name="tipoCamino" value="C" v> Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipoCamino" type="radio" id="agencia" name="tipoCamino" value="agencia"> Agencia
+                        <input v-model="tipoCamino" type="radio" id="agencia" name="tipoCamino" value="A"> Agencia
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipoCamino" type="radio" id="otro" name="tipoCamino" value="otro"> Otro
+                        <input v-model="tipoCamino" type="radio" id="otro" name="tipoCamino" value="O"> Otro
                     </label>
                     <label class="radio-inline">
-                        <input v-model="otroTipoCamino" v-if="tipoCamino == 'otro'" placeholder="Especificar otro" />              
+                        <input v-model="otroTipoCamino" v-if="tipoCamino == 'O'" placeholder="Especificar otro" />              
                     </label> 
                 </div>                    
             </div>              
@@ -49,12 +49,12 @@
                 <div class="col-md-4">       
                     <div >
                         <label for="camino">ID Camino:</label>
-                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" disabled> 
+                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" disabled v-model="idcamino"> 
                     </div>
                 </div>
                 <div class="col-md-8"> 
                       <label for="nombreCamino">Nombre del Camino:</label>
-                      <input id="nombreCamino" name="nombreCamino" class="form-control"  type="text" placeholder="Nombre del Camino"  value="">                                       
+                      <input v-model="nombreCamino" id="nombreCamino" name="nombreCamino" class="form-control"  type="text" placeholder="Nombre del Camino"  value="">                                       
                 </div>
             </div>  
             <div class="col-md-12 help-block"/>
@@ -91,6 +91,7 @@
                         :dataSource="anchoCaminoData"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el ancho del camino"
+                        v-model="anchoCamino"
                         >
                         </ejs-combobox> 
                 </div>     
@@ -108,7 +109,7 @@
                 <label>Ubicación:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        placeholder="Ingrese la ubicación Camino" rows="3" ></textarea>
+                        placeholder="Ingrese la ubicación Camino" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -122,7 +123,7 @@
                 <label>Caracteristicas actuales del camino:</label>    
                 <div> 
                     <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                        placeholder="Ingrese las caracteristicas del camino" >
+                        placeholder="Ingrese las caracteristicas del camino"  v-model="caracteristicasCamino">
                     </textarea>
                 </div>                                
             </div>
@@ -140,7 +141,7 @@
                     <label>Beneficios del Camino</label>
                     <div>
                         <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
-                            placeholder="Ingrese los beneficios del camino" >
+                            placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
                         </textarea>                    
                     </div>
                 </div>
@@ -148,6 +149,40 @@
         </td>
     </tr>    
 </table>
+       <div class="modal fade" id="addConcept" tabindex="-1" role="dialog" aria-labelledby="addConcept"
+            aria-hidden="true">
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h4 class="modal-title">Aviso del Sistema</h4>
+                   </div>
+                   <div class="modal-body">
+                       <p>Se guardaron los datos correctamente</p>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                   </div>
+               </div><!-- /.modal-content -->
+           </div><!-- /.modal-dialog -->
+       </div><!-- /.modal -->
+<div class="form-group">
+    <div class="row">
+        <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
+        v-on:click="GuardaDatos"
+        data-target="#addConcept">
+        Guardar Camino
+       </button>
+ </div>
+</div>
+
+
+
+
+
+
+
+
+
 </div>
 </template>
 
@@ -155,7 +190,9 @@
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
+import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
+
 
 Vue.use(ComboBoxPlugin);
 Vue.use(NumericTextBoxPlugin);
@@ -169,12 +206,21 @@ export default {
     },
     data(){
         return {
+            ciit:'',
+            trenMaya:'',
+            caminosOriginales:'',
             tipoCamino: null,
             otroTipoCamino: '',
+            nombreCamino:'',
+            ubicacionCamino:'',
+            caracteristicasCamino:'',
+            beneficiosCamino:'',
             fLongitdTotal: null,
+            anchoCamino:'',
             fLongitdTotalAPavimentar: null,
             min: 0,
             max: 999999,   
+            idcamino: '',
             anchoCaminoFields: { text: 'name', value: 'id' },     
             anchoCaminoData: new DataManager([
                 { id: '1', name: '4' },
@@ -186,8 +232,45 @@ export default {
 
         }
     },
-    methods:{   
+    methods:{ 
+        async GuardaDatos(){
+            try{
+                console.log("GenerarId")
+                console.log(this.ciit)
+                console.log(this.trenMaya)
+                console.log(this.caminosOriginales)
+                console.log(this.tipoCamino)
+                console.log(this.abreviaturaEdo)
+                console.log(this.nombreCamino)
+                console.log(this.fLongitdTotal)
+                console.log(this.fLongitdTotalAPavimentar)
+                console.log(this.anchoCamino)
+                console.log(this.ubicacionCamino)
+                console.log(this.caracteristicasCamino)
+                console.log(this.beneficiosCamino)
+                
+                
+                        const response = await generarId(this.id,
+                                                         this.cve_agee,
+                                                         this.estrategia_gobierno,
+                                                         this.tipo_camino,
+                                                         this.nombre_camino,
+                                                         this.longitud,
+                                                         this.longitud_pavimentar,
+                                                         this.ubicacion,
+                                                         this.caracteristicas,
+                                                         this.beneficios)
+                console.log(response)
+                this.idcamino = response
+                
+                }
+                catch(err){
+                    console.log('error al obtener el Id-Camino')
+                    console.log(err)
+                    this.$emit("show-error", err);
 
+                }
+        }
     }
 }
 </script>

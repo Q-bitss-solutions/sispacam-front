@@ -21,7 +21,7 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="datosGeograficos">
-          <DatosGeograficos  @set-cEdo="setCEdo" @show-error="showError" />
+          <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" />
         </div>
         <div role="tabpanel" class="tab-pane" id="datosCamino">
           <DatosCamino :abreviaturaEdo='cEstado'> </DatosCamino>
