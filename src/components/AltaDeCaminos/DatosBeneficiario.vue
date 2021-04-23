@@ -9,54 +9,54 @@
                 <div class="form-group row">
                     <h3></h3>
                     <div class="col-sm-4">
-                        <label class="control-label" for="region">Nombre o nombres</label>
-                        <input class="form-control" id="region" placeholder="" type="text">
+                        <label class="control-label" for="nombre">Nombre o nombres</label>
+                        <input class="form-control" id="nombre" placeholder="" type="text">
                     </div>
                     <div class="col-sm-4">
-                        <label class="control-label" for="region">Primer apellido</label>
-                        <input class="form-control" id="region" placeholder="" type="text">
+                        <label class="control-label" for="papellido">Primer apellido</label>
+                        <input class="form-control" id="papellido" placeholder="" type="text">
                     </div>
                     <div class="col-sm-4">
-                        <label class="control-label" for="region">Segundo apellido</label>
-                        <input class="form-control" id="region" placeholder="" type="text">
+                        <label class="control-label" for="sapellido">Segundo apellido</label>
+                        <input class="form-control" id="sapellido" placeholder="" type="text">
                     </div>
 
                     <br></br>
                     <br></br>
                     <tr>
                         <div class="col-sm-6">
-                            <label class="control-label" for="region">RFC del Beneficiario</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
+                            <label class="control-label" for="rfc">RFC del Beneficiario</label>
+                            <input class="form-control" id="rfc" placeholder="" type="text">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label" for="region">Número de cuenta</label>
-                            <input class="form-control" id="region" placeholder="" type="number">
+                            <label class="control-label" for="cuenta">Número de cuenta</label>
+                            <input class="form-control" id="cuenta" placeholder="" type="number">
                         </div>
                     </tr>
                     <br>
                     <tr>
                         <div class="col-sm-4">
-                            <label class="control-label" for="region">Calle</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
-                        </div>                        
-                        <div class="col-sm-4">
-                            <label class="control-label" for="region">Núm. Exterior</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
+                             <label class="control-label" for="numexterior">Núm. Exterior</label>
+                             <input class="form-control" id="numexterior" placeholder="" type="number">
                         </div>
                         <div class="col-sm-4">
-                            <label class="control-label" for="region">Colonia</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
+                            <label class="control-label" for="calle">Calle</label>
+                            <input class="form-control" id="calle" placeholder="" type="text">
+                        </div>                        
+                        <div class="col-sm-4">
+                            <label class="control-label" for="colonia">Colonia</label>
+                            <input class="form-control" id="colonia" placeholder="" type="text">
                         </div>
                     </tr>
                     <br></br>
                     <tr>
                         <div class="col-sm-4">
-                            <label class="control-label" for="region">Código postal</label>
-                            <input class="form-control" id="region" placeholder="" type="text">
+                            <label class="control-label" for="codpostal">Código postal</label>
+                            <input class="form-control" id="codpostal" placeholder="" type="number">
                         </div>
                         <div class="col-sm-4">
-                            <label class="control-label" for="email-01">Tipo de calle</label>
-                            <select class="form-control" id="email-01">
+                            <label class="control-label" for="tipocalle">Tipo de calle</label>
+                            <select class="form-control" id="tipocalle">
                                 <option>Calle</option>
                                 <option>Boulevard</option>
                                 <option>Avenida Principal</option>
