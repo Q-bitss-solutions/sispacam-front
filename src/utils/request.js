@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_SCT_SVC_BACK_BASE_URL, // url = base url + request url
-    timeout: 5000, // request timeout
+  baseURL: 'http://ccr-back.apps.lab.sct.gob.mx/', 
+  timeout: 5000, // request timeout
 })
 
 // response interceptor
