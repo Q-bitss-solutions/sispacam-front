@@ -24,7 +24,7 @@
           <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" />
         </div>
         <div role="tabpanel" class="tab-pane" id="datosCamino">
-          <DatosCamino :abreviaturaEdo='cEstado'> </DatosCamino>
+          <DatosCamino :edo='cEstado'> </DatosCamino>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario> </DatosBeneficiario>
@@ -53,16 +53,18 @@ export default {
   methods: {
     setCEdo (e) {
       console.log('alertMessageReceived')
-      this.cEstado = e;
+      const obj = JSON.parse(JSON.stringify(e))
+      this.cEstado = {
+        iso:obj.edo.iso,
+        abreviaturaEdo:obj.edo.abreviaturaEdo
+      }
     },
     showError(e){
       this.msgError = e;
       console.log(e)
     }
   },
-  mounted () {
-    this.cEstado = '';
-   this.$on('myClick', () => this.alertMessageReceived())
+  mounted () {  
 },  
 }
 </script>

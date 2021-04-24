@@ -14,6 +14,7 @@
                     <div class="col-md-6">
                         <label class="control-label" for="estado">Estado</label>
                         <ejs-combobox 
+                            id="estado"
                           :dataSource="estadosData"
                           :fields="estadosFields"
                           placeholder="Selecciona un estado"
@@ -26,6 +27,7 @@
                     <div class="col-md-6">
                         <label class="control-label" for="municipio">Municipio</label>
                         <ejs-combobox 
+                            id="municipio"
                           :dataSource="municipiosData"
                           :fields="municipiosFields"
                           placeholder="Selecciona un municipio"
@@ -61,50 +63,41 @@
                     <h2>Datos a nivel municipal</h2>
                     <hr class="red">
                 </div>   
-                <div class="table-responsive">
-                    <div class="col-md-6">
-                        <label>Tipo de Poblaci&oacute;n:</label>
-                    </div>
-                    <div class="col-md-6">
-                        <ejs-combobox 
-                        :dataSource="poblacionIndigenaData"
-                        :fields="poblacionIndigenaFields"
-                        placeholder="Selecciona la opción que corresponda al tipo de población"
-                        >
-                        </ejs-combobox>   
-                    </div>   
+                <div id="datosNivelMunicipal" class="table-responsive">  
                     <div class="col-md-12 help-block"></div>  
                     <div class="col-md-6">
                         <label>Regi&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input v-model="region" placeholder="Región" maxlength="40" class="form-control">
+                        <input id="region" v-model="region" placeholder="Región" maxlength="40" class="form-control">
                     </div> 
                     <div class="col-md-12 help-block"></div>   
                     <div class="col-md-6">
                         <label>Ubicaci&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input v-model="ubicacion" placeholder="Ubicación" class="form-control">
-                    </div>      
+                        <input id="ubicacion" v-model="ubicacion" placeholder="Ubicación" class="form-control">
+                    </div>
+                    <div class="col-md-12 help-block"></div>            
+                    <div class="col-md-6">
+                        <label>Poblacion ind&iacute;gena</label>
+                    </div>                                  
+                    <div class="col-md-6">
+                        <input v-model="poblacionIndigena" class="form-control" type="text" placeholder="Población indígena" id="poblacionIndigena" disabled>
+                    </div>                       
                     <div class="col-md-12 help-block"></div>          
                     <div class="col-md-6">
                         <label>Grado de marginaci&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <ejs-combobox 
-                            :dataSource="marginacionData"
-                            :fields="marginacionFields"
-                            placeholder="Selecciona el grado de marginaci&oacute;n"
-                        >
-                        </ejs-combobox>                        
+                        <input type="text" disabled v-model="marginacion" class="form-control">                      
                     </div>  
                     <div class="col-md-12 help-block"></div>   
                     <div class="col-md-6">
-                        <label >Poblaci&oacute;n ind&iacute;gena:</label>
+                        <label >Total de población indígena:</label>
                     </div>
                     <div class="col-md-6">
-                        <input placeholder="Población indigena" class="form-control" type="number">
+                        <input v-model="iTotalPoblacionIndigena" placeholder="Total de población indígena" class="form-control" type="number" disabled>
                     </div>        
                     <div class="col-md-12 help-block"></div>
                     <div class="col-md-6">
@@ -204,8 +197,7 @@ const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_
 export default {
     name: 'DatosGeograficos',       
     data: function() {
-        return {
-            isTableData: false,
+        return {            
             iPoblacionTotalLocalidades: 0,
             iPoblacionMunicipio: 0,
             iLocalidadesMunicipio: 0,
@@ -219,35 +211,20 @@ export default {
             icveMunicipio: null,
             municipiosHabilitado: false,
             municipiosData: new DataManager([]),
-            municipiosFields: { text: 'nom_agem', value: 'cve_agem', custom: 'pob' },
+            municipiosFields: { text: 'nom_agem', value: 'cve_agem', custom: 'cve_agee' },
 
             localidades: [],
             localidadesHabilitado: false,
             localidadesData: new DataManager([]),
             localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
             localidadesTabla: [],
-
+            iTotalPoblacionIndigena: 0,
             poblacion: 0,
-
             marginacion: null,
-            marginacionData: new DataManager([
-                { id: '1', name: 'MUY ALTO' },
-                { id: '2', name: 'ALTO' },
-                { id: '3', name: 'MEDIO' },
-                { id: '4', name: 'BAJO' },
-            ]),
-            marginacionFields: { text: 'name', value: 'id' },
 
             poblacionIndigena: null,
-            poblacionIndigenaData: new DataManager([
-                { id: '1', name: 'Municipio con población indígena dispersa' },
-                { id: '2', name: 'Municipio indígena' },
-                { id: '3', name: 'Municipio sin población indígena' },
-                { id: '4', name: 'Población con presencia indígena' },
-                { id: '5', name: 'Población indígena' },
-                { id: '6', name: 'Población indígena dispersa' },
-            ]),
-            poblacionIndigenaFields: { text: 'name', value: 'id' },
+
+            isoEdo:'',
         };
     },
     methods: {
@@ -269,18 +246,16 @@ export default {
 
         },
         //municipios
-        async obtenerMunicipios(){
-            console.log('obtenerMunicipios')
-            this.$emit("set-icveEdo", this.icveEstadoInegi); 
+        async obtenerMunicipios(){            
             this.$emit("show-error", false);
             this.icveMunicipio = null;
             this.municipiosData = new DataManager([]);
             this.municipiosHabilitado = true;    
             this.clearLocalidades();            
-            console.log('localidadesHabilitado: ',this.localidadesHabilitado)
             try{
-                const response = await getMunicipios(this.icveEstadoInegi)
-                this.municipiosData = new DataManager(response);
+                const {results} = await getMunicipios(this.icveEstadoInegi)
+                console.log(results)
+                this.municipiosData = new DataManager(results);
                 this.municipiosHabilitado = true;            
             }catch(err){
                 console.log('error al obtener municipios')
@@ -291,7 +266,7 @@ export default {
 
         //localidades
         async obtenerLocalidades(){
-            try{
+            try{                
                 this.$emit("show-error", false);
                 this.clearLocalidades();
                 const res = await getLocalidades(this.icveEstadoInegi, 
@@ -303,7 +278,7 @@ export default {
                 
                 this.localidadesHabilitado = true;            
                 this.localidadesData = new DataManager(res);
-                
+                this.setEdoIso()
             }catch(error){
                 console.log('error al obtener localidades')
                 console.log(error);
@@ -311,8 +286,7 @@ export default {
             }
         },
 
-        recalcularPoblacionTotal() {
-            console.log('recalcularPoblacionTotal')            
+        recalcularPoblacionTotal() {                     
             if (this.localidades.length > 0) {   
                 const localidadesData = this.localidadesData.executeLocal(new Query());
                 this.localidadesTabla = localidadesData
@@ -322,24 +296,23 @@ export default {
                 .filter(a => this.localidades.includes(a.cve_loc))
                 .map(a => a.pob)
                 .reduce((a, b) => (a + b), 0);
-                this.isTableData = true;
 
             } else {
-                this.isTableData = false;
                 this.localidadesTabla = [];
                 this.iPoblacionMunicipio = 0;
             }
         },             
         updateLocalidades(e){
+            /*
             console.log('updateLocalidades')
-            console.log(this.$refs.localidades.ej2Instances)
+            console.log(this.$refs.localidades.ej2Instances)            
+            */
             this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 
         },
 
         clearLocalidades(){
-            console.log('clearLocalidades')
             this.localidadesData = null;
             this.localidadesHabilitado = false;
             this.localidades = [];
@@ -348,6 +321,28 @@ export default {
 
         formatNum(num){
             return new Intl.NumberFormat().format(num);
+        },
+
+        setEdoIso(){
+            const edoSelect = this.estadosData.executeLocal(new Query())
+                                .filter(a => a.cve_agee == this.icveEstadoInegi)                        
+            console.log('edoSelect')
+            console.table(edoSelect)
+            this.$emit("set-icveEdo", {
+                edo:{
+                    abreviaturaEdo:this.icveEstadoInegi,
+                    iso:edoSelect[0].iso
+                }
+                }); 
+            
+            const munSelect = this.municipiosData.executeLocal(new Query())
+                                .filter(a => a.cve_agem == this.icveMunicipio) 
+            console.log('munSelect')
+            this.marginacion = munSelect[0].grado_marginacion.descripcion
+            this.poblacionIndigena = munSelect[0].poblacion_indigena.descripcion
+            this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
+            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2
+            console.log(str)                                
         }
     },
     

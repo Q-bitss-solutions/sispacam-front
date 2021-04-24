@@ -65,6 +65,7 @@
                     <label>Longitud total(km):</label>
                     <div> 
                         <ejs-numerictextbox  
+                            id="longitud"
                             placeholder="Longitud total(km)"
                             :showSpinButton='false'
                             v-model="fLongitdTotal" 
@@ -77,6 +78,7 @@
                     <label>Longitud a pavimentar 2019-2024(km):</label>
                     <div>
                         <ejs-numerictextbox  
+                            id="longitudPavimentar"
                             placeholder="Longitud a pavimentar 2019-2014(km)"
                             v-model="fLongitdTotalAPavimentar" 
                             :min="min"                             
@@ -88,6 +90,7 @@
                 <div class="col-md-4"> 
                     <label>Ancho del Camino:</label>
                         <ejs-combobox 
+                        id="anchoCamino"    
                         :dataSource="anchoCaminoData"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el ancho del camino"
@@ -192,6 +195,7 @@ import { ComboBoxPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
 import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
+import { types } from 'util';
 
 
 Vue.use(ComboBoxPlugin);
@@ -200,9 +204,10 @@ Vue.use(NumericTextBoxPlugin);
 export default {
     name: 'DatosCamino',
     props: {
-        abreviaturaEdo: {
-            type: String
-        }
+        edo:{
+            abreviaturaEdo:'',
+            iso:''
+        },
     },
     data(){
         return {
@@ -235,31 +240,29 @@ export default {
     methods:{ 
         async GuardaDatos(){
             try{
-                console.log("GenerarId")
+                console.log("GenerarId22")
+                console.log(this.edo.iso)
+                console.log(this.edo.abreviaturaEdo)
                 console.log(this.ciit)
-                console.log(this.trenMaya)
-                console.log(this.caminosOriginales)
                 console.log(this.tipoCamino)
-                console.log(this.abreviaturaEdo)
                 console.log(this.nombreCamino)
                 console.log(this.fLongitdTotal)
                 console.log(this.fLongitdTotalAPavimentar)
-                console.log(this.anchoCamino)
                 console.log(this.ubicacionCamino)
                 console.log(this.caracteristicasCamino)
                 console.log(this.beneficiosCamino)
                 
                 
-                        const response = await generarId(this.id,
-                                                         this.cve_agee,
-                                                         this.estrategia_gobierno,
-                                                         this.tipo_camino,
-                                                         this.nombre_camino,
-                                                         this.longitud,
-                                                         this.longitud_pavimentar,
-                                                         this.ubicacion,
-                                                         this.caracteristicas,
-                                                         this.beneficios)
+                const response = await generarId(this.edo.iso,
+                                                this.edo.abreviaturaEdo,
+                                                this.ciit,
+                                                this.tipoCamino,
+                                                this.nombreCamino,
+                                                this.fLongitdTotal,
+                                                this.fLongitdTotalAPavimentar,
+                                                this.ubicacionCamino,
+                                                this.caracteristicasCamino,
+                                                this.beneficiosCamino)
                 console.log(response)
                 this.idcamino = response
                 
