@@ -89,14 +89,14 @@
                 </div>
                 <div class="col-md-4"> 
                     <label>Ancho del Camino:</label>
-                        <ejs-combobox 
+                        <ejs-dropdownlist 
                         id="anchoCamino"    
                         :dataSource="anchoCaminoData"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el ancho del camino"
                         v-model="anchoCamino"
                         >
-                        </ejs-combobox> 
+                        </ejs-dropdownlist> 
                 </div>     
              </div> 
         
@@ -141,7 +141,7 @@
             <div class="col-md-12 help-block"/>
             <div class="form-group">
                 <div class="col-md-12"> 
-                    <label>Beneficios del Camino</label>
+                    <label>Beneficios del Camino:</label>
                     <div>
                         <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
                             placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
@@ -152,8 +152,8 @@
         </td>
     </tr>    
 </table>
-       <div class="modal fade" id="addConcept" tabindex="-1" role="dialog" aria-labelledby="addConcept"
-            aria-hidden="true">
+       <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept"
+           aria-hidden="true">
            <div class="modal-dialog">
                <div class="modal-content">
                    <div class="modal-header">
@@ -161,6 +161,7 @@
                    </div>
                    <div class="modal-body">
                        <p>Se guardaron los datos correctamente</p>
+                       <p>El id del camino es:<strong class="alert">{{idcamino}}</strong></p>
                    </div>
                    <div class="modal-footer">
                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -171,34 +172,42 @@
 <div class="form-group">
     <div class="row">
         <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-        v-on:click="GuardaDatos"
-        data-target="#addConcept">
-        Guardar Camino
-       </button>
- </div>
+            v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
+            Guardar Camino
+        </button>
+    </div>
 </div>
-
-
-
-
-
-
-
-
-
+<div id="alertModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <div class="">Ocurrio un error</div>
+            </div>            
+            <div class="modal-body">
+                <p>El camino no pudo ser guardado favor de intentarlo mas tarde o contactar al 
+                    area de sistemas</p>
+            </div>            
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </template>
 
 <script>
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
-import { ComboBoxPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
 import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
-import { types } from 'util';
 
 
-Vue.use(ComboBoxPlugin);
+Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
 
 export default {
@@ -226,6 +235,7 @@ export default {
             min: 0,
             max: 999999,   
             idcamino: '',
+            btnSaveDisabled: false,
             anchoCaminoFields: { text: 'name', value: 'id' },     
             anchoCaminoData: new DataManager([
                 { id: '1', name: '4' },
@@ -238,40 +248,38 @@ export default {
         }
     },
     methods:{ 
-        async GuardaDatos(){
-            try{
-                console.log("GenerarId22")
-                console.log(this.edo.iso)
-                console.log(this.edo.abreviaturaEdo)
-                console.log(this.ciit)
-                console.log(this.tipoCamino)
-                console.log(this.nombreCamino)
-                console.log(this.fLongitdTotal)
-                console.log(this.fLongitdTotalAPavimentar)
-                console.log(this.ubicacionCamino)
-                console.log(this.caracteristicasCamino)
-                console.log(this.beneficiosCamino)
-                
-                
-                const response = await generarId(this.edo.iso,
-                                                this.edo.abreviaturaEdo,
-                                                this.ciit,
-                                                this.tipoCamino,
-                                                this.nombreCamino,
-                                                this.fLongitdTotal,
-                                                this.fLongitdTotalAPavimentar,
-                                                this.ubicacionCamino,
-                                                this.caracteristicasCamino,
-                                                this.beneficiosCamino)
-                console.log(response)
-                this.idcamino = response
-                
+         async GuardaDatos(){   
+             this.$emit("show-error", false); 
+             this.btnSaveDisabled  = true
+             try{
+                 console.log("GenerarId22")
+                 const data = {
+                    iso:this.edo.iso,
+                    cve_agee:this.edo.abreviaturaEdo,
+                    estrategia_gobierno:this.ciit.toString(),
+                    tipo_camino:this.tipoCamino,
+                    nombre_camino:this.nombreCamino,                                
+                    longitud:this.fLongitdTotal,
+                    longitud_pavimentar:this.fLongitdTotalAPavimentar,
+                    ubicacion:this.ubicacionCamino,
+                    caracteristicas:this.caracteristicasCamino,
+                    beneficios:this.beneficiosCamino
+
                 }
-                catch(err){
+                console.log('data')
+                console.log(data)
+                const response = await generarId(data)
+                console.log(response)
+                this.idcamino = response.consecutivo + this.tipoCamino
+                $('#addCamino').modal('show')
+                this.btnSaveDisabled  = false           
+                }
+                catch(err){    
+                    this.btnSaveDisabled  = false                
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
-                    this.$emit("show-error", err);
-
+                    $('#alertModal').modal('show')
+                    this.$emit("show-error",'Error al guardar camino por');                  
                 }
         }
     }

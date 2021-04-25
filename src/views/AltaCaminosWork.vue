@@ -24,7 +24,7 @@
           <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" />
         </div>
         <div role="tabpanel" class="tab-pane" id="datosCamino">
-          <DatosCamino :edo='cEstado'> </DatosCamino>
+          <DatosCamino :edo='cEstado' @show-error="showError"> </DatosCamino>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario> </DatosBeneficiario>
@@ -60,8 +60,10 @@ export default {
       }
     },
     showError(e){
+      console.log('show-error')
       this.msgError = e;
       console.log(e)
+      //setTimeout(() => this.msgError = false, 10000);
     }
   },
   mounted () {  

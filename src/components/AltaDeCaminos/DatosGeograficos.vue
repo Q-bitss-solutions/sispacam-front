@@ -192,7 +192,7 @@ Vue.use(NumericTextBoxPlugin);
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
 
-const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
+const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
 
 export default {
     name: 'DatosGeograficos',       
@@ -254,7 +254,6 @@ export default {
             this.clearLocalidades();            
             try{
                 const {results} = await getMunicipios(this.icveEstadoInegi)
-                console.log(results)
                 this.municipiosData = new DataManager(results);
                 this.municipiosHabilitado = true;            
             }catch(err){
@@ -353,6 +352,8 @@ export default {
     },
 
     created() {
+        console.log('API2')
+        console.log(API)        
         this.initData()
     }
 

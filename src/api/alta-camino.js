@@ -22,22 +22,7 @@ export function getMunicipios(cve_edo){
     })    
 }
 
-export function generarId(iso,cve_edo,ciit, tipoCamino,nombreCamino,
-                            fLongitdTotal, fLongitdTotalAPavimentar,
-                            ubicacionCamino, caracteristicasCamino,
-                            beneficiosCamino){
-const data = {
-    'cve_agee': cve_edo.toString(),
-    'estrategia_gobierno':'ciit',
-    'tipo_camino': tipoCamino.toString(),
-    'nombre_camino': nombreCamino,
-    'longitud': fLongitdTotal.toString(),
-    'longitud_pavimentar':fLongitdTotalAPavimentar.toString() ,
-    'ubicacion': ubicacionCamino.toString(),
-    'caracteristicas': caracteristicasCamino.toString(),
-    'beneficios': beneficiosCamino.toString(),
-    'iso': iso.toString()       
-}                             
+export function generarId(data){
     return request({
         url: '/api/v1/camino/',
         method: 'post',
