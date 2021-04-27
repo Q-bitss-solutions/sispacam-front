@@ -97,7 +97,7 @@
                         <label >Total de población indígena:</label>
                     </div>
                     <div class="col-md-6">
-                        <input v-model="iTotalPoblacionIndigena" placeholder="Total de población indígena" class="form-control" type="number" disabled>
+                        <input :value="iTotalPoblacionIndigena" placeholder="Total de población indígena" class="form-control"  disabled>
                     </div>        
                     <div class="col-md-12 help-block"></div>
                     <div class="col-md-6">
@@ -116,10 +116,17 @@
                      
                     <div class="col-md-12 help-block"></div> 
                    <div class="col-md-6">
-                        <label>No. Localidades del Municipio:</label>
+                        <label>Población total de localidades:</label>
                     </div>          
                     <div class="col-md-6">  
-                        <input id="noLocalidadesMun" v-model.number="iLocalidadesMunicipio" class="form-control" type="number" disabled>  
+                        <ejs-numerictextbox                                             
+                            format='n' 
+                            :showSpinButton='false'
+                            v-model.number="iPoblacionTotalLocalidades" 
+                            :enabled='false'
+                            aria-disabled='false'
+                            value="0">                                            
+                        </ejs-numerictextbox>                          
                     </div>    
                      <div class="col-md-12 help-block"></div>    
                     <div class="col-md-6">
@@ -145,17 +152,10 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-6">
-                                        <label>Población total de localidades:</label>
+                                        <label>No. Localidades del Municipio:</label>                                        
                                     </th>
                                     <th class="col-md-6">                                        
-                                        <ejs-numerictextbox                                             
-                                            format='n' 
-                                            :showSpinButton='false'
-                                            v-model.number="iPoblacionTotalLocalidades" 
-                                            :enabled='false'
-                                            aria-disabled='false'
-                                            value="0">                                            
-                                        </ejs-numerictextbox>
+                                        <input id="noLocalidadesMun" v-model.number="iLocalidadesMunicipio" class="form-control" type="number" disabled>
                                     </th>
                                 </tr>
                                  <tr>
@@ -218,7 +218,7 @@ export default {
             localidadesData: new DataManager([]),
             localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
             localidadesTabla: [],
-            iTotalPoblacionIndigena: 0,
+            iTotalPoblacionIndigena: null,
             poblacion: 0,
             marginacion: null,
 
@@ -340,6 +340,9 @@ export default {
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacionIndigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
+            this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
+            console.log('this.iTotalPoblacionIndigena')
+            console.log(this.iTotalPoblacionIndigena)
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2
             console.log(str)                                
         }

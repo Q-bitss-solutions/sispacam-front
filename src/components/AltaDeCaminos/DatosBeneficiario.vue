@@ -29,7 +29,7 @@
                             <input class="form-control" id="rfc" placeholder="" type="text">
                         </div>
                         <div class="col-sm-6">
-                            <label class="control-label" for="cuenta">Número de cuenta</label>
+                            <label class="control-label" for="cuenta">Clabe Interbancaria</label>
                             <input class="form-control" id="cuenta" placeholder="" type="number">
                         </div>
                     </tr>
