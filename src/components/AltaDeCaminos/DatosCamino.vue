@@ -256,7 +256,7 @@ export default {
                  const data = {
                     iso:this.edo.iso,
                     cve_agee:this.edo.abreviaturaEdo,
-                    estrategia_gobierno:this.ciit.toString(),
+                    estrategia_gobierno:"A",
                     tipo_camino:this.tipoCamino,
                     nombre_camino:this.nombreCamino,                                
                     longitud:this.fLongitdTotal,
@@ -270,7 +270,7 @@ export default {
                 console.log(data)
                 const response = await generarId(data)
                 console.log(response)
-                this.idcamino = response.consecutivo + this.tipoCamino
+                this.idcamino = response.beneficios + this.tipoCamino
                 $('#addCamino').modal('show')
                 this.btnSaveDisabled  = false           
                 }

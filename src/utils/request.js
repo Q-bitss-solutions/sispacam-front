@@ -33,7 +33,7 @@ service.interceptors.response.use(
             const code = message.substr(message.length - 3)
             message = 'Backend interface' + code + 'Exception'
           }
-          console.log(message + ' - ' +  status + ' ' + data)
+          console.log(message)
           return Promise.reject(message)
         }
     }
