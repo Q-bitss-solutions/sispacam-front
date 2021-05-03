@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: 'http://ccr-back.apps.lab.sct.gob.mx/', 
+  baseURL: 'https://backcmqa.sct.gob.mx/', 
   timeout: 5000, // request timeou
 })
 
