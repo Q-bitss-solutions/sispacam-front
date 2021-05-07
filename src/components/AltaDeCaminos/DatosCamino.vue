@@ -6,6 +6,11 @@
             <h2>Datos del Camino</h2>
             <hr class="red">
         </td>
+        <td>
+           <h2>{{idcamino}}</h2>
+           <hr class="red">
+        </td>
+        
     </tr> 
     <tr>
         <td>
@@ -13,7 +18,7 @@
                 <label>Estrategia Gobierno Federal:</label>
                 <div>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="ciit" value="ciit"  name="ciit" v-model="ciit"> 
+                        <input type="checkbox" id="ciit" value="true"  name="ciit" v-model="ciit"> 
                         CIIT
                     </label>
                     <label class="checkbox-inline">
@@ -34,7 +39,7 @@
                         <input v-model="tipoCamino" type="radio" id="cabecera" name="tipoCamino" value="C" v> Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipoCamino" type="radio" id="agencia" name="tipoCamino" value="A"> Agencia
+                        <input v-model="tipoCamino" type="radio" id="agencia" name="tipoCamino" value="A" > Agencia
                     </label>
                     <label class="radio-inline">
                         <input v-model="tipoCamino" type="radio" id="otro" name="tipoCamino" value="O"> Otro
@@ -42,6 +47,11 @@
                     <label class="radio-inline">
                         <input v-model="otroTipoCamino" v-if="tipoCamino == 'O'" placeholder="Especificar otro" />              
                     </label> 
+                    <!--<div class="row col-md-10">
+                    <small v-if="tipoCamino == 'A'" class="form-text form-text-error">
+                    Este campo es obligatorio
+                    </small> 
+                </div>   -->                                  
                 </div>                    
             </div>              
             
@@ -54,7 +64,19 @@
                 </div>
                 <div class="col-md-8"> 
                       <label for="nombreCamino">Nombre del Camino:</label>
-                      <input v-model="nombreCamino" id="nombreCamino" name="nombreCamino" class="form-control"  type="text" placeholder="Nombre del Camino"  value="">                                       
+                      <input v-model="nombreCamino" :class="{'form-control-error': $v.nombreCamino.$error}"
+                        id="nombreCamino" 
+                        name="nombreCamino" 
+                        v-model.trim="$v.nombreCamino.$model"
+                        class="form-control"  
+                        type="text" 
+                        placeholder="Nombre del Camino"  
+                        value=""/>  
+                        <div class="row col-md-10">
+                            <small v-if="!$v.nombreCamino.required && $v.nombreCamino.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                                     
                 </div>
             </div>  
             <div class="col-md-12 help-block"/>
@@ -64,20 +86,25 @@
                 <div class="col-md-4"> 
                     <label>Longitud total(km):</label>
                     <div> 
-                        <ejs-numerictextbox  
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.fLongitdTotal.$error}"
                             id="longitud"
                             placeholder="Longitud total(km)"
-                            :showSpinButton='false'
-                            v-model="fLongitdTotal" 
-                            :min="min" 
-                            :max="max">
-                        </ejs-numerictextbox>                       
+                            v-model="fLongitdTotal"
+                            :min="min"
+                            :max="max"
+                            :showSpinButton='false'>
+                           </ejs-numerictextbox>                        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.fLongitdTotal.required && $v.fLongitdTotal.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                      
                     </div>
                 </div> 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label>Longitud a pavimentar 2019-2024(km):</label>
                     <div>
-                        <ejs-numerictextbox  
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.fLongitdTotalAPavimentar.$error}" 
                             id="longitudPavimentar"
                             placeholder="Longitud a pavimentar 2019-2014(km)"
                             v-model="fLongitdTotalAPavimentar" 
@@ -85,23 +112,37 @@
                             :max="max"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
+                        <div class="row col-md-10">
+                            <small v-if="!$v.fLongitdTotalAPavimentar.required && $v.fLongitdTotalAPavimentar.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="col-md-4"> 
                     <label>Ancho del Camino:</label>
-                        <ejs-dropdownlist 
+                        <ejs-dropdownlist :class="{'form-control-error': $v.anchoCamino.$error}" 
                         id="anchoCamino"    
                         :dataSource="anchoCaminoData"
+                        :change="obteneranchocamino"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el ancho del camino"
                         v-model="anchoCamino"
+                        v-model.trim="$v.anchoCamino.$model"
                         >
                         </ejs-dropdownlist> 
-                </div>     
-             </div> 
-        
-            <div class="col-md-12 help-block"/>
-        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.anchoCamino.required && $v.anchoCamino.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>
+                </div>       
+                <div class="col-md-4">
+                    <label>Presupuesto Base:</label>
+                    <input id="Presup"  type="text" class="form-control"  placeholder="" value="" disabled v-model="Presup">
+                </div> 
+             </div>         
         </td>
     </tr>
 </table>
@@ -173,7 +214,7 @@
     <div class="row">
         <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
             v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
-            Guardar Camino
+            Guardar Datos
         </button>
     </div>
 </div>
@@ -196,6 +237,26 @@
         </div>
     </div>
 </div>
+<div id="alertlong" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <div class="">Ocurrio un error</div>
+            </div>            
+            <div class="modal-body">
+                <p>La obra que estás intentando registrar es de tipo Agencia Municipal, 
+                    y por lo tanto solo debe tener una sola localidad, favor de corregir y reintentar
+                </p>
+            </div>            
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 </template>
 
@@ -205,6 +266,8 @@ import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
 import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
+import { required } from 'vuelidate/lib/validators'
+
 
 
 Vue.use(DropDownListPlugin);
@@ -215,7 +278,18 @@ export default {
     props: {
         edo:{
             abreviaturaEdo:'',
-            iso:''
+            iso:'',
+            localidades:'',
+            icveestados: '',
+            region: '',
+            ubicacion: '',
+            poblacionIndigena: '',
+            totpoblacion: '',
+            icveEstadoInegi: '',
+            icveMunicipio: '',
+            iPoblacionTotalLocalidades: '',
+            iPoblacionMunicipio: '',
+            iLocalidadesMunicipio: '',
         },
     },
     data(){
@@ -229,13 +303,14 @@ export default {
             ubicacionCamino:'',
             caracteristicasCamino:'',
             beneficiosCamino:'',
-            fLongitdTotal: null,
+            fLongitdTotal: '',
             anchoCamino:'',
-            fLongitdTotalAPavimentar: null,
+            fLongitdTotalAPavimentar: '',
             min: 0,
             max: 999999,   
             idcamino: '',
             btnSaveDisabled: false,
+            Presup: '',
             anchoCaminoFields: { text: 'name', value: 'id' },     
             anchoCaminoData: new DataManager([
                 { id: '1', name: '4' },
@@ -247,40 +322,104 @@ export default {
 
         }
     },
+    validations: {
+        nombreCamino: {
+            required,
+
+        },
+        anchoCamino: {
+            required,
+
+        },
+        fLongitdTotalAPavimentar: {
+            required,
+        },
+        fLongitdTotal: {
+            required,
+        },
+        
+    },
     methods:{ 
+        
+        
+        
+
+        async obteneranchocamino(){ 
+           
+           
+           if(this.anchoCamino == 1)  
+              this.Presup = "2,700,104.59"
+           if(this.anchoCamino == 2)  
+              this.Presup = "3,100,198.29"
+           if(this.anchoCamino == 3)  
+              this.Presup = "3,507,565.95"
+           if(this.anchoCamino == 4)  
+              this.Presup = "3,929,902.41"
+           if(this.anchoCamino == 5)  
+              this.Presup = "4,300,019.57"
+          },
+
          async GuardaDatos(){   
              this.$emit("show-error", false); 
+             this.$v.$touch()
+             if (this.$v.$invalid) {
+                this.submitStatus = "Error";
+            } else {
              this.btnSaveDisabled  = true
              try{
                  console.log("GenerarId22")
+                 
                  const data = {
                     iso:this.edo.iso,
                     cve_agee:this.edo.abreviaturaEdo,
                     estrategia_gobierno:"A",
+                    ciit:this.ciit,
+                    trenMaya:this.trenMaya,
+                    caminosOriginales:this.caminosOriginales,
                     tipo_camino:this.tipoCamino,
                     nombre_camino:this.nombreCamino,                                
                     longitud:this.fLongitdTotal,
                     longitud_pavimentar:this.fLongitdTotalAPavimentar,
+                    anchoCamino:this.anchoCamino,
                     ubicacion:this.ubicacionCamino,
                     caracteristicas:this.caracteristicasCamino,
-                    beneficios:this.beneficiosCamino
+                    beneficios:this.beneficiosCamino,
+                    localidades:this.edo.localidades,
+                    icveestados:this.edo.icveestados,
+                    region:this.edo.region,
+                    ubicacion:this.edo.ubicacion,
+                    poblacionIndigena:this.edo.poblacionIndigena,
+                    totpoblacion:this.edo.totpoblacion,
+                    icveEstadoInegi:this.edo.icveEstadoInegi,
+                    icveMunicipio:this.edo.icveMunicipio,
+                    iPoblacionTotalLocalidades:this.edo.iPoblacionTotalLocalidades,
+                    iPoblacionMunicipio:this.edo.iPoblacionMunicipio,
+                    iLocalidadesMunicipio:this.edo.iLocalidadesMunicipio
 
                 }
                 console.log('data')
                 console.log(data)
                 const response = await generarId(data)
                 console.log(response)
-                this.idcamino = response.beneficios + this.tipoCamino
+                this.idcamino = response.beneficios + '-' + this.tipoCamino
                 $('#addCamino').modal('show')
                 this.btnSaveDisabled  = false           
                 }
                 catch(err){    
-                    this.btnSaveDisabled  = false                
+                    this.btnSaveDisabled  = false  
+                    if(this.tipoCamino == 'A' && (this.edo.localidades.length -1) < 1) {
+                        console.log("aqui")
+                        console.log(this.edo.localidades.length -1)
+                         $('#alertlong').modal('show')
+                    } 
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
-                    $('#alertModal').modal('show')
+                    //$('#alertModal').modal('show')
                     this.$emit("show-error",'Error al guardar camino por');                  
                 }
+             
+                
+            }
         }
     }
 }
