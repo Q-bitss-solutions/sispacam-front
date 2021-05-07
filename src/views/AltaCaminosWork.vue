@@ -54,10 +54,8 @@ export default {
     setCEdo (e) {
       console.log('alertMessageReceived')
       const obj = JSON.parse(JSON.stringify(e))
-      this.cEstado = {
-        iso:obj.edo.iso,
-        abreviaturaEdo:obj.edo.abreviaturaEdo
-      }
+      console.log(obj)
+      this.cEstado = obj.datos
     },
     showError(e){
       console.log('show-error')
