@@ -1,15 +1,15 @@
 @charset "UTF-8";
 /* CSS Document */
 
-h1 {font-size: 38px;margin-bottom: 40px;}
-h2 {font-size: 28px;}
-h3 {font-size: 24px;margin-top: 48px;}
-h4 {font-size: 19px;margin-bottom: 20px;margin-top: 0;}
+h1 {font-size: 32px;margin: 0;}
+h2 {font-size: 28px;margin-top: 10px;}
+h3 {font-size: 24px;margin-top: 40px;}
+h4 {font-size: 24px;margin-bottom: 20px;margin-top: 0;}
 strong {font-weight: 500;}
 label {font-weight: 500;margin-right: 6px;}
 hr.red {margin: 10px 0 60px;}
 #logotipo img {height: 80px;}
-#logotipo {margin-bottom: 40px;}
+#logotipo {margin-bottom: 30px;}
 
 .small-top-buffer {margin-top: 30px;}
 .xsmall-top-buffer {margin-top: 12px;}
@@ -45,9 +45,20 @@ hr.red {margin: 10px 0 60px;}
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {color: #9d2449;background-color: #fff;border: 1px solid #ddd;border-bottom-color: rgb(221, 221, 221);border-bottom-color: transparent;cursor: default;font-weight: 600;}
 .nav-tabs {border-bottom: 1px solid #ddd;}
 
+.table-bordered th {background-color: #f0f0f0;}
+.table-bordered tr:hover {background-color: #90bba21f !important;}
+.table {font-size: 15px;}
+.table th {font-weight: 600;}
+.table-striped > tbody > tr:nth-of-type(2n) {background-color: #f9f9f9;}
+.table-striped > tbody > tr:nth-of-type(2n+1) {background-color: transparent;}
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {padding: 6px;vertical-align: middle;}
+th.center, td.center {text-align: center;}
+
 
 /* AJUSTES GOB.MX */
 body {font-size: 17px;}
 .dropdown-menu {font-size: 16px;}
+.breadcrumb {margin-bottom: 16px;}
 .breadcrumb li {display: inline-block;}
+.datepicker-group .glyphicon {right: 16px;}
 .clearfix {overflow: auto;}

@@ -4,6 +4,13 @@ Todos los cambios notables de este proyecto se documentarán en este archivo.
 El formato se basa en [Keep a Changelog] (https://keepachangelog.com/en/1.0.0/),
 y este proyecto se adhiere a [Semantic Versioning] (https://semver.org/spec/v2.0.0.html).
 
+## [0.0.4] - 2021-05-7
+
+## Agregar
+
+- [HU-CDGC-202](https://jira.sct.gob.mx/browse/CDGC-202) Se agrega componente para la busqueda de obras y mostrar su resultado
+
+- [HU-CDGC-211](https://jira.sct.gob.mx/browse/CDGC-211)Se agrega el componente para el inicio de sesión.
 
 
 ## [0.0.3] - 2021-04-20
