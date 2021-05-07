@@ -31,8 +31,6 @@ export function generarId(data){
 }
 
 
-
-
 export function getLocalidades(icveEdo, icveMun){
     return request({
         url: '/api/v1/localidad/',
@@ -42,4 +40,12 @@ export function getLocalidades(icveEdo, icveMun){
             cve_agem: icveMun                                    
         }
     })
+}
+
+export function test(data){
+    return request({
+        url: '/posts',
+        method: 'get',
+        params: data
+    })    
 }

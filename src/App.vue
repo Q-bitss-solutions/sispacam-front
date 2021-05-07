@@ -1,11 +1,116 @@
 <template>
-  <div id="app" class="container top-buffer-submenu">
-    <router-view/>
-    <div class="row">&nbsp;</div>
-    <footer class="gobmx-footer">     
-   </footer>
+<div>
+  <!-- SUBMENÚ -->
+  <nav v-if="isAuthenticated" class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button
+          type="button"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#subenlaces"
+          aria-expanded="false" 
+          aria-controls="navbar">
+          <span class="sr-only">Interruptor de Navegación</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="https://www.gob.mx/sct">Secretaría de Comunicaciones y Transportes</a>
+      </div>
+      <div class="collapse navbar-collapse" id="subenlaces">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false"
+              >Opciones <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu" role="menu">              
+              <li><a href="/altacamino">Alta Camino</a></li>
+              <li><a href="/analisis-de-obra">Analisis de Obra</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container">
+  <!-- BREADCRUM + LOGOTIPO + DATOS DE USUARIO -->
+  <div class="row top-buffer">
+    <div class="col-md-8">
+      <ol v-if="getBreadcrumb" class="breadcrumb">
+        <li><a href="https://www.gob.mx"><i class="icon icon-home"></i></a></li>
+        <li><a href="https://www.gob.mx/sct">SCT</a></li>
+        <li>DGC - Cabeceras Municipales</li>
+        <li class="active" v-for="(breadcrumb , index) in getBreadcrumb" :key="index">
+          {{ breadcrumb }}
+        </li>
+      </ol>
+    </div>
   </div>
+  <div class="row">
+    <div class="col-md-7" id="logotipo">
+      <img src="./assets/img/logo.jpg" alt="Secretaría de Comunicaciones y Transportes" class="img-responsive" />
+    </div>
+    <div class="col-md-5">
+      <div v-if="isAuthenticated" class="usuario">
+        <p>Daniel Suárez Arriaga<a href="01_login.htm" class="pull-right">Cerrar sesión</a></p>
+        <p><strong>Rol:</strong> Supervisor</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TÍTULO Y SUBTÍTULO -->
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Dirección General de Carreteras</h1>
+      <h2>Cabeceras Municipales</h2>
+      <h3>{{ getBreadcrumb[0] }}</h3>
+      <hr class="red">
+    </div>
+  </div>
+      <!-- CONTENIDO -->
+<div class="row">
+  <div class="col-md-12">
+    <router-view/>
+    <button @click="saludar">send peticion</button>
+  </div>
+</div>  
+</div>  
+</div>
 </template>
+<script>
+import { mapActions } from "vuex"
+
+export default {
+  data () {
+    return {
+      breadcrumbs: []
+    }
+  },
+  computed: {
+    isAuthenticated: function () {
+      console.log('isauth:' + this.$store.getters['user/isAuthenticated'])
+      return  this.$store.getters['user/isAuthenticated']
+      },
+      getBreadcrumb: function () {
+       return this.$store.state.breadcrumb
+      }
+  },
+  methods: {
+    ...mapActions(["test"]),
+    saludar () {
+      this.test({ username: 'Guchi' })
+    }
+  }
+}
+</script>
+
 
 <style>
 #app {
@@ -26,5 +131,75 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+
+@charset "UTF-8";
+/* CSS Document */
+
+h1 {font-size: 32px;margin: 0;}
+h2 {font-size: 28px;margin-top: 10px;}
+h3 {font-size: 24px;margin-top: 40px;}
+h4 {font-size: 24px;margin-bottom: 20px;margin-top: 0;}
+strong {font-weight: 500;}
+label {font-weight: 500;margin-right: 6px;}
+hr.red {margin: 10px 0 60px;}
+#logotipo img {height: 80px;}
+#logotipo {margin-bottom: 30px;}
+
+.small-top-buffer {margin-top: 30px;}
+.xsmall-top-buffer {margin-top: 12px;}
+.xsmall-right-buffer {margin-right: 5px;}
+.small-left-buffer {margin-left: 12px;}
+.left-buffer {margin-left: 30px;}
+.small-bottom-buffer {margin-bottom: 40px;}
+.xsmall-bottom-buffer {margin-bottom: 12px;}
+.no-margin {margin: 0 !important;}
+.no-padding {padding: 0 !important;}
+.small, small {font-size: 15px;}
+.btn + .btn {margin-left: 5px;}
+
+.usuario {border: 1px solid #dedede;border-radius: 3px;padding: 10px 16px;position: relative;font-size: 16px;width: 88%;margin-left: 12%;}
+.usuario p:first-child {margin-bottom: 4px;}
+.usuario p:last-child {margin: 0;padding-top: 4px;border-top: 1px solid #dedede;}
+.usuario p {margin-bottom: 0;}
+.usuario p a {text-decoration: none;}
+.usuario p a:hover {text-decoration: underline;color: #12C;}
+
+.panel-heading {padding: 10px 16px;}
+.panel-body {padding: 20px;}
+.form-control, output {font-size: 15px;}
+.form-control-feedback {top: 34px;right: 18px;}
+.panel-title {font-size: 18px;}
+.panel-body .small {font-size: 14px;}
+.button-top-buffer {margin-top: 15px;}
+.panel-body h4 {font-size: 18px;margin-bottom: 22px;color: #4f4f4f;}
+.vertical-buffer {margin-bottom: 50px;margin-top: 35px;}
+.form-group {margin-bottom: 25px;}
+
+.nav-tabs > li > a {background-color: #f6f6f6;margin-right: 0;border: 1px solid #d5d5d5;border-radius: 0;text-decoration: none;color: #545454;}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {color: #9d2449;background-color: #fff;border: 1px solid #ddd;border-bottom-color: rgb(221, 221, 221);border-bottom-color: transparent;cursor: default;font-weight: 600;}
+.nav-tabs {border-bottom: 1px solid #ddd;}
+
+.table-bordered th {background-color: #f0f0f0;}
+.table-bordered tr:hover {background-color: #90bba21f !important;}
+.table {font-size: 15px;}
+.table th {font-weight: 600;}
+.table-striped > tbody > tr:nth-of-type(2n) {background-color: #f9f9f9;}
+.table-striped > tbody > tr:nth-of-type(2n+1) {background-color: transparent;}
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {padding: 6px;vertical-align: middle;}
+th.center, td.center {text-align: center;}
+
+
+/* AJUSTES GOB.MX */
+body {font-size: 17px;}
+.dropdown-menu {font-size: 16px;}
+.breadcrumb {margin-bottom: 16px;}
+.breadcrumb li {display: inline-block;}
+.datepicker-group .glyphicon {right: 16px;}
+.clearfix {overflow: auto;}
+
+.e-grid .e-gridpager .e-currentitem {
+    background-color: #9D2449;
 }
 </style>
