@@ -9,11 +9,19 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
       foo: 'root-foo',
-      breadcrumb: []
+      breadcrumb: [],
+      cancel: {
+          id:null
+      }
     },
     mutations: {
         setBreadcrumb(state, dataBreadcrumb ) {
             state.breadcrumb = dataBreadcrumb
+        },
+        setIdCancelacion(state, idObraCancelacion) {
+            console.log('mutation')
+            console.log(idObraCancelacion)
+            state.cancel.id = idObraCancelacion
         }
     },
     getters: {

@@ -8,7 +8,8 @@ export default {
         userId: null,
         token: null,
         refreshToken: "",        
-        isAuthenticated: false   
+        isAuthenticated: false, 
+        loginError: false
     },
     mutations: {
         setUser(state, username){
@@ -25,25 +26,38 @@ export default {
         },
         setAuthenticated: function(state, isAuthenticated) {
             state.isAuthenticated = isAuthenticated
-        }               
+        },
+        setLoginError: function(state, loginError) {
+            state.loginError = loginError
+        }                     
     },
     actions: {
         async login({ commit }, user) {
-            console.log('user')
+            console.log('user store')
             console.log(user)
 
             try{
-            const { accessToken, refreshToken } = await login(user)
-            console.log(accessToken)
-            console.log(refreshToken)
-            if (accessToken) {
-                commit('setAccessToken', accessToken)
-                commit('setRefreshToken', refreshToken)
+                console.log('await--->')
+                const resp = await login(user)
+                console.log('aquiauauauauauaua')
+                // console.log(accessToken)
+                // console.log(refreshToken)
+                console.log(resp.user)
+            if (resp.user) {
+                // commit('setAccessToken', accessToken)
+                // commit('setRefreshToken', refreshToken)
                 commit('setAuthenticated', true)
+                commit('setLoginError', false)
                 router.replace("/busqueda-obras");
             }
             }catch(e){
-                router.replace("/busqueda-obras");
+                console.log('catch erroro login')
+                console.log(e)
+                commit('setAccessToken', false)
+                commit('setRefreshToken', false)
+                commit('setAuthenticated', false)
+                commit('setLoginError', true)
+                return Promise.reject(e)
             }
         },        
         refreshToken: async ({ state, commit }) => {

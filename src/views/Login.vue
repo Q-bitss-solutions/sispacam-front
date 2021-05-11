@@ -3,6 +3,15 @@
 <div class="col-md-8 bottom-buffer">
 <form @submit.prevent="submit" class="form-horizontal" role="form">
   <div class="form-group">
+    <row>
+      <div class="col-md-12">
+            <span v-if="loginError" class="form-text form-text-error">
+              Los datos son inconrrectos favor de verificarlos
+            </span>
+      </div>
+    </row>
+  </div>
+  <div class="form-group">
     <label class="col-md-4 control-label no-margin" >Usuario:
       <span v-if="$v.form.username.$error" class="form-text form-text-error">*</span>
     </label>   
@@ -20,16 +29,16 @@
       <span v-if="$v.form.password.$error"  class="form-text form-text-error">*</span>
     </label>
     <div class="col-md-6">
-      <input  class="form-control" :class="{ 'form-control-error': $v.form.password.$error}" 
+      <input  class="form-control" :class="{ 'form-control-error': $v.form.password.$error}" id="contrasenia"
               placeholder="Contraseña" type="password" maxlength="16" v-model.trim="$v.form.password.$model">
-      <small v-if="$v.form.password.$error" id="error_password" class="form-text form-text-error">
+      <span v-if="$v.form.password.$error" id="error_password" class="form-text form-text-error">
         Este campo es obligatorio
-      </small>              
+      </span>              
     </div>
   </div>
 <div class="col-md-10">
   <div class="pull-right">
-    <button class="btn btn-primary" type="submit">Acceder</button>
+    <button class="btn btn-primary" type="submit" id="sbtlogin">Acceder</button>
   </div>
 </div>
 </form>
@@ -46,6 +55,7 @@ export default {
  name: "Login",
   data() {
     return {
+      loginError: false,
       breadcrumb: ['Inicio de sesión'],
       form: {
         username: "",
@@ -67,13 +77,20 @@ validations: {
   methods: {    
     ...mapActions('user', ["login"]),
     submit() { 
+      this.loginError = false
       this.$v.$touch()
       console.log('submit...')
       if (this.$v.$invalid) return
       try {
+        console.log(this.form)
         this.login(JSON.parse(JSON.stringify(this.form)))
+        .catch((e) => {
+          this.loginError = true
+        })
+
       }catch (e){
-        
+        console.log('error')
+        console.log(e)
       }
     },
     ...mapMutations(['setBreadcrumb'])

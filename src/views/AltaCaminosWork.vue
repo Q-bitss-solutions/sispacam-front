@@ -17,6 +17,11 @@
           <a href="#datosBeneficiario" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
             Datos del Beneficiario
           </a>
+        </li>   
+        <li role="presentation"  id="tabAsina">
+          <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
+            Asignar
+          </a>
         </li>           
     </ul>
     <div class="tab-content">
@@ -28,6 +33,9 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario> </DatosBeneficiario>
+        </div>          
+        <div role="tabpanel" class="tab-pane" id="asignarresidente">
+          <AsinarResidente> </AsinarResidente>
         </div>      
     </div>
   <div>
@@ -41,9 +49,14 @@
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
+import AsinarResidente from '@/components/AsinarResidente';
 export default {
   name: 'AltaCamino',
-  components: { DatosGeograficos, DatosCamino, DatosBeneficiario },
+  components: { DatosGeograficos, 
+                DatosCamino, 
+                DatosBeneficiario,
+                AsinarResidente
+              },
   data () {
     return {
       cEstado: '',
@@ -63,6 +76,9 @@ export default {
       console.log(e)
       //setTimeout(() => this.msgError = false, 10000);
     }
+  },
+  created() {
+    console.log('caminoid: ' + this.$route.params.obraId)
   },
   mounted () {  
 },  

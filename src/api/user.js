@@ -1,8 +1,10 @@
 import request from '@/utils/request'
 
 export function login(data) {
+  console.log('data')
+  console.log(data)
   return request({
-    url: '/login',
+    url: '/check_user_pass/',
     method: 'post',
     data
   })

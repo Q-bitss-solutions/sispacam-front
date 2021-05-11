@@ -7,14 +7,14 @@ const querystring = require('querystring');
 
 export function getEdos() {
     return request({
-      url: '/api/v1/estado/',
+      url: '/estado/',
       method: 'get'
     })
 }
 
 export function getMunicipios(cve_edo){
     return request({
-        url: '/api/v1/municipio/',
+        url: '/municipio/',
         method: 'get',
         params: {
             cve_agee:cve_edo
@@ -24,7 +24,7 @@ export function getMunicipios(cve_edo){
 
 export function generarId(data){
     return request({
-        url: '/api/v1/camino/',
+        url: '/camino/',
         method: 'post',
         data  
     })  
@@ -33,7 +33,7 @@ export function generarId(data){
 
 export function getLocalidades(icveEdo, icveMun){
     return request({
-        url: '/api/v1/localidad/',
+        url: '/localidad/',
         method: 'get',
         params: {
             cve_agee: icveEdo,

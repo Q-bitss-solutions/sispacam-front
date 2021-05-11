@@ -78,7 +78,7 @@
 <div class="row">
   <div class="col-md-12">
     <router-view/>
-    <button @click="saludar">send peticion</button>
+    <!-- <button @click="saludar">send peticion</button> -->
   </div>
 </div>  
 </div>  
@@ -202,4 +202,6 @@ body {font-size: 17px;}
 .e-grid .e-gridpager .e-currentitem {
     background-color: #9D2449;
 }
+
+
 </style>

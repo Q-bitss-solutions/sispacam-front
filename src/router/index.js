@@ -34,6 +34,12 @@ const routes = [
     name: 'AltaCamino',
     component: AltaCamino,
     meta: { requiresAuth: false }
+  },   
+  {
+    path: '/editcamino/:obraId',
+    name: 'AltaCaminoEdit',
+    component: AltaCamino,
+    meta: { requiresAuth: false }
   },  
   {
     path: '/analisis-de-obra',

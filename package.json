@@ -11,12 +11,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "@syncfusion/ej2-base": "^18.4.44",
-    "@syncfusion/ej2-bootstrap-theme": "^19.1.56",
-    "@syncfusion/ej2-data": "^18.4.46",
-    "@syncfusion/ej2-vue-dropdowns": "^18.4.48",
+    "@syncfusion/ej2-base": "^19.1.57",
+    "@syncfusion/ej2-bootstrap-theme": "^19.1.59",
+    "@syncfusion/ej2-data": "^19.1.58",
+    "@syncfusion/ej2-vue-dropdowns": "^19.1.59",
     "@syncfusion/ej2-vue-grids": "^19.1.59",
-    "@syncfusion/ej2-vue-inputs": "^19.1.54",
+    "@syncfusion/ej2-vue-inputs": "^19.1.59",
     "axios": ">=0.19.0",
     "axios-auth-refresh": "^3.1.0",
     "config": ">=3.3.1",
