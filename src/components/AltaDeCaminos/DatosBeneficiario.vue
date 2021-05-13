@@ -43,7 +43,7 @@
                     <tr>
                         <div class="col-sm-6">
                             <label class="control-label" for="rfc">RFC del Beneficiario</label>
-                            <input class="form-control" id="rfc" placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}">
+                            <input class="form-control" id="rfc" placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" :disabled = "editmode">
                             <div class="row col-md-10">
                                 <small v-if="!$v.rfc_benef.required && $v.rfc_benef.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
@@ -148,6 +148,7 @@ export default {
             colonia:'',
             cp:'',
             tipocalle:'',
+            editmode: false,
 
                 }
     },
@@ -208,6 +209,12 @@ export default {
                 }
             }
         }
+    },
+     created(){
+        if(this.$route.params.obraId){
+            this.editmode = true
+        }
+        console.log('caminoid: ' + this.$route.params.obraId)
     }
 }
 </script>
