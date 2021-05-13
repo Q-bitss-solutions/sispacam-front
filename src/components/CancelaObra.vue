@@ -39,12 +39,8 @@
 </template>
 
 <script>
-import { TooltipPlugin } from "@syncfusion/ej2-vue-popups";
-import Vue from "vue";
 import { cancelarObra } from '@/api/obras'
 
-
-Vue.use(TooltipPlugin);
 export default {
     name:'CancelaObra',
     data() { 
@@ -61,7 +57,7 @@ export default {
     methods:{
         async CancelarObra (myId){
             $(this.$refs['mdlCancelarObra']).modal('hide')
-            const data = await cancelarObra(myId)
+            const data = await cancelarObra(this.$store.state.cancel.id)
             console.log(data)
             console.log(this.$parent.$parent.populate())
             const r = this.$parent.$parent.$refs.grid.refresh
