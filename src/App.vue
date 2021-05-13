@@ -30,8 +30,8 @@
               >Opciones <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">              
-              <li><a href="/altacamino">Alta Camino</a></li>
-              <li><a href="/analisis-de-obra">Analisis de Obra</a></li>
+              <li><a href="/altacamino">Alta</a></li>
+              <li><a href="/busqueda">Busqueda</a></li>
             </ul>
           </li>
         </ul>
@@ -59,8 +59,8 @@
     </div>
     <div class="col-md-5">
       <div v-if="isAuthenticated" class="usuario">
-        <p>Daniel Suárez Arriaga<a href="01_login.htm" class="pull-right">Cerrar sesión</a></p>
-        <p><strong>Rol:</strong> Supervisor</p>
+        <p> {{ getUser.cnombre }} {{ getUser.cappaterno }} {{ getUser.capmaterno  }}<a @click="logout" href="#" class="pull-right">Cerrar sesión</a></p>
+        <p><strong>Rol:</strong> {{ getUser.icveusuario==14592?'Normativo':'Residente' }}</p>
       </div>
     </div>
   </div>
@@ -85,6 +85,7 @@
 </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 import { mapActions } from "vuex"
 
 export default {
@@ -98,14 +99,24 @@ export default {
       console.log('isauth:' + this.$store.getters['user/isAuthenticated'])
       return  this.$store.getters['user/isAuthenticated']
       },
-      getBreadcrumb: function () {
+    getUser: function () {
+      console.log('-->')
+      console.log(this.$store.getters['user/StateUser'])
+      return this.$store.getters['user/StateUser']
+    },
+    getBreadcrumb: function () {
        return this.$store.state.breadcrumb
-      }
+    }
   },
   methods: {
     ...mapActions(["test"]),
+    ...mapMutations('user',['setAuthenticated']),
     saludar () {
       this.test({ username: 'Guchi' })
+    },
+    logout(){
+      this.setAuthenticated(false)
+      this.$router.push('/')     
     }
   }
 }

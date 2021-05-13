@@ -11,47 +11,40 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: Login,
     meta: { guest: true },
-  },  
+  }, 
   {
-    path: '/',
-    name: 'Home',
-    //redirect: { name: 'BusquedaCaminos' },
-    redirect: { name: 'Login' },
-    meta: { requiresAuth: false }
-  },
-  {
-    path: '/busqueda-obras',
+    path: '/busqueda',
     name: 'BusquedaCaminos',
     component: BusquedaCaminos,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   },
   {
     path: '/altacamino',
     name: 'AltaCamino',
     component: AltaCamino,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   },   
   {
     path: '/editcamino/:obraId',
     name: 'AltaCaminoEdit',
     component: AltaCamino,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   },  
   {
     path: '/analisis-de-obra',
     name: 'analisisdeobra',
     component: AnalysisWork,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   },
   {
     path: '/obras',
     name: 'Obras',
     component: GridResultObra,
-    meta: { requiresAuth: false }
+    meta: { requiresAuth: true }
   }    
 ]
 
@@ -68,7 +61,7 @@ router.beforeEach((to, from, next) => {
   console.log(isAuthenticated)
   if (requiresAuth && !isAuthenticated) {
     console.log('login')
-    next('/login')
+    next('/')
   } else {
     console.log('else')
     next()

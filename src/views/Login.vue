@@ -3,13 +3,13 @@
 <div class="col-md-8 bottom-buffer">
 <form @submit.prevent="submit" class="form-horizontal" role="form">
   <div class="form-group">
-    <row>
+    <div class="row">
       <div class="col-md-12">
             <span v-if="loginError" class="form-text form-text-error">
               Los datos son inconrrectos favor de verificarlos
             </span>
       </div>
-    </row>
+    </div>
   </div>
   <div class="form-group">
     <label class="col-md-4 control-label no-margin" >Usuario:
@@ -93,13 +93,15 @@ validations: {
         console.log(e)
       }
     },
-    ...mapMutations(['setBreadcrumb'])
+    ...mapMutations(['setBreadcrumb']),
+    ...mapMutations('user',['setAuthenticated']),
   },
   beforeMount: function () {    
     this.setBreadcrumb(this.breadcrumb)
 
   },
   mounted: function () {
+    this.setAuthenticated(false)
     console.log('montado')
     console.log(this.$store.state.breadcrumb)
   }

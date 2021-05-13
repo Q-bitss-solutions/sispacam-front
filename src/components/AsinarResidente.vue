@@ -6,9 +6,14 @@
         <div class="form-group">
             <div class="col-md-8 form-group">
                 <label class="control-label">Residente asignado:</label>
-                <input class="form-control" v-model="usuario" type="text" disabled>
-            </div>
+                <input class="form-control" v-model="usuario" type="text" disabled placeholder="No hay usuario asigando">
+                <input class="form-control" v-model="id" type="text" v-show="false">
+            </div>           
         </div>
+                <div class="col-md-4 text-right">
+                    <button class="btn btn-default" type="button" id="buscarObras" @click="asignar">
+                    <span class="icon" style="margin-right: 8px;"></span>Asiganar</button>
+                </div>         
         </div>  
         <ejs-grid   ref="grid"
                     :dataSource="data" :gridLines='lines' 
@@ -31,6 +36,8 @@
 <script>
 import Vue from "vue";
 import { GridPlugin, Sort, Page, Filter } from '@syncfusion/ej2-vue-grids';
+import { asignarUsuario, getCaminoByClave } from '@/api/obras'
+
 
 Vue.use(GridPlugin);
 export default {
@@ -43,7 +50,8 @@ export default {
             pageSettings: { pageCount: 5, pageSize: 7  },
             count: null,
             flag: false,
-            usuario:'' 
+            usuario:'' ,
+            id:null
         }    
     },    
     props: {
@@ -60,7 +68,22 @@ export default {
             console.log(selectedrecords)
             this.usuario = selectedrecords[0].nombre + ' ' 
             + selectedrecords[0].primerA + ' ' + selectedrecords[0].segundoA
-}
+            this.id = selectedrecords[0].id
+            },        
+        async asignar(){
+            const response = await asignarUsuario(this.$route.params.obraId, this.id)
+            alert(response.msg)
+            console.log(response)
+        }
+    },
+    async created() {
+        const resp = await getCaminoByClave(this.$route.params.obraId)
+        console.log('resp')
+        console.log(resp)
+        if(resp.usuarios){
+            this.usuario = data[0].nombre +  ' ' + data[0].primerA + ' ' + data[0].segundoA
+            this.id = data[0].id
+        }
     }
 
 }
@@ -68,29 +91,11 @@ export default {
 const data =
 [
     {
-    id:1,
-    nombre:'Tony',
-    primerA:'Soprano',
-    segundoA:'Coppola'
-    },
-    {
     id:2,
-    nombre:'Marco',
-    primerA:'Hernadez',
-    segundoA:'Salas'
-    },
-    {
-    id:3,
-    nombre:'Jose',
-    primerA:'Caballero',
-    segundoA:'Perez'
-    },
-    {
-    id:4,
-    nombre:'Rogelio',
-    primerA:'Carmona',
-    segundoA:'Aztell'
-    }            
+    nombre:'Victor',
+    primerA:'DEL',
+    segundoA:'RUIZ'
+    }          
 ]
 
 </script>

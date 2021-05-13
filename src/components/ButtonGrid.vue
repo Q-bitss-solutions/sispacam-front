@@ -1,7 +1,8 @@
 <template>
 <div>
         <button class="btn btn-primary btn-sm editObra" type="button" aria-label="Editar datos"
-                @click="toEdit">
+                @click="toEdit" :disabled="data.isCanceled"
+                :title="data.isCanceled==true?'El registro esta cancelado':''">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
         </button>
 </div>
@@ -21,7 +22,7 @@ export default {
     },
     methods:{
         toEdit () {
-            this.$router.push('/editcamino/'+this.data.id)            
+            this.$router.push('/editcamino/'+this.data.clave)            
         }
     },
     computed: {

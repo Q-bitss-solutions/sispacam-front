@@ -15,16 +15,16 @@
           <!--nombre obra-->
           <div class="col-md-8 form-group">
             <label class="control-label">Nombre de la Obra o palabra(s) clave:</label>
-            <input class="form-control" v-model="obra.nombre" type="text" placeholder="Ingresa nombre o palabra clave">
+            <input class="form-control" v-model="obra.nombre_camino" type="text" placeholder="Ingresa nombre o palabra clave">
           </div>
           <!--Estado-->
           <div class="col-md-4 form-group">
             <label class="control-label">Estado:</label>
             <select class="form-control" 
                     id="estado"
-                    v-model="obra.estado"
+                    v-model="obra.cve_agee"
                     @change="changeEdo()"
-                    :class="{'form-control-error': $v.obra.estado.$error }"
+                    :class="{'form-control-error': $v.obra.cve_agee.$error }"
                     >
                 <option value="">Selecciona un estado...</option>
                 <option v-for="(edo, index) in estadosData" :key="index" v-bind:value="edo.cve_agee">
@@ -32,7 +32,7 @@
                 </option>
             </select>
           <div class="row col-md-10">
-              <small v-if="$v.obra.estado.$error" class="form-text form-text-error">
+              <small v-if="$v.obra.cve_agee.$error" class="form-text form-text-error">
               Este campo es obligatorio
               </small>
           </div>               
@@ -45,7 +45,7 @@
           <label class="control-label">Municipio:</label>
           <select class="form-control" 
                   id="municipio"
-                  v-model="obra.municipio"
+                  v-model="obra.icve_municipio"
                   @change="changeMunicipio()">
             <option value="">Selecciona un municipio...</option>
             <option v-for="(mun, index) in municipiosData" :key="index" v-bind:value="mun.cve_agem">
@@ -58,7 +58,7 @@
           <label class="control-label">Localidad:</label>
           <select class="form-control" 
                   id="localidad"
-                  v-model="obra.localidad"                  
+                  v-model="obra.localidades"                  
                   >                  
             <option value="">Selecciona una localidad...</option>
             <option v-for="(loc, index) in localidadesData" :key="index" v-bind:value="loc.cve_loc">
@@ -69,11 +69,11 @@
         <!--Tipo de Obra-->
         <div class="col-md-4 form-group">
           <label class="control-label">Tipo de Obra:</label>
-          <select v-model="obra.tipoObra" class="form-control" id="tipoObra">
+          <select v-model="obra.tipo_camino" class="form-control" id="tipoObra">
             <option value="" selected="selected">Selecciona un tipo de obra...</option>
-            <option value="1">Cabecera</option>
-            <option value="2">Agencia</option>
-            <option value="3">Otro</option>
+            <option value="C">Cabecera</option>
+            <option value="A">Agencia</option>
+            <option value="O">Otro</option>
           </select>
         </div>
       </div>
@@ -83,11 +83,12 @@
         <!--Estrategia-->
         <div class="col-md-4 form-group">
           <label class="control-label">Estrategia de Gobierno Federal:</label>
-          <select class="form-control" v-model="obra.estrategia" id="estrategia">
+          <select class="form-control" v-model="estrategia" id="estrategia"
+                  @change="getEstrategia">
             <option value="" selected="selected">Selecciona una estrategia...</option>
-            <option value="CIIT">CIIT</option>
-            <option value="Tren Maya">Tren Maya</option>
-            <option value="Caminos Originales">Caminos originales</option>
+            <option value="ciit">CIIT</option>
+            <option value="tren_maya">Tren Maya</option>
+            <option value="caminos_originales">Caminos originales</option>
           </select>
         </div>
         <!--Grado Marginacion-->
@@ -122,14 +123,14 @@
     <div class="row">                    
       <div class="col-md-4 form-group"  >
         <label class="control-label">Clave única de la Obra:</label>
-        <input v-model="obra.icveObra" 
+        <input v-model="obra.clave" 
                 class="form-control" type="text" 
                 placeholder="Ingresa Clave única de la Obra"
                 id="icveObra"
-                :class="{'form-control-error': $v.obra.icveObra.$error }"
+                :class="{'form-control-error': $v.obra.clave.$error }"
                 >
         <div class="row col-md-10">
-          <small v-if="$v.obra.icveObra.$error" class="form-text form-text-error">
+          <small v-if="$v.obra.clave.$error" class="form-text form-text-error">
             Este campo es obligatorio
           </small>
         </div>  
@@ -163,9 +164,7 @@ import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
 import { required } from 'vuelidate/lib/validators'
 
 const validateEdo = (value, vm) => {
-  console.log('vm')
-  console.log(value)
-  console.log(vm.items)
+
   return value !== ''
   //return vm.items.some(edo => edo.cve_agee != '');
 };
@@ -179,28 +178,31 @@ export default {
       municipiosData: null,
       localidadesData: null,
       isBuquedaPorIcveObra: false,
+      estrategia:'',
       obra: {
-        estado: '',
-        municipio: '',
-        localidad: '',
-        tipoObra: '',
-        estrategia: '',
+        cve_agee: '', //estado
+        icve_municipio: '',
+        localidades: '',
+        tipo_camino: '',
         clave: '',
         marginacion: '',
         tipoPoblacion: '',
         poblacionIndigena: '',
-        nombre: '',
-        icveObra: null        
+        nombre_camino: '',
+        icveObra: null,
+        ciit:false,
+        tren_maya:false,
+        caminos_originales:false
       }
     }
   },
   validations: {
     obra : {
-      estado: {
+      cve_agee: {
         required,
         validateEdo
       },
-      icveObra: {
+      clave: {
         required
       }
     }
@@ -208,22 +210,22 @@ export default {
   methods: {
     ...mapMutations(['setBreadcrumb']),
     submit() {     
-      console.log('isBuquedaPorIcveObra') 
-      console.log(this.isBuquedaPorIcveObra)
       if(!this.isBuquedaPorIcveObra){
-        this.$v.obra.estado.$touch()
-        if (!this.$v.obra.estado.$invalid) 
-            this.$router.push({ 
-              name: 'Obras', 
-              params: { 
-                values: this.obra 
-                }
+        this.$v.obra.cve_agee.$touch()
+        if (!this.$v.obra.cve_agee.$invalid) {
+          console.log(this.obra)
+          this.$router.push({ 
+            name: 'Obras', 
+            params: { 
+              values: this.obra 
+              }
             })
+        }
         this.submitStatus = "Error" 
         return
       }
-      this.$v.obra.icveObra.$touch()
-      if(this.$v.obra.icveObra.$invalid)
+      this.$v.obra.clave.$touch()
+      if(this.$v.obra.clave.$invalid)
         return
       this.$router.push({ 
         name: 'Obras', 
@@ -241,8 +243,6 @@ export default {
     async initData () {
       const res = await getEdos()
       const results = res.results;
-      console.log('data')
-      console.log(results)
       this.estadosData = results;
     },
     async changeEdo () {
@@ -250,9 +250,9 @@ export default {
         this.municipiosData = null;
         this.localidadesData = null
         this.obra.municipio =''
-        this.obra.localidad =''
-        console.log(this.obra.estado)
-        const {results} = await getMunicipios(this.obra.estado)
+        this.obra.localidades =''
+        console.log(this.obra.cve_agee)
+        const {results} = await getMunicipios(this.obra.cve_agee)
         this.municipiosData = results;       
         console.log(this.municipiosData)  
       }catch(err){
@@ -262,20 +262,18 @@ export default {
     },
     async changeMunicipio () {
       this.localidadesData = null;
-      this.obra.localidad =''
+      this.obra.localidades =''
       try{
         console.log('changemun')
-        const res = await getLocalidades(this.obra.estado, 
-                      this.obra.municipio)
+        const res = await getLocalidades(this.obra.cve_agee, 
+                      this.obra.icve_municipio)
         this.localidadesData = res
-      console.log(res)
       }catch(error){
         console.log('error al obtener localidades')
         console.log(error);
       }
     },
     clearData () {
-      console.log('here')
       this.$v.$reset()
       this.obra = {
         estado: '',
@@ -291,13 +289,23 @@ export default {
         icveObr: ''
       }
       this.initData()
-    }
+    },
+    getEstrategia(){
+      this.obra.ciit = false
+      this.obra.tren_maya = false
+      this.obra.caminos_originales = false
+      this.obra[this.estrategia]= true
+      console.log(this.obra)      
+    }    
   },
   beforeMount: function () {    
     this.setBreadcrumb(this.breadcrumb)
   },
-    created() {      
+  created() {      
       this.initData()
-    }  
+  },
+  computed: {
+
+  }  
 }
 </script>

@@ -4,7 +4,8 @@ import router from '@/router'
 export default {
     namespaced: true,
     state: {        
-        user: null,
+        user:null,
+        userRol:null,
         userId: null,
         token: null,
         refreshToken: "",        
@@ -29,26 +30,37 @@ export default {
         },
         setLoginError: function(state, loginError) {
             state.loginError = loginError
-        }                     
+        },
+        setUser: function(state, user) {
+            console.log('state')
+            console.log(state)
+            state.user = user
+        },         
+        setUserRol: function(state, userRol) {
+            state.userRol = userRol
+        },                           
     },
     actions: {
-        async login({ commit }, user) {
+        async login({ commit }, userc) {
             console.log('user store')
             console.log(user)
 
             try{
-                console.log('await--->')
-                const resp = await login(user)
-                console.log('aquiauauauauauaua')
-                // console.log(accessToken)
-                // console.log(refreshToken)
-                console.log(resp.user)
-            if (resp.user) {
+                const  { user }  = await login(userc)
+                console.log(user)
+            if (user) {
                 // commit('setAccessToken', accessToken)
                 // commit('setRefreshToken', refreshToken)
+                commit('setUser', JSON.parse(JSON.stringify(user)))
+                commit('setUserRol', user.icveusuario==14592?'Normativo':'Residente')
                 commit('setAuthenticated', true)
                 commit('setLoginError', false)
-                router.replace("/busqueda-obras");
+                if(user.icveusuario==14592){
+                    router.replace("/busqueda")
+                }else{
+                    router.replace('/obras')
+                }
+               
             }
             }catch(e){
                 console.log('catch erroro login')
@@ -73,6 +85,6 @@ export default {
     },
     getters: {
         isAuthenticated: state => !!state.isAuthenticated,    
-        StateUser: state => state.user,
+        StateUser: state => JSON.parse(JSON.stringify(state.user)),
     }
 }
