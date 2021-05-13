@@ -51,7 +51,7 @@ service.interceptors.request.use(request => {
 // response interceptor
 service.interceptors.response.use(
     response => {
-        if (response.status === 200  || response.status === 201) {
+        if (response.status === 200  || response.status === 201  || response.status === 202) {
             return response.data;
         } else {    
           return Promise.reject();                    
