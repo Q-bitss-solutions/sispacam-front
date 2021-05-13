@@ -12,6 +12,13 @@ export function getEdos() {
     })
 }
 
+export function getupdate(clave) {
+    return request({
+      url: '/camino/' + clave + '/' ,
+      method: 'get',
+    })
+}
+
 export function getMunicipios(cve_edo){
     return request({
         url: '/municipio/',
@@ -48,4 +55,13 @@ export function test(data){
         method: 'get',
         params: data
     })    
+}
+
+export function CaminoPut(data, clave){
+    return request({
+       url: '/camino/' + clave + '/update/',
+       method: 'put',
+       params: data
+
+    })
 }
