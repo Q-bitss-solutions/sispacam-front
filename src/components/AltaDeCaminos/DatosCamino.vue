@@ -264,8 +264,7 @@
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
-import { generarId } from '@/api/alta-camino';
-import { getupdate, CaminoPut } from '@/api/alta-camino';
+import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
 
@@ -433,7 +432,6 @@ export default {
                     longitud:this.fLongitdTotal,
                     longitud_pavimentar:this.fLongitdTotalAPavimentar,
                     ancho_camino:this.ancho_camino,
-                    ubicacion:this.ubicacionCamino,
                     caracteristicas:this.caracteristicasCamino,
                     beneficios:this.beneficiosCamino,
                     localidades:this.edo.localidades,

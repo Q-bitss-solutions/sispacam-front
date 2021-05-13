@@ -331,13 +331,15 @@ export default {
               this.totpoblacion = response.datos_geograficos[0].totpoblacion
               //this.icve_estado_inegi = Number.parseInt(response.datos_geograficos[0].icve_estado_inegi) 
               //this.icve_municipio = response.datos_geograficos[0].icve_municipio
-              this.ip_poblacion_total_localidades = response.datos_geograficos[0].ip_poblacion_total_localidades
+              //this.ip_poblacion_total_localidades = response.datos_geograficos[0].ip_poblacion_total_localidades
               this.ipoblacion_municipio = response.datos_geograficos[0].ipoblacion_municipio
               //this.ilocalidades_municipio = response.datos_geograficos[0].ilocalidades_municipio
               
               console.log("datos-envio")
               console.log(this.ilocalidades_municipio)
               console.log(response.datos_geograficos[0].ilocalidades_municipio)
+              this.setEdoIso()
+              this.recalcularPoblacionTotal()              
 
               
               
@@ -444,7 +446,7 @@ export default {
                  this.DatosGeograficos.region      = this.region
                  this.DatosGeograficos.ubicacion   = this.ubicacion
                  this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
-                 this.DatosGeograficos.totpoblacion = this.totpoblacion
+                 this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
                  this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
                  this.DatosGeograficos.icve_municipio = this.icve_municipio
                  this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
