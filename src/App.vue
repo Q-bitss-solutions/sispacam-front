@@ -59,8 +59,10 @@
     </div>
     <div class="col-md-5">
       <div v-if="isAuthenticated" class="usuario">
-        <p> {{ getUser.cnombre }} {{ getUser.cappaterno }} {{ getUser.capmaterno  }}<a @click="logout" href="#" class="pull-right">Cerrar sesión</a></p>
-        <p><strong>Rol:</strong> {{ getUser.icveusuario==14592?'Normativo':'Residente' }}</p>
+        <p> {{ getUser.cnombre }} {{ getUser.cappaterno }} {{ getUser.capmaterno  }}</p>
+        <p><strong>Rol:</strong> {{ getUser.icveusuario==14592?'Normativo':'Residente' }}
+        <a @click="logout" href="#" class="pull-right">Cerrar sesión</a>
+        </p>
       </div>
     </div>
   </div>
@@ -77,7 +79,9 @@
       <!-- CONTENIDO -->
 <div class="row">
   <div class="col-md-12">
+    <h4 v-if="$route.params.obraId">Camino : {{$route.params.obraId}}</h4>
     <router-view/>
+
     <!-- <button @click="saludar">send peticion</button> -->
   </div>
 </div>  

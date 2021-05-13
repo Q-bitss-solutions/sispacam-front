@@ -12,7 +12,7 @@
         </div>
                 <div class="col-md-4 text-right">
                     <button class="btn btn-default" type="button" id="buscarObras" @click="asignar">
-                    <span class="icon" style="margin-right: 8px;"></span>Asiganar</button>
+                    <span class="icon" style="margin-right: 8px;"></span>Asignar</button>
                 </div>         
         </div>  
         <ejs-grid   ref="grid"

@@ -46,21 +46,21 @@
                         <input v-model="otroTipoCamino" v-if="tipo_camino == 'O'" placeholder="Especificar otro" />              
                     </label> 
                     <div class="row col-md-10">
-                    <small v-if="tipo_camino == 'A' && this.edo.localidades.length -1 < 1" class="form-text form-text-error">
-                     Para esta opcion debe seleccionar por lo menos una Localidad
+                    <small v-if="tipo_camino == 'A' && (this.edo.localidades.length -1 < 1 || this.edo.localidades.length -1 > 1)" class="form-text form-text-error">
+                     Para esta opcion debe seleccionar una Localidad
                     </small>  
                     </div>                                   
                 </div>                    
             </div>              
             
-            <div class="form-group">
-                <div class="col-md-4">       
+            <div class="form-group" >
+                <div class="col-md-4" v-show="false">       
                     <div >
                         <label for="camino">ID Camino:</label>
                         <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" disabled v-model="idcamino"> 
                     </div>
                 </div>
-                <div class="col-md-8"> 
+                <div class="col-md-12"> 
                       <label for="nombrecamino">Nombre del Camino:</label>
                       <input v-model="nombre_camino" :class="{'form-control-error': $v.nombre_camino.$error}"
                         id="nombre_camino" 
@@ -205,7 +205,7 @@
                        <p>El id del camino es:<strong class="alert">{{idcamino}}</strong></p>
                    </div>
                    <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -356,6 +356,8 @@ export default {
 
           },
 
+          
+
           async CargaDatos(clave){
               const response = await getupdate(clave)
               console.log(response)
@@ -445,11 +447,20 @@ export default {
                     ip_poblacion_total_localidades:this.edo.ip_poblacion_total_localidades,
                     ipoblacion_municipio:this.edo.ipoblacion_municipio,
                     ilocalidades_municipio:this.edo.ilocalidades_municipio,
-                    marginacion:this.edo.marginacion
+                    marginacion:this.edo.marginacion,
+                    estatus:"A"
 
                 }
-
-                
+                 console.log("aqui-1")
+                  console.log(this.tipo_camino)
+                console.log(this.edo.localidades.length -1)
+                if(this.tipo_camino == 'A' && (this.edo.localidades.length -1) > 1) {
+                       console.log("aqui")
+                       console.log(this.edo.localidades.length -1)
+                         $('#alertlong').modal('show')
+                         this.btnSaveDisabled  = false
+                         return
+                }
                 //console.log('data')
                 //console.log(data)
                 if(this.editmode) {
@@ -469,11 +480,7 @@ export default {
                 }
                 catch(err){    
                     this.btnSaveDisabled  = false  
-                    if(this.tipo_camino == 'A' && (this.edo.localidades.length -1) > 1) {
-                       //console.log("aqui")
-                        //console.log(this.edo.localidades.length -1)
-                         $('#alertlong').modal('show')
-                     }
+
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
                     //$('#alertModal').modal('show')

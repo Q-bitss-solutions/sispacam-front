@@ -97,7 +97,7 @@
                 </div>
             </form>
         </div>
-        <div class="form-group">
+        <div class="form-group" v-show="false">
             <div class="row">
             <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
             v-on:click="DatosBeneficiarios" >

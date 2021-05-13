@@ -197,7 +197,7 @@
             <div class="form-group">
             </div>
         </tr>
-        <div class="row">
+        <div class="row" v-show="false">
             <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
              v-on:click="siguiente" >
              Siguiente

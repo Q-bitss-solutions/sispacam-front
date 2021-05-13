@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active" id="tabPersonal">
           <a href="#datosGeograficos" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
-            Datos Geograficos
+            Datos Geográficos
           </a>
         </li>
         <li role="presentation"  id="tabDatosCamino">
@@ -18,7 +18,7 @@
             Datos del Beneficiario
           </a>
         </li>   
-        <li role="presentation"  id="tabAsina">
+        <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
           <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Asignar
           </a>
