@@ -106,12 +106,12 @@
 
         <div class="col-md-4 form-group">
           <label class="control-label">Tipo de población indígena:</label>
-          <select v-model="obra.poblacionIndigena" class="form-control" id="tipoPoblacion">
-            <option value="" selected="selected">Selecciona un tipo de población...</option>
-            <option value="1">Municipio con presencia indígena</option>
-            <option value="2">Municipio indígena</option>
-            <option value="3">Municipio sin población indígena</option>
-            <option value="4">Municipio con población indígena dispersa</option>
+          <select v-model="obra.poblacion_indigena" class="form-control" id="tipoPoblacion">
+            <option value="">Selecciona un tipo de población...</option>
+            <option value="Municipio con presencia indígena">Municipio con presencia indígena</option>
+            <option value="Municipio indígena">Municipio indígena</option>
+            <option value="Municipio sin población indígena">Municipio sin población indígena</option>
+            <option value="Municipio con población indígena dispersa">Municipio con población indígena dispersa</option>
           </select>
         </div>
       </div>
@@ -186,8 +186,7 @@ export default {
         tipo_camino: '',
         clave: '',
         marginacion: '',
-        tipoPoblacion: '',
-        poblacionIndigena: '',
+        poblacion_indigena: '',
         nombre_camino: '',
         icveObra: null,
         ciit:false,
@@ -283,8 +282,8 @@ export default {
         estrategia: '',
         clave: '',
         marginacion: '',
-        tipoPoblacion: '',
-        poblacionIndigena: '',
+        tipo_poblacion: '',
+        poblacion_indigena: '',
         nombre: '',
         icveObr: ''
       }

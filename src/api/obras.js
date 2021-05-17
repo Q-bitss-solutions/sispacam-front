@@ -28,12 +28,14 @@ export function getObraByParmas (params) {
   console.log(typeof(params))
   console.log(params)
   let req = 'cve_agee='+params.cve_agee
-  req += params.caminos_originales==true?'&caminos_originales='+params.caminos_originales:''
-  req += params.ciit==true?'&ciit='+params.ciit:''
-  req += params.tren_maya==true?'&tren_maya='+params.tren_maya:''
+  req += params.caminos_originales?'&caminos_originales='+params.caminos_originales:''
+  req += params.ciit?'&ciit='+params.ciit:''
+  req += params.tren_maya?'&tren_maya='+params.tren_maya:''
   req += params.tipo_camino!=''?'&tipo_camino='+params.tipo_camino:''
   req += params.nombre_camino!=''?'&nombre_camino='+params.nombre_camino:''
   req += params.municipio!=''?'&municipio='+params.municipio:''
+  req += params.marginacion!=''?'&marginacion='+params.marginacion:''
+  req += params.poblacion_indigena!=''?'&poblacion_indigena='+params.poblacion_indigena:''
 
   console.log(req)
   return request({

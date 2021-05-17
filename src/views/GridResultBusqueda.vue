@@ -17,8 +17,8 @@
                 <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
                 <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
                 <e-column field='estrategia' headerText='Estrategia de Gobierno Federal' ></e-column>
-                <e-column field='beneficios' headerText='Grado de Marginación' ></e-column>
-                <e-column field='caracteristicas' headerText='Tipo Poblacion' ></e-column>
+                <e-column field='marginacion' headerText='Grado de Marginación' ></e-column>
+                <e-column field='poblacion_indigena' headerText='Tipo Poblacion' ></e-column>
                 <e-column field="clave" :template='editTemplate' headerText='Editar Obra' textAlign='Center' :visible='flagEdicion'></e-column>
                 <e-column field="clave" :template='cancelTemplate' headerText='Cancelar Obra' textAlign='Center' :visible='flag'></e-column>
             </e-columns>
