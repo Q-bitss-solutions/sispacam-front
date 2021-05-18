@@ -107,6 +107,7 @@
                             id="longitud_pavimentar"
                             placeholder="Longitud a pavimentar 2019-2014(km)"
                             v-model="fLongitdTotalAPavimentar" 
+                            :change="valnum"
                             :min="min"                             
                             :max="max"
                             :showSpinButton='false'>
@@ -150,10 +151,10 @@
     <tr>
         <td>
         <div class="form-group col-md-12">
-                <label>Ubicación:</label>
+                <label>Datos de Georeferncia:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        placeholder="Ingrese la ubicación Camino" rows="3"  v-model="ubicacionCamino"></textarea>
+                        placeholder="Ingrese los Datos de Georeferncia" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -201,8 +202,25 @@
                        <h4 class="modal-title">Aviso del Sistema</h4>
                    </div>
                    <div class="modal-body">
-                       <p>Se guardaron los datos correctamente</p>
-                       <p>El id del camino es:<strong class="alert">{{idcamino}}</strong></p>
+                       <p>Se guardaron correctamente los datos del camino,</p>
+                       <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                   </div>
+               </div><!-- /.modal-content -->
+           </div><!-- /.modal-dialog -->
+       </div><!-- /.modal -->
+       <!--Actualizar -->
+        <div class="modal fade" id="UpdateCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept"
+           aria-hidden="true">
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h4 class="modal-title">Aviso del Sistema</h4>
+                   </div>
+                   <div class="modal-body">
+                       <p>Se actualizarón correctamente los datos del camino,</p>
                    </div>
                    <div class="modal-footer">
                        <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
@@ -232,7 +250,7 @@
             </div>            
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">
-                    Close</button>
+                    Cerrar</button>
             </div>
         </div>
     </div>
@@ -252,7 +270,26 @@
             </div>            
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">
-                    Close</button>
+                    Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="alertvalnum" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <div class="">Ocurrio un error</div>
+            </div>            
+            <div class="modal-body">
+                <p>La Longitud a pavimentar no puede ser mayor a la Longitud total 
+                </p>
+            </div>            
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal">
+                    Cerrar</button>
             </div>
         </div>
     </div>
@@ -356,7 +393,16 @@ export default {
 
           },
 
-          
+          async valnum() {
+    // ...
+    console.log("valnum")
+    console.log(this.fLongitdTotalAPavimentar)
+    console.log(this.fLongitdTotal)
+
+      
+       
+    
+  },
 
           async CargaDatos(clave){
               const response = await getupdate(clave)
@@ -454,17 +500,25 @@ export default {
                  console.log("aqui-1")
                   console.log(this.tipo_camino)
                 console.log(this.edo.localidades.length -1)
-                if(this.tipo_camino == 'A' && (this.edo.localidades.length -1) > 1) {
-                       console.log("aqui")
+                if(this.tipo_camino == 'A' && (this.edo.localidades.length -1) > 1) {                     
                        console.log(this.edo.localidades.length -1)
                          $('#alertlong').modal('show')
                          this.btnSaveDisabled  = false
                          return
                 }
+                //longitudes
+                    if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
+                         $('#alertvalnum').modal('show')
+                         this.btnSaveDisabled  = false
+                         return
+                }
+
+
                 //console.log('data')
                 //console.log(data)
                 if(this.editmode) {
                  const response1 = await CaminoPut(data, this.$route.params.obraId)
+                 $('#UpdateCamino').modal('show')
                  console.log(response1)
                 }else{
                  const response = await generarId(data)
