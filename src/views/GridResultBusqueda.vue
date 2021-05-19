@@ -51,7 +51,7 @@ export default {
             lines: 'Both',
             data: [],
             breadcrumb: ['Resultados de Búsqueda de Obras'],
-            pageSettings: { pageCount: 5, pageSize: 7  },
+            pageSettings: { pageCount: 5, pageSize: 20  },
             count: 0,
             flag: this.$store.state.user.userRol=='Normativo'?true:false,
             isCanceled:false,

@@ -46,8 +46,8 @@ export default {
         return {     
             lines: 'Both',
             data:data,
-            breadcrumb: ['Resultados de Búsqueda de Obras'],
-            pageSettings: { pageCount: 5, pageSize: 7  },
+            breadcrumb: [''],
+            pageSettings: { pageCount: 5, pageSize: 20  },
             count: null,
             flag: false,
             usuario:'' ,

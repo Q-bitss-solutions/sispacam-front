@@ -20,8 +20,7 @@
                           placeholder="Selecciona un estado"
                           :change="obtenerMunicipios"
                           :enabled="estadosHabilitado"
-                          v-model="icve_estado_inegi"
-                          :disabled = "editmode"
+                          v-model="icve_estado_inegi" 
                           ref="refEstado"
                           :value="valueEstado"
                           
@@ -65,7 +64,6 @@
                         placeholder="Selecciona una localidad"
                         :enabled="localidadesHabilitado"
                         v-model="localidades"
-                        :allowCustomValue= true
                         id="localidades"
                         ref="localidades"
                         :close="updateLocalidades"
@@ -132,8 +130,8 @@
                     <div class="col-md-6">  
                         <input id="icve_municipio" v-model.number="icve_municipio" class="form-control" type="number" disabled>  
                      </div> 
-                     
-                    <div class="col-md-12 help-block"></div> 
+                <!--<div id="datosNivelMunicipal" class="table-responsive"> -->      
+                   <div class="col-md-12 help-block"></div> 
                    <div class="col-md-6">
                         <label>Población total de localidades:</label>
                     </div>          
@@ -147,23 +145,13 @@
                             value="0">                                            
                         </ejs-numerictextbox>                          
                     </div>    
-                     <div class="col-md-12 help-block"></div>    
-                    <div class="col-md-6">
-                        <label>No. Poblaci&oacute;n del Municipio:</label>
-                    </div>          
-                    <div class="col-md-6"> 
-                        <ejs-numerictextbox                                        
-                            format='n' 
-                            :showSpinButton='false'
-                            v-model.number="ipoblacion_municipio" 
-                            :enabled='false'
-                            value="0">                                            
-                        </ejs-numerictextbox>                        
-                     </div>  
+                    <div class="col-md-12 help-block"></div>    
+
 
                      <div class="col-md-12 help-block"></div>  
                      <div class="col-md-12 help-block"></div>  
-                     <div class="col-md-12 help-block"></div>                                                                                  	                                                                                                                                          
+                     <div class="col-md-12 help-block"></div>    
+                <!--</div>  -->                                                                                  	                                                                                                                                          
                 </div>             
                 <div class="table-responsive">
                      <div class="col-md-12">
@@ -171,25 +159,47 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-6">
-                                        <label>No. Localidades del Municipio:</label>                                        
+                                        <label>No. Poblaci&oacute;n del Municipio: </label>                                        
                                     </th>
                                     <th class="col-md-6">                                        
                                         <input id="noLocalidadesMun" v-model.number="ilocalidades_municipio" class="form-control" type="number" disabled>
                                     </th>
                                 </tr>
+
                                  <tr>
                                     <th>Nombre</th>
                                     <th>Población</th>
                                 </tr>
                                 </thead>
+                                
                                 <tbody>
                                         <tr v-for="i in localidadesTabla" :key="i.id">
 
                                             <td class="col-md-6">{{ i.nom_loc }}</td>
                                             <td class="col-md-6">{{ formatNum(i.pob) }}</td>
                                         </tr>                                                     
-                                </tbody>                                                                                                                    
-                         </table>
+                                </tbody>  
+                         </table> 
+                        <div id="datosNivelMunicipal" class="table-responsive"> 
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label>Poblaci&oacute;n Total de Localidades:</label>
+                                </div>          
+                                <div class="col-md-6"> 
+                                    <ejs-numerictextbox                                        
+                                        format='n' 
+                                        :showSpinButton='false'
+                                        v-model.number="ipoblacion_municipio" 
+                                        :enabled='false'
+                                        value="0">                                            
+                                    </ejs-numerictextbox>                        
+                                </div>  
+                                <div class="col-md-12 help-block"></div>  
+                                <div class="col-md-12 help-block"></div>  
+                                <div class="col-md-12 help-block"></div>  
+                            </div>         
+                         </div>                                                                         
+                        
                     </div>                   
                 </div>
 
@@ -199,10 +209,13 @@
         </tr>
         <div class="row" v-show="false">
             <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-             v-on:click="siguiente" >
+               @click="$router.push('/datoscamino')">
              Siguiente
             </button>
         </div>
+         <a type="button" class="btn btn-default pull-right vertical-buffer"  href="#datosCamino" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
+            siguiente
+          </a>
     </tbody>
 </table>
 </div>
@@ -339,11 +352,8 @@ export default {
               console.log(this.ilocalidades_municipio)
               console.log(response.datos_geograficos[0].ilocalidades_municipio)
               this.setEdoIso()
-              this.recalcularPoblacionTotal()              
-
-              
-              
-        
+              this.recalcularPoblacionTotal()   
+              this.estadosHabilitado = false                   
         },
         //Envia datos Ubicacion
         enviardatos_u(){
@@ -528,7 +538,7 @@ export default {
         console.log(API)        
         this.initData()
         if(this.$route.params.obraId){
-            //this.editmode = true
+            this.estadosHabilitado = false
             this.CargaDatos(this.$route.params.obraId)
             this.editmode = true
         }
