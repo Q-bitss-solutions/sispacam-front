@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import BusquedaCaminos from '../views/BusquedaCaminos.vue'
 import AltaCamino from '../views/AltaCaminosWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
+import convenio from '../components/convenio.vue'
 import Login from '../views/Login.vue'
 import store from "../store/index";
 import GridResultObra from "../views/GridResultBusqueda.vue"
@@ -38,6 +39,12 @@ const routes = [
     path: '/analisis-de-obra',
     name: 'analisisdeobra',
     component: AnalysisWork,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/convenio',
+    name: 'convenio',
+    component: convenio,
     meta: { requiresAuth: true }
   },
   {

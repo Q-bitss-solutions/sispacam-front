@@ -66,9 +66,33 @@ export function getCaminoByClave(claveObra) {
   })
 }
 
+export function getconvenio(id_camino) {
+  return request({
+    url:'/convenio/' + id_camino + '/',
+    method: 'get'
+  })
+}
+
+
+
 export function getObrasByUsuario(idUsuario){
   return request({
     url:'/camino/assig/' + idUsuario + '/',
     method: 'get'
   })
+}
+
+export function generarConvenio(data){
+ console.log("recibe")
+ console.log(data)
+ 
+  const d={"anio":"2019","tramo":"tramo","monto":"1","origen":"1","meta":"1"}
+
+  return request({
+
+      url: '/convenio/' + '1' + '/',
+      method: 'post',
+      data:data,
+      headers: { "Content-Type": "multipart/form-data" } 
+  })  
 }
