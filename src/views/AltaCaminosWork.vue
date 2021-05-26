@@ -42,6 +42,9 @@
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsinarResidente> </AsinarResidente>
         </div>      
+        <div role="tabpanel" class="tab-pane" id="convenio">
+          <convenio> </convenio>
+        </div> 
     </div>
   <div>
     <div v-if="msgError" class="alert alert-danger">{{ msgError }}</div>
@@ -55,12 +58,14 @@ import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 import AsinarResidente from '@/components/AsinarResidente';
+import convenio from '@/components/convenio';
 export default {
   name: 'AltaCamino',
   components: { DatosGeograficos, 
                 DatosCamino, 
                 DatosBeneficiario,
-                AsinarResidente
+                AsinarResidente,
+                convenio
               },
   data () {
     return {
