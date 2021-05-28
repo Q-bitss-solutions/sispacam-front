@@ -59,8 +59,8 @@
     </div>
     <div class="col-md-5">
       <div v-if="isAuthenticated" class="usuario">
-        <p> {{ getUser.cnombre }} {{ getUser.cappaterno }} {{ getUser.capmaterno  }}</p>
-        <p><strong>Rol:</strong> {{ getUser.icveusuario==14592?'Normativo':'Residente' }}
+        <p> {{ getUser  }}</p>
+        <p><strong>Rol:</strong> {{ getRol }}
         <a @click="logout" href="#" class="pull-right">Cerrar sesión</a>
         </p>
       </div>
@@ -104,9 +104,12 @@ export default {
       return  this.$store.getters['user/isAuthenticated']
       },
     getUser: function () {
-      console.log('-->')
-      console.log(this.$store.getters['user/StateUser'])
+      
       return this.$store.getters['user/StateUser']
+    },
+    getRol: function () {
+      
+      return this.$store.getters['user/StateRol']
     },
     getBreadcrumb: function () {
        return this.$store.state.breadcrumb

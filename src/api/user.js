@@ -1,10 +1,8 @@
 import request from '@/utils/request'
 
 export function login(data) {
-  console.log('data')
-  console.log(data)
   return request({
-    url: '/check_user_pass/',
+    url: '/token/',
     method: 'post',
     data
   })
@@ -12,7 +10,7 @@ export function login(data) {
 
 export function refreshToken(data){
   return request ({
-    url: '/refreshToken',
+    url: '/token/refresh',
     method: 'post',
     data
   })

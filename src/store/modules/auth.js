@@ -1,14 +1,15 @@
 import { login, refreshToken } from '@/api/user'
 import router from '@/router'
+import jwtDecode from 'jwt-decode'
 
 export default {
     namespaced: true,
-    state: {        
+    state: {
         user:null,
         userRol:null,
         userId: null,
         token: null,
-        refreshToken: "",        
+        refreshToken: "",
         isAuthenticated: false, 
         loginError: false
     },
@@ -32,35 +33,38 @@ export default {
             state.loginError = loginError
         },
         setUser: function(state, user) {
-            console.log('state')
-            console.log(state)
             state.user = user
         },         
         setUserRol: function(state, userRol) {
             state.userRol = userRol
-        },                           
+        },
+        setuserId: function(state, userId) {
+            state.userId = userId
+        },
     },
     actions: {
         async login({ commit }, userc) {
-            console.log('user store')
-            console.log(user)
 
             try{
-                const  { user }  = await login(userc)
-                console.log(user)
-            if (user) {
-                // commit('setAccessToken', accessToken)
-                // commit('setRefreshToken', refreshToken)
-                commit('setUser', JSON.parse(JSON.stringify(user)))
-                commit('setUserRol', user.icveusuario==14592?'Normativo':'Residente')
+                let response  = await login(userc)
+
+            if (response) {
+                commit('setAccessToken', response.access)
+                commit('setRefreshToken', response.access)
+                let tmus = jwtDecode(response.access)
+                console.log("mike")
+                console.log(tmus)
+                commit('setuserId', tmus.icveusuario)
+                commit('setUser', response.name)
+                commit('setUserRol', response.perfil)
                 commit('setAuthenticated', true)
                 commit('setLoginError', false)
-                if(user.icveusuario==14592){
-                    router.replace("/busqueda")
-                }else{
+                if(response.perfil=="RESIDENTE"){
                     router.replace('/obras')
+                }else{
+                    router.replace("/busqueda")
                 }
-               
+
             }
             }catch(e){
                 console.log('catch erroro login')
@@ -85,6 +89,7 @@ export default {
     },
     getters: {
         isAuthenticated: state => !!state.isAuthenticated,    
-        StateUser: state => JSON.parse(JSON.stringify(state.user)),
+        StateUser: state => state.user,
+        StateRol: state => state.userRol,
     }
 }
