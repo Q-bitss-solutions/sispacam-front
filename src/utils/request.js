@@ -3,8 +3,8 @@ import store from '@/store/'
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const service = axios.create({
-  baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
-  //baseURL: 'http://localhost:8001/api/v1', 
+  //baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
+  baseURL: process.env.VUE_APP_BASE_URL + '/api/v1', 
   timeout: 5000, // request timeou
 })
 
