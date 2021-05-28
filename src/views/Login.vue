@@ -82,12 +82,11 @@ validations: {
       console.log('submit...')
       if (this.$v.$invalid) return
       try {
-        console.log(this.form)
-        this.login(JSON.parse(JSON.stringify(this.form)))
-        .catch((e) => {
-          this.loginError = true
-        })
-
+          console.log(this.form)
+          this.login(JSON.parse(JSON.stringify(this.form)))
+            .catch((e) => {
+                this.loginError = true
+            })
       }catch (e){
         console.log('error')
         console.log(e)

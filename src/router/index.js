@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BusquedaCaminos from '../views/BusquedaCaminos.vue'
+import Presupuestos from '../views/Presupuestos.vue'
 import AltaCamino from '../views/AltaCaminosWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
 import Login from '../views/Login.vue'
@@ -45,7 +46,13 @@ const routes = [
     name: 'Obras',
     component: GridResultObra,
     meta: { requiresAuth: true }
-  }    
+  },
+  {
+    path: '/presupuesto/:obraId',
+    name: 'Presupuesto',
+    component: Presupuestos,
+    meta: { requiresAuth: true }
+  },  
 ]
 
 const router = new VueRouter({

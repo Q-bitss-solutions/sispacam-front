@@ -50,6 +50,8 @@ import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 import AsinarResidente from '@/components/AsinarResidente';
+import { mapMutations } from 'vuex'
+
 export default {
   name: 'AltaCamino',
   components: { DatosGeograficos, 
@@ -60,7 +62,8 @@ export default {
   data () {
     return {
       cEstado: '',
-      msgError: null
+      msgError: null,
+      breadcrumb: ['Camino '+ this.$route.params.obraId],
     }    
   },
   methods: {
@@ -75,13 +78,17 @@ export default {
       this.msgError = e;
       console.log(e)
       //setTimeout(() => this.msgError = false, 10000);
-    }
+    },
+    ...mapMutations(['setBreadcrumb']),    
   },
   created() {
     console.log('caminoid: ' + this.$route.params.obraId)
   },
-  mounted () {  
-},  
+  beforeMount: function () {    
+    if(this.$route.params.obraId){
+      this.setBreadcrumb(this.breadcrumb)
+    }
+  }, 
 }
 </script>
 

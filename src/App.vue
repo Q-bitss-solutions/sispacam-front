@@ -79,7 +79,7 @@
       <!-- CONTENIDO -->
 <div class="row">
   <div class="col-md-12">
-    <h4 v-if="$route.params.obraId">Camino : {{$route.params.obraId}}</h4>
+    <!-- <h4 v-if="$route.params.obraId">Camino : {{$route.params.obraId}}</h4> -->
     <router-view/>
 
     <!-- <button @click="saludar">send peticion</button> -->
@@ -152,10 +152,14 @@ export default {
 @charset "UTF-8";
 /* CSS Document */
 
+@charset "UTF-8";
+/* CSS Document */
+
 h1 {font-size: 32px;margin: 0;}
 h2 {font-size: 28px;margin-top: 10px;}
 h3 {font-size: 24px;margin-top: 40px;}
-h4 {font-size: 24px;margin-bottom: 20px;margin-top: 0;}
+h4 {font-size: 24px;margin-top: 30px;}
+h5 {font-size: 20px;margin-top: 0;margin-bottom: 30px;}
 strong {font-weight: 500;}
 label {font-weight: 500;margin-right: 6px;}
 hr.red {margin: 10px 0 60px;}
@@ -205,6 +209,21 @@ hr.red {margin: 10px 0 60px;}
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {padding: 6px;vertical-align: middle;}
 th.center, td.center {text-align: center;}
 
+.table.data {margin-top: 15px;margin-bottom: 10px !important;}
+.table.data thead tr th, .table.data tfoot tr td {text-align: center;}
+.table.data thead tr th:first-of-type, .table.data tbody tr td:first-of-type, .table.data tfoot tr td:first-of-type {text-align: left !important;width: 45%;}
+.table.data tbody tr td, .table.data tbody tr td input {text-align: center;}
+.table.data tbody tr td input {margin: 0 4% !important;width: 92% !important;height: 32px !important;padding: 5px !important;}
+.table.data tbody tr td .input-group {margin: 0 4% !important;width: 92% !important;}
+.table.data tbody tr td .input-group .input-group-addon {padding: 6px 6px;font-size: 16px;color: inherit;background-color: #fff;}
+.table.data tbody tr td .input-group input {margin: 0 !important;width: 100% !important;height: 32px !important;padding: 5px !important;}
+.table.data tbody tr.concepto td {border-top-width: 3px !important;border-bottom-width: 2px !important;background-color: #f7f7f7;font-weight: 600;}
+.table.data tbody tr.subconcepto td {border-bottom-width: 2px !important;background-color: #fbfbfb;font-weight: 600;padding: 2px 6px;}
+.table.data tfoot tr td {border-top-width: 3px !important;background-color: #f0f0f0;font-weight: 600;}
+.currencyinput {border: 1px inset #ccc;}
+.currencyinput input {border: 0;}
+.table.text-center thead tr th, .table.text-center tbody tr td {text-align: center;}
+
 
 /* AJUSTES GOB.MX */
 body {font-size: 17px;}
@@ -213,10 +232,6 @@ body {font-size: 17px;}
 .breadcrumb li {display: inline-block;}
 .datepicker-group .glyphicon {right: 16px;}
 .clearfix {overflow: auto;}
-
-.e-grid .e-gridpager .e-currentitem {
-    background-color: #9D2449;
-}
 
 
 </style>
