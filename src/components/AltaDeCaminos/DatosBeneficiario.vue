@@ -37,20 +37,28 @@
                             </small>
                         </div> 
                     </div>
-
-                    <br></br>
-                    <br></br>
-                    <tr>
-                        <div class="col-sm-6">
-                            <label class="control-label" for="rfc">RFC del Beneficiario</label>
-                            <input class="form-control" id="rfc" placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" :disabled = "editmode">
+                    
+                    <div class="col-sm-4">
+                            <label class="control-label" for="tiporfc">Personalidad Juridica</label>
                             <div class="row col-md-10">
-                                <small v-if="!$v.rfc_benef.required && $v.rfc_benef.$error" class="form-text form-text-error">
+                            <label class="radio-inline">
+                                <input v-model="fisica_moral" type="radio" id="Moral" name="fisica_moral" value="M"  > Moral
+                            </label>
+                            <label class="radio-inline">
+                                <input v-model="fisica_moral" type="radio" id="Fisica" name="fisica_moral" value="F"  > Fisica
+                            </label>
+                            </div>
+                    </div>
+                        <div class="col-sm-4">
+                            <label class="control-label" for="rfc">RFC del Beneficiario</label>
+                            <input class="form-control" id="rfc" @blur = "valbenef"   placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" :disabled = "editmode" >
+                            <div class="row col-md-10">
+                            <small v-if="!$v.rfc_benef.required && $v.rfc_benef.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
-                                </small>
-                            </div> 
+                            </small>
+                        </div> 
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label class="control-label" for="cuenta">Clabe Interbancaria</label>
                             <input class="form-control" id="cuenta" placeholder="Clabe Interbancaria" type="number" onKeyPress="if(this.value.length==18) return false;" min="0" v-model="clabe" :class="{'form-control-error': $v.clabe.$error}">
                             <div class="row col-md-10">
@@ -59,7 +67,7 @@
                                 </small>
                             </div> 
                         </div>
-                    </tr>
+                    
                     <br>
                     
                         <div class="col-sm-4">
@@ -79,13 +87,13 @@
                     </div>                   
                     
                     <tr>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label class="control-label" for="codpostal">Código postal</label>
                             <input class="form-control" id="codpostal" placeholder="Código postal" type="number" onKeyPress="if(this.value.length==5) return false;" min="0" v-model="cp">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <label class="control-label" for="tipocalle">Tipo de calle</label>
-                            <select class="form-control" id="tipocalle" v-model="tipocalle">
+                            <select class="form-control" id="tipocalle"  v-model="tipocalle">
                                 <option>Calle</option>
                                 <option>Boulevard</option>
                                 <option>Avenida Principal</option>
@@ -171,6 +179,24 @@ export default {
         },
     },
     methods:{ 
+        async valbenef() {
+            // ...
+            console.log("valbenef")
+            console.log(this.fisica_moral)
+            console.log(this.rfc_benef.length)
+            
+            //12
+            if (this.fisica_moral == "M" && this.rfc_benef.length != 12) {
+            alert('El RFC capturado no corresponde a una persona moral')
+            
+             
+            }
+            //13
+            if (this.fisica_moral == "F" && this.rfc_benef.length != 13 ) {
+            alert('El RFC capturado no corresponde a una persona fisica')
+             
+            }
+  },
          async DatosBeneficiarios(){   
              this.$emit("show-error", false); 
              this.$v.$touch()
