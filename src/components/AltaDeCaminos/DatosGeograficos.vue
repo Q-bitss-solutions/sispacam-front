@@ -302,8 +302,8 @@ export default {
         },
         async CargaDatos(clave){
               const response = await getupdate(clave)
-              console.log("Carga-Datos")
-              console.log(response)
+              //console.log("Carga-Datos")
+              //console.log(response)
 
               
               this.$refs.refEstado.ej2Instances.value = response.cve_agee
@@ -322,8 +322,8 @@ export default {
                 this.localidadesData = new DataManager(res);
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
-                console.log("loc-data")
-                console.log(this.localidadesData)
+                //console.log("loc-data")
+                //console.log(this.localidadesData)
                 this.localidades = this.$refs.localidades.ej2Instances.value
                 const localidadesData = this.localidadesData.executeLocal(new Query());
                 this.localidadesTabla = localidadesData
@@ -456,7 +456,7 @@ export default {
                 
 
 
-                console.log(this.DatosGeograficos)
+                //console.log(this.DatosGeograficos)
                  /*2*/
                  this.$emit("set-icveEdo", {
                      datos:this.DatosGeograficos

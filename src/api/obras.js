@@ -15,7 +15,6 @@ export function getObraByClave(clave) {
   })
 }
 
-
 export function getAllObras(){
   return request({
     url: '/camino/list/1/',
@@ -52,6 +51,7 @@ export function cancelarObra(clave) {
   })
 }
 
+
 export function asignarUsuario(claveObra, usuario) {
   return request({
     url: '/camino/asignar/' + claveObra + '/' + usuario + '/',
@@ -74,10 +74,44 @@ export function getObrasByUsuario(idUsuario){
   })
 }
 
-
 export function getResidentes(system, group) {
     return request({
         url: '/system_group_users/' + system + '/' +  group + '/',
         method: 'get'
     })
+  }
+
+export function generarConvenio(data){
+
+  return request({
+
+      url: '/convenio/' + '1' + '/',
+      method: 'post',
+      data:data,
+      headers: { "Content-Type": "multipart/form-data" } 
+  })  
+}
+
+export function cancelarConvenio(clave) {
+  return request({
+    url: '/convenio/estatus/'+ clave + '/',
+    method: 'patch',
+    data:{
+      estatus:"C"
+    }
+  })
+}
+
+export function getconvenio(id_camino) {
+  return request({
+    url:'/convenio/' + id_camino + '/',
+    method: 'get'
+  })
+}
+
+export function getlistaConvenio(clave) {
+  return request({
+    url: '/convenio/' +clave+ '/list/',
+    method: 'get'
+  })
 }

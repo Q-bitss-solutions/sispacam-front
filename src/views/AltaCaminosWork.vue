@@ -22,7 +22,12 @@
           <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Asignar
           </a>
-        </li>           
+        </li>      
+         <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
+          <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
+            convenio
+          </a>
+        </li>         
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="datosGeograficos">
@@ -37,6 +42,9 @@
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsignarResidente> </AsignarResidente>
         </div>      
+        <div role="tabpanel" class="tab-pane" id="convenio">
+          <convenio> </convenio>
+        </div> 
     </div>
   <div>
     <div v-if="msgError" class="alert alert-danger">{{ msgError }}</div>
@@ -51,13 +59,14 @@ import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 import AsignarResidente from '@/components/AsignarResidente';
 import { mapMutations } from 'vuex'
-
+import convenio from '@/components/convenio';
 export default {
   name: 'AltaCamino',
   components: { DatosGeograficos, 
                 DatosCamino, 
                 DatosBeneficiario,
-                AsignarResidente
+                AsignarResidente,
+                convenio
               },
   data () {
     return {

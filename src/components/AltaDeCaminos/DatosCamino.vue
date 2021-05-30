@@ -92,7 +92,7 @@
                             :min="min"
                             :max="max"
                             :showSpinButton='false'>
-                           </ejs-numerictextbox>                        
+                        </ejs-numerictextbox>                        
                         <div class="row col-md-10">
                             <small v-if="!$v.fLongitdTotal.required && $v.fLongitdTotal.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -151,10 +151,10 @@
     <tr>
         <td>
         <div class="form-group col-md-12">
-                <label>Datos de Georeferncia:</label>
+                <label>Datos de Georreferencia:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        placeholder="Ingrese los Datos de Georeferncia" rows="3"  v-model="ubicacionCamino"></textarea>
+                        placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -165,10 +165,10 @@
     <td>
         <div class="form-group">
             <div class="col-md-12"> 
-                <label>Caracteristicas actuales del camino:</label>    
+                <label>Características actuales del camino:</label>    
                 <div> 
                     <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                        placeholder="Ingrese las caracteristicas del camino"  v-model="caracteristicasCamino">
+                        placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
                     </textarea>
                 </div>                                
             </div>
