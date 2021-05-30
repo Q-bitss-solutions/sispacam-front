@@ -217,16 +217,11 @@
 </template>
 
 <script>
-import { presupuesto } from './datos';
 import Vue from 'vue'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
-import { returnStatement } from '@babel/types';
 import { mapMutations, mapGetters } from 'vuex'
 import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
 
-import VTooltip from 'v-tooltip'
-
-Vue.use(VTooltip)
 
 export default {
     name:'PestaniaPresupuesto',
