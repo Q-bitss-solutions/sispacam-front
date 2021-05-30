@@ -58,12 +58,12 @@
             </vue-numeric>              
         </td>        
     </tr>
-    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.cat_partida.id" 
-            :class="partida.cat_partida.subconcepto?'subconcepto':''">
-        <td>{{ partida.cat_partida.descripcion }}</td>
+    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id" 
+            :class="partida.partida.subconcepto?'subconcepto':''">
+        <td>{{ partida.partida.descripcion }}</td>
         <td>
             <vue-numeric v-bind:precision="2" separator="," 
-                v-if="!partida.cat_partida.subconcepto"
+                v-if="!partida.partida.subconcepto"
                 class="form-control cantidad-total" 
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
@@ -71,13 +71,13 @@
                 >
             </vue-numeric>
         </td>
-        <td>{{ partida.cat_partida.unidad_medida.codigo }}</td>
+        <td>{{ partida.partida.unidad_medida }}</td>
         
         <td v-if="isPBase">                      
             <vue-numeric v-bind:precision="2" currency="$" separator="," 
-                v-if="!partida.cat_partida.subconcepto"
+                v-if="!partida.partida.subconcepto"
                 class="form-control" 
-                value="29834.11" 
+                v-model="partida.importe_kilometro"
                 disabled
                 >
             </vue-numeric>            
@@ -85,7 +85,7 @@
         
         <td>
             <vue-numeric v-bind:precision="2" currency="$" separator="," 
-                v-if="!partida.cat_partida.subconcepto"
+                v-if="!partida.partida.subconcepto"
                 class="form-control precio-unitario" 
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
@@ -95,7 +95,7 @@
         </td>  
         <td>
             <vue-numeric v-bind:precision="2" currency="$" separator="," 
-                v-if="!partida.cat_partida.subconcepto"
+                v-if="!partida.partida.subconcepto"
                 class="form-control" 
                 v-model="importeTotal[myIndex]" 
                 disabled
@@ -105,7 +105,7 @@
         <td>
             <vue-numeric v-bind:precision="2" currency="%"
                 class="form-control"
-                v-if="!partida.cat_partida.subconcepto"
+                v-if="!partida.partida.subconcepto"
                 disabled
                 v-model="porcentajePonderado[myIndex]"
                 currency-symbol-position="suffix"                
@@ -179,17 +179,20 @@ export default {
         },
        ...mapMutations('presupuesto', ['setPresupuesto']),
         checa(index){      
-            console.log('checa')
-            console.log(this.$store.state.presupuesto.conceptos)
+        const aConceptos1 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
+        console.table(aConceptos1)            
             this.setPresupuesto( {   
                 presupuesto: this.presupuesto, 
                 codigo: this.codigo 
             })            
-            console.log(this.$store.state.presupuesto.conceptos)
+        const aConceptos2 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
+        aConceptos2.map(a => {
+            console.table(a)
+        })        
         }
     },
     computed:{
-        precioUnitarioTotal () {      
+        precioUnitarioTotal () { 
             const total = this.presupuesto.reduce((total, item) => {
                 if (!item.subconcepto) {
                     return ( total || 0 ) + Number(item.precio_unitario)
@@ -261,21 +264,22 @@ export default {
         this.nombreConcepto = this.conceptos.name
         this.codigo = this.conceptos.codigo
         this.presupuesto = this.presupuesto.sort(function (a, b) {
-            if (a.cat_partida.id > b.cat_partida.id) {
+            if (a.partida.id > b.partida.id) {
                 return 1;
             }
-            if (a.cat_partida.id < b.cat_partida.id) {
+            if (a.partida.id < b.partida.id) {
                 return -1;
             }
             return 0;
-            })   
-        this.presupuesto.map( p => {
-            this.setPresupuesto( {   
-                presupuesto: this.presupuesto, 
-                codigo: this.codigo 
             })  
-        })
-           
+        if(!this.isPBase){
+            this.presupuesto.map( p => {
+                this.setPresupuesto( {   
+                    presupuesto: this.presupuesto, 
+                    codigo: this.codigo 
+                })  
+            })
+        }   
     }
 }
 </script>

@@ -3,19 +3,17 @@ import store from '@/store/'
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const service = axios.create({
-  //baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
-  baseURL: process.env.VUE_APP_BASE_URL + '/api/v1', 
+  baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
+  //baseURL: process.env.VUE_APP_BASE_URL + '/api/v1', 
   timeout: 5000, // request timeou
 })
 
 //refresh
 const refreshAuthLogic = failedRequest => service.post('/token', {
-  token: getRefreshToken()
+    token: getRefreshToken()
 }).then(tokenRefreshResponse => {
-  console.log('tokenRefreshResponse')
-  console.log(tokenRefreshResponse)
-  store.dispatch('user/setAccessToken', tokenRefreshResponse.accessToken)
-  failedRequest.response.config.headers["Authorization"] = 'Bearer ' + tokenRefreshResponse.accessToken
+    store.dispatch('user/setAccessToken', tokenRefreshResponse.accessToken)
+    failedRequest.response.config.headers["Authorization"] = 'Bearer ' + tokenRefreshResponse.accessToken
   return Promise.resolve()
 });
 
@@ -26,7 +24,6 @@ createAuthRefreshInterceptor(service, refreshAuthLogic, statusCodes);
 
 
 function getRefreshToken(){
-  console.log('refreshhhhhhhhh')
   const camino = JSON.parse(localStorage.getItem('camino'))
   if(camino) return camino.user.refreshToken
   return ''
@@ -34,12 +31,13 @@ function getRefreshToken(){
 
 // request interceptor
 function getAccessToken() {
-  console.log('gettttt')
-  console.log(JSON.parse(JSON.stringify(localStorage.getItem('camino'))))
-  const camino = JSON.parse(localStorage.getItem('camino'))
-  console.log(camino)
-  if(camino) return camino.user.token
-  return ''
+    const camino = JSON.parse(localStorage.getItem('camino'))
+    if(camino){
+        console.log('camino.user.token')
+        console.log(camino.user.token)
+        return camino.user.token
+    }         
+    return ''
 }
 
 service.interceptors.request.use(request => {

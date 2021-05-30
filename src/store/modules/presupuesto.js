@@ -34,7 +34,7 @@ export default {
         setVisibleTerracerias (state, isVisible) {
             state.conceptos.terracerias.visible = isVisible
         },
-        setPresupuesto (state, { presupuesto, codigo }) {                  
+        setPresupuesto (state, { presupuesto, codigo }) {              
             state.conceptos.map( ( item ) => {
                 if(item.codigo == codigo){            
                     item.presupuesto = presupuesto

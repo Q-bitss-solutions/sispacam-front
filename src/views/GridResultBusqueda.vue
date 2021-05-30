@@ -53,7 +53,7 @@ export default {
             breadcrumb: ['Resultados de Búsqueda de Obras'],
             pageSettings: { pageCount: 5, pageSize: 20  },
             count: 0,
-            flag: this.$store.state.user.userRol=='Normativo'?true:false,
+            flag: this.$store.getters['user/StateRol']=='NORMATIVO'?true:false,
             isCanceled:false,
             flagEdicion:true
         }    
@@ -74,6 +74,7 @@ export default {
         },
         async populate () {
         console.log('changemun')
+        console.log(this.$store.getters['user/StateRol'])
             try{
                 let results  = []
                 let data = null

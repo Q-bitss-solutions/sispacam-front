@@ -10,6 +10,8 @@ import "@/assets/css/SCT.css"
 
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(Vuelidate);
+Vue.prototype.$residenteGroup = 411,
+Vue.prototype.$systemId = 201,
 Vue.config.productionTip = false
 Vue.use(IdleVue, {
   eventEmitter: new Vue(),

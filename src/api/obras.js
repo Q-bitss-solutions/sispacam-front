@@ -39,7 +39,7 @@ export function getObraByParmas (params) {
 
   console.log(req)
   return request({
-    url: '/camino/list/params/'+req+'/1/',
+    url: '/camino/list/params/'+req+'/410/',
     method: 'get'
   })
 }
@@ -60,10 +60,11 @@ export function asignarUsuario(claveObra, usuario) {
 }
 
 export function getCaminoByClave(claveObra) {
-  return request({
-    url:'/camino/' + claveObra + '/',
-    method: 'get'
-  })
+    console.log('getCaminoByClave --obras')    
+    return request({
+        url:'/camino/' + claveObra + '/',
+        method: 'get'
+    })
 }
 
 export function getObrasByUsuario(idUsuario){
@@ -71,4 +72,12 @@ export function getObrasByUsuario(idUsuario){
     url:'/camino/assig/' + idUsuario + '/',
     method: 'get'
   })
+}
+
+
+export function getResidentes(system, group) {
+    return request({
+        url: '/system_group_users/' + system + '/' +  group + '/',
+        method: 'get'
+    })
 }

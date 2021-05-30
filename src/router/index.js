@@ -51,7 +51,11 @@ const routes = [
     path: '/presupuesto/:obraId',
     name: 'Presupuesto',
     component: Presupuestos,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false },
+    props: { 
+        anchoCamino: Number,
+        anio: Number
+    }
   },  
 ]
 

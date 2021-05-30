@@ -35,7 +35,7 @@
           <DatosBeneficiario> </DatosBeneficiario>
         </div>          
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
-          <AsinarResidente> </AsinarResidente>
+          <AsignarResidente> </AsignarResidente>
         </div>      
     </div>
   <div>
@@ -49,7 +49,7 @@
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
-import AsinarResidente from '@/components/AsinarResidente';
+import AsignarResidente from '@/components/AsignarResidente';
 import { mapMutations } from 'vuex'
 
 export default {
@@ -57,7 +57,7 @@ export default {
   components: { DatosGeograficos, 
                 DatosCamino, 
                 DatosBeneficiario,
-                AsinarResidente
+                AsignarResidente
               },
   data () {
     return {

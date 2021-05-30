@@ -12,18 +12,15 @@
             <td>
                 <div class="form-group">
                     <div class="col-md-6">
-                        <label class="control-label" for="estado">Estado</label>
+                        <label class="control-label" for="estado">Estado {{getEditmode }} {{ editmode }} </label>
                         <ejs-combobox  :class="{'form-control-error': $v.icve_estado_inegi.$error}"
-                        id="estado"
+                            id="estado"
                           :dataSource="estadosData"
                           :fields="estadosFields"
                           placeholder="Selecciona un estado"
                           :change="obtenerMunicipios"
                           :enabled="estadosHabilitado"
-                          v-model="icve_estado_inegi" 
-                          ref="refEstado"
-                          :value="valueEstado"
-                          
+                          ref="refEstado"                          
                         >
                         </ejs-combobox>    
                         <div class="row col-md-10">
@@ -36,14 +33,13 @@
                         <label class="control-label" for="municipio">Municipio</label>
                         <ejs-combobox :class="{'form-control-error': $v.icve_municipio.$error}"
                             id="municipio"
-                          :dataSource="municipiosData"
-                          :fields="municipiosFields"
-                          placeholder="Selecciona un municipio"
-                          :close="obtenerLocalidades"
-                          :enabled="municipiosHabilitado"
-                          v-model="icve_municipio"
-                          :disabled = "editmode"
-                          ref="refMunicipio"
+                            :dataSource="municipiosData"
+                            :fields="municipiosFields"
+                            placeholder="Selecciona un municipio"
+                            :close="obtenerLocalidades"
+                            :enabled="municipiosHabilitado"
+                            v-model="icve_municipio"
+                            ref="refMunicipio"
                         >
                         </ejs-combobox>                   
                             <div class="row col-md-10">
@@ -67,10 +63,7 @@
                         id="localidades"
                         ref="localidades"
                         :close="updateLocalidades"
-                        :removed="updateLocalidades"
-                        :disabled = "editmode"
-                       
-                        
+                        :removed="updateLocalidades"                                               
                         >
                         </ejs-multiselect>
                     </div>                    
@@ -174,7 +167,6 @@
                                 
                                 <tbody>
                                         <tr v-for="i in localidadesTabla" :key="i.id">
-
                                             <td class="col-md-6">{{ i.nom_loc }}</td>
                                             <td class="col-md-6">{{ formatNum(i.pob) }}</td>
                                         </tr>                                                     
@@ -326,7 +318,7 @@ export default {
                     return x + y.pob;
                     },0)
                 this.icve_estado_inegi = response.cve_agee
-                this.localidadesHabilitado = true;            
+                this.localidadesHabilitado = false;            
                 this.localidadesData = new DataManager(res);
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
@@ -337,22 +329,19 @@ export default {
                 this.localidadesTabla = localidadesData
                 .filter(a => this.localidades.includes(a.cve_loc));
 
-              this.region = response.datos_geograficos[0].region
-              this.ubicacion = response.datos_geograficos[0].ubicacion
-              this.poblacion_indigena = response.datos_geograficos[0].poblacion_indigena
-              this.marginacion = response.datos_geograficos[0].marginacion
-              this.totpoblacion = response.datos_geograficos[0].totpoblacion
+              this.region = response.datos_geograficos.region
+              this.ubicacion = response.datos_geograficos.ubicacion
+              this.poblacion_indigena = response.datos_geograficos.poblacion_indigena
+              this.marginacion = response.datos_geograficos.marginacion
+              this.totpoblacion = response.datos_geograficos.totpoblacion
               //this.icve_estado_inegi = Number.parseInt(response.datos_geograficos[0].icve_estado_inegi) 
               //this.icve_municipio = response.datos_geograficos[0].icve_municipio
               //this.ip_poblacion_total_localidades = response.datos_geograficos[0].ip_poblacion_total_localidades
-              this.ipoblacion_municipio = response.datos_geograficos[0].ipoblacion_municipio
+              this.ipoblacion_municipio = response.datos_geograficos.ipoblacion_municipio
               //this.ilocalidades_municipio = response.datos_geograficos[0].ilocalidades_municipio
-              
-              console.log("datos-envio")
-              console.log(this.ilocalidades_municipio)
-              console.log(response.datos_geograficos[0].ilocalidades_municipio)
               this.setEdoIso()
               this.recalcularPoblacionTotal()   
+              console.log('estadosHabilitado false')
               this.estadosHabilitado = false                   
         },
         //Envia datos Ubicacion
@@ -389,6 +378,7 @@ export default {
                 const res = await getEdos()
                 const results = res.results;
                 this.estadosData = new DataManager(results);
+                console.log('estadosHabilitado true')
                 this.estadosHabilitado = true;
                 this.icve_estado_inegi = null;   
                 
@@ -533,20 +523,23 @@ export default {
             })
     },
 
-    created() {
+    async created() {
         console.log('API2')
         console.log(API)        
-        this.initData()
+        await this.initData()
         if(this.$route.params.obraId){
+            console.log(' estadosHabilitado false')
             this.estadosHabilitado = false
             this.CargaDatos(this.$route.params.obraId)
             this.editmode = true
         }
-        console.log('caminoid: ' + this.$route.params.obraId)
-        
-        
+        console.log('caminoid: ' + this.$route.params.obraId)                
     },
-
+    computed:{
+        getEditmode(){
+            return this.estadosHabilitado
+        }
+    }
 }
 </script> 
 

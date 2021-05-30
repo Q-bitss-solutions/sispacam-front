@@ -16,12 +16,12 @@
                 </div>         
         </div>  
         <ejs-grid   ref="grid"
-                    :dataSource="data" :gridLines='lines' 
+                    :dataSource="data" 
+                    :gridLines='lines' 
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
-                    :rowSelected='rowSelected'
-                    :allowFiltering='true'
+                    :rowSelected='rowSelected'                    
                     >
             <e-columns>
                 <e-column field='id' headerText='id' :visible='flag'></e-column>
@@ -36,16 +36,16 @@
 <script>
 import Vue from "vue";
 import { GridPlugin, Sort, Page, Filter } from '@syncfusion/ej2-vue-grids';
-import { asignarUsuario, getCaminoByClave } from '@/api/obras'
+import { asignarUsuario, getCaminoByClave, getResidentes } from '@/api/obras'
 
 
 Vue.use(GridPlugin);
 export default {
-    name:'AsinarResidente',
+    name:'AsignarResidente',
     data () {
         return {     
             lines: 'Both',
-            data:data,
+            data:[],
             breadcrumb: [''],
             pageSettings: { pageCount: 5, pageSize: 20  },
             count: null,
@@ -71,32 +71,47 @@ export default {
             this.id = selectedrecords[0].id
             },        
         async asignar(){
-            const response = await asignarUsuario(this.$route.params.obraId, this.id)
+            const response = await asignarUsuario(this.$route.params.obraId, 10)
             alert(response.msg)
             console.log(response)
+        },
+        async getUserAsign() {
+            console.log("getUserAsign")
+            const { user } = await getCaminoByClave(this.$route.params.obraId)                        
+            console.log('resp')
+            console.log(user)
+            if(user){
+                console.log('resp---------------------------->')
+                console.log(user)
+                // this.usuario = data[0].nombre +  ' ' + data[0].primerA + ' ' + data[0].segundoA
+                // this.id = data[0].id
+            }
+        },
+        async fetchUsers() {
+            console.log('fetchresidentes')
+            console.log(this.$systemId, this.$residenteGroup)
+            const { users } = await getResidentes(this.$systemId, this.$residenteGroup) 
+            if(users) {
+                users.map( (u) => {
+                    this.data.push({
+                        id:u.icveusuario,
+                        nombre:u.cnombre,
+                        primerA:u.cappaterno,
+                        segundoA:u.capmaterno                  
+                    })
+                })
+                console.log('residentes')
+                console.log(users)
+            }
         }
     },
-    async created() {
-        const resp = await getCaminoByClave(this.$route.params.obraId)
-        console.log('resp')
-        console.log(resp)
-        if(resp.usuarios){
-            this.usuario = data[0].nombre +  ' ' + data[0].primerA + ' ' + data[0].segundoA
-            this.id = data[0].id
-        }
+    created() {
+        console.log('--------------------asignar-----------------')
+        this.getUserAsign()
+        this.fetchUsers()
     }
 
 }
-
-const data =
-[
-    {
-    id:2,
-    nombre:'Victor',
-    primerA:'DEL',
-    segundoA:'RUIZ'
-    }          
-]
 
 </script>
 

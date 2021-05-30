@@ -33,7 +33,7 @@ export function generarId(data){
     return request({
         url: '/camino/',
         method: 'post',
-        data  
+        data:data
     })  
 }
 

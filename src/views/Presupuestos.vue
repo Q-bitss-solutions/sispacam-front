@@ -64,34 +64,29 @@
         <div class="col-md-12">
           <!-- PESTAÑAS -->
           <ul class="nav nav-tabs small-top-buffer">
-            <li class="active">
-                <a data-toggle="tab" href="#tab-real" id="tab-real">
-                    PRESUPUESTO REAL
-                </a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-base" id="tab-base">
-                    PRESUPUESTO BASE
-                </a>
-            </li>
+            <li class="active"><a data-toggle="tab" href="#tab-real">PRESUPUESTO REAL</a></li>
+            <li><a data-toggle="tab" href="#tab-base">PRESUPUESTO BASE</a></li>
           </ul>
           <div class="tab-content">
             <!-- PESTAÑA PRESUPUESTO REAL -->
-            <div class="tab-pane active">
+            <div class="tab-pane active" id="tab-real">
                 <PestaniaPresupuesto 
                     :filtroConceptos="getFilterValue"
                     :upTotalIPL.sync="upTotalIPL"
+                    :editMode.sync="editMode"
                     :isPBase="false"
                     :key="'cancel'+conutCancel"
+                    :ancho="anchoCamino"
                 />
             </div>
 
             <!-- PESTAÑA PRESUPUESTO BASE -->
-            <div class="tab-pane">
+            <div class="tab-pane" id="tab-base">
                 <PestaniaPresupuesto 
                   :filtroConceptos="getFilterValue"
                   :upTotalIPL.sync="upTotalIPLBase"
                   :isPBase="true"
+                  :ancho="anchoCamino"
                   />
             </div>
           </div>
@@ -105,17 +100,46 @@
           <button @click="save" class="btn btn-primary" type="button">Guardar cambios</button>
         </div>
       </div>
+
+      <!-- MODAL -->
+       <div class="modal fade" id="save" tabindex="-1" role="dialog" aria-labelledby="addConcept"
+           aria-hidden="true">
+           <div class="modal-dialog">
+               <div class="modal-content">
+                   <div class="modal-header">
+                       <h4 class="modal-title">Aviso del Sistema</h4>
+                   </div>
+                   <div class="modal-body">
+                       <p>Se guardaron correctamente los datos del presupuesto</p>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                   </div>
+               </div><!-- /.modal-content -->
+           </div><!-- /.modal-dialog -->
+       </div><!-- /.modal -->    
 </div>    
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import PestaniaPresupuesto from '@/components/presupuestos/PestaniaPresupuesto';
+import { savePresupuesto, updatePresupuesto } from '@/api/presupuesto'
 
 export default {
     name:'Presupuestos',
     components:{
         PestaniaPresupuesto
+    },
+    props: {
+        anio: {
+            default: new Number(2021), 
+            require:false           
+        },
+        anchoCamino: {
+            require:false,
+            default: () => 1
+        }
     },
     data () {
         return {
@@ -124,6 +148,7 @@ export default {
           terraceriasShow:true,
           contador:0,
           upTotalIPL:0,
+          editMode:false,
           upTotalIPLBase:0
         }
     },
@@ -134,10 +159,43 @@ export default {
             this.contador++
             return
        },
-       save() {
-           this.$store.state.presupuesto.conceptos.map( item => 
-            console.log(item.presupuesto) )
+       async save() {
+           const data = []
+           const conceptos = []
+           const aConceptos = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
+           console.log('aConceptos')
+           console.log(aConceptos)
+           aConceptos.map(a => {
+                console.table(a)
+            })            
+           aConceptos.map( concepto => {
+               console.log('conceptomap')   
+               if(concepto.presupuesto){
+                    concepto.presupuesto.map(i => {
+                        conceptos.push(i)
+                    })
+               }      
+           })
+           conceptos.map( item => {
+                   data.push(  {
+                   ancho_camino: item.ancho_camino.id,
+                   partida: item.partida.id,
+                   precio_unitario: item.precio_unitario,
+                   cantidad: item.cantidad.toString(),
+                   importe: item.importe,
+                   id_datoconvenio:20
+                    })                           
+            })
+        let response = ''
+        if(this.getEditMode){
+           response = await updatePresupuesto(20, data)
+        }else{
+           response = await savePresupuesto(data)
+        }
+        console.log(response)
+        $('#save').modal('show')
        }
+
     },
     beforeMount: function () {    
         this.setBreadcrumb(this.breadcrumb)        
@@ -168,12 +226,18 @@ export default {
        },
        getVariacion:  {
            get() {
-               console.log('---------------------jajaj')
-               console.log(this.getUpTotalIPL - this.upTotalIPLBase)
                return this.getUpTotalIPL - this.upTotalIPLBase
            },
            set(val){}
-       }
+       },
+       getEditMode: {
+           get() {
+               return this.editMode
+           },
+           set(val) {
+
+           }           
+       }       
        
     },
 

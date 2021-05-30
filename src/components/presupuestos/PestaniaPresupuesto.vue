@@ -11,12 +11,12 @@
             <th v-if="isPBase">IMPORTE POR KILOMETRO</th>
             <th>PRECIO UNITARIO</th>
             <th>IMPORTE TOTAL POR LONGITUD</th>
-            <th>PORCENTAJE PONDERADO</th>
+            <th>PORCENTAJE PONDERADO </th>
             </tr>
         </thead>
             <!-- TERRACERIAS-->
             <TablePresupuesto
-                 v-if="isVisible.find( el => el.id === 1).mostrar"
+                 v-if="isVisible.find( el => el.id === 1).mostrar && isLoaded"
                  :conceptos="getPresupuestoByID(1)"
                  :key="'terra'+getPresupuestoByID(1).update"    
                  :childTotalPU.sync="getPresupuestoByID(1).subtotalPU"           
@@ -28,7 +28,7 @@
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
-                 v-if="isVisible.find( el => el.id === 2).mostrar"
+                 v-if="isVisible.find( el => el.id === 2).mostrar &&  isLoaded"
                  :conceptos="getPresupuestoByID(2)"
                  :key="'obras'+getPresupuestoByID(2).update"
                  :childTotalPU.sync="getPresupuestoByID(2).subtotalPU" 
@@ -40,7 +40,7 @@
                 />     
             <!-- SUPERFICIE DE RODAMIENTO --> 
             <TablePresupuesto
-                 v-if="isVisible.find( el => el.id === 3).mostrar"
+                 v-if="isVisible.find( el => el.id === 3).mostrar && isLoaded"
                  :conceptos="getPresupuestoByID(3)"
                  :key="'superficie'+getPresupuestoByID(3).update" 
                  :childTotalPU.sync="getPresupuestoByID(3).subtotalPU"  
@@ -52,7 +52,7 @@
                 />      
             <!-- SENALAMIENTO --> 
             <TablePresupuesto
-                 v-if="isVisible.find( el => el.id === 4).mostrar"
+                 v-if="isVisible.find( el => el.id === 4).mostrar && isLoaded"
                  :conceptos="getPresupuestoByID(4)"
                  :key="'senalamiento'+getPresupuestoByID(4).update"  
                  :childTotalPU.sync="getPresupuestoByID(4).subtotalPU"   
@@ -160,7 +160,7 @@
         <tfoot>
             <tr>
             <td colspan="3">TOTAL</td>
-            <td v-if="isPBase">
+            <td v-if="isPBase && isLoaded">
                 <vue-numeric 
                     v-bind:precision="2" 
                     separator="," 
@@ -171,7 +171,7 @@
                     >
                 </vue-numeric>               
             </td>
-            <td v-if="!isPBase">
+            <td v-if="!isPBase && isLoaded">
                 <input v-show="false" v-model="getTotalPU" disabled>
                 <vue-numeric 
                     v-bind:precision="2" 
@@ -183,8 +183,8 @@
                     >
                 </vue-numeric>                 
             </td>
-            <td v-if="isPBase"></td>
-            <td>
+            <td v-if="isPBase && isLoaded"></td>
+            <td v-if="isLoaded">
                 <input v-show="false" v-model="getTotalIPL" disabled>
                 <vue-numeric 
                     v-bind:precision="2" 
@@ -196,7 +196,7 @@
                     >
                 </vue-numeric>                  
             </td>
-            <td>
+            <td v-if="isLoaded">
                 <input v-show="false" v-model="getTotalPP" disabled>
                 <vue-numeric 
                     v-bind:precision="2" 
@@ -220,9 +220,10 @@
 import { presupuesto } from './datos';
 import Vue from 'vue'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
-import { mapGetters } from 'vuex'
 import { returnStatement } from '@babel/types';
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
+import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
+
 import VTooltip from 'v-tooltip'
 
 Vue.use(VTooltip)
@@ -242,11 +243,21 @@ export default {
         },
         upTotalIPL: {
             type:Number
-        }        
+        },
+        ancho: {
+            default:1
+        },
+        editMode: {
+            type: Boolean
+        }    
     },    
     data () {
         return {
-            datos: presupuesto,
+            isLoad:false,
+            datos:null,
+            presupuestoReal:null,
+            presupuestoBase:null,
+            fetch_presupuestoReal:null,
             totalPU:0,
             totalIPL:0,
             totalPP:0,
@@ -329,21 +340,48 @@ export default {
     methods:{
        ...mapGetters('presupuesto', ['getPresupuestoByName']),
        ...mapMutations('presupuesto', ['setPresupuesto']),
-       loadData() {
-            console.log('loaddata')
-            this.presupuestos.map((_presupuesto, _index) => {
-                const data = this.datos.filter(d => d.cat_partida.concepto.codigo === _presupuesto.codigo)
+       loadData() {           
+            this.datos.map( i => {
+                let unidad = unidad_medida.find( u => i.partida.id == u.id )
+                unidad = JSON.parse(JSON.stringify(unidad))
+                i.partida.unidad_medida = unidad.unidad
+
+                })     
+            this.presupuestos.map((_presupuesto, _index) => {         
+                const data = this.datos.filter(d => d.partida.concepto.codigo === _presupuesto.codigo)
                     .map(terra => ({
                         ...terra,
                         precio_unitario: terra.importe / terra.cantidad,
                         importe_total: (terra.importe / terra.cantidad) * terra.cantidad
                     }))
+                console.log(data)
                 _presupuesto.presupuestoBack = data
                 _presupuesto.presupuestoStart = data
             })
+            this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
+            this.presupuestoBase = this.presupuestos.slice()
+
+            if(this.fetch_presupuestoReal){
+                this.fetch_presupuestoReal.map(f => {
+                    this.presupuestoReal.map(pr => {
+                        pr.presupuestoStart.map( ps => {
+                            if(f.partida == ps.partida.id){
+                                ps.precio_unitario = f.precio_unitario
+                                ps.cantidad = f.cantidad
+                            }
+                        })
+                    })
+                })                
+            }
+            this.isLoad = true
         }, 
+
         getPresupuestoByID(id) {                    
-            return this.presupuestos.find( i => i.id === id)
+            if(this.isPBase){
+                return this.presupuestoBase.find( i => i.id === id)
+            }else{
+                return this.presupuestoReal.find( i => i.id === id)
+            }              
         },
         addExtraordinario() {
             this.extraordinarios.push( { concepto:'', cantidad_total:0.0001, 
@@ -352,7 +390,6 @@ export default {
         },
         deleteRow(index, partida ) {
             var idx = this.extraordinarios.indexOf(partida);
-            console.log(idx, index);
             if (idx > -1) {
                 this.extraordinarios.splice(idx, 1);
             }            
@@ -362,7 +399,21 @@ export default {
                 presupuesto: this.extraordinarios, 
                 codigo: 'F' 
             })            
-        }        
+        },
+        async fetchPresupuestoBase() {
+            const response = await getPresupuestoBaseByAncho(1)
+            this.datos = response
+            this.loadData()
+        },
+        async fetchPresupuestoReal() {
+            const presupuesto_real = await getPresupuestoRealByIdConvenio(20)
+            if(presupuesto_real.length > 0){
+                console.log('presupuesto_real')
+                console.log(presupuesto_real.length > 0)
+                this.$emit('update:editMode', true)
+            }
+            this.fetch_presupuestoReal = presupuesto_real
+        }         
     },
     computed:{
         isVisible(){
@@ -402,34 +453,27 @@ export default {
                 this.getPresupuestoByID(3).subTotalPP +
                 this.getPresupuestoByID(4).subTotalPP +
                 this.extraordinarios.reduce( ( total, x ) => {
-                    console.log()
                       return  (total || 0) + (x.importe_total || 0) 
                 },0 )
 
             return this.totalPP            
         },
         colImporteTotalExt() {
-            console.log('colImporteTotalExt')
             const it = this.extraordinarios.map( ( item ) => {
                 item.importe_total = item.cantidad_total * item.precio_unitario
                 return item.cantidad_total * item.precio_unitario
             })
-            console.log(this.extraordinarios)
             return it
             
         },
         colPPExt() {
-            console.log('colPPExt')
             return this.extraordinarios.map( (item) => {
-                console.log(item)
-                console.log(this.getTotalIPL)
                 return (item.importe_total  / this.getTotalIPL) * 100
             })             
         },
         getSubtotalIPExt: {
             get() {
                 return this.extraordinarios.reduce ( (total , item) => {
-                    console.log(item.importe_total)
                     return (total || 0 ) + ( 0 || item.importe_total )
                 }, 0.000001)
             },
@@ -451,13 +495,95 @@ export default {
             const r = this.presupuestos.reduce( (total, current ) => 
                 total + current.subTotalIPK, 0 )
             return r
+        },
+        isLoaded() {
+           return this.isLoad
         }
+    },
+    created(){                
     },
     beforeMount(){
         console.log('mounted')
-        this.loadData()
+        this.fetchPresupuestoReal()
+        this.fetchPresupuestoBase()        
     } 
 }
+
+const unidad_medida = [
+{
+    id:1,
+    unidad:'HA'
+},
+{
+    id:2,
+    unidad:'M3'
+},
+{
+    id:3,
+    unidad:'M3'
+},
+{
+    id:4,
+    unidad:'M3'
+},
+{
+    id:6,
+    unidad:'M3'
+},
+{
+    id:8,
+    unidad:'M3'
+},
+{
+    id:9,
+    unidad:'M3'
+},
+{
+    id:10,
+    unidad:'M3'
+},
+{
+    id:11,
+    unidad:'ML'
+},
+{
+    id:13,
+    unidad:'ML'
+},
+{
+    id:14,
+    unidad:'M3'
+},
+{
+    id:15,
+    unidad:'M3'
+},
+{
+    id:16,
+    unidad:'M3'
+},
+{
+    id:17,
+    unidad:'M3'
+},
+{
+    id:18,
+    unidad:'M3'
+},
+{
+    id:19,
+    unidad:'PZA'
+},
+{
+    id:20,
+    unidad:'PZA'
+},
+{
+    id:21,
+    unidad:'ML'
+}
+
+]
 </script>
 
 <style scoped>

@@ -155,13 +155,10 @@ export default {
 @charset "UTF-8";
 /* CSS Document */
 
-@charset "UTF-8";
-/* CSS Document */
-
 h1 {font-size: 32px;margin: 0;}
 h2 {font-size: 28px;margin-top: 10px;}
 h3 {font-size: 24px;margin-top: 40px;}
-h4 {font-size: 24px;margin-top: 30px;}
+h4 {font-size: 24px;margin-bottom: 20px;margin-top: 0;}
 h5 {font-size: 20px;margin-top: 0;margin-bottom: 30px;}
 strong {font-weight: 500;}
 label {font-weight: 500;margin-right: 6px;}
@@ -236,5 +233,8 @@ body {font-size: 17px;}
 .datepicker-group .glyphicon {right: 16px;}
 .clearfix {overflow: auto;}
 
+.e-grid .e-gridpager .e-currentitem {
+    background-color: #9D2449;
+}
 
 </style>
