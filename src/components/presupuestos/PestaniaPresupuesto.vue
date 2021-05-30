@@ -217,7 +217,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
 import { mapMutations, mapGetters } from 'vuex'
 import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'

@@ -157,7 +157,7 @@ export default {
             cp:'',
             tipocalle:'',
             editmode: false,
-
+            fisica_moral:''
                 }
     },
         validations: {

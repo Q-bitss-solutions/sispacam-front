@@ -12,7 +12,7 @@
             <td>
                 <div class="form-group">
                     <div class="col-md-6">
-                        <label class="control-label" for="estado">Estado {{getEditmode }} {{ editmode }} </label>
+                        <label class="control-label" for="estado">Estado</label>
                         <ejs-combobox  :class="{'form-control-error': $v.icve_estado_inegi.$error}"
                             id="estado"
                           :dataSource="estadosData"
@@ -20,7 +20,11 @@
                           placeholder="Selecciona un estado"
                           :change="obtenerMunicipios"
                           :enabled="estadosHabilitado"
-                          ref="refEstado"                          
+                          v-model="icve_estado_inegi"
+                          :disabled = "editmode"
+                          ref="refEstado"
+                          :value="valueEstado"
+                          
                         >
                         </ejs-combobox>    
                         <div class="row col-md-10">
@@ -229,9 +233,14 @@ Vue.use(MultiSelectPlugin);
 const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
 
 export default {
-    name: 'DatosGeograficos',       
+    name: 'DatosGeograficos',   
+    props:{
+        camino_id:{
+            type:Number
+        }
+    }, 
     data: function() {
-        return {      
+        return {     
             valueEstado: 0,
             ip_poblacion_total_localidades: 0,
             ipoblacion_municipio: 0,
@@ -302,9 +311,9 @@ export default {
         },
         async CargaDatos(clave){
               const response = await getupdate(clave)
-              //console.log("Carga-Datos")
-              //console.log(response)
-
+              console.log("Carga-Datos")
+              console.log(response)
+              this.$emit('update:camino_id', response.id)
               
               this.$refs.refEstado.ej2Instances.value = response.cve_agee
               const {results} = await getMunicipios(response.cve_agee)
@@ -494,7 +503,7 @@ export default {
                                 .filter(a => a.cve_agee == this.icve_estado_inegi)                        
             console.log('edoSelect')
             console.table(edoSelect)
-            this.DatosGeograficos.iso = edoSelect[0].iso,
+            this.DatosGeograficos.iso = edoSelect.iso
             this.DatosGeograficos.cve_agee = this.icve_estado_inegi
  /*           this.$emit("set-icveEdo", {
                 edo:{

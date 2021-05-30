@@ -81,11 +81,11 @@ export function getResidentes(system, group) {
     })
   }
 
-export function generarConvenio(data){
+export function generarConvenio(data, id_camino){
 
   return request({
 
-      url: '/convenio/' + '1' + '/',
+      url:  `/convenio/${id_camino}/ `,
       method: 'post',
       data:data,
       headers: { "Content-Type": "multipart/form-data" } 

@@ -31,7 +31,8 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="datosGeograficos">
-          <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" />
+          <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" 
+            :camino_id.sync="camino_id"/>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosCamino">
           <DatosCamino :edo='cEstado' @show-error="showError"> </DatosCamino>
@@ -42,8 +43,8 @@
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsignarResidente> </AsignarResidente>
         </div>      
-        <div role="tabpanel" class="tab-pane" id="convenio">
-          <convenio> </convenio>
+        <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">
+          <convenio :camino_id="getCaminoId"> </convenio>
         </div> 
     </div>
   <div>
@@ -70,9 +71,10 @@ export default {
               },
   data () {
     return {
-      cEstado: '',
-      msgError: null,
-      breadcrumb: ['Camino '+ this.$route.params.obraId],
+        camino_id:0,
+        cEstado: '',
+        msgError: null,
+        breadcrumb: ['Camino '+ this.$route.params.obraId],
     }    
   },
   methods: {
@@ -89,6 +91,11 @@ export default {
       //setTimeout(() => this.msgError = false, 10000);
     },
     ...mapMutations(['setBreadcrumb']),    
+  },
+  computed: {
+      getCaminoId(){
+          return this.camino_id
+      }
   },
   created() {
     console.log('caminoid: ' + this.$route.params.obraId)

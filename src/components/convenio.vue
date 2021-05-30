@@ -225,17 +225,15 @@ Vue.use(GridPlugin);
 export default {
     name: 'DatosConvenio',
     props: {
-        edo:{
-            abreviaturaEdo:'',
-            iso:''
-        },
+        camino_id:{
+            type:Number
+        }
     },
     
 
 
     data(){
         return {
-            camino_id:'',
             anio:'',
             tramo: '',
             monto: '',
@@ -340,17 +338,11 @@ export default {
                   formData.append("archivo", this.archivo);
                 }
                 //formData.append("archivo", this.archivo);
-                //formData.append("camino_id",this.$route.params.obraId);
 
-                const resp = await generarConvenio(formData) 
-                const list = await getlistaConvenio(this.$route.params.obraId)
-
-                console.log(list)
-
+                const resp = await generarConvenio(formData, this.camino_id) 
+                this.lista = await getlistaConvenio(this.camino_id)
                  $('#addConvenio').modal('show')
                  this.btnSaveDisabled  = false
-
-
                 }
                 
                 catch(err){    
@@ -388,9 +380,7 @@ export default {
              console.log(this.flag)
              if(this.flag){
                 if("1"){
-                  this.lista = list
- 
-                        
+                  this.lista = list                        
                 }
              }
              }catch(e) {
@@ -409,7 +399,7 @@ export default {
                 
             },
         async listaconvenio(){
-           this.lista = await getlistaConvenio(this.$route.params.obraId)
+           this.lista = await getlistaConvenio(this.camino_id)
             console.log("listaconvenio")
            console.log(this.lista)
         } ,
