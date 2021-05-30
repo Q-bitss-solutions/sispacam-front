@@ -40,7 +40,7 @@
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario> </DatosBeneficiario>
         </div>          
-        <div role="tabpanel" class="tab-pane" id="asignarresidente">
+        <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsignarResidente> </AsignarResidente>
         </div>      
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">

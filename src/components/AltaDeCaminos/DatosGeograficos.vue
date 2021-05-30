@@ -503,7 +503,7 @@ export default {
                                 .filter(a => a.cve_agee == this.icve_estado_inegi)                        
             console.log('edoSelect')
             console.table(edoSelect)
-            this.DatosGeograficos.iso = edoSelect.iso
+            this.DatosGeograficos.iso = edoSelect[0].iso
             this.DatosGeograficos.cve_agee = this.icve_estado_inegi
  /*           this.$emit("set-icveEdo", {
                 edo:{
