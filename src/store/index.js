@@ -12,7 +12,10 @@ export default new Vuex.Store({
       breadcrumb: [],
       cancel: {
           id:null
-      }
+      },
+      cancelConvenio: {
+        id:null
+    }
     },
     mutations: {
         setBreadcrumb(state, dataBreadcrumb ) {
@@ -22,7 +25,13 @@ export default new Vuex.Store({
             console.log('mutation')
             console.log(idObraCancelacion)
             state.cancel.id = idObraCancelacion
+        },
+        setIdCancelacionConvenio(state, idConvenio) {
+            console.log('mutation')
+            console.log(idConvenio)
+            state.cancelConvenio.id = idConvenio
         }
+
     },
     getters: {
     
