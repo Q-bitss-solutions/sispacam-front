@@ -447,7 +447,9 @@ export default {
                 .filter(a => this.localidades.includes(a.cve_loc))
                 .map(a => a.pob)
                 .reduce((a, b) => (a + b), 0);
-                 
+                 if(!isNaN(this.ilocalidades_municipio)){
+                     this.localidades = [this.localidades]
+                 }
                  this.DatosGeograficos.localidades = this.localidades
                  this.DatosGeograficos.icveestados = this.icveestados
                  this.DatosGeograficos.region      = this.region
@@ -463,7 +465,8 @@ export default {
                 
 
 
-                //console.log(this.DatosGeograficos)
+                console.log('this.DatosGeograficos')
+                console.log(this.DatosGeograficos.ilocalidades_municipio)
                  /*2*/
                  this.$emit("set-icveEdo", {
                      datos:this.DatosGeograficos

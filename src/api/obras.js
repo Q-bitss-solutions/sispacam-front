@@ -44,10 +44,12 @@ export function getObraByParmas (params) {
 }
 
 
-export function cancelarObra(clave) {
+export function cancelarObra(clave, data) {
   return request({
     url: '/camino/status/'+ clave + '/',
-    method: 'put'
+    method: 'put',
+    data:data,
+    headers: { "Content-Type": "multipart/form-data" } 
   })
 }
 

@@ -59,8 +59,8 @@ export function test(data){
 
 export function CaminoPut(data, clave){
     return request({
-       url: '/camino/' + clave + '/update/',
-       method: 'put',
+       url: '/caminos/' + clave + '/update/',
+       method: 'patch',
        data: data
 
     })

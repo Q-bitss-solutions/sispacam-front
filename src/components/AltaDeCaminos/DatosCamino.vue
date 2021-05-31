@@ -46,8 +46,8 @@
                         <input v-model="otroTipoCamino" v-if="tipo_camino == 'O'" placeholder="Especificar otro" />              
                     </label> 
                     <div class="row col-md-10">
-                    <small v-if="tipo_camino == 'A' && (this.edo.localidades.length -1 < 1 || this.edo.localidades.length -1 > 1)" class="form-text form-text-error">
-                     Para esta opcion debe seleccionar una Localidad
+                    <small v-if="tipo_camino == 'A' && this.edo.localidades  && (this.edo.localidades.length < 1 || this.edo.localidades.length  > 1)" class="form-text form-text-error">
+                     Para esta opcion debe seleccionar una Localidad 
                     </small>  
                     </div>                                   
                 </div>                    
@@ -324,7 +324,7 @@ export default {
             totpoblacion: '',
             icve_estado_inegi: '',
             icve_municipio: '',
-            ip_poblacion_total_localidadess: '',
+            ip_poblacion_total_localidades: '',
             ipoblacion_municipio: '',
             ilocalidades_municipioo: '',
             marginacion: '',
@@ -406,7 +406,10 @@ export default {
 
           async CargaDatos(clave){
               const response = await getupdate(clave)
+              console.log('response------------__>')
               console.log(response)
+              console.log('this.edo.localidades')
+              console.log(this.edo.localidades)
               this.ciit = response.ciit
               this.tren_maya = response.tren_maya
               this.caminosOriginales = response.caminos_originales
@@ -433,26 +436,12 @@ export default {
               if (response.ancho_camino == 3) this.ancho_camino = 3
               if (response.ancho_camino == 4) this.ancho_camino = 4
               if (response.ancho_camino == 5) this.ancho_camino = 5
-
             
-             
-              //anchoCaminoData.push([{
-              //    id: "1", name: "otr"
-              //}
-              //])
-
               if(this.ancho_camino == 1)  this.Presup = "$ 2,700,104.59"
               if(this.ancho_camino == 2)  this.Presup = "$ 3,100,198.29"
               if(this.ancho_camino == 3)  this.Presup = "$ 3,507,565.95"
               if(this.ancho_camino == 4)  this.Presup = "$ 3,929,902.41"
               if(this.ancho_camino == 5)  this.Presup = "$ 4,300,019.57"  
-              
-
-              //new DataManager(this.ancho_camino)
-              //this.anchoCaminoData.push([
-              //  { id: '1', name: 'OTR' },
-              //])
-             
           },
 
 
@@ -510,11 +499,9 @@ export default {
                          this.btnSaveDisabled  = false
                          return
                 }
-
-
-                //console.log('data')
-                //console.log(data)
                 if(this.editmode) {
+                    console.log('data--->')
+                    console.log(data)
                  const response1 = await CaminoPut(data, this.$route.params.obraId)
                  $('#UpdateCamino').modal('show')
                  console.log(response1)

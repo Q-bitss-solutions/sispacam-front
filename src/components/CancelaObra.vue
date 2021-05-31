@@ -25,7 +25,7 @@
                         </div>   
                         <div class="form-group">
                             <label class="control-label" for="file-01">Cargar archivo:</label>
-                            <input id="file-motivo" type="file">
+                            <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
                         </div>                                             
                     </div>
                     <div class="modal-footer">
@@ -57,7 +57,12 @@ export default {
     methods:{
         async CancelarObra (myId){
             $(this.$refs['mdlCancelarObra']).modal('hide')
-            const data = await cancelarObra(this.$store.state.cancel.id)
+            let formData = new FormData();
+            formData.append("motivoCancelacion", this.motivoCancelacion);  
+            if(this.file){
+                formData.append("archivo", this.file);
+            }         
+            const data = await cancelarObra(this.$store.state.cancel.id, formData)
             console.log(data)
             console.log(this.$parent.$parent.populate())
             const r = this.$parent.$parent.$refs.grid.refresh
@@ -66,7 +71,10 @@ export default {
         setId(clave) {
             console.log(clave)
             this.$store.commit('setIdCancelacion', clave)            
-        }
+        },
+        onFileSelected (event) {
+            this.file = event.target.files[0];                               
+        },        
     }
     
 }

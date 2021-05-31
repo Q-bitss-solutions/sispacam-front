@@ -73,8 +73,6 @@ export default {
             }
         },
         async populate () {
-        console.log('changemun')
-        console.log(this.$store.getters['user/StateRol'])
             try{
                 let results  = []
                 let data = null
@@ -88,8 +86,6 @@ export default {
                     results = await getObraByParmas(this.$route.params.values)                 
                     }
                 }else{
-                    console.log(this.$store.state.user.userId)
-                    console.log('this.$store.state.user.userId')
                     results = await getObrasByUsuario(this.$store.state.user.userId)                    
                 }
 

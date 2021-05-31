@@ -420,16 +420,9 @@ export default {
                 console.log('error-->')
                 console.log(e)
             }
-
-      
         },
-   
- 
-
          onFileSelected (event) {
-               this.archivo = event.target.files[0];
-               
-                
+               this.archivo = event.target.files[0];                               
             },
         async listaconvenio(){
            this.lista = await getlistaConvenio(this.camino_id)
