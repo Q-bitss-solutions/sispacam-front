@@ -6,7 +6,7 @@
             <thead>
               <tr>
                 <th>AÑO FISCAL DEL PRESUPUESTO BASE</th>
-                <th>ANCHO</th>            
+                <th>ANCHO DE CAMINO</th>            
                 <th>PRESUPUESTO BASE</th>
                 <th>PRESUPUESTO REAL</th>
                 <th>VARIACIÓN</th>
