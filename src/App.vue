@@ -31,8 +31,9 @@
             ></a>
             <ul class="dropdown-menu" role="menu">              
               <li><a href="/altacamino">Alta</a></li>
-              <li><a href="/busqueda">Búsqueda</a></li>
-              <li><a href="/convenio">Convenio</a></li>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
+                  <a href="/busqueda">Búsqueda</a>
+            </li>
             </ul>
           </li>
         </ul>

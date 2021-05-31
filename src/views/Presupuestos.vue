@@ -14,8 +14,8 @@
             </thead>
             <tbody>
               <tr>
-                <td>2021</td>
-                <td>4.0</td>
+                <td>{{ anio }}</td>
+                <td>{{ ancho }}</td>
                 <td> 
                    <vue-numeric 
                         v-bind:precision="2" currency="$" separator="," 
@@ -57,8 +57,6 @@
           </select>
         </div>        
     </div>
-
-
 
      <div class="row">
         <div class="col-md-12">
@@ -131,16 +129,6 @@ export default {
     components:{
         PestaniaPresupuesto
     },
-    props: {
-        anio: {
-            default: new Number(2021), 
-            require:false           
-        },
-        anchoCamino: {
-            require:false,
-            default: () => 1
-        }
-    },
     data () {
         return {
           filtro:'0',
@@ -149,7 +137,32 @@ export default {
           contador:0,
           upTotalIPL:0,
           editMode:false,
-          upTotalIPLBase:0
+          upTotalIPLBase:0,
+          anchoCamino:null,
+          anio:null,
+          ancho:null,
+          ancho1:[
+              {
+                  id:1,
+                  ancho:4
+              },
+              {
+                  id:2,
+                  ancho:4.5
+              },
+              {
+                  id:3,
+                  ancho:5
+              },
+              {
+                  id:4,
+                  ancho:5.5
+              },
+              {
+                  id:5,
+                  ancho:6
+              }
+          ]
         }
     },
     methods: {
@@ -183,12 +196,13 @@ export default {
                    precio_unitario: item.precio_unitario,
                    cantidad: item.cantidad.toString(),
                    importe: item.importe,
-                   id_datoconvenio:20
+                   id_datoconvenio:this.$route.params.convenioId
                     })                           
             })
         let response = ''
+        console.log('EDITMODE')
         if(this.getEditMode){
-           response = await updatePresupuesto(20, data)
+           response = await updatePresupuesto(this.$route.params.convenioId, data)
         }else{
            response = await savePresupuesto(data)
         }
@@ -240,6 +254,17 @@ export default {
        }       
        
     },
+    created(){
+        console.log('aniooooo')
+        console.log(this.ancho1)
+        this.anchoCamino = this.$route.params.anchoId
+        console.log(this.anchoCamino)
+        this.ancho = this.ancho1.find(a => this.anchoCamino == a.id).ancho
+        this.anio = this.$route.params.anio
+        console.log(this.anio)
+        console.log('this.ancho')
+        console.log(this.ancho)
+    }
 
 }
 </script>

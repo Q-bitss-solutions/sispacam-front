@@ -25,7 +25,7 @@
         </ejs-grid>
         </div>
     </div>
-      <div class="row">
+      <div class="row" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
         <div class="col-md-12 text-right">
           <hr>
           <button class="btn btn-default" type="button" @click="$router.push('/busqueda')">Regresar</button>
@@ -88,7 +88,9 @@ export default {
                     results = await getObraByParmas(this.$route.params.values)                 
                     }
                 }else{
-                    results = await getObrasByUsuario(2)                    
+                    console.log(this.$store.state.user.userId)
+                    console.log('this.$store.state.user.userId')
+                    results = await getObrasByUsuario(this.$store.state.user.userId)
                 }
 
 

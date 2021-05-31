@@ -55,14 +55,10 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/presupuesto/:obraId',
+    path: '/presupuesto/:obraId/:anio/:anchoId/:convenioId',
     name: 'Presupuesto',
     component: Presupuestos,
-    meta: { requiresAuth: false },
-    props: { 
-        anchoCamino: Number,
-        anio: Number
-    }
+    meta: { requiresAuth: false }
   },  
 ]
 

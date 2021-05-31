@@ -142,7 +142,7 @@
                         </vue-numeric>                         
                     </td>   
                 </tr>                 
-                <tr>
+                <tr v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                     <td>
                             <button class="btn btn-danger btn-sm" type="button" 
                             @click="addExtraordinario">
@@ -353,6 +353,8 @@ export default {
                 _presupuesto.presupuestoStart = data
             })
             this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
+            console.log('this.presupuestoBase')
+            console.log(this.presupuestoBase)
             this.presupuestoBase = this.presupuestos.slice()
 
             if(this.fetch_presupuestoReal){
@@ -395,12 +397,12 @@ export default {
             })            
         },
         async fetchPresupuestoBase() {
-            const response = await getPresupuestoBaseByAncho(1)
+            const response = await getPresupuestoBaseByAncho(this.$route.params.anchoId)
             this.datos = response
             this.loadData()
         },
         async fetchPresupuestoReal() {
-            const presupuesto_real = await getPresupuestoRealByIdConvenio(20)
+            const presupuesto_real = await getPresupuestoRealByIdConvenio(this.$route.params.convenioId)
             if(presupuesto_real.length > 0){
                 console.log('presupuesto_real')
                 console.log(presupuesto_real.length > 0)

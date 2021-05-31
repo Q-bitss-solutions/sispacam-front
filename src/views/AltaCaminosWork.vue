@@ -18,7 +18,7 @@
             Datos del Beneficiario
           </a>
         </li>   
-        <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
+        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabAsina">
           <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Asignar
           </a>

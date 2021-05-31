@@ -43,7 +43,8 @@ Vue.use(GridPlugin);
 export default {
     name:'AsignarResidente',
     data () {
-        return {     
+        return {  
+            id_usuario_asignado: null,   
             lines: 'Both',
             data:[],
             breadcrumb: [''],
@@ -71,25 +72,18 @@ export default {
             this.id = selectedrecords[0].id
             },        
         async asignar(){
-            const response = await asignarUsuario(this.$route.params.obraId, 10)
+            const response = await asignarUsuario(this.$route.params.obraId, this.id)
             alert(response.msg)
             console.log(response)
         },
         async getUserAsign() {
             console.log("getUserAsign")
-            const { user } = await getCaminoByClave(this.$route.params.obraId)                        
-            console.log('resp')
-            console.log(user)
-            if(user){
-                console.log('resp---------------------------->')
-                console.log(user)
-                // this.usuario = data[0].nombre +  ' ' + data[0].primerA + ' ' + data[0].segundoA
-                // this.id = data[0].id
+            const  response  = await getCaminoByClave(this.$route.params.obraId)                        
+            if(response){
+                this.id_usuario_asignado = response.usuarios
             }
         },
         async fetchUsers() {
-            console.log('fetchresidentes')
-            console.log(this.$systemId, this.$residenteGroup)
             const { users } = await getResidentes(this.$systemId, this.$residenteGroup) 
             if(users) {
                 users.map( (u) => {
@@ -99,16 +93,18 @@ export default {
                         primerA:u.cappaterno,
                         segundoA:u.capmaterno                  
                     })
+                    if(u.icveusuario == this.id_usuario_asignado){
+                        this.usuario = u.cnombre +  ' ' + u.capmaterno + ' ' + u.cappaterno
+                    }
                 })
                 console.log('residentes')
                 console.log(users)
             }
         }
     },
-    created() {
-        console.log('--------------------asignar-----------------')
-        this.getUserAsign()
-        this.fetchUsers()
+    async created() {
+        await this.getUserAsign()
+        await this.fetchUsers()
     }
 
 }

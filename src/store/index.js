@@ -9,6 +9,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        camino:{
+            id:null,
+            ancho:null,
+            id_convenio:null,
+            presupuesto:{
+                edit_mode:false
+            }
+        },
       foo: 'root-foo',
       breadcrumb: [],
       cancel: {
@@ -28,10 +36,17 @@ export default new Vuex.Store({
             state.cancel.id = idObraCancelacion
         },
         setIdCancelacionConvenio(state, idConvenio) {
-            console.log('mutation')
-            console.log(idConvenio)
             state.cancelConvenio.id = idConvenio
-        }
+        },
+        setAnchoCamino(state, ancho){
+            state.camino.ancho = ancho
+        },
+        setIdConcevenio(state, convenio){
+            state.camino.id_convenio = convenio
+        },
+        setEditMode(state, edit_mode){
+            state.camino.presupuesto.edit_mode = edit_mode
+        }        
 
     },
     getters: {

@@ -420,15 +420,13 @@ export default {
               this.ubicacionCamino   = response.ubicacion
               this.caracteristicasCamino = response.caracteristicas
               this.beneficiosCamino = response.beneficios 
-              console.log("ancho_camino") 
-              console.log(response.ancho_camino)
 
-              this.ancho_camino = response.ancho_camino
 
-              
+              this.ancho_camino = response.ancho_camino.id
+
+              this.$store.commit('setAnchoCamino', this.ancho_camino)        
               this.$refs.refAncho.ej2Instances.value = response.ancho_camino
-              console.log("this.ancho_camio_2")
-              console.log(this.ancho_camino)
+
               
               if (response.ancho_camino == 1) this.ancho_camino = 1 
               if (response.ancho_camino == 2) this.ancho_camino = 2

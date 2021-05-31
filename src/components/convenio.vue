@@ -139,8 +139,7 @@
                 <e-column field='meta' headerText='Meta' ></e-column>
                 <e-column field='Archivo' headerText='Archivo' ></e-column>
                 <e-column field="id" :template='editTemplateA' headerText='Edicion' textAlign='Center' :visible='flagEdicion'></e-column>
-                <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>
-                
+                <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>                
                 <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column> 
               
             </e-columns>
@@ -211,6 +210,7 @@ import { required } from 'vuelidate/lib/validators';
 import VueResource from 'vue-resource';
 import { generarConvenio } from '@/api/obras';
 import ButtonGrid  from '@/components/ButtonGrid'
+import ButtonGridToPresupuesto  from '@/components/presupuestos/ButtonGridToPresupuesto'
 import Cancelaconvenio   from '@/components/Cancelaconvenio'
 import { getlistaConvenio, cancelarConvenio } from '@/api/obras'; 
 import { GridPlugin, Sort, Page } from '@syncfusion/ej2-vue-grids';
@@ -306,7 +306,7 @@ export default {
         },
         editTemplateP () { 
             return { 
-                template:ButtonGrid 
+                template:ButtonGridToPresupuesto 
             }
         },
         cancelTemplate () {
