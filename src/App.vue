@@ -127,6 +127,9 @@ export default {
       this.setAuthenticated(false)
       this.$router.push('/')     
     }
+  },
+  created(){
+    console.log('version::v2.00')
   }
 }
 </script>
