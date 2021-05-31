@@ -137,7 +137,7 @@
                 <e-column field='monto' headerText='Monto' ></e-column>
                 <e-column field='origen' headerText='Origen del recurso' ></e-column>
                 <e-column field='meta' headerText='Meta' ></e-column>
-                <e-column field='Archivo' headerText='Archivo' ></e-column>
+                <e-column field='archivo' headerText='Archivo' ></e-column>
                 <e-column field="id" :template='editTemplateA' headerText='Edicion' textAlign='Center' :visible='flagEdicion'></e-column>
                 <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>                
                 <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column> 
@@ -308,7 +308,13 @@ export default {
           this.origen = rowList.origen
           this.meta = rowList.meta
           this.anioFields = rowList.anio
-          this.estatus = 'A'     
+          this.estatus =  rowList.estatus   
+        }else{
+          this.tramo = ''
+          this.monto = ''
+          this.meta = ''
+          this.anioFields = ''
+          this.estatus =  'A'   
         }
       },
       editTemplateA () { 
