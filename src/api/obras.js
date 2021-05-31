@@ -10,7 +10,7 @@ export function getObras() {
 
 export function getObraByClave(clave) {
   return request({
-    url: '/camino/list/'+clave+'/1/',
+    url: `/camino/${clave}/`,
     method: 'get'
   })
 }

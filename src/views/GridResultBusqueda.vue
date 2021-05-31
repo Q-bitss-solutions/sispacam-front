@@ -81,16 +81,16 @@ export default {
                 if(this.flag){
                     if(this.$route.params.values.clave){
                         data = await getObraByClave(this.$route.params.values.clave)    
-                        if(data){
-                            results = data
-                        }       
+                        const aRR = []
+                        aRR.push(data)
+                        results = aRR    
                     }else{                    
                     results = await getObraByParmas(this.$route.params.values)                 
                     }
                 }else{
                     console.log(this.$store.state.user.userId)
                     console.log('this.$store.state.user.userId')
-                    results = await getObrasByUsuario(this.$store.state.user.userId)
+                    results = await getObrasByUsuario(this.$store.state.user.userId)                    
                 }
 
 
