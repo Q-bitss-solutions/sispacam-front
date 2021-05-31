@@ -44,7 +44,7 @@ const routes = [
   },
   {
     path: '/convenio',
-    name: 'convenio',
+    name: 'Programacion',
     component: convenio,
     meta: { requiresAuth: true }
   },

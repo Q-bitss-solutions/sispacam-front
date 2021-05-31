@@ -130,7 +130,7 @@
                 <!--<div id="datosNivelMunicipal" class="table-responsive"> -->      
                    <div class="col-md-12 help-block"></div> 
                    <div class="col-md-6">
-                        <label>Población total de localidades:</label>
+                        <label>Poblacion de municipio:</label>
                     </div>          
                     <div class="col-md-6">  
                         <ejs-numerictextbox                                             
@@ -156,7 +156,7 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-6">
-                                        <label>No. Poblaci&oacute;n del Municipio: </label>                                        
+                                        <label>Numero de Localidades: </label>                                        
                                     </th>
                                     <th class="col-md-6">                                        
                                         <input id="noLocalidadesMun" v-model.number="ilocalidades_municipio" class="form-control" type="number" disabled>

@@ -96,7 +96,20 @@
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
+                    <div class="row col-md-10">
+                    <small v-if="getmeta2 > (longitudP - getmeta)"   class="form-text form-text-error">
+                     La Meta no puede ser mayor a la Longitud a pavimentar acumulada
+                     {{getmeta2 > (longitudP - getmeta)}}
+                    </small>  
+                    </div>
                   </div>
+                <div class="col-md-3 form-group">
+                    <label class="control-label">Longitud a Pavimentar</label>
+                    <div>
+                    <label class="control-label">{{longitudP}} ({{longitudP - getmeta}}) </label>
+                    </div>
+                  </div>
+                </div>
                   <div class="col-md-3 form-group">
                     <label class="control-label">Archivo del Convenio (PDF):</label>
                     <input  id="fileconvenio" type="file" accept=".pdf" @change="onFileSelected" name="myfile" >
@@ -104,8 +117,6 @@
                   <div class="col-md-12">
                     <button type="button" v-on:click="GuardaDatosConvenio" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
                   </div>
-
-                </div>
               </div>
             </div>
           </div>
@@ -113,7 +124,7 @@
       </div>
     <div class="row">
         <div class="col-md-12">
-          <h5 class="small-top-buffer small-bottom-buffer">Convenios agregados</h5>
+          <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
         </div>
       </div>
 
@@ -131,13 +142,13 @@
                     :rowSelected='rowSelected'
                     >
             <e-columns>
-                <e-column field='id' headerText='id' :visible='flag'></e-column>
-                <e-column field='anio' headerText='Año del Convenio' ></e-column>
-                <e-column field='tramo' headerText='Tramo'></e-column>
-                <e-column field='monto' headerText='Monto' ></e-column>
-                <e-column field='origen' headerText='Origen del recurso' ></e-column>
-                <e-column field='meta' headerText='Meta' ></e-column>
-                <e-column field='archivo' headerText='Archivo' ></e-column>
+                <e-column field='id' headerText='id' :visible='flag' textAlign='Center'></e-column>
+                <e-column field='anio'  headerText='Año del Convenio' textAlign='Center'></e-column>
+                <e-column field='tramo' headerText='Tramo' textAlign='Center'></e-column>
+                <e-column field='monto' headerText='Monto' textAlign='Center'></e-column>
+                <e-column field='origen' headerText='Origen del recurso' textAlign='Center'></e-column>
+                <e-column field='meta' headerText='Meta' textAlign='Center'></e-column>
+                <e-column field='archivo' headerText='Archivo' textAlign='Center'></e-column>
                 <e-column field="id" :template='editTemplateA' headerText='Edicion' textAlign='Center' :visible='flagEdicion'></e-column>
                 <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>                
                 <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column> 
@@ -150,6 +161,28 @@
           
         </div>
       </div>
+
+      <div class="col-md-12 table-responsive">
+<table class="table table-striped">
+  <tbody>
+      <tr>
+        <td>TOTAL</td>
+        <td>{{getmonto}}</td>
+        <td></td>
+        <td></td>
+        <td>{{getmeta}}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
+      </table>
+      </div>
+
       <div class="row" v-if="false">
         <div class="col-md-12 text-right">
           <hr />
@@ -197,6 +230,7 @@
         </div>
 
 </table>  
+
 </template>
   
 
@@ -214,7 +248,7 @@ import ButtonGridToPresupuesto  from '@/components/presupuestos/ButtonGridToPres
 import Cancelaconvenio   from '@/components/Cancelaconvenio'
 import { getlistaConvenio, cancelarConvenio } from '@/api/obras'; 
 import { GridPlugin, Sort, Page } from '@syncfusion/ej2-vue-grids';
-
+import { getupdate } from '@/api/alta-camino';
 
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
@@ -250,6 +284,7 @@ export default {
             lines: 'Both',
             data:null,
             lista: null,
+            longitudP:null,
             motivoCancelacion: '',
             breadcrumb: [''],
             flagEdicion:true,
@@ -299,6 +334,7 @@ export default {
       },
       setData(){
         const rowList = this.lista.find(row => row.anio == this.anio)
+        
         console.log('rowList')
         console.log(rowList)
         if(rowList && rowList.id){
@@ -400,6 +436,8 @@ export default {
           this.origen = response.origen
           this.meta = response.meta
           this.estatus = response.estatus
+        
+        
 
 
         },
@@ -428,6 +466,11 @@ export default {
            this.lista = await getlistaConvenio(this.camino_id)
             console.log("listaconvenio")
            console.log(this.lista)
+           const resp = await getupdate(this.$route.params.obraId)
+           this.longitudP = resp.longitud_pavimentar
+        console.log("longitudP")
+        console.log(resp)
+        
         } ,
         openmodal(){
           console.log("openmodal")
@@ -448,6 +491,10 @@ export default {
     created:function(){
       this.listaconvenio()
       console.log("created")
+      this.longitudP =  this.$route.params.longitud_pavimenta
+      console.log("this.ancho")
+      console.log(this.ancho)
+ 
     },
     computed:{
       isCanceled:function(){
@@ -457,9 +504,28 @@ export default {
           this.openmodal()
         }
         return this.$store.state.cancelConvenio.id
+      },
+      getmonto(){
+        if(this.lista){
+        console.log("LISTA")
+        console.log(this.lista)
+        return this.lista.reduce((total,i)=>{return total+Number(i.monto)},0)
       }
-    }
+      },
+      getmeta(){
+        if(this.lista){
+        console.log("LISTA")
+        console.log(this.lista)
+        return this.lista.reduce((total,i)=>{return total+Number(i.meta)},0)
+      }
+      },
+      getmeta2(){
+        return this.meta
+      }
+    },
+    
 }
+
 //console.log("data-list")
 //console.log(data)
 

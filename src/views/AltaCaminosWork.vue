@@ -25,7 +25,7 @@
         </li>      
          <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Convenio
+            Programación
           </a>
         </li>         
     </ul>
