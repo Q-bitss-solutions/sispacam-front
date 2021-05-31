@@ -311,8 +311,6 @@ export default {
         },
         async CargaDatos(clave){
               const response = await getupdate(clave)
-              console.log("Carga-Datos")
-              console.log(response)
               this.$emit('update:camino_id', response.id)
               
               this.$refs.refEstado.ej2Instances.value = response.cve_agee
@@ -521,8 +519,7 @@ export default {
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
             console.log('this.iTotalPoblacionIndigena')
             console.log(this.iTotalPoblacionIndigena)
-            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2
-            console.log(str)                                
+            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
         }
     },
     
@@ -541,8 +538,7 @@ export default {
             this.estadosHabilitado = false
             this.CargaDatos(this.$route.params.obraId)
             this.editmode = true
-        }
-        console.log('caminoid: ' + this.$route.params.obraId)                
+        }               
     },
     computed:{
         getEditmode(){

@@ -115,3 +115,12 @@ export function getlistaConvenio(clave) {
     method: 'get'
   })
 }
+
+
+export function updateConvenio(data,convenio_id ){
+  return request({
+    url:`/convenio/${convenio_id}/update/`,
+    method:'patch',
+    data
+  })
+}

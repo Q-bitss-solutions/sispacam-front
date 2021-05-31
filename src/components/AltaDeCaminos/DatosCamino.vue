@@ -549,11 +549,6 @@ export default {
             this.editmode = true
             this.CargaDatos(this.$route.params.obraId)
         }
-        console.log('caminoid: ' + this.$route.params.obraId)
-        console.log(getupdate)
-        
-        
-
     },      
 }
 </script>

@@ -240,7 +240,6 @@ export default {
         if(this.$route.params.obraId){
             this.editmode = true
         }
-        console.log('caminoid: ' + this.$route.params.obraId)
     }
 }
 </script>

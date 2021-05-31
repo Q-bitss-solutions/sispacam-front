@@ -98,7 +98,6 @@ export default {
       }
   },
   created() {
-    console.log('caminoid: ' + this.$route.params.obraId)
   },
   beforeMount: function () {    
     if(this.$route.params.obraId){

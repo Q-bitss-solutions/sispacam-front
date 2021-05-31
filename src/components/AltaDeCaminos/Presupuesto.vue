@@ -477,8 +477,7 @@ export default {
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
             console.log('this.iTotalPoblacionIndigena')
             console.log(this.iTotalPoblacionIndigena)
-            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2
-            console.log(str)                                
+            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                          
         }
     },
     

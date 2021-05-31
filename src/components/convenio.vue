@@ -29,8 +29,8 @@
                         placeholder="Selecciona el año"
                         v-model="anio"
                         v-model.trim="$v.anio.$model"
-                        :disabled = "editmode"
- 
+                        :disabled="editmode"
+                        :change="setData"
                     >
                         </ejs-dropdownlist>
 
@@ -150,7 +150,7 @@
           
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="false">
         <div class="col-md-12 text-right">
           <hr />
           <button class="btn btn-default" type="button" disabled>Cancelar</button>
@@ -208,7 +208,7 @@ import { DataManager } from "@syncfusion/ej2-data";
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators';
 import VueResource from 'vue-resource';
-import { generarConvenio } from '@/api/obras';
+import { generarConvenio, updateConvenio } from '@/api/obras';
 import ButtonGrid  from '@/components/ButtonGrid'
 import ButtonGridToPresupuesto  from '@/components/presupuestos/ButtonGridToPresupuesto'
 import Cancelaconvenio   from '@/components/Cancelaconvenio'
@@ -234,6 +234,7 @@ export default {
 
     data(){
         return {
+            editmode:false,
             anio:'',
             tramo: '',
             monto: '',
@@ -268,7 +269,6 @@ export default {
                { id: 'PEF', name: 'PEF' },
                { id: 'INDEP', name: 'INDEP' },
             ]),  
-              editmode: false
         }
         
     },
@@ -295,13 +295,25 @@ export default {
         this.estatus = "A"
         console.log("this.anio")
         console.log(this.anio)
+        this.editmode = true
+      },
+      setData(){
+        const rowList = this.lista.find(row => row.anio == this.anio)
+        console.log('rowList')
+        console.log(rowList)
+        if(rowList && rowList.id){
+          this.anio = rowList.anio
+          this.tramo = rowList.tramo
+          this.monto = rowList.monto
+          this.origen = rowList.origen
+          this.meta = rowList.meta
+          this.anioFields = rowList.anio
+          this.estatus = 'A'     
+        }
       },
       editTemplateA () { 
             return { 
                 template:ButtonGrid,
-               
-                
-        
             }    
         },
         editTemplateP () { 
@@ -323,9 +335,20 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-               
-                
-                
+               console.log('this.lista')
+               console.log(this.lista)
+               let rowId = -1
+               if(this.lista.length > 0){
+                 let rowExist = this.lista.find(l => l.anio == this.anio)
+                 console.log('rowExist.length')
+                 console.log(rowExist)
+                 if(rowExist && rowExist.id){
+                   console.log(rowExist)
+                   rowId = rowExist.id
+                   console.log('rowId')                   
+                   console.log(rowId)              
+                 }                 
+               }
 
                 let formData = new FormData();
                 formData.append("anio", this.anio);
@@ -337,9 +360,13 @@ export default {
                 if(this.archivo) {
                   formData.append("archivo", this.archivo);
                 }
-                //formData.append("archivo", this.archivo);
-
-                const resp = await generarConvenio(formData, this.camino_id) 
+                let resp = '';
+                if(rowId > 0 ){
+                  resp = await updateConvenio(formData, rowId)
+                }else{
+                  resp = await generarConvenio(formData, this.camino_id) 
+                }
+                console.log(resp)
                 this.lista = await getlistaConvenio(this.camino_id)
                  $('#addConvenio').modal('show')
                  this.btnSaveDisabled  = false
