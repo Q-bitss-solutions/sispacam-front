@@ -55,7 +55,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: '/presupuesto/:obraId/:anio/:anchoId/:convenioId',
+    path: '/presupuesto/:obraId/:anio/:anchoId/:convenioId/:meta/',
     name: 'Presupuesto',
     component: Presupuestos,
     meta: { requiresAuth: false }

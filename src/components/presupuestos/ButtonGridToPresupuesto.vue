@@ -27,7 +27,7 @@ export default {
             console.log('this.$route.params.obraId')
             console.log(data.id)
             this.$store.commit('setIdConcevenio', data.id)  
-            this.$router.push(`/presupuesto/${this.$route.params.obraId}/${data.anio}/${this.$store.state.camino.ancho}/${data.id}/`)        
+            this.$router.push(`/presupuesto/${this.$route.params.obraId}/${data.anio}/${this.$store.state.camino.ancho}/${data.id}/${data.meta}/`)        
         }
     }     
 }

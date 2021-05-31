@@ -447,8 +447,10 @@ export default {
                 .filter(a => this.localidades.includes(a.cve_loc))
                 .map(a => a.pob)
                 .reduce((a, b) => (a + b), 0);
-                 if(!isNaN(this.ilocalidades_municipio)){
-                     this.localidades = [this.localidades]
+                 if(!isNaN(this.localidades)){
+                     if(!Array.prototype.isPrototypeOf(this.localidades)){
+                         this.localidades = [this.localidades]
+                     }                     
                  }
                  this.DatosGeograficos.localidades = this.localidades
                  this.DatosGeograficos.icveestados = this.icveestados

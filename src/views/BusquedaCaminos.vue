@@ -274,19 +274,20 @@ export default {
     },
     clearData () {
       this.$v.$reset()
-      this.obra = {
-        estado: '',
-        municipio: '',
-        localidad: '',
-        tipoObra: '',
-        estrategia: '',
-        clave: '',
-        marginacion: '',
-        tipo_poblacion: '',
-        poblacion_indigena: '',
-        nombre: '',
-        icveObr: ''
-      }
+      console.log(this.obra.estado)
+      this.obra.cve_agee = ''
+      this.obra.nombre_camino= ""
+      this.obra.cve_agee = ""
+      this.obra.icve_municipio = ""
+      this.obra.localidades = ""
+      this.obra.tipo_camino = ""
+      this.estrategia = ""
+      this.obra.marginacion = ""
+      this.obra.poblacion_indigena = ""
+      this.obra.clave = ""
+      this.municipiosData = null
+      this.localidadesData = null
+      console.log('clear----------_>')
       this.initData()
     },
     getEstrategia(){

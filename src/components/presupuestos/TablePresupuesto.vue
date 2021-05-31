@@ -179,8 +179,7 @@ export default {
         },
        ...mapMutations('presupuesto', ['setPresupuesto']),
         checa(index){      
-        const aConceptos1 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
-        console.table(aConceptos1)            
+        const aConceptos1 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))    
             this.setPresupuesto( {   
                 presupuesto: this.presupuesto, 
                 codigo: this.codigo 
@@ -209,25 +208,55 @@ export default {
             return total
         },
         iTotalPorLongitud() {
-            const total = this.presupuesto.reduce((total, item) => {
-                if (!item.subconcepto) {
-                    return ( total || 0 ) + Number(item.precio_unitario * item.cantidad)
-                }else{
-                    return  total
-                }
-            }, 0) 
+            let total = 0
+            if(this.isPBase){
+                total = this.presupuesto.reduce((totalb, item) => {
+                    if (!item.subconcepto) {
+                        console.log(Number(item.importe_kilometro * this.$route.params.meta))
+                        return ( totalb || 0 ) + Number(item.importe_kilometro * this.$route.params.meta)
+                    }else{
+                        return  totalb
+                    }
+                }, 0)  
+            }else{
+                total = this.presupuesto.reduce((total, item) => {
+                    if (!item.subconcepto) {
+                        return ( total || 0 ) + Number(item.precio_unitario * item.cantidad)
+                    }else{
+                        return  total
+                    }
+                }, 0)                 
+            }            
+            if(this.isPBase){
+                console.log('total')
+                console.log(total)
+            }
+            
+
             this.$emit('update:childTotalITPL', total)
             this.importePorLongitud = total
             return total
         },
         importeTotal () {   
-            return this.presupuesto.map( (item) => {
-                return item.cantidad * item.precio_unitario
-            })   
+            if(this.isPBase){
+                return this.presupuesto.map( (item) => {
+                    return item.importe_kilometro * this.$route.params.meta
+                })                   
+            }else{
+                return this.presupuesto.map( (item) => {
+                    return item.cantidad * item.precio_unitario
+                })                    
+            }
+
         },
         porcentajePonderado () {
-            return this.presupuesto.map( (item) => {
-                return (item.importe_total / this.totalIPL) * 100
+            console.log('porcentajePonderado')
+            console.log(this.presupuesto)
+            return this.presupuesto.map( (item) => {                
+                if(!item.importe_total){
+                    return  ((item.cantidad || 0 ) * (item.precio_unitario || 0))  / this.totalIPL * 100
+                }
+                return ( (item.importe_total || 0 ) / (this.totalIPL  || 1)) * 100
             }) 
         },
         subTotalPorcentajePonderado: {

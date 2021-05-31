@@ -341,21 +341,25 @@ export default {
                 i.partida.unidad_medida = unidad.unidad
 
                 })     
-            this.presupuestos.map((_presupuesto, _index) => {         
+            console.log(this.presupuestos)
+            console.log(this.presupuestos)         
+            this.presupuestos.map((_presupuesto, _index) => {     
                 const data = this.datos.filter(d => d.partida.concepto.codigo === _presupuesto.codigo)
-                    .map(terra => ({
+                    .map(terra => ({                        
                         ...terra,
-                        precio_unitario: terra.importe / terra.cantidad,
-                        importe_total: (terra.importe / terra.cantidad) * terra.cantidad
-                    }))
+                        precio_unitario: (terra.importe || 0) / (terra.cantidad || 1),
+                        importe_total: ( (terra.importe || 0) / (terra.cantidad || 1)) * ( terra.cantidad || 1 )
+                    }))            
                 console.log(data)
                 _presupuesto.presupuestoBack = data
                 _presupuesto.presupuestoStart = data
             })
+
+
             this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
+            this.presupuestoBase =  JSON.parse(JSON.stringify(this.presupuestos))
             console.log('this.presupuestoBase')
             console.log(this.presupuestoBase)
-            this.presupuestoBase = this.presupuestos.slice()
 
             if(this.fetch_presupuestoReal){
                 this.fetch_presupuestoReal.map(f => {

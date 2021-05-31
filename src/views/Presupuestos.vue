@@ -144,23 +144,23 @@ export default {
           ancho1:[
               {
                   id:1,
-                  ancho:4
+                  ancho:'4.0'
               },
               {
                   id:2,
-                  ancho:4.5
+                  ancho:'4.5'
               },
               {
                   id:3,
-                  ancho:5
+                  ancho:'5.0'
               },
               {
                   id:4,
-                  ancho:5.5
+                  ancho:'5.5'
               },
               {
                   id:5,
-                  ancho:6
+                  ancho:'6.0'
               }
           ]
         }

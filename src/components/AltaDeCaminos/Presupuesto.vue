@@ -434,10 +434,6 @@ export default {
             }
         },             
         updateLocalidades(e){
-            /*
-            console.log('updateLocalidades')
-            console.log(this.$refs.localidades.ej2Instances)            
-            */
             this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 

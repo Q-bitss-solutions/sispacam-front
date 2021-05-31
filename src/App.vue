@@ -129,7 +129,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.02')
+    console.log('version::v2.3')
   }
 }
 </script>
