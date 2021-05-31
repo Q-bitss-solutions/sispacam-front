@@ -47,7 +47,7 @@ export function getObraByParmas (params) {
 export function cancelarObra(clave) {
   return request({
     url: '/camino/status/'+ clave + '/',
-    method: 'delete'
+    method: 'put'
   })
 }
 
