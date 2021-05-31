@@ -204,7 +204,7 @@
                     currency="%"
                     currency-symbol-position="suffix" 
                     class="form-control" 
-                    v-model="totalPP"
+                    value="100"
                     disabled
                     >
                 </vue-numeric>                 
@@ -340,9 +340,7 @@ export default {
                 unidad = JSON.parse(JSON.stringify(unidad))
                 i.partida.unidad_medida = unidad.unidad
 
-                })     
-            console.log(this.presupuestos)
-            console.log(this.presupuestos)         
+                })            
             this.presupuestos.map((_presupuesto, _index) => {     
                 const data = this.datos.filter(d => d.partida.concepto.codigo === _presupuesto.codigo)
                     .map(terra => ({                        

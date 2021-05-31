@@ -6,7 +6,7 @@
             <thead>
               <tr>
                 <th>AÑO FISCAL DEL PRESUPUESTO BASE</th>
-                <th>LONGITUD</th>            
+                <th>ANCHO</th>            
                 <th>PRESUPUESTO BASE</th>
                 <th>PRESUPUESTO REAL</th>
                 <th>VARIACIÓN</th>
@@ -62,8 +62,8 @@
         <div class="col-md-12">
           <!-- PESTAÑAS -->
           <ul class="nav nav-tabs small-top-buffer">
+              <li><a data-toggle="tab" href="#tab-base">PRESUPUESTO BASE</a></li>
             <li class="active"><a data-toggle="tab" href="#tab-real">PRESUPUESTO REAL</a></li>
-            <li><a data-toggle="tab" href="#tab-base">PRESUPUESTO BASE</a></li>
           </ul>
           <div class="tab-content">
             <!-- PESTAÑA PRESUPUESTO REAL -->

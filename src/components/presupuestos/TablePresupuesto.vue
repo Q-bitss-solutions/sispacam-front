@@ -60,6 +60,7 @@
     </tr>
     <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id" 
             :class="partida.partida.subconcepto?'subconcepto':''">
+            
         <td>{{ partida.partida.descripcion }}</td>
         <td>
             <vue-numeric v-bind:precision="2" separator="," 
@@ -90,6 +91,7 @@
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
                 :disabled="isPBase?true:false"
+                empty-value="2"
                 >
             </vue-numeric>
         </td>  
@@ -200,6 +202,8 @@ export default {
                 }
             }, 0)
             if(this.isPBase){
+                console.log('precioUnitarioTotal')
+                console.log(total)
                 this.$emit('update:upTotalIPLBase', total)
             }else{
                 this.$emit('update:childTotalPU', total)
@@ -253,10 +257,10 @@ export default {
             console.log('porcentajePonderado')
             console.log(this.presupuesto)
             return this.presupuesto.map( (item) => {                
-                if(!item.importe_total){
-                    return  ((item.cantidad || 0 ) * (item.precio_unitario || 0))  / this.totalIPL * 100
-                }
-                return ( (item.importe_total || 0 ) / (this.totalIPL  || 1)) * 100
+                console.log('item.importe_total')
+                console.log(item)
+                console.log(this.totalIPL)
+                return ( (item.cantidad * item.precio_unitario || 0 ) / (this.totalIPL  || 1)) * 100
             }) 
         },
         subTotalPorcentajePonderado: {
@@ -292,6 +296,17 @@ export default {
         this.presupuesto = this.conceptos.presupuestoStart
         this.nombreConcepto = this.conceptos.name
         this.codigo = this.conceptos.codigo
+        this.presupuesto.map(p => {
+            console.log('data-->')
+            if(p.precio_unitario == null){
+                console.log('datasisisis-->')
+                console.log(p)
+                p.precio_unitario='0.0'
+                p.importe_total=''
+                p.cantidad=''
+                console.log(p)
+            }
+        })
         this.presupuesto = this.presupuesto.sort(function (a, b) {
             if (a.partida.id > b.partida.id) {
                 return 1;
