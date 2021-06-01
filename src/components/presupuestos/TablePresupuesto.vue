@@ -188,6 +188,7 @@ export default {
                 codigo: this.codigo 
             })            
     },
+    },
     computed:{
         inportek (){
             return this.presupuesto.map(p => {
