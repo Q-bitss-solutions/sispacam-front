@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 no-padding">
         <table class="table table-responsive table-bordered data">
         <thead>
             <tr>            
@@ -66,17 +66,17 @@
                 <tr class="concepto">
                     <td colspan="4">PRECIOS EXTRAORDINARIOS</td>
                     <td>
-                        <vue-numeric v-bind:precision="2" currency="$" 
+                        <vue-numeric v-bind:precision="2" 
                             separator="," 
-                            disabled
+                            :read-only="vnumeric"
                             class="form-control" 
                             v-model="getSubtotalIPExt"
                             >
                         </vue-numeric>                        
                     <td>
-                        <vue-numeric v-bind:precision="2" currency="%"
+                        <vue-numeric v-bind:precision="3" currency="%"
                             class="form-control"
-                            disabled
+                            :read-only="vnumeric"
                             v-model="getSubtotalPPExt"
                             currency-symbol-position="suffix"                
                             >
@@ -117,7 +117,7 @@
                     </td>
                     <td>
                         <vue-numeric v-bind:precision="2" 
-                            currency="$" separator="," 
+                            separator="," 
                             class="form-control" 
                             v-model="extraordinario.precio_unitario"
                             v-on:keypress.native="checa(k)"
@@ -125,17 +125,18 @@
                         </vue-numeric>
                     </td>
                     <td>
-                        <vue-numeric v-bind:precision="2" currency="$" separator="," 
+                        <vue-numeric 
+                            v-bind:precision="2" separator="," 
                             class="form-control" 
                             v-model="colImporteTotalExt[k]" 
-                            disabled
+                            :read-only="vnumeric"
                             >
                         </vue-numeric>                        
                     </td>
                     <td>
                         <vue-numeric v-bind:precision="2" currency="%"
                             class="form-control"                            
-                            disabled
+                            :read-only="vnumeric"
                             v-model="colPPExt[k]"
                             currency-symbol-position="suffix"                
                             >
@@ -164,10 +165,9 @@
                 <vue-numeric 
                     v-bind:precision="2" 
                     separator="," 
-                    currency="$"
                     class="form-control" 
                     v-model="getTotalIPK"
-                    disabled
+                    :read-only="vnumeric"
                     >
                 </vue-numeric>               
             </td>
@@ -176,10 +176,9 @@
                 <vue-numeric 
                     v-bind:precision="2" 
                     separator="," 
-                    currency="$"
                     class="form-control" 
                     v-model="totalPU"
-                    disabled
+                    :read-only="vnumeric"
                     >
                 </vue-numeric>                 
             </td>
@@ -189,10 +188,9 @@
                 <vue-numeric 
                     v-bind:precision="2" 
                     separator="," 
-                    currency="$"
                     class="form-control" 
                     v-model="totalIPL"
-                    disabled
+                    :read-only="vnumeric"
                     >
                 </vue-numeric>                  
             </td>
@@ -205,7 +203,7 @@
                     currency-symbol-position="suffix" 
                     class="form-control" 
                     value="100"
-                    disabled
+                    :read-only="vnumeric"
                     >
                 </vue-numeric>                 
             </td>
@@ -247,6 +245,7 @@ export default {
     },    
     data () {
         return {
+            vnumeric:true,
             isLoad:false,
             datos:null,
             presupuestoReal:null,
@@ -469,8 +468,10 @@ export default {
                 return (item.importe_total  / this.getTotalIPL) * 100
             })             
         },
-        getSubtotalIPExt: {
+        getSubtotalIPExt: {            
             get() {
+                console.log('getSubtotalIPExt')
+                console.log(this.extraordinarios)
                 return this.extraordinarios.reduce ( (total , item) => {
                     return (total || 0 ) + ( 0 || item.importe_total )
                 }, 0.000001)
@@ -490,9 +491,13 @@ export default {
             }
         },
         getTotalIPK() {
-            const r = this.presupuestos.reduce( (total, current ) => 
-                total + current.subTotalIPK, 0 )
-            return r
+            console.log(this.isPBase)
+            console.log('getTotalIPK')
+            console.log(this.getPresupuestoByID(1))
+                return this.totalPP = this.getPresupuestoByID(1).subTotalIPK +
+                this.getPresupuestoByID(2).subTotalIPK +
+                this.getPresupuestoByID(3).subTotalIPK +
+                this.getPresupuestoByID(4).subTotalIPK
         },
         isLoaded() {
            return this.isLoad

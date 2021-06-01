@@ -92,9 +92,9 @@
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
-                    <div class="row col-md-10">
-                    <small v-if="getmeta2 > (longitudP - getmeta)"   class="form-text form-text-error">
-                     La Meta no puede ser mayor a la Longitud a pavimentar acumulada                    
+                    <div class="row col-md-10" v-if="validaLongitud">
+                    <small    class="form-text form-text-error">
+                      La Meta no puede ser mayor a la Longitud a pavimentar acumulada                 
                     </small>  
                     </div>
                   </div>
@@ -117,7 +117,7 @@
                   </div>
                   </div>
                   <div class="col-md-12">
-                    <button type="button" v-on:click="GuardaDatosConvenio" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
+                    <button type="button" v-on:click="GuardaDatosConvenio"  :disabled="validaLongitud" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
                   </div>  
               </div>
             </div>
@@ -513,7 +513,10 @@ export default {
       },
       getmeta2(){
         return this.formatNum(this.meta)
-      }
+      },
+      validaLongitud(){
+        return this.getmeta2 > (this.longitudP - this.getmeta)   
+      }          
     },
     
 }

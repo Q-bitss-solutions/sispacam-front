@@ -215,9 +215,9 @@ hr.red {margin: 10px 0 60px;}
 th.center, td.center {text-align: center;}
 
 .table.data {margin-top: 15px;margin-bottom: 10px !important;}
-.table.data thead tr th, .table.data tfoot tr td {text-align: center;}
+.table.data thead tr th, .table.data tfoot tr td {text-align: right;}
 .table.data thead tr th:first-of-type, .table.data tbody tr td:first-of-type, .table.data tfoot tr td:first-of-type {text-align: left !important;width: 45%;}
-.table.data tbody tr td, .table.data tbody tr td input {text-align: center;}
+.table.data tbody tr td, .table.data tbody tr td input {text-align: right;}
 .table.data tbody tr td input {margin: 0 4% !important;width: 92% !important;height: 32px !important;padding: 5px !important;}
 .table.data tbody tr td .input-group {margin: 0 4% !important;width: 92% !important;}
 .table.data tbody tr td .input-group .input-group-addon {padding: 6px 6px;font-size: 16px;color: inherit;background-color: #fff;}

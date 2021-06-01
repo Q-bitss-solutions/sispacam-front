@@ -8,10 +8,9 @@
             <vue-numeric                 
                 v-bind:precision="2" 
                 separator="," 
-                currency="$"
                 class="form-control" 
                 v-model="importeTotalKilometro"
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>              
         </td>  
@@ -25,10 +24,9 @@
             <vue-numeric 
                 v-bind:precision="2" 
                 separator="," 
-                currency="$"
                 class="form-control" 
                 v-model="pu"
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>            
         </td>        
@@ -38,22 +36,21 @@
             <vue-numeric 
                 v-bind:precision="2" 
                 separator="," 
-                currency="$"
                 class="form-control" 
                 v-model="importePorLongitud"
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>  
 
         <td>
             <!--SUB TOTAL PORCENTAJE PONDERADO -->
             <vue-numeric 
-                v-bind:precision="1" 
+                v-bind:precision="3" 
                 currency="%"
                 currency-symbol-position="suffix"  
                 class="form-control" 
                 v-model="subTotalPorcentajePonderado"
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>              
         </td>        
@@ -61,55 +58,58 @@
     <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id" 
             :class="partida.partida.subconcepto?'subconcepto':''">
             
-        <td>{{ partida.partida.descripcion }}</td>
-        <td>
+        <td>{{ partida.partida.descripcion }} </td>         
+        <td>                    
+            <input v-show="false"  v-model="inportek">
             <vue-numeric v-bind:precision="2" separator="," 
                 v-if="!partida.partida.subconcepto"
-                class="form-control cantidad-total" 
+                class="form-control cantidad-total"   
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
-                :disabled="isPBase?true:false"
+                :read-only="isPBase?true:false"
                 >
             </vue-numeric>
         </td>
-        <td>{{ partida.partida.unidad_medida }}</td>
+        <td>{{ partida.partida.unidad_medida }} </td>
         
-        <td v-if="isPBase">                      
-            <vue-numeric v-bind:precision="2" currency="$" separator="," 
+        <td v-if="isPBase">
+            <vue-numeric 
+                v-bind:precision="2" separator="," 
                 v-if="!partida.partida.subconcepto"
                 class="form-control" 
                 v-model="partida.importe_kilometro"
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>            
         </td>    
         
         <td>
-            <vue-numeric v-bind:precision="2" currency="$" separator="," 
+            <vue-numeric 
+                v-bind:precision="2"  separator="," 
                 v-if="!partida.partida.subconcepto"
                 class="form-control precio-unitario" 
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-                :disabled="isPBase?true:false"
-                empty-value="2"
+                :read-only="isPBase?true:false"
                 >
             </vue-numeric>
         </td>  
-        <td>
-            <vue-numeric v-bind:precision="2" currency="$" separator="," 
+        <td>    
+            <vue-numeric v-bind:precision="2" 
+                separator="," 
                 v-if="!partida.partida.subconcepto"
                 class="form-control" 
                 v-model="importeTotal[myIndex]" 
-                disabled
+                :read-only="vnumeric"
                 >
             </vue-numeric>
         </td>
         <td>
-            <vue-numeric v-bind:precision="2" currency="%"
+            <vue-numeric v-bind:precision="3" currency="%"
                 class="form-control"
                 v-if="!partida.partida.subconcepto"
-                disabled
-                v-model="porcentajePonderado[myIndex]"
+                :read-only="vnumeric"
+                v-model="porcentajePonderado[myIndex]"  
                 currency-symbol-position="suffix"                
                 >
             </vue-numeric>            
@@ -165,6 +165,7 @@ export default {
     },
     data () {
         return {
+            vnumeric:true,
             presupuesto:[],
             nombreConcepto:'',
             revisar:0.12,
@@ -193,6 +194,14 @@ export default {
         }
     },
     computed:{
+        inportek (){
+            return this.presupuesto.map(p => {
+                if(p.cantidad==''){
+                    p.cantidad=0.00100
+                    p.precio_unitario=0.00100
+                }                
+            })
+        },
         precioUnitarioTotal () { 
             const total = this.presupuesto.reduce((total, item) => {
                 if (!item.subconcepto) {
@@ -202,8 +211,6 @@ export default {
                 }
             }, 0)
             if(this.isPBase){
-                console.log('precioUnitarioTotal')
-                console.log(total)
                 this.$emit('update:upTotalIPLBase', total)
             }else{
                 this.$emit('update:childTotalPU', total)
@@ -231,11 +238,6 @@ export default {
                     }
                 }, 0)                 
             }            
-            if(this.isPBase){
-                console.log('total')
-                console.log(total)
-            }
-            
 
             this.$emit('update:childTotalITPL', total)
             this.importePorLongitud = total
@@ -254,12 +256,7 @@ export default {
 
         },
         porcentajePonderado () {
-            console.log('porcentajePonderado')
-            console.log(this.presupuesto)
             return this.presupuesto.map( (item) => {                
-                console.log('item.importe_total')
-                console.log(item)
-                console.log(this.totalIPL)
                 return ( (item.cantidad * item.precio_unitario || 0 ) / (this.totalIPL  || 1)) * 100
             }) 
         },
