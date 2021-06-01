@@ -187,11 +187,6 @@ export default {
                 presupuesto: this.presupuesto, 
                 codigo: this.codigo 
             })            
-        const aConceptos2 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
-        aConceptos2.map(a => {
-            console.table(a)
-        })        
-        }
     },
     computed:{
         inportek (){
@@ -223,8 +218,7 @@ export default {
             if(this.isPBase){
                 total = this.presupuesto.reduce((totalb, item) => {
                     if (!item.subconcepto) {
-                        console.log(Number(item.importe_kilometro * this.$route.params.meta))
-                        return ( totalb || 0 ) + Number(item.importe_kilometro * this.$route.params.meta)
+                        return ( totalb || 0 ) + Number(item.cantidad * this.$route.params.meta *  item.precio_unitario) 
                     }else{
                         return  totalb
                     }
@@ -245,7 +239,8 @@ export default {
         },
 
 
-        iTotalPorLongitud1() {
+        iTotalPorLongitud1 : {
+            get() {
             let total = 0
             if(this.isPBase){
                 total = this.presupuesto.reduce((totalb, item) => {
@@ -266,12 +261,14 @@ export default {
             }            
                 this.$emit('update:subTotalIPK', total)
                 //this.importePorLongitud = total
-                return total   
+                return total  
+            },
+            set() {}
         },        
         importeTotal () {   
             if(this.isPBase){
                 return this.presupuesto.map( (item) => {
-                    return item.importe_kilometro * this.$route.params.meta
+                    return item.cantidad * this.$route.params.meta * item.precio_unitario
                 })                   
             }else{
                 return this.presupuesto.map( (item) => {
@@ -319,14 +316,10 @@ export default {
         this.nombreConcepto = this.conceptos.name
         this.codigo = this.conceptos.codigo
         this.presupuesto.map(p => {
-            console.log('data-->')
             if(p.precio_unitario == null){
-                console.log('datasisisis-->')
-                console.log(p)
                 p.precio_unitario='0.0'
                 p.importe_total=''
                 p.cantidad=''
-                console.log(p)
             }
         })
         this.presupuesto = this.presupuesto.sort(function (a, b) {
