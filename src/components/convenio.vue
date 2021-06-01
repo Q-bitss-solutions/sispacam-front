@@ -30,10 +30,8 @@
                         v-model="anio"
                         v-model.trim="$v.anio.$model"
                         :disabled="editmode"
-                        :change="setData"
-                    >
+                        :change="setData">
                         </ejs-dropdownlist>
-
                     </div>
                     <div class="row col-md-10">
                             <small v-if="!$v.anio.required && $v.anio.$error" class="form-text form-text-error">
@@ -53,12 +51,10 @@
                         :disabled = "editmode"
                         value=""/>  
                     </div>
- 
-                  
                   </div>
                   <div class="col-md-3 form-group">
                     <div>
-                    <label class="control-label">Monto (mdp):</label>
+                    <label class="control-label">Monto de Convenio(mdp):</label>
                         <ejs-numerictextbox  
                             id="monto"
                             placeholder="Ingrese el Monto (mdp)"
@@ -86,7 +82,7 @@
                   </div>
                   <div class="col-md-3 form-group">
                     <div>
-                    <label class="control-label">Meta (km):</label>
+                    <label class="control-label">Meta de Convenio(km):</label>
                         <ejs-numerictextbox  
                             id="meta"
                             placeholder="Ingrese la Meta (km)"
@@ -98,25 +94,31 @@
                     </div>
                     <div class="row col-md-10">
                     <small v-if="getmeta2 > (longitudP - getmeta)"   class="form-text form-text-error">
-                     La Meta no puede ser mayor a la Longitud a pavimentar acumulada
-                     {{getmeta2 > (longitudP - getmeta)}}
+                     La Meta no puede ser mayor a la Longitud a pavimentar acumulada                    
                     </small>  
                     </div>
                   </div>
                 <div class="col-md-3 form-group">
                     <label class="control-label">Longitud a Pavimentar</label>
                     <div>
-                    <label class="control-label">{{longitudP}} ({{longitudP - getmeta}}) </label>
+                    <td class="col-md-6" >{{ longitudP }}</td>
+                    </div>
+                    <label class="control-label">Longitud por programar</label>
+                    <div>
+                    <label class="col-md-6" >{{ (longitudP - getmeta) }}</label>
                     </div>
                   </div>
                 </div>
                   <div class="col-md-3 form-group">
                     <label class="control-label">Archivo del Convenio (PDF):</label>
                     <input  id="fileconvenio" type="file" accept=".pdf" @change="onFileSelected" name="myfile" >
+                    <div class="col-md-20">
+                    <label class="control-label" >Nota: El archivo no debe exceder el tamaño de 12 megas</label>
+                  </div>
                   </div>
                   <div class="col-md-12">
                     <button type="button" v-on:click="GuardaDatosConvenio" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
-                  </div>
+                  </div>  
               </div>
             </div>
           </div>
@@ -127,11 +129,8 @@
           <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
         </div>
       </div>
-
       <div class="row">
-        <div class="col-md-12 table-responsive">
-          
-            
+        <div class="col-md-12 table-responsive">            
               <ejs-grid   ref="grid"
                     :dataSource="lista" :gridLines='lines' 
                     :allowPaging='true' 
@@ -145,32 +144,26 @@
                 <e-column field='id' headerText='id' :visible='flag' textAlign='Center'></e-column>
                 <e-column field='anio'  headerText='Año del Convenio' textAlign='Center'></e-column>
                 <e-column field='tramo' headerText='Tramo' textAlign='Center'></e-column>
-                <e-column field='monto' headerText='Monto' textAlign='Center'></e-column>
+                <e-column field='monto' headerText='Monto' textAlign='right'></e-column>
                 <e-column field='origen' headerText='Origen del recurso' textAlign='Center'></e-column>
-                <e-column field='meta' headerText='Meta' textAlign='Center'></e-column>
+                <e-column field='meta' headerText='Meta' textAlign='right'></e-column>
                 <e-column field='archivo' headerText='Archivo' textAlign='Center'></e-column>
                 <e-column field="id" :template='editTemplateA' headerText='Edicion' textAlign='Center' :visible='flagEdicion'></e-column>
                 <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>                
-                <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column> 
-              
-            </e-columns>
-            
-        </ejs-grid>
-          
-           
-          
+                <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column>               
+            </e-columns>          
+        </ejs-grid>  
         </div>
       </div>
-
       <div class="col-md-12 table-responsive">
 <table class="table table-striped">
   <tbody>
       <tr>
-        <td>TOTAL</td>
-        <td>{{getmonto}}</td>
+        <h5 class="small-top-buffer small-bottom-buffer">TOTAL</h5>
+        <td class="small-top-buffer small-bottom-buffer"><b>{{getmonto}}</b> </td>
         <td></td>
         <td></td>
-        <td>{{getmeta}}</td>
+        <td class="small-top-buffer small-bottom-buffer"><b>{{getmeta}}</b></td>
         <td></td>
         <td></td>
         <td></td>
@@ -182,7 +175,6 @@
       </tbody>
       </table>
       </div>
-
       <div class="row" v-if="false">
         <div class="col-md-12 text-right">
           <hr />
@@ -228,13 +220,9 @@
                 </div>
             </div>
         </div>
-
 </table>  
-
 </template>
   
-
-
 <script>
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
@@ -284,7 +272,7 @@ export default {
             lines: 'Both',
             data:null,
             lista: null,
-            longitudP:null,
+            longitudP:'',
             motivoCancelacion: '',
             breadcrumb: [''],
             flagEdicion:true,
@@ -328,10 +316,13 @@ export default {
         this.meta = selectedrecords[0].meta
         this.anioFields = selectedrecords[0].anio
         this.estatus = "A"
-        console.log("this.anio")
-        console.log(this.anio)
+        console.log("this.monto")
+        console.log(this.monto)
         this.editmode = true
       },
+          formatNum(num){
+            return new Intl.NumberFormat().format(num);
+        },
       setData(){
         const rowList = this.lista.find(row => row.anio == this.anio)
         
@@ -467,7 +458,7 @@ export default {
             console.log("listaconvenio")
            console.log(this.lista)
            const resp = await getupdate(this.$route.params.obraId)
-           this.longitudP = resp.longitud_pavimentar
+           this.longitudP = this.formatNum(resp.longitud_pavimentar)
         console.log("longitudP")
         console.log(resp)
         
@@ -491,7 +482,7 @@ export default {
     created:function(){
       this.listaconvenio()
       console.log("created")
-      this.longitudP =  this.$route.params.longitud_pavimenta
+      this.longitudP =  this.formatNum(this.$route.params.longitud_pavimenta)
       console.log("this.ancho")
       console.log(this.ancho)
  
@@ -505,6 +496,7 @@ export default {
         }
         return this.$store.state.cancelConvenio.id
       },
+  
       getmonto(){
         if(this.lista){
         console.log("LISTA")
@@ -520,7 +512,7 @@ export default {
       }
       },
       getmeta2(){
-        return this.meta
+        return this.formatNum(this.meta)
       }
     },
     
@@ -538,4 +530,5 @@ export default {
     width: 20%;
  
 }
+
 </style>

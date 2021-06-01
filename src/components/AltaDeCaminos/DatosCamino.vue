@@ -453,7 +453,9 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-                 console.log("GenerarId22")
+                 //console.log("GenerarId22")
+                 //console.log(GenerarId22)
+                 
                  
                  const data = {
                     iso:this.edo.iso,
@@ -484,16 +486,10 @@ export default {
                     estatus:"A"
 
                 }
+                 
                  console.log("aqui-1")
+                 
                   console.log(this.tipo_camino)
-                console.log(this.edo.localidades.length -1)
-                if(this.tipo_camino == 'A' && (this.edo.localidades.length -1) > 1) {                     
-                       console.log(this.edo.localidades.length -1)
-                         $('#alertlong').modal('show')
-                         this.btnSaveDisabled  = false
-                         return
-                }
-                //longitudes
                     if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
                          $('#alertvalnum').modal('show')
                          this.btnSaveDisabled  = false
@@ -511,15 +507,12 @@ export default {
                  $('#addCamino').modal('show')
                  this.btnSaveDisabled  = false
                 }
-                
-                //console.log(response)
-                 
-
-
                 }
+               
                 catch(err){    
                     this.btnSaveDisabled  = false  
-
+                     console.log("err")
+                    console.log(err)
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
                     //$('#alertModal').modal('show')

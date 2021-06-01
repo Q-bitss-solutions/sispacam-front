@@ -57,7 +57,7 @@
                     <div class="col-md-6">
                     </div>                    
                     <div class="col-md-6">
-                        <label class="control-label" for="region">Localidad</label>
+                        <label class="control-label" >Localidad</label>
                         <ejs-multiselect
                         :dataSource="localidadesData"
                         :fields="localidadesFields"
@@ -83,14 +83,14 @@
                         <label>Regi&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input id="region" v-model="region" v-on:keyup="fregion" placeholder="Región" maxlength="40" class="form-control">
+                        <input id="region" v-on:change="actualizadatos" v-model="region" placeholder="Región" maxlength="40" class="form-control">
                     </div> 
                     <div class="col-md-12 help-block"></div>   
                     <div class="col-md-6">
                         <label>Ubicaci&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input id="ubicacion" v-model="ubicacion" v-on:keyup="fubicacion" placeholder="Ubicación" class="form-control">
+                        <input id="ubicacion" v-on:change="actualizadatos" v-model="ubicacion" v-on:keyup="fubicacion" placeholder="Ubicación" class="form-control">
                     </div>
                     <div class="col-md-12 help-block"></div>            
                     <div class="col-md-6">
@@ -285,7 +285,7 @@ export default {
                     marginacion: '', 
                     cve_agee: '',
                     /*1*/
-
+                
                 }
         };
     },
@@ -319,7 +319,7 @@ export default {
               this.$refs.refMunicipio.ej2Instances.value = response.icve_municipio
               
               const res = await getLocalidades(response.cve_agee, 
-                                                    response.icve_municipio)        
+                                               response.icve_municipio)        
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
                     return x + y.pob;
@@ -330,7 +330,7 @@ export default {
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
                 //console.log("loc-data")
-                //console.log(this.localidadesData)
+                //console.log(this.$refs.localidades.ej2Instances.value)
                 this.localidades = this.$refs.localidades.ej2Instances.value
                 const localidadesData = this.localidadesData.executeLocal(new Query());
                 this.localidadesTabla = localidadesData
@@ -349,12 +349,14 @@ export default {
               this.setEdoIso()
               this.recalcularPoblacionTotal()   
               console.log('estadosHabilitado false')
-              this.estadosHabilitado = false                   
+              this.estadosHabilitado = false       
+                     
         },
         //Envia datos Ubicacion
         enviardatos_u(){
             this.$emit("set-icveEdo", {
             datos:this.DatosGeograficos
+            
         }); 
         },        
         //Funcion fregion
@@ -420,7 +422,7 @@ export default {
                 this.$emit("show-error", false);
                 this.clearLocalidades();
                 const res = await getLocalidades(this.icve_estado_inegi, 
-                                                    this.icve_municipio)        
+                                                 this.icve_municipio)        
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
                     return x + y.pob;
@@ -429,7 +431,23 @@ export default {
                 this.localidadesHabilitado = true;            
                 this.localidadesData = new DataManager(res);
                 this.setEdoIso()
+                 this.DatosGeograficos.localidades = this.localidades
+                 this.DatosGeograficos.icveestados = this.icveestados
+                 this.DatosGeograficos.region      = this.region
+                 this.DatosGeograficos.ubicacion   = this.ubicacion
+                 this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
+                 this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
+                 this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
+                 this.DatosGeograficos.icve_municipio = this.icve_municipio
+                 this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
+                 this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
+                 this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
+                 this.DatosGeograficos.marginacion = this.marginacion
+                  this.$emit("set-icveEdo", {
+                     datos:this.DatosGeograficos
+                 });
             }catch(error){
+                console.log("sinLocalidades")
                 console.log('error al obtener localidades')
                 console.log(error);
                 this.$emit("show-error", error);
@@ -525,7 +543,26 @@ export default {
             console.log('this.iTotalPoblacionIndigena')
             console.log(this.iTotalPoblacionIndigena)
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
-        }
+        },
+            actualizadatos(){
+                this.DatosGeograficos.localidades = this.localidades
+                 this.DatosGeograficos.icveestados = this.icveestados
+                 this.DatosGeograficos.region      = this.region
+                 this.DatosGeograficos.ubicacion   = this.ubicacion
+                 this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
+                 this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
+                 this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
+                 this.DatosGeograficos.icve_municipio = this.icve_municipio
+                 this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
+                 this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
+                 this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
+                 this.DatosGeograficos.marginacion = this.marginacion
+                 /*2*/
+                 this.$emit("set-icveEdo", {
+                     datos:this.DatosGeograficos
+                 }); 
+    },
+
     },
     
     mounted() {
