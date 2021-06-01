@@ -117,7 +117,7 @@
                   </div>
                   </div>
                   <div class="col-md-12">
-                    <button type="button" v-on:click="GuardaDatosConvenio"  :disabled="validaLongitud" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
+                    <button type="button" v-on:click="GuardaDatosConvenio" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
                   </div>  
               </div>
             </div>
