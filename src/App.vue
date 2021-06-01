@@ -33,7 +33,10 @@
               <li><a href="/altacamino">Alta</a></li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                   <a href="/busqueda">Búsqueda</a>
-            </li>
+              </li>
+              <li v-if="$route.params.obraId">
+                <a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a>                
+              </li>
             </ul>
           </li>
         </ul>
@@ -129,7 +132,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.3')
+    console.log('version::v2.4')
   }
 }
 </script>
