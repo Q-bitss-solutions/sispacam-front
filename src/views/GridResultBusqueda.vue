@@ -106,13 +106,9 @@ export default {
                         obj.estrategia = obj.ciit===true?'CIIT':''
                         obj.estrategia += obj.tren_maya===true?' Tren Maya':''
                         obj.estrategia += obj.caminos_originales===true?' Caminos Originales':''
-                        console.log('obj.estatus')
-                        console.log(obj.estatus)
                         obj.isCanceled = obj.estatus=='A'?false:true
                         return obj
                     })               
-        
-                    console.log(results)   
                     this.count = results.length     
                     this.data = results 
                 }

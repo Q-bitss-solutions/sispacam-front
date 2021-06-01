@@ -345,7 +345,7 @@ export default {
             this.presupuestos.map((_presupuesto, _index) => {     
                 const data = this.datos.filter(d => d.partida.concepto.codigo === _presupuesto.codigo)
                     .map(terra => ({                        
-                        ...terra,
+                        ...terra,                        
                         precio_unitario: (terra.importe || 0) / (terra.cantidad || 1),
                         importe_total: ( (terra.importe || 0) / (terra.cantidad || 1)) * ( terra.cantidad || 1 )
                     }))            
@@ -354,12 +354,16 @@ export default {
                 _presupuesto.presupuestoStart = data
             })
 
-
             this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
             this.presupuestoBase =  JSON.parse(JSON.stringify(this.presupuestos))
             console.log('this.presupuestoBase')
             console.log(this.presupuestoBase)
 
+              this.presupuestoReal.map(pr => {
+                        pr.presupuestoStart.map( ps => {
+                                ps.cantidad = ps.cantidad * this.$route.params.meta
+                        })
+                    })
             if(this.fetch_presupuestoReal){
                 this.fetch_presupuestoReal.map(f => {
                     this.presupuestoReal.map(pr => {

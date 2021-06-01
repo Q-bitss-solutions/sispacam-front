@@ -27,7 +27,6 @@ export default {
     },
     computed: {
         cData: function() {
-            console.log(this.data)
             return this.data
         }     
     },

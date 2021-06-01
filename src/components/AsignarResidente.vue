@@ -66,7 +66,6 @@ export default {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
             let selectedrecords = this.$refs.grid.getSelectedRecords();  // Get the selected records.
-            console.log(selectedrecords)
             this.usuario = selectedrecords[0].nombre + ' ' 
             + selectedrecords[0].primerA + ' ' + selectedrecords[0].segundoA
             this.id = selectedrecords[0].id
@@ -74,10 +73,8 @@ export default {
         async asignar(){
             const response = await asignarUsuario(this.$route.params.obraId, this.id)
             alert(response.msg)
-            console.log(response)
         },
         async getUserAsign() {
-            console.log("getUserAsign")
             const  response  = await getCaminoByClave(this.$route.params.obraId)                        
             if(response){
                 this.id_usuario_asignado = response.usuarios
@@ -97,8 +94,6 @@ export default {
                         this.usuario = u.cnombre +  ' ' + u.capmaterno + ' ' + u.cappaterno
                     }
                 })
-                console.log('residentes')
-                console.log(users)
             }
         }
     },

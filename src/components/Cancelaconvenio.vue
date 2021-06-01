@@ -32,8 +32,6 @@ export default {
     methods:{
         
         setId(clave) {
-            console.log("setid")
-            console.log(clave)
             this.$store.commit('setIdCancelacionConvenio', clave)            
         }
     }

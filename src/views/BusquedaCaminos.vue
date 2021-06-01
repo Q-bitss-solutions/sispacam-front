@@ -212,7 +212,6 @@ export default {
       if(!this.isBuquedaPorIcveObra){
         this.$v.obra.cve_agee.$touch()
         if (!this.$v.obra.cve_agee.$invalid) {
-          console.log(this.obra)
           this.$router.push({ 
             name: 'Obras', 
             params: { 
@@ -232,12 +231,6 @@ export default {
           values:this.obra         
         }
       })
-      
-        /*
-        this.$v.$touch()
-        console.log('submit...')
-        if (this.$v.$invalid) return      
-        */
     },
     async initData () {
       const res = await getEdos()
@@ -250,10 +243,8 @@ export default {
         this.localidadesData = null
         this.obra.municipio =''
         this.obra.localidades =''
-        console.log(this.obra.cve_agee)
         const {results} = await getMunicipios(this.obra.cve_agee)
         this.municipiosData = results;       
-        console.log(this.municipiosData)  
       }catch(err){
           console.log('error al obtener municipios')
           console.log(err)
