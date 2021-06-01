@@ -438,6 +438,7 @@ export default {
             return this.totalPU
         },
         getTotalIPL() {
+            console.log()
             this.totalIPL = this.getPresupuestoByID(1).subTotalIPL +
                 this.getPresupuestoByID(2).subTotalIPL +
                 this.getPresupuestoByID(3).subTotalIPL +

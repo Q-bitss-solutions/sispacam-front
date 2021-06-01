@@ -9,7 +9,7 @@
                 v-bind:precision="2" 
                 separator="," 
                 class="form-control" 
-                v-model="importeTotalKilometro"
+                v-model="iTotalPorLongitud1"
                 :read-only="vnumeric"
                 >
             </vue-numeric>              
@@ -243,6 +243,31 @@ export default {
             this.importePorLongitud = total
             return total
         },
+
+
+        iTotalPorLongitud1() {
+            let total = 0
+            if(this.isPBase){
+                total = this.presupuesto.reduce((totalb, item) => {
+                    if (!item.subconcepto) {
+                        return ( totalb || 0 ) + Number(item.importe_kilometro)
+                    }else{
+                        return  totalb
+                    }
+                }, 0)  
+            }else{
+                total = this.presupuesto.reduce((total, item) => {
+                    if (!item.subconcepto) {
+                        return ( total || 0 ) + Number(item.precio_unitario * item.cantidad)
+                    }else{
+                        return  total
+                    }
+                }, 0)                 
+            }            
+                this.$emit('update:subTotalIPK', total)
+                //this.importePorLongitud = total
+                return total   
+        },        
         importeTotal () {   
             if(this.isPBase){
                 return this.presupuesto.map( (item) => {
@@ -276,7 +301,7 @@ export default {
             get () {
                 const total = this.presupuesto.reduce((total, item) => {
                     if (!item.subconcepto) {
-                        return ( total || 0 ) + 29834.11
+                        return ( total || 0 )  + item 
                     }else{
                         return  total
                     }
