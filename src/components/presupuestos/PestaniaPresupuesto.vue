@@ -171,8 +171,9 @@
                     >
                 </vue-numeric>               
             </td>
-            <td></td>
-            <td v-if="false && isLoaded">
+            <td v-if="!isPBase && isLoaded">
+            </td>
+            <td v-if="false">
                 <input v-show="false" v-model="getTotalPU" disabled>
                 <vue-numeric 
                     v-bind:precision="2" 
