@@ -7,7 +7,6 @@
             <form role="form">
                 <h3>Presidente Municipal o representante de la comunidad</h3>
                 <div class="form-group">
-                   
                     <div class="col-sm-4">
                         <label class="control-label" for="nombre">Nombre o nombres</label>
                         <input class="form-control" id="nombre" placeholder="Nombre o nombres" type="text"  v-model="nombre" :class="{'form-control-error': $v.nombre.$error}" >
@@ -16,42 +15,35 @@
                             Este campo es obligatorio
                             </small>
                         </div> 
-                    </div>  
-                                                     
+                    </div>                                  
                     <div class="col-sm-4">
                         <label class="control-label" for="papellido">Primer apellido</label>
-                        <input class="form-control" id="papellido" placeholder="Primer apellido" type="text" v-model="apaterno" :class="{'form-control-error': $v.apaterno.$error}">
+                        <input class="form-control" id="apaterno" placeholder="Primer apellido" type="text" v-model="apaterno" :class="{'form-control-error': $v.apaterno.$error}">
                         <div class="row col-md-10">
                             <small v-if="!$v.apaterno.required && $v.apaterno.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div> 
                     </div>
-                    
                     <div class="col-sm-4">
                         <label class="control-label" for="sapellido">Segundo apellido</label>
-                        <input class="form-control" id="sapellido" placeholder="Segundo apellido" type="text" v-model="amaterno" :class="{'form-control-error': $v.amaterno.$error}">
+                        <input class="form-control" id="amaterno" placeholder="Segundo apellido" type="text" v-model="amaterno" :class="{'form-control-error': $v.amaterno.$error}">
                         <div class="row col-md-10">
                             <small v-if="!$v.amaterno.required && $v.amaterno.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div> 
                     </div>
-                    
                     <div class="col-sm-4">
-                            <label class="control-label" for="tiporfc">Personalidad Juridica</label>
-                            <div class="row col-md-10">
-                            <label class="radio-inline">
-                                <input v-model="fisica_moral" type="radio" id="Moral" name="fisica_moral" value="M"  > Moral
-                            </label>
-                            <label class="radio-inline">
-                                <input v-model="fisica_moral" type="radio" id="Fisica" name="fisica_moral" value="F"  > Fisica
-                            </label>
-                            </div>
-                    </div>
+                            <label class="control-label" for="juridica">Personalidad Juridica</label>
+                            <select class="form-control" id="juridica"  v-model="tipocalle">
+                                <option>Fisica</option>
+                                <option>Moral</option>
+                            </select>
+                        </div>
                         <div class="col-sm-4">
                             <label class="control-label" for="rfc">RFC del Beneficiario</label>
-                            <input class="form-control" id="rfc" @blur = "valbenef"   placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" :disabled = "editmode" >
+                            <input class="form-control" id="rfc_benef" @blur = "valbenef"   placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" :disabled = "editmode" >
                             <div class="row col-md-10">
                             <small v-if="!$v.rfc_benef.required && $v.rfc_benef.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
@@ -60,38 +52,32 @@
                         </div>
                         <div class="col-sm-4">
                             <label class="control-label" for="cuenta">Clabe Interbancaria</label>
-                            <input class="form-control" id="cuenta" placeholder="Clabe Interbancaria" type="number" onKeyPress="if(this.value.length==18) return false;" min="0" v-model="clabe" :class="{'form-control-error': $v.clabe.$error}">
+                            <input class="form-control" id="clabe" placeholder="Clabe Interbancaria" type="number" onKeyPress="if(this.value.length==18) return false;" min="0" v-model="clabe" :class="{'form-control-error': $v.clabe.$error}">
                             <div class="row col-md-10">
                                 <small v-if="!$v.clabe.required && $v.clabe.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
                                 </small>
                             </div> 
                         </div>
-                    
                     <br>
-                    
                         <div class="col-sm-4">
                             <label class="control-label" for="calle">Calle</label>
                             <input class="form-control" id="calle" placeholder="Calle" type="text" v-model="calle">
                         </div>                        
                         <div class="col-sm-4">
                              <label class="control-label" for="numexterior">Núm. Exterior</label>
-                             <input class="form-control" id="numexterior" placeholder="Núm. Exterior" type="text" v-model="next">
-                        </div>
+                             <input class="form-control" id="next" placeholder="Núm. Exterior" type="text" v-model="next">
+                        </div>   
+                        <div class="col-sm-4">
+                            <label class="control-label" for="colonia">Colonia</label>
+                            <input class="form-control" id="colonia" placeholder="Colonia" type="text" v-model="colonia">
+                        </div>                   
                     
-                    
-                       
-                    <div class="col-sm-4">
-                        <label class="control-label" for="colonia">Colonia</label>
-                        <input class="form-control" id="colonia" placeholder="Colonia" type="text" v-model="colonia">
-                    </div>                   
-                    
-                    <tr>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label class="control-label" for="codpostal">Código postal</label>
-                            <input class="form-control" id="codpostal" placeholder="Código postal" type="number" onKeyPress="if(this.value.length==5) return false;" min="0" v-model="cp">
+                            <input class="form-control" id="cp" placeholder="Código postal" type="number" onKeyPress="if(this.value.length==5) return false;" min="0" v-model="cp">
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <label class="control-label" for="tipocalle">Tipo de calle</label>
                             <select class="form-control" id="tipocalle"  v-model="tipocalle">
                                 <option>Calle</option>
@@ -101,27 +87,49 @@
                                 <option>Ninguno</option>
                             </select>
                         </div>
-                    </tr>
+                        <div class="col-sm-4">
+                            <button type="button" v-on:click="DatosBeneficiarios" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Beneficiario</button>
+                        </div> 
                 </div>
+                
             </form>
         </div>
-        <div class="form-group" v-show="false">
-            <div class="row">
-            <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-            v-on:click="DatosBeneficiarios" >
-            Siguiente
-            </button>
-            </div>
-        </div>
-        <!--
         <div class="form-group">
-        
-        <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-            v-on:click="DatosBeneficiarios"   >
-            Guardar
-        </button>
+            <div class="col-md-8 form-group">
+                <label class="control-label">Beneficiario asignado:</label>
+                <input class="form-control" v-model="usuario" type="text" disabled placeholder="No hay beneficiario asigando">
+                <input class="form-control" v-model="id" type="text" v-show="false">
+            </div>           
         </div>
-        -->
+        <div class="row">
+        <div class="col-md-12">
+          <h5 class="small-top-buffer small-bottom-buffer">Lista de Beneficiarios</h5>
+        </div>
+      </div>
+        <div class="row">
+        <div class="col-md-12 table-responsive">            
+              <ejs-grid   ref="grid"
+                    :dataSource="lista" :gridLines='lines' 
+                    :allowPaging='true' 
+                    :allowSorting='true'
+                    :pageSettings='pageSettings'
+                    :allowFiltering='true'
+                    :allowTextWrap='true'
+                    :rowSelected='rowSelected'
+                    >
+            <e-columns>
+                <e-column field='id' headerText='id' :visible='flag'></e-column>
+                <e-column field='nombre'   headerText='Nombre' ></e-column>
+                <e-column field='apaterno' headerText='Primer Apellido' ></e-column>
+                <e-column field='amaterno' headerText='Segundo Apellido' ></e-column>
+                <e-column field='rfc'      headerText='RFC'></e-column>
+                <e-column field='clabe'    headerText='Cable'></e-column>
+                <e-column field="clave" :template='editTemplateA' headerText='Editar'  :visible='flagEdicion'></e-column>  
+                <e-column field="clave" :template='editTemplateB' @click="asignar" headerText='Asignar' :visible='flagEdicion'></e-column>                 
+            </e-columns>          
+        </ejs-grid>  
+        </div>
+      </div>
     </div>
 </table>    
 </template>
@@ -132,9 +140,13 @@ import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
+import { GridPlugin, Sort, Page, Filter} from '@syncfusion/ej2-vue-grids';
+import ButtonGrid  from '@/components/ButtonGrid'
 
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
+Vue.use(GridPlugin);
+
 
 export default {
     name: 'DatosCamino',
@@ -151,13 +163,19 @@ export default {
             amaterno:'',
             rfc_benef:'',
             clabe:'',
+            juridica:'',
             calle:'',
             next:'',
             colonia:'',
             cp:'',
             tipocalle:'',
+            estatus:'',
             editmode: false,
-            fisica_moral:''
+            flag: false,
+            lista:lista,
+            pageSettings: { pageCount: 10, pageSize: 20  },
+            flagEdicion:true,
+            usuario:'' ,
                 }
     },
         validations: {
@@ -178,7 +196,24 @@ export default {
             required,
         },
     },
+    provide: {
+        grid: [Sort, Page, Filter]
+    },
     methods:{ 
+        rowSelected: function(args) {
+            let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
+            //alert(selectedrowindex); // To alert the selected row indexes.
+            let selectedrecords = this.$refs.grid.getSelectedRecords();  // Get the selected records.
+            console.log(selectedrecords)
+            this.usuario = selectedrecords[0].nombre + ' ' 
+            + selectedrecords[0].apaterno + ' ' + selectedrecords[0].amaterno
+            this.id = selectedrecords[0].id
+            }, 
+            async asignar(){
+            const response = await asignarUsuario(this.$route.params.obraId, this.id)
+            alert(response.msg)
+            console.log(response)
+        },
         async valbenef() {
             // ...
             console.log("valbenef")
@@ -197,6 +232,16 @@ export default {
              
             }
   },
+  editTemplateA () { 
+            return { 
+                template:ButtonGrid,
+            }    
+        },
+editTemplateB () { 
+            return { 
+                template:ButtonGrid,
+            }    
+        },
          async DatosBeneficiarios(){   
              this.$emit("show-error", false); 
              this.$v.$touch()
@@ -212,11 +257,13 @@ export default {
                     amaterno:this.amaterno,
                     rfc_benef:this.rfc_benef,
                     clabe:this.clabe,
+                    juridica:this.juridica,
                     calle:this.calle,
                     next:this.next,
                     colonia:this.colonia,
                     cp:this.cp,
-                    tipocalle:this.tipocalle
+                    tipocalle:this.tipocalle,
+                    estatus:this.estatus
                 }
                 console.log('data')
                 console.log(data)
@@ -242,4 +289,72 @@ export default {
         }
     }
 }
+
+
+
+const lista =
+[
+    {
+    id:1,
+nombre:'MUNICIPIO ',
+apaterno:'SANTA MARIA',
+amaterno:'PAPALO',
+rfc:'MSM8501011Q0',
+clabe:'072610010441984070'
+    } ,
+    {
+            id:2,
+nombre:'MUNICIPIO',
+apaterno:'SANTOS REYES',
+amaterno:'PAPALO',
+rfc:'MSR8501013Z4',
+clabe:'021610040623344200'
+    } ,
+    {
+id:3,
+nombre:'MUNICIPIO',
+apaterno:'SAN MATEO',
+amaterno:'PIÑAS',
+rfc:'MSM850101AX3',
+clabe:'072634010448551660'        
+    },
+    {
+id:4,
+nombre:'MUNICIPIO',
+apaterno:'SANTA MARIA',
+amaterno:'TEMAXCALTEPEC',
+rfc:'MSM8501015M9',
+clabe:'072624010459594273'
+    },
+    {
+id:5,
+nombre:'MUNICIPIO',
+apaterno:'SANTA MARIA',
+amaterno:'TOTOLAPILLA',
+rfc:'MSM9601018X3',
+clabe:'012610001152679863'
+    },
+    {
+id:6,
+nombre:'MUNICIPIO',
+apaterno:'SAN JUAN',
+amaterno:'CIENEGUILLA',
+rfc:'MSJ850101GZ0',
+clabe:'072614010461517410'
+    },
+    {
+id:7,
+nombre:'MUNICIPIO',
+apaterno:'VALERIO',
+amaterno:'TRUJANO',
+rfc:'MVT850101N90',
+clabe:'012610001131975148'
+    }
+]
+
 </script>
+
+
+<style scoped>
+
+</style>

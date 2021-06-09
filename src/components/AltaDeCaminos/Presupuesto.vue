@@ -234,7 +234,7 @@ import Vue from "vue";
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager, Query } from "@syncfusion/ej2-data";
-import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
+import { getEdos, getMunicipios, getLocalidades, getCvepres, getSpagos } from '@/api/alta-camino'
 import { required } from 'vuelidate/lib/validators'
 
 Vue.use(NumericTextBoxPlugin);

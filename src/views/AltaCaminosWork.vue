@@ -13,9 +13,9 @@
             Datos del Camino
           </a>
         </li>  
-        <li role="presentation"  id="tabDatosBeneficiario">
+        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosBeneficiario">
           <a href="#datosBeneficiario" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
-            Datos del Beneficiario
+            Beneficiario
           </a>
         </li>   
         <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabAsina">
@@ -23,11 +23,18 @@
             Asignar
           </a>
         </li>      
-         <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
+         <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabAsina">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Programación
           </a>
-        </li>         
+        </li>   
+        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosFinancieros">
+          <a href="#datosFinancieros" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
+            Consulta SIA
+          </a>
+        </li>  
+
+           
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="datosGeograficos">
@@ -46,6 +53,10 @@
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">
           <convenio :camino_id="getCaminoId"> </convenio>
         </div> 
+        <div role="tabpanel" class="tab-pane" id="datosFinancieros">
+          <DatosFinancieros> </DatosFinancieros>
+        </div>   
+        
     </div>
   <div>
     <div v-if="msgError" class="alert alert-danger">{{ msgError }}</div>
@@ -58,16 +69,19 @@
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
+import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
 import AsignarResidente from '@/components/AsignarResidente';
 import { mapMutations } from 'vuex'
 import convenio from '@/components/convenio';
+import Convenio from '../components/convenio.vue';
 export default {
   name: 'AltaCamino',
   components: { DatosGeograficos, 
                 DatosCamino, 
                 DatosBeneficiario,
                 AsignarResidente,
-                convenio
+                convenio,
+                DatosFinancieros
               },
   data () {
     return {

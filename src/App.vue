@@ -78,6 +78,7 @@
       <h1>Dirección General de Carreteras</h1>
       <h2>Cabeceras Municipales</h2>
       <h3>{{ getBreadcrumb[0] }}</h3>
+      <h3>{{$route.params.nombre_camino}}</h3>
       <hr class="red">
     </div>
   </div>
@@ -96,6 +97,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { mapActions } from "vuex"
+import { CaminoPut } from '@/api/alta-camino';
 
 export default {
   data () {
@@ -108,6 +110,11 @@ export default {
       console.log('isauth:' + this.$store.getters['user/isAuthenticated'])
       return  this.$store.getters['user/isAuthenticated']
       },
+      cData: function() {
+            console.log("this.data")
+            console.log(this.data)
+            return this.data
+        } ,
     getUser: function () {
       
       return this.$store.getters['user/StateUser']
@@ -118,6 +125,8 @@ export default {
     },
     getBreadcrumb: function () {
        return this.$store.state.breadcrumb
+       
+       
     }
   },
   methods: {
