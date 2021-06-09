@@ -14,13 +14,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Canelación de Obra</h4>
+                        <h4 class="modal-title">Cancelación de Obra</h4>
                     </div>
                     <div class="modal-body">
                         <p>Escriba el motivo de cancelación</p>
                           <div class="form-group">
                             <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""   
-                                placeholder="Ingrese el motivo de la canelación" v-model="motivoCancelacion">
+                                placeholder="Ingrese el motivo de la cancelación" v-model="motivoCancelacion">
                             </textarea>                    
                         </div>   
                         <div class="form-group">
