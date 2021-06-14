@@ -141,7 +141,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.6')
+    console.log('version::v2.6.1')
   }
 }
 </script>

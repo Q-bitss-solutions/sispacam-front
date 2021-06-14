@@ -102,7 +102,9 @@ validations: {
   mounted: function () {
     this.setAuthenticated(false)
     console.log('montado')
-    console.log(this.$store.state.breadcrumb)
+    const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
+    console.log('API')
+    console.log(API)
   }
 }
 </script>
