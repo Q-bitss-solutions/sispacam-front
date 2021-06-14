@@ -1,17 +1,16 @@
 <template>
 <table id="datosFinancieros" class="tableContenido" width="100%" border="0">
+    
     <div class="col-md-offset-8" >
         <label for="start" >Fecha Consulta:</label>
         <input type="date" id="start" name="trip-start" 
-               value="07-06-2021"
-               min="2021-06-07" max="2021-12-31"
                v-model="fechac"
                >
     </div>
     <div class="col-md-offset-10">
         <button class="btn btn-primary" type="button" id="buscarObras" @click="submit">
         <span  ></span>Buscar</button>
-    </div>
+    </div> 
     <div class="col-md-12 mx-auto">
          <div class="row">
             <h3>Clave Presupuestal</h3>
@@ -29,12 +28,12 @@
                     :rowSelected='rowSelected'
                     >
                     <e-columns>
-                        <e-column field='mes'         headerText='Mes' ></e-column>
-                        <e-column field='modificado'  headerText='Modificado' textAlign='right'></e-column>
-                        <e-column field='ejercido'      headerText='Ejercido' textAlign='right'></e-column>
-                        <e-column field='comprometido'      headerText='Comprometido' textAlign='right'></e-column>
-                        <e-column field='pagado'      headerText='Pagado' textAlign='right'></e-column>
-                        <e-column field='disponible'       headerText='Disponible' textAlign='right'></e-column>             
+                        <e-column field='mes'           headerText='Mes' ></e-column>
+                        <e-column field='modificado'    headerText='Modificado' textAlign='right' format='C2'></e-column>
+                        <e-column field='ejercido'      headerText='Ejercido' textAlign='right' format='C2'></e-column>
+                        <e-column field='comprometido'  headerText='Comprometido' textAlign='right' format='C2' ></e-column>
+                        <e-column field='pagado'        headerText='Pagado' textAlign='right' format='C2'></e-column>
+                        <e-column field='disponible'    headerText='Disponible' textAlign='right' format='C2'></e-column>             
                     </e-columns>          
                 </ejs-grid>  
           
@@ -67,11 +66,11 @@
                     <e-columns>
                         <e-column field='id'         headerText='id' :visible='flag'></e-column>
                         <e-column field='rfc_benef'  headerText='RFC'></e-column>
-                        <e-column field='benef'      headerText='Beneficiario' ></e-column>
-                        <e-column field='monto'      headerText='Monto' textAlign='right'></e-column>
-                        <e-column field='reintegro'      headerText='Reintegro' textAlign='right'></e-column>
-                        <e-column field='felab'      headerText='Fecha Elab'></e-column>
-                        <e-column field='fpago'       headerText='Fecha Pago'></e-column>  
+                        <e-column field='nombre'      headerText='Beneficiario' ></e-column>
+                        <e-column field='importe'      headerText='Monto' textAlign='right' format='C2'></e-column>
+                        <e-column field='reintegro'  headerText='Reintegro' textAlign='right' format='C2'></e-column>
+                        <e-column field='f_elab'      headerText='Fecha Elab'></e-column>
+                        <e-column field='f_pago'      headerText='Fecha Pago'></e-column>  
                         <e-column field='estatus'    headerText='Estatus'></e-column>              
                     </e-columns>          
                 </ejs-grid>  
@@ -96,11 +95,21 @@ import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
 import { GridPlugin, Sort, Page} from '@syncfusion/ej2-vue-grids';
 import ButtonGrid  from '@/components/ButtonGrid'
-import { getCvepres } from '@/api/obras'
+import { getCvepres, getSpago} from '@/api/obras'
+import VueCurrencyFilter from 'vue-currency-filter'
 
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
 Vue.use(GridPlugin);
+Vue.use(VueCurrencyFilter, {
+  symbol: '$', // El símbolo, por ejemplo €
+  thousandsSeparator: ',', // Separador de miles
+  fractionCount: 2, // ¿Cuántos decimales mostrar?
+  fractionSeparator: '.', // Separador de decimales
+  symbolPosition: 'front', // Posición del símbolo. Puede ser al inicio ('front') o al final ('') es decir, si queremos que sea al final, en lugar de front ponemos una cadena vacía ''
+  symbolSpacing: true // Indica si debe poner un espacio entre el símbolo y la cantidad
+})
+
 
 
 export default {
@@ -127,14 +136,15 @@ export default {
             estatus:'',
             editmode: false,
             flag: false,
-            lista:lista,
+            lista:[],
             clave:[],
             pageSettings: { pageCount: 10, pageSize: 20  },
             flagEdicion:true,
             usuario:'' ,
             start:'',
-            fechac:'',
+            fechac :new Date().toISOString().substr(0, 10),
                 }
+                
     },
         validations: {
         nombre: {
@@ -158,6 +168,7 @@ export default {
         grid: [Sort, Page]
     },
     methods:{ 
+        
         rowSelected: function(args) {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
@@ -172,26 +183,24 @@ export default {
             alert(response.msg)
             console.log(response)
         },
+        formatNum(num){
+            return new Intl.NumberFormat().format(num);
+        },
         async populate () {
             try{
                 let results  = []
                 let clave = null
-                console.log("this.fecha")
-                console.log(this.fecha)
-                if(this.fecha){
-                        clave = await getCvepres(this.fecha)    
-                        const aRR = []
-                        aRR.push(clave)
-                        results = aRR    
-                    }
+                //this.clave = await getCvepres('2021-06-08')
+                //this.lista = await getSpago('2021-06-08') 
+                if(this.fechac){
+                    this.clave = await getCvepres(this.fechac) 
+                    this.lista = await getSpago(this.fechac)       
+                }
             }catch(e) {
                 console.log('error-->')
                 console.log(e)
             }
-
-            
         },
-
         async valbenef() {
             // ...
             console.log("valbenef")
@@ -211,9 +220,7 @@ export default {
             }
   },
   submit() { 
-     console.log('submit...')
-    console.log(this.fechac)
-
+     this.populate()
   },
 
   editTemplateA () { 
@@ -267,6 +274,16 @@ editTemplateB () {
             }
         }
     },
+    computed:{
+        getCdate(){
+            var currentDate = new Date();
+            this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
+            console.log("datosFecha")
+            console.log(currentDate)
+            console.log(this.fechac)
+            return this.fechac
+        }
+    },
      created(){
         if(this.$route.params.obraId){
             this.editmode = true
@@ -275,7 +292,7 @@ editTemplateB () {
 }
 
 
-
+/*
 const lista =
 [
     
@@ -429,8 +446,9 @@ const lista =
 
     
 ]
+*/
 
-//const clave =
+/* //const clave =
 //[
 //{mes:"Enero",modificado:"2,823.52",ejercido:"0.00",comprometido:"0.00",pagado:"0.00",disponible:"2,823.52",},
 //{mes:"Febrero",modificado:"662,652.00",ejercido:"0.00",comprometido:"0.00",pagado:"0.00",disponible:"662,652.00",},
@@ -445,7 +463,7 @@ const lista =
 //{mes:"Noviembre",modificado:"80,963,509.37",ejercido:"0.00",comprometido:"0.00",pagado:"0.00",disponible:"80,963,509.37",},
 //{mes:"Diciembre",modificado:"46,452,999.58",ejercido:"0.00",comprometido:"0.00",pagado:"0.00",disponible:"46,452,999.58",},
 //{mes:"TOTAL",modificado:"2,300,000,000.00",ejercido:"274,087,000.00",comprometido:"0.00",pagado:"509,674,000.00",disponible:"1,516,239,000.00",},
-
+ */
 
 
 //]

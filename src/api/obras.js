@@ -22,6 +22,13 @@ export function getCvepres(fecha) {
   })
 }
 
+export function getSpago(fecha) {
+    return request({
+      url: `/getSpago/${fecha}/`,
+      method: 'get'
+    })
+  }
+
 export function getAllObras(){
   return request({
     url: '/camino/list/1/',

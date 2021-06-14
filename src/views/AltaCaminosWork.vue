@@ -13,7 +13,7 @@
             Datos del Camino
           </a>
         </li>  
-        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosBeneficiario">
+        <li role="presentation"  id="tabDatosBeneficiario">
           <a href="#datosBeneficiario" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
             Beneficiario
           </a>
@@ -46,7 +46,7 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario> </DatosBeneficiario>
-        </div>          
+        </div>      
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsignarResidente> </AsignarResidente>
         </div>      
