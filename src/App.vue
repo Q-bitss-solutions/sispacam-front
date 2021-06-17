@@ -34,9 +34,10 @@
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                   <a href="/busqueda">Búsqueda</a>
               </li>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/financiero">Financieros</a></li>
               <li v-if="$route.params.obraId">
                 <a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a>                
-              </li>
+              </li>            
             </ul>
           </li>
         </ul>
