@@ -28,11 +28,11 @@
             Programación
           </a>
         </li>   
-        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosFinancieros">
+        <!-- <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosFinancieros">
           <a href="#datosFinancieros" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Consulta SIA
+            Avance Financiero
           </a>
-        </li>  
+        </li> -->  
 
            
     </ul>

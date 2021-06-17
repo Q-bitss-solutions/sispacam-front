@@ -5,6 +5,7 @@ import Presupuestos from '../views/Presupuestos.vue'
 import AltaCamino from '../views/AltaCaminosWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
 import convenio from '../components/convenio.vue'
+import financieros from '../components/AltaDeCaminos/DatosFinancieros.vue'
 import Login from '../views/Login.vue'
 import store from "../store/index";
 import GridResultObra from "../views/GridResultBusqueda.vue"
@@ -22,6 +23,12 @@ const routes = [
     path: '/busqueda',
     name: 'BusquedaCaminos',
     component: BusquedaCaminos,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/financiero',
+    name: 'DatosFinancieros',
+    component: financieros,
     meta: { requiresAuth: true }
   },
   {
