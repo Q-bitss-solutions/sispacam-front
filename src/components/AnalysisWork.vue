@@ -336,14 +336,12 @@ const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_
         },
         //municipios
         async obtenerMunicipios(){
-            console.log('obtenerMunicipios')
             this.$emit("set-icveEdo", this.icveEstadoInegi); 
             this.$emit("show-error", false);
             this.icveMunicipio = null;
             this.municipiosData = new DataManager([]);
             this.municipiosHabilitado = true;    
             this.clearLocalidades();            
-            console.log('localidadesHabilitado: ',this.localidadesHabilitado)
             try{
                 const response = await getMunicipios(this.icveEstadoInegi)
                 this.municipiosData = new DataManager(response);
@@ -377,8 +375,7 @@ const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_
             }
         },
 
-        recalcularPoblacionTotal() {
-            console.log('recalcularPoblacionTotal')            
+        recalcularPoblacionTotal() {       
             if (this.localidades.length > 0) {   
                 const localidadesData = this.localidadesData.executeLocal(new Query());
                 this.localidadesTabla = localidadesData
@@ -397,15 +394,12 @@ const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_
             }
         },             
         updateLocalidades(e){
-            console.log('updateLocalidades')
-            console.log(this.$refs.localidades.ej2Instances)
             this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 
         },
 
         clearLocalidades(){
-            console.log('clearLocalidades')
             this.localidadesData = null;
             this.localidadesHabilitado = false;
             this.localidades = [];
@@ -415,7 +409,6 @@ const API = 'http://ccr-back.apps.prod.sct.gob.mx'//process.env.VUE_APP_SCT_SVC_
     
     mounted() {
         this.$nextTick(() => {
-            //console.log('nextTick')    
             })
     },
 

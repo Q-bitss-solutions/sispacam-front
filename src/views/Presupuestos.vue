@@ -187,13 +187,10 @@ export default {
            const data = []
            const conceptos = []
            const aConceptos = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
-           console.log('aConceptos')
-           console.log(aConceptos)
            aConceptos.map(a => {
                 console.table(a)
             })            
            aConceptos.map( concepto => {
-               console.log('conceptomap')   
                if(concepto.presupuesto){
                     concepto.presupuesto.map(i => {
                         conceptos.push(i)
@@ -211,13 +208,11 @@ export default {
                     })                           
             })
         let response = ''
-        console.log('EDITMODE')
         if(this.getEditMode){
            response = await updatePresupuesto(this.$route.params.convenioId, data)
         }else{
            response = await savePresupuesto(data)
         }
-        console.log(response)
         $('#save').modal('show')
        }
 
@@ -266,15 +261,9 @@ export default {
        
     },
     created(){
-        console.log('aniooooo')
-        console.log(this.ancho1)
         this.anchoCamino = this.$route.params.anchoId
-        console.log(this.anchoCamino)
         this.ancho = this.ancho1.find(a => this.anchoCamino == a.id).ancho
         this.anio = this.$route.params.anio
-        console.log(this.anio)
-        console.log('this.ancho')
-        console.log(this.ancho)
     }
 
 }

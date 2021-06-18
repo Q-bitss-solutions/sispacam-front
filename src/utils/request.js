@@ -33,8 +33,6 @@ function getRefreshToken(){
 function getAccessToken() {
     const camino = JSON.parse(localStorage.getItem('camino'))
     if(camino){
-        console.log('camino.user.token')
-        console.log(camino.user.token)
         return camino.user.token
     }         
     return ''
@@ -60,7 +58,6 @@ service.interceptors.response.use(
         let { response, message } = error
         if (error.response && error.response.data) {
           const { status, data } = response
-          console.log(message + ' - ' +  status + ' ' + data)
           return Promise.reject(data)
         } else {
 
@@ -74,7 +71,6 @@ service.interceptors.response.use(
             const code = message.substr(message.length - 3)
             message = 'Backend interface' + code + 'Exception'
           }
-          console.log(message)
           return Promise.reject(message)
         }
     }

@@ -124,16 +124,12 @@ export default {
     },
     mounted () {
         this.populate()
-        console.log('mounted')        
         this.$refs.grid.ej2Instances.defaultLocale.EmptyRecord = "No hay registros";   
         this.$refs.grid.ej2Instances.gridPager.ej2_instances[0].defaultConstants.currentPageInfo = '{0} de {1} Paginas' 
     },
     created() {
         this.setBreadcrumb(this.breadcrumb)
-        console.log('Params: ', this.$route.params)
         this.populate()
-        console.log('----------------------->')
-        console.log(this.$store.state.user.userRol)
     }
 }    
 </script>

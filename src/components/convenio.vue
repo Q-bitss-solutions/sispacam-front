@@ -317,8 +317,6 @@ export default {
         this.meta = selectedrecords[0].meta
         this.anioFields = selectedrecords[0].anio
         this.estatus = "A"
-        console.log("this.monto")
-        console.log(this.monto)
         this.editmode = true
       },
           formatNum(num){
@@ -326,9 +324,6 @@ export default {
         },
       setData(){
         const rowList = this.lista.find(row => row.anio == this.anio)
-        
-        console.log('rowList')
-        console.log(rowList)
         if(rowList && rowList.id){
           this.anio = rowList.anio
           this.tramo = rowList.tramo
@@ -369,18 +364,11 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-               console.log('this.lista')
-               console.log(this.lista)
                let rowId = -1
                if(this.lista.length > 0){
                  let rowExist = this.lista.find(l => l.anio == this.anio)
-                 console.log('rowExist.length')
-                 console.log(rowExist)
                  if(rowExist && rowExist.id){
-                   console.log(rowExist)
-                   rowId = rowExist.id
-                   console.log('rowId')                   
-                   console.log(rowId)              
+                   rowId = rowExist.id            
                  }                 
                }
 
@@ -400,7 +388,6 @@ export default {
                 }else{
                   resp = await generarConvenio(formData, this.camino_id) 
                 }
-                console.log(resp)
                 this.lista = await getlistaConvenio(this.camino_id)
                  $('#addConvenio').modal('show')
                  this.btnSaveDisabled  = false
@@ -438,9 +425,6 @@ export default {
           try{
              let results  = []
              let data = null
-             console.log("Datos-Pruebas")
-             console.log(data)
-             console.log(this.flag)
              if(this.flag){
                 if("1"){
                   this.lista = list                        
@@ -456,23 +440,16 @@ export default {
             },
         async listaconvenio(){
            this.lista = await getlistaConvenio(this.camino_id)
-            console.log("listaconvenio")
-           console.log(this.lista)
            const resp = await getupdate(this.$route.params.obraId)
            this.longitudP = this.formatNum(resp.longitud_pavimentar)
-        console.log("longitudP")
-        console.log(resp)
         
         } ,
         openmodal(){
-          console.log("openmodal")
           $(this.$refs['mdlCancelarConvenio']).modal('show')
         } ,
         async CancelarConvenio (){
             $(this.$refs['mdlCancelarConvenio']).modal('hide')
             const data = await cancelarConvenio(this.$store.state.cancelConvenio.id)
-            console.log("regresaCancelacion")
-            console.log(data)
             this.populate()
             const r = this.$refs.grid.refresh
             r.refresh
@@ -482,16 +459,11 @@ export default {
     },
     created:function(){
       this.listaconvenio()
-      console.log("created")
       this.longitudP =  this.formatNum(this.$route.params.longitud_pavimenta)
-      console.log("this.ancho")
-      console.log(this.ancho)
  
     },
     computed:{
       isCanceled:function(){
-        console.log("isCnceled")
-        console.log(this.$store.state.cancelConvenio.id)
         if(this.$store.state.cancelConvenio.id){
           this.openmodal()
         }
@@ -500,15 +472,11 @@ export default {
   
       getmonto(){
         if(this.lista){
-        console.log("LISTA")
-        console.log(this.lista)
         return this.lista.reduce((total,i)=>{return total+Number(i.monto)},0)
       }
       },
       getmeta(){
         if(this.lista){
-        console.log("LISTA")
-        console.log(this.lista)
         return this.lista.reduce((total,i)=>{return total+Number(i.meta)},0)
       }
       },
@@ -521,9 +489,6 @@ export default {
     },
     
 }
-
-//console.log("data-list")
-//console.log(data)
 
  
 

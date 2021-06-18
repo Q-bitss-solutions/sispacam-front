@@ -349,15 +349,14 @@ export default {
                         precio_unitario: (terra.importe || 0) / (terra.cantidad || 1),
                         importe_total: ( (terra.importe || 0) / (terra.cantidad || 1)) * ( terra.cantidad || 1 )
                     }))            
-                console.log(data)
+                
                 _presupuesto.presupuestoBack = data
                 _presupuesto.presupuestoStart = data
             })
 
             this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
             this.presupuestoBase =  JSON.parse(JSON.stringify(this.presupuestos))
-            console.log('this.presupuestoBase')
-            console.log(this.presupuestoBase)
+
 
               this.presupuestoReal.map(pr => {
                         pr.presupuestoStart.map( ps => {
@@ -411,8 +410,6 @@ export default {
         async fetchPresupuestoReal() {
             const presupuesto_real = await getPresupuestoRealByIdConvenio(this.$route.params.convenioId)
             if(presupuesto_real.length > 0){
-                console.log('presupuesto_real')
-                console.log(presupuesto_real.length > 0)
                 this.$emit('update:editMode', true)
             }
             this.fetch_presupuestoReal = presupuesto_real
@@ -442,7 +439,6 @@ export default {
             return this.totalPU
         },
         getTotalIPL() {
-            console.log()
             this.totalIPL = this.getPresupuestoByID(1).subTotalIPL +
                 this.getPresupuestoByID(2).subTotalIPL +
                 this.getPresupuestoByID(3).subTotalIPL +
@@ -477,8 +473,6 @@ export default {
         },
         getSubtotalIPExt: {            
             get() {
-                console.log('getSubtotalIPExt')
-                console.log(this.extraordinarios)
                 return this.extraordinarios.reduce ( (total , item) => {
                     return (total || 0 ) + ( 0 || item.importe_total )
                 }, 0.000001)
@@ -498,9 +492,6 @@ export default {
             }
         },
         getTotalIPK() {
-            console.log(this.isPBase)
-            console.log('getTotalIPK')
-            console.log(this.getPresupuestoByID(1))
                 return this.totalPP = this.getPresupuestoByID(1).subTotalIPK +
                 this.getPresupuestoByID(2).subTotalIPK +
                 this.getPresupuestoByID(3).subTotalIPK +
@@ -513,7 +504,7 @@ export default {
     created(){                
     },
     beforeMount(){
-        console.log('mounted')
+
         this.fetchPresupuestoReal()
         this.fetchPresupuestoBase()        
     } 

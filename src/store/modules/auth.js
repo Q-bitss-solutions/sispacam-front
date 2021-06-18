@@ -52,8 +52,6 @@ export default {
                 commit('setAccessToken', response.access)
                 commit('setRefreshToken', response.access)
                 let tmus = jwtDecode(response.access)
-                console.log("mike")
-                console.log(tmus)
                 commit('setuserId', tmus.icveusuario)
                 commit('setUser', response.name)
                 commit('setUserRol', response.perfil)
