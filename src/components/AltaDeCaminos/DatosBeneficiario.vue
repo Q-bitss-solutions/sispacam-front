@@ -88,7 +88,7 @@
                             </select>
                         </div>
                         <div class="col-sm-4">
-                            <button type="button" v-on:click="DatosBeneficiarios" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Beneficiario</button>
+                            <button type="button" v-on:click="DatosBeneficiarios" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Guardar Datos</button>
                         </div> 
                 </div>
                 
@@ -98,7 +98,7 @@
             <div class="col-md-8 form-group">
                 <label class="control-label">Beneficiario asignado:</label>
                 <input class="form-control" v-model="usuario" type="text" disabled placeholder="No hay beneficiario asigando">
-                <input class="form-control" v-model="id" type="text" v-show="false">
+                <input class="form-control" v-model="benefasig" type="text" v-show="false">
             </div>           
         </div>
         <div class="row">
@@ -109,7 +109,8 @@
         <div class="row">
         <div class="col-md-12 table-responsive">            
               <ejs-grid   ref="grid"
-                    :dataSource="lista" :gridLines='lines' 
+                    :dataSource="lista" 
+                    :gridLines='lines' 
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
@@ -124,8 +125,8 @@
                 <e-column field='amaterno' headerText='Segundo Apellido' ></e-column>
                 <e-column field='rfc'      headerText='RFC'></e-column>
                 <e-column field='clabe'    headerText='Cable'></e-column>
-                <e-column field="clave" :template='editTemplateA' headerText='Editar'  :visible='flagEdicion'></e-column>  
-                <e-column field="clave" :template='editTemplateB' @click="asignar" headerText='Asignar' :visible='flagEdicion'></e-column>                 
+                <e-column field="id" :template='editTemplateA' headerText='Editar'  :visible='flagEdicion'></e-column>  
+                <e-column field="id" :template='editTemplateB' @click="asignar" headerText='Asignar' :visible='flagEdicion'></e-column>                 
             </e-columns>          
         </ejs-grid>  
         </div>
@@ -141,6 +142,7 @@ import { generarId } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
 import { GridPlugin, Sort, Page, Filter} from '@syncfusion/ej2-vue-grids';
+import { asignarUsuario } from '@/api/obras'
 import ButtonGrid  from '@/components/ButtonGrid'
 
 Vue.use(DropDownListPlugin);
@@ -170,12 +172,15 @@ export default {
             cp:'',
             tipocalle:'',
             estatus:'',
+            benefasig:'',
             editmode: false,
             flag: false,
             lista:lista,
             pageSettings: { pageCount: 10, pageSize: 20  },
             flagEdicion:true,
             usuario:'' ,
+            lines: 'Both',
+            
                 }
     },
         validations: {
@@ -204,21 +209,17 @@ export default {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
             let selectedrecords = this.$refs.grid.getSelectedRecords();  // Get the selected records.
-            console.log(selectedrecords)
+            
             this.usuario = selectedrecords[0].nombre + ' ' 
             + selectedrecords[0].apaterno + ' ' + selectedrecords[0].amaterno
             this.id = selectedrecords[0].id
             }, 
             async asignar(){
             const response = await asignarUsuario(this.$route.params.obraId, this.id)
-            alert(response.msg)
-            console.log(response)
+            alert(response.msg) 
         },
         async valbenef() {
             // ...
-            console.log("valbenef")
-            console.log(this.fisica_moral)
-            console.log(this.rfc_benef.length)
             
             //12
             if (this.fisica_moral == "M" && this.rfc_benef.length != 12) {
@@ -250,7 +251,6 @@ editTemplateB () {
             } else {
              this.btnSaveDisabled  = true
              try{
-                 console.log("GenerarId50")
                  const data = {
                     nombre:this.nombre,
                     apaterno:this.apaterno,
@@ -265,10 +265,7 @@ editTemplateB () {
                     tipocalle:this.tipocalle,
                     estatus:this.estatus
                 }
-                console.log('data')
-                console.log(data)
                 const response = await generarId(data)
-                console.log(response)
                 this.idcamino = response.beneficios + '-' + this.tipoCamino
                 $('#addCamino').modal('show')
                 this.btnSaveDisabled  = false           

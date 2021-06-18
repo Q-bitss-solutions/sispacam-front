@@ -329,13 +329,10 @@ export default {
                 this.localidadesData = new DataManager(res);
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
-                //console.log("loc-data")
-                //console.log(this.$refs.localidades.ej2Instances.value)
                 this.localidades = this.$refs.localidades.ej2Instances.value
                 const localidadesData = this.localidadesData.executeLocal(new Query());
                 this.localidadesTabla = localidadesData
                 .filter(a => this.localidades.includes(a.cve_loc));
-
               this.region = response.datos_geograficos.region
               this.ubicacion = response.datos_geograficos.ubicacion
               this.poblacion_indigena = response.datos_geograficos.poblacion_indigena
@@ -348,9 +345,7 @@ export default {
               //this.ilocalidades_municipio = response.datos_geograficos[0].ilocalidades_municipio
               this.setEdoIso()
               this.recalcularPoblacionTotal()   
-              console.log('estadosHabilitado false')
-              this.estadosHabilitado = false       
-                     
+              this.estadosHabilitado = false                
         },
         //Envia datos Ubicacion
         enviardatos_u(){
@@ -387,16 +382,13 @@ export default {
                 const res = await getEdos()
                 const results = res.results;
                 this.estadosData = new DataManager(results);
-                console.log('estadosHabilitado true')
                 this.estadosHabilitado = true;
-                this.icve_estado_inegi = null;   
-                
+                this.icve_estado_inegi = null;       
             }catch(error) {             
                 console.log('error al obtener estados')
                 console.log(error);
                 this.$emit("show-error", error);
             }
-
         },
         //municipios
         async obtenerMunicipios(){            
@@ -415,7 +407,6 @@ export default {
                 this.$emit("show-error", err);
             }
         },
-
         //localidades
         async obtenerLocalidades(){
             try{                
@@ -447,7 +438,6 @@ export default {
                      datos:this.DatosGeograficos
                  });
             }catch(error){
-                console.log("sinLocalidades")
                 console.log('error al obtener localidades')
                 console.log(error);
                 this.$emit("show-error", error);
@@ -483,10 +473,6 @@ export default {
                  this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
                  this.DatosGeograficos.marginacion = this.marginacion
                 
-
-
-                console.log('this.DatosGeograficos')
-                console.log(this.DatosGeograficos.ilocalidades_municipio)
                  /*2*/
                  this.$emit("set-icveEdo", {
                      datos:this.DatosGeograficos
@@ -498,10 +484,6 @@ export default {
             }
         },             
         updateLocalidades(e){
-            /*
-            console.log('updateLocalidades')
-            console.log(this.$refs.localidades.ej2Instances)            
-            */
             this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 
@@ -522,7 +504,6 @@ export default {
             
             const edoSelect = this.estadosData.executeLocal(new Query())
                                 .filter(a => a.cve_agee == this.icve_estado_inegi)                        
-            console.log('edoSelect')
             console.table(edoSelect)
             this.DatosGeograficos.iso = edoSelect[0].iso
             this.DatosGeograficos.cve_agee = this.icve_estado_inegi
@@ -535,13 +516,10 @@ export default {
  */         
             const munSelect = this.municipiosData.executeLocal(new Query())
                                 .filter(a => a.cve_agem == this.icve_municipio) 
-            console.log('munSelect')
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacion_indigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
-            console.log('this.iTotalPoblacionIndigena')
-            console.log(this.iTotalPoblacionIndigena)
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
         },
             actualizadatos(){
@@ -562,21 +540,14 @@ export default {
                      datos:this.DatosGeograficos
                  }); 
     },
-
-    },
-    
+    },    
     mounted() {
         this.$nextTick(() => {
-            //console.log('nextTick')    
             })
     },
-
-    async created() {
-        console.log('API2')
-        console.log(API)        
+    async created() {    
         await this.initData()
         if(this.$route.params.obraId){
-            console.log(' estadosHabilitado false')
             this.estadosHabilitado = false
             this.CargaDatos(this.$route.params.obraId)
             this.editmode = true

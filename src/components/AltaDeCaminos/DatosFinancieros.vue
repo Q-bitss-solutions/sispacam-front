@@ -78,8 +78,8 @@
          </select>
             </div>
             <div class="col-md-4 form-group">
-                <label class="control-label" for="nombre">Beneficiario:</label>
-                <input class="form-control" id="nombre" placeholder="Beneficiario" type="text" v-model="benef">
+                <label class="control-label" for="nombreBenf">Beneficiario:</label>
+                <input class="form-control" id="nombreBenef" placeholder="Beneficiario" type="text" v-model="benef">
             </div>    
             <div class="col-md-4 form-group">
                 <button class="btn btn-default btn-sm small-top-buffer" type="button" id="buscarObras" @click="consulta">
@@ -213,7 +213,6 @@ export default {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
             let selectedrecords = this.$refs.grid.getSelectedRecords();  // Get the selected records.
-            console.log(selectedrecords)
             this.usuario = selectedrecords[0].nombre + ' ' 
             + selectedrecords[0].apaterno + ' ' + selectedrecords[0].amaterno
             this.id = selectedrecords[0].id
@@ -221,7 +220,6 @@ export default {
             async asignar(){
             const response = await asignarUsuario(this.$route.params.obraId, this.id)
             alert(response.msg)
-            console.log(response)
         },
         formatNum(num){
             return new Intl.NumberFormat().format(num);
@@ -250,9 +248,7 @@ export default {
         },
         async valbenef() {
             // ...
-            console.log("valbenef")
-            console.log(this.fisica_moral)
-            console.log(this.rfc_benef.length)
+        
             
             //12
             if (this.fisica_moral == "M" && this.rfc_benef.length != 12) {
@@ -288,7 +284,7 @@ editTemplateB () {
             } else {
              this.btnSaveDisabled  = true
              try{
-                 console.log("GenerarId50")
+                 
                  const data = {
                     nombre:this.nombre,
                     apaterno:this.apaterno,
@@ -303,10 +299,7 @@ editTemplateB () {
                     tipocalle:this.tipocalle,
                     estatus:this.estatus
                 }
-                console.log('data')
-                console.log(data)
                 const response = await generarId(data)
-                console.log(response)
                 this.idcamino = response.beneficios + '-' + this.tipoCamino
                 $('#addCamino').modal('show')
                 this.btnSaveDisabled  = false           
@@ -325,9 +318,6 @@ editTemplateB () {
         getCdate(){
             var currentDate = new Date();
             this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
-            console.log("datosFecha")
-            console.log(currentDate)
-            console.log(this.fechac)
             return this.fechac
         }
     },

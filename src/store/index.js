@@ -31,8 +31,6 @@ export default new Vuex.Store({
             state.breadcrumb = dataBreadcrumb
         },
         setIdCancelacion(state, idObraCancelacion) {
-            console.log('mutation')
-            console.log(idObraCancelacion)
             state.cancel.id = idObraCancelacion
         },
         setIdCancelacionConvenio(state, idConvenio) {
@@ -54,10 +52,7 @@ export default new Vuex.Store({
     },
     actions: {
         async test({ commit }, user) {
-            console.log('user')
-            console.log(user)
             const data = await test(user)
-            console.log(data)
         }        
     }, 
     modules: {

@@ -34,8 +34,6 @@ function getRefreshToken(){
 function getAccessToken() {
     const camino = JSON.parse(localStorage.getItem('camino'))
     if(camino){
-        console.log('camino.user.token')
-        console.log(camino.user.token)
         return camino.user.token
     }         
     return ''

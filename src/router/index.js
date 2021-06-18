@@ -78,13 +78,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const isAuthenticated = store.state.user.isAuthenticated
-  console.log(requiresAuth)
-  console.log(isAuthenticated)
   if (requiresAuth && !isAuthenticated) {
-    console.log('login')
     next('/')
   } else {
-    console.log('else')
     next()
   }
 })

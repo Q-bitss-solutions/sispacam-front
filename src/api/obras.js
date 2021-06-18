@@ -30,10 +30,6 @@ export function getSpago(fecha) {
   }
 
   export function getMescons(fecha,mes,name) {
-    console.log("fecha")
-    console.log(fecha)
-    console.log("params-dlm")
-    console.log(mes)
     let req=''
     if(name){
         req += 'name='+name  
@@ -50,10 +46,7 @@ export function getSpago(fecha) {
         url=`/getMescons/${fecha}/${req}/`
     }else{
         url = `/getMescons/${fecha}/`
-    }
-    console.log("req")
-    console.log(req)
-    
+    }  
     return request({
       url: url,
       method: 'get'
@@ -69,9 +62,6 @@ export function getAllObras(){
 }
 
 export function getObraByParmas (params) {
-  console.log(params)
-  console.log(typeof(params))
-  console.log(params)
   let req = 'cve_agee='+params.cve_agee
   req += params.caminos_originales?'&caminos_originales='+params.caminos_originales:''
   req += params.ciit?'&ciit='+params.ciit:''
@@ -82,7 +72,6 @@ export function getObraByParmas (params) {
   req += params.marginacion!=''?'&marginacion='+params.marginacion:''
   req += params.poblacion_indigena!=''?'&poblacion_indigena='+params.poblacion_indigena:''
 
-  console.log(req)
   return request({
     url: '/camino/list/params/'+req+'/410/',
     method: 'get'
@@ -108,7 +97,6 @@ export function asignarUsuario(claveObra, usuario) {
 }
 
 export function getCaminoByClave(claveObra) {
-    console.log('getCaminoByClave --obras')    
     return request({
         url:'/camino/' + claveObra + '/',
         method: 'get'
