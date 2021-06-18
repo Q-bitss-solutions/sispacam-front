@@ -182,7 +182,7 @@ export default {
             const validation = await this.$refs.presupuestoReal.validations()
             if(!validation) {
                 loadingInstance.close();
-                this.$refs.modals.openmodal("La cantidad de las partidas extraorinarias no puden estar en cero"); 
+                this.$refs.modals.openmodal("La cantidad de las partidas extraordinarias no puden estar en cero"); 
                 return
             }            
             const data = []
