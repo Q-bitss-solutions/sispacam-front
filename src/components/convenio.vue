@@ -67,7 +67,7 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-4">
                   <div>
                     <label class="control-label">Origen de recurso:</label>
                     <ejs-dropdownlist  
@@ -109,11 +109,12 @@
                     </div>
                   </div>
                 </div>
-                  <div class="col-md-3 form-group">
+                  <div class="col-md-4 form-group">
                     <label class="control-label">Archivo del Convenio (PDF):</label>
                     <input  id="fileconvenio" type="file" accept=".pdf" @change="onFileSelected" name="myfile" >
-                    <div class="col-md-20">
-                    <label class="control-label" >Nota: El archivo no debe exceder el tamaño de 12 megas</label>
+                    <p>
+                    <div class="col-md-12 table-responsive">
+                    <label class="col-md-12 form-group" >Nota: El archivo no debe exceder el tamaño de 12 megas</label>
                   </div>
                   </div>
                   <div class="col-md-12">
@@ -203,13 +204,13 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Canelación de Convenio</h4>
+                        <h4 class="modal-title">Cancelación de Convenio</h4>
                     </div>
                     <div class="modal-body">
                         <p>Escriba el motivo de cancelación</p>
                           <div class="form-group">
                             <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""   
-                                placeholder="Ingrese el motivo de la canelación" v-model="motivoCancelacion">
+                                placeholder="Ingrese el motivo de la cancelación" v-model="motivoCancelacion">
                             </textarea>                    
                         </div>                                               
                     </div>

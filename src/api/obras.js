@@ -15,6 +15,52 @@ export function getObraByClave(clave) {
   })
 }
 
+export function getCvepres(fecha) {
+  return request({
+    url: `/getCvepres/${fecha}/`,
+    method: 'get'
+  })
+}
+
+export function getSpago(fecha) {
+    return request({
+      url: `/getSpago/${fecha}/`,
+      method: 'get'
+    })
+  }
+
+  export function getMescons(fecha,mes,name) {
+    console.log("fecha")
+    console.log(fecha)
+    console.log("params-dlm")
+    console.log(mes)
+    let req=''
+    if(name){
+        req += 'name='+name  
+    }
+    if(mes){
+        if(name){
+            req += '&f_elab='+mes
+        }else{
+            req += 'f_elab='+mes 
+        }
+    }
+    let url=''
+    if(name || mes){
+        url=`/getMescons/${fecha}/${req}/`
+    }else{
+        url = `/getMescons/${fecha}/`
+    }
+    console.log("req")
+    console.log(req)
+    
+    return request({
+      url: url,
+      method: 'get'
+    })
+  }
+
+
 export function getAllObras(){
   return request({
     url: '/camino/list/1/',

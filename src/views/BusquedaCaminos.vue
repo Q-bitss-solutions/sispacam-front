@@ -31,11 +31,12 @@
                   {{ edo.nom_agee }}
                 </option>
             </select>
-          <div class="row col-md-10">
+          <!--<div class="row col-md-10">
               <small v-if="$v.obra.cve_agee.$error" class="form-text form-text-error">
               Este campo es obligatorio
               </small>
-          </div>               
+          </div>
+          -->               
           </div>
       </div>
 
@@ -198,7 +199,6 @@ export default {
   validations: {
     obra : {
       cve_agee: {
-        required,
         validateEdo
       },
       clave: {

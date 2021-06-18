@@ -4,8 +4,8 @@ import { Message } from 'element-ui'
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const service = axios.create({
-  baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
-  //baseURL: process.env.VUE_APP_BASE_URL + '/api/v1', 
+  //baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
+  baseURL: process.env.VUE_APP_SCT_SVC_BACK_BASE_URL, 
   timeout: 5000, // request timeou
 })
 
