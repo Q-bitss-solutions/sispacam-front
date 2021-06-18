@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store/'
+import { Message } from 'element-ui'
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const service = axios.create({
@@ -49,7 +50,7 @@ service.interceptors.request.use(request => {
 // response interceptor
 service.interceptors.response.use(
     response => {
-        if (response.status === 200  || response.status === 201  || response.status === 202) {
+        if (response.status === 200  || response.status === 201  || response.status === 202  || response.status === 204) {
             return response.data;
         } else {    
           return Promise.reject();                    
@@ -61,6 +62,11 @@ service.interceptors.response.use(
         if (error.response && error.response.data) {
           const { status, data } = response
           console.log(message + ' - ' +  status + ' ' + data)
+          Message({
+            message: 'Ocurrio un error al realizar la petición',
+            type: 'error', 
+            duration: 5 * 1000
+          })        
           return Promise.reject(data)
         } else {
 
@@ -75,6 +81,11 @@ service.interceptors.response.use(
             message = 'Backend interface' + code + 'Exception'
           }
           console.log(message)
+          Message({
+            message: 'Ocurrio un error al realizar la petición',
+            type: 'error',
+            duration: 5 * 1000
+          })          
           return Promise.reject(message)
         }
     }
