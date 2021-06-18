@@ -93,9 +93,7 @@ export default {
   },
   methods: {
     setCEdo (e) {
-      console.log('alertMessageReceived')
       const obj = JSON.parse(JSON.stringify(e))
-      console.log(obj)
       this.cEstado = obj.datos
     },
     showError(e){

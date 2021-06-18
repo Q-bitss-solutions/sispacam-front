@@ -395,9 +395,7 @@ export default {
 
           async valnum() {
     // ...
-    console.log("valnum")
-    console.log(this.fLongitdTotalAPavimentar)
-    console.log(this.fLongitdTotal)
+
 
       
        
@@ -406,10 +404,6 @@ export default {
 
           async CargaDatos(clave){
               const response = await getupdate(clave)
-              console.log('response------------__>')
-              console.log(response)
-              console.log('this.edo.localidades')
-              console.log(this.edo.localidades)
               this.ciit = response.ciit
               this.tren_maya = response.tren_maya
               this.caminosOriginales = response.caminos_originales
@@ -453,8 +447,7 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-                 //console.log("GenerarId22")
-                 //console.log(GenerarId22)
+
                  
                  
                  const data = {
@@ -486,21 +479,14 @@ export default {
                     estatus:"A"
 
                 }
-                 
-                 console.log("aqui-1")
-                 
-                  console.log(this.tipo_camino)
                     if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
                          $('#alertvalnum').modal('show')
                          this.btnSaveDisabled  = false
                          return
                 }
                 if(this.editmode) {
-                    console.log('data--->')
-                    console.log(data)
                  const response1 = await CaminoPut(data, this.$route.params.obraId)
                  $('#UpdateCamino').modal('show')
-                 console.log(response1)
                 }else{
                  const response = await generarId(data)
                  this.idcamino = response.clave
@@ -508,20 +494,14 @@ export default {
                  this.btnSaveDisabled  = false
                 }
                 }
-               
                 catch(err){    
                     this.btnSaveDisabled  = false  
-                     console.log("err")
-                    console.log(err)
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
                     //$('#alertModal').modal('show')
                     this.$emit("show-error",'Error al guardar camino por');                  
-                }
-             
-                
-            }
-            
+                }                
+            }   
         }
     },
     created(){

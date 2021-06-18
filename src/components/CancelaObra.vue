@@ -63,13 +63,10 @@ export default {
                 formData.append("archivo", this.file);
             }         
             const data = await cancelarObra(this.$store.state.cancel.id, formData)
-            console.log(data)
-            console.log(this.$parent.$parent.populate())
             const r = this.$parent.$parent.$refs.grid.refresh
             r.refresh
         },
         setId(clave) {
-            console.log(clave)
             this.$store.commit('setIdCancelacion', clave)            
         },
         onFileSelected (event) {

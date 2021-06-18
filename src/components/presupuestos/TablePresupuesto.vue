@@ -77,6 +77,7 @@
                 v-bind:precision="2" separator="," 
                 v-if="!partida.partida.subconcepto"
                 class="form-control" 
+                v-bind:min="0.001"
                 v-model="partida.importe_kilometro"
                 :read-only="vnumeric"
                 >
@@ -180,22 +181,27 @@ export default {
         formatNum(num){
             return new Intl.NumberFormat().format(num);
         },
-       ...mapMutations('presupuesto', ['setPresupuesto']),
-        checa(index){      
-        const aConceptos1 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))    
+        ...mapMutations('presupuesto', ['setPresupuesto']),
+        checa(index){        
             this.setPresupuesto( {   
                 presupuesto: this.presupuesto, 
                 codigo: this.codigo 
             })            
     },
+    validaCero(item){
+        if(item =='' || isNaN(item) ||  item == 0){
+           return 0.00100                    
+        }
+        return item
+
+    }
     },
     computed:{
         inportek (){
-            return this.presupuesto.map(p => {
-                if(p.cantidad==''){
-                    p.cantidad=0.00100
-                    p.precio_unitario=0.00100
-                }                
+            return this.presupuesto.map(p => {        
+                p.cantidad=this.validaCero(p.cantidad)
+                p.importe_kilometro=this.validaCero(p.importe_kilometro)
+                p.precio_unitario=this.validaCero(p.precio_unitario)
             })
         },
         precioUnitarioTotal () { 

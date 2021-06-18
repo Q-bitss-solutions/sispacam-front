@@ -34,14 +34,28 @@
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                   <a href="/busqueda">Búsqueda</a>
               </li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/financiero">Financieros</a></li>
               <li v-if="$route.params.obraId">
                 <a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a>                
-              </li>            
-            </ul>
+              </li>   
+           
+            </ul>    
+          </li>
+          <!-- SUBMENÚ Finaciero-->
+          <li class="dropdown">
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false"
+              >Financiero <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu" role="menu">                            
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/financiero">Consulta SIA</a></li>                 
+            </ul>    
           </li>
         </ul>
-      </div>
+      </div>      
     </div>
   </nav>
 
@@ -108,12 +122,9 @@ export default {
   },
   computed: {
     isAuthenticated: function () {
-      console.log('isauth:' + this.$store.getters['user/isAuthenticated'])
       return  this.$store.getters['user/isAuthenticated']
       },
       cData: function() {
-            console.log("this.data")
-            console.log(this.data)
             return this.data
         } ,
     getUser: function () {
@@ -142,7 +153,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.6.1')
+    console.log('version::v2.7')
   }
 }
 </script>

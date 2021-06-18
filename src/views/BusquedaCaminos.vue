@@ -254,7 +254,6 @@ export default {
       this.localidadesData = null;
       this.obra.localidades =''
       try{
-        console.log('changemun')
         const res = await getLocalidades(this.obra.cve_agee, 
                       this.obra.icve_municipio)
         this.localidadesData = res
@@ -265,7 +264,6 @@ export default {
     },
     clearData () {
       this.$v.$reset()
-      console.log(this.obra.estado)
       this.obra.cve_agee = ''
       this.obra.nombre_camino= ""
       this.obra.cve_agee = ""
@@ -278,7 +276,6 @@ export default {
       this.obra.clave = ""
       this.municipiosData = null
       this.localidadesData = null
-      console.log('clear----------_>')
       this.initData()
     },
     getEstrategia(){
@@ -286,7 +283,7 @@ export default {
       this.obra.tren_maya = false
       this.obra.caminos_originales = false
       this.obra[this.estrategia]= true
-      console.log(this.obra)      
+
     }    
   },
   beforeMount: function () {    

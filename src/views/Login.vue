@@ -79,10 +79,8 @@ validations: {
     submit() { 
       this.loginError = false
       this.$v.$touch()
-      console.log('submit...')
       if (this.$v.$invalid) return
       try {
-          console.log(this.form)
           this.login(JSON.parse(JSON.stringify(this.form)))
             .catch((e) => {
                 this.loginError = true
