@@ -87,7 +87,7 @@
                 <tr v-for="(extraordinario, k) in  extraordinarios" :key="k">
                     <td>    
                         <div class="row">
-                            <div class="col-md-1">
+                            <div class="col-md-1" v-if="isPuEditable()">
                                 <button class="btn btn-primary btn-sm" type="button"  @click="deleteRow(k, extraordinario)">
                                     <span class="glyphicon glyphicon-remove"></span> 
                                 </button>
@@ -472,7 +472,14 @@ export default {
         } ,
         cancel(){        
             this.$emit('cancel')                       
-        }           
+        },
+        isPuEditable(){
+            let isnormativo = this.$store.getters['user/StateRol']=='NORMATIVO'?true:false
+            if(!this.isPBase && isnormativo){
+                return true
+            }
+            return false
+        }             
     },
     computed:{
         isVisible(){
@@ -565,7 +572,7 @@ export default {
         },
         set (val) {
             this.showModal = val            
-        }   
+        }
     },
     beforeMount(){
         this.fetchPresupuestoReal()
