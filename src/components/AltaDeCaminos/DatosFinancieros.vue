@@ -22,8 +22,17 @@
     <div class="col-md-12 mx-auto">
          <div class="row">
             <h3>Clave Presupuestal</h3>
+        
+  
+    
             <hr class="red">
-            
+    
+        <!-- <div>
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
+        Export Excel
+      </el-button>
+    </div> -->
+
         <div class="row">
         <div class="col-md-12">            
               <ejs-grid   ref="grid"
@@ -136,6 +145,7 @@ import { getCvepres, getSpago, getMescons} from '@/api/obras'
 import VueCurrencyFilter from 'vue-currency-filter'
 
 
+
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
 Vue.use(GridPlugin);
@@ -151,6 +161,7 @@ Vue.use(VueCurrencyFilter, {
 
 
 export default {
+    
     name: 'DatosFinancieros',
     props: {
         edo:{
@@ -159,6 +170,16 @@ export default {
         },
     },
     data(){
+                var f = new Date();
+                var dt =(f.getMonth() +1)
+                if(dt <= 9){
+                    dt = '0' + (f.getMonth() +1)
+                }else{
+                dt=(f.getMonth() +1)
+                }
+                var ft =f.getFullYear() + '-' + 
+                        dt + '-' + 
+                       (f.getDate() -1)        
         return {
             nombre:'',
             apaterno:'',
@@ -182,7 +203,8 @@ export default {
             start:'',
             mes:'',
             benef:'',
-            fechac :new Date().toISOString().substr(0, 10),
+            downloadLoading: false,
+            fechac :ft,
                 }
                 
     },
@@ -207,8 +229,31 @@ export default {
      provide: {
         grid: [Sort, Page]
     }, 
+    
     methods:{ 
-        
+    handleDownload() {
+      this.downloadLoading = true
+      const tHeader = ['Mes', 'Modificado', 'Ejercido', 'Comprometido', 'Pagado', 'Disponible']
+      const filterVal= ['mes', 'modificado', 'ejercido', 'comprometido', 'pagado', 'disponible']
+      const list = this.clave
+      const data = this.formatJson(filterVal, list)
+      excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType
+        })
+    },
+    formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => {
+            if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
+    },
         rowSelected: function(args) {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
@@ -238,8 +283,7 @@ export default {
                 let clave = null
                 if(this.fechac){
                     this.clave = await getCvepres(this.fechac) 
-                    this.lista = await getSpago(this.fechac)  
-                    
+                    this.lista = await getSpago(this.fechac)    
                 }
             }catch(e) {
                 console.log('error-->')
@@ -315,6 +359,7 @@ editTemplateB () {
         }
     },
     computed:{
+        
         getCdate(){
             var currentDate = new Date();
             this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
@@ -322,9 +367,16 @@ editTemplateB () {
         }
     },
      created(){
+         
         if(this.$route.params.obraId){
             this.editmode = true
+            
+            
+
         }
+        this.populate()
+        
+        
     }
 }
 </script>
