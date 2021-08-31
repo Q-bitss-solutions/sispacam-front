@@ -4,11 +4,9 @@
     <div class="col-md-4 col-md-offset-3" >
         <label for="start" >Fecha Consulta:</label>
         <input type="date" id="start" name="trip-start" 
-               v-model="fechac"
-               >
-                <input type="date" id="start" name="trip-start"  v-if="tipo_camino == 'O'"
-               :disabled = "editmode" v-model="fechacE" 
-               > 
+               v-model="fechac">
+        <input type="date" id="start" name="trip-start"  v-if="tipo_camino == 'O'"
+               :disabled = "editmode" v-model="fechacE"> 
     </div>
     <div class="col-md-1">
         <button class="btn btn-default btn-sm" type="button" id="buscarObras" @click="submit">
@@ -20,21 +18,22 @@
             <h2>Consulta SIA</h2>
       </div>
     </div>
-<div id="app">
+    <div id="app">
     <div class="row">
        <div class="col-md-12"> 
-        <div class="row">
-            <h3>Clave Presupuestal</h3>
-            <hr class="red">
-    </div>
+            <div class="row">
+                <h3>Clave Presupuestal</h3>
+                <hr class="red">
+            </div>
         <ejs-grid ref='grid1' 
         id='FirstGrid' 
         :dataSource='clave'
-        
         :toolbar='toolbarOptions' 
+        :toolbarClick='gridExport'
         :pageSettings='pageSettings'
         :allowExcelExport='true' 
-        :toolbarClick='toolbarClick'>
+        :allowPdfExport='true'
+        >
             <e-columns>
                         <e-column field='mes'           headerText='Mes' ></e-column>
                         <e-column field='modificado'    headerText='Modificado' textAlign='right' format='C2'></e-column>
@@ -80,9 +79,15 @@
             </div>        
         </div>
     </div>
-    
     <ejs-grid ref='grid2' 
     id='SecondGrid' 
+     height='450px' width='100%'
+     
+                    :allowPaging='true' 
+                    :allowSorting='true'
+                    :pageSettings='pageSettings'
+                    :allowFiltering='true'
+                    :allowTextWrap='true'
     :dataSource='lista' 
     :allowExcelExport='true'>
         <e-columns>
@@ -110,10 +115,7 @@ import { getCvepres, getSpago, getMescons} from '@/api/obras'
 import VueCurrencyFilter from 'vue-currency-filter'
 import excel from 'vue-excel-export'
 
-import { GridPlugin, Toolbar, ExcelExport, Sort, Page } from '@syncfusion/ej2-vue-grids';
-
-
-
+import { GridPlugin, Toolbar, ExcelExport, PdfExport, Sort, Page } from '@syncfusion/ej2-vue-grids';
 
 Vue.use(GridPlugin);
 Vue.use(DropDownListPlugin);
@@ -129,8 +131,6 @@ Vue.use(VueCurrencyFilter, {
   symbolSpacing: true // Indica si debe poner un espacio entre el símbolo y la cantidad
 })
 
-
-
 export default {
     name: 'DatosFinancieros',
     props: {
@@ -141,11 +141,12 @@ export default {
     },
   data() {
        var f = new Date();
-                var dt =(f.getMonth() +1)
-                var dy =(f.getDate() -1)
-                if(dt <= 9){
-                    dt = '0' + (f.getMonth() +1)
-                }else{
+           var dt =(f.getMonth() +1)
+           var dy =(f.getDate() -1)
+           if(dt <= 9)
+           {
+            dt = '0' + (f.getMonth() +1)
+           }else{
                 dt=(f.getMonth() +1)
                 }
                 /**/
@@ -158,19 +159,12 @@ export default {
                         dt + '-' + 
                         dy 
                 var ftE =dy + dt + f.getFullYear() 
-                console.log("ft")
-                console.log(ft)
-                console.log("ftE")
-                console.log(ftE)
-         
+                       
 return {
-  /*fData: data.slice(0, 5),*/
-  /*sData: employeeData.slice(0, 5),*/
   editmode: false,
   tipo_camino: null,
             flag: false,
             lista:[],
-            
             clave:[],
             tit1:[],
             tit2:[],
@@ -187,7 +181,8 @@ return {
             fechac :ft,
             fechacE :ftE,
             vname:'',
-  toolbarOptions: ['ExcelExport']
+            toolbarOptions: ['ExcelExport', 'PdfExport'],
+
 };
   },
   methods: {
@@ -208,12 +203,10 @@ return {
         },
         async consulta(){
             if(this.mes || this.benef){
-                this.lista = await getMescons(this.fechac, this.mes, this.benef)      
+                this.lista = await getMescons(this.fechac, this.mes, this.benef)     
             }else{
                  this.lista = await getSpago(this.fechac) 
             }
-            
-
         },
 
   
@@ -230,24 +223,77 @@ return {
                     this.fdata = await getCvepres(this.fechac) 
                     this.lista = await getSpago(this.fechac)   
                     this.sdata = await getSpago(this.fechac)  
-                    this.nama1 = this.fechacE + '-' + 'clave_presupuestal.xls'
+                    this.nama1 = this.fechacE + '-' + 'Pagos_SIA.pdf'
                     this.nama2 = this.fechacE + '-' + 'Pagos_SIA.xlsx'
                     this.tit1 = ['', '', '',  '' ,'Calendario de Recursos SIA']
                     this.tit2 = ['', '', '',  'Programa Presupuestario U004 “Mejora en la conectividad municipal a través de caminos rurales y carreteras alimentadoras”' ,'Reporte de pagos del SIA']
-                console.log("this.fechacE")
-                console.log(this.fechacE)
-                console.log("this.fechac")
-                console.log(this.fechac)
+       
                 }
             }catch(e) {
                 console.log('error-->')
                 console.log(e)
             }
         },
+    gridExport(args){
+      var gridInst = this.$refs.grid1;
+      if(gridInst){
+        if (args.item.id === 'FirstGrid_pdfexport'){
+            gridInst.pdfExport({
+                fileName: this.nama1,
+            });
+        } else if (args.item.id === 'FirstGrid_excelexport'){
+             let appendExcelExportProperties = {
+                multipleExport: { type: 'NewSheet' },
+            fileName: this.nama2,
+            header: {
+               headerRows: 5,
+                rows: [
+                                        {
+                        cells:[{
+                            colSpan: 8,
+                            value: 'SUBSECRETARIA DE INFRAESTRUCTURA',
+                            style: {fontSize: 20, hAlign:'Center', bold: true}
+
+                        }],
+                    },
+                    { cells:[{
+                            colSpan: 8,
+                            value: 'DIRECCION GENERAL DE CARRETERAS',
+                            style: {fontSize: 20, hAlign:'Center', bold: true}
+
+                        }],
+                    },
+                    { cells:[{
+                            colSpan: 8,
+                            value: 'DIRECCION COORDINADORA DE CAMINOS RURALES Y ALIMENTADORES',
+                            style: {fontSize: 10, hAlign:'Center', bold: true}
+
+                        }],
+                    },
+                    { cells:[{
+                            colSpan: 8,
+                            value: 'Programa Presupuestario U004 “Mejora en la conectividad municipal a través de caminos rurales y carreteras alimentadoras”',
+                            style: {fontSize: 10, hAlign:'Center', bold: true}
+
+                        }],
+                    }
+                    ],
+
+            }, 
+                 
+             }
+             console.log("appendExcelExportProperties")
+        console.log(appendExcelExportProperties)
+
+        let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true);
+        firstGridExport.then((fData) => {
+            this.$refs.grid2.excelExport(appendExcelExportProperties, false, fData);
+        });
+          }   
+      }
+    },
     toolbarClick : function (args) {
       if (args.item.id === 'FirstGrid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
-         console.log("this.nama2")
-            console.log(this.nama2)
         let appendExcelExportProperties = {
            
             multipleExport: { type: 'NewSheet' },
@@ -289,8 +335,7 @@ return {
 
             }, 
         };
-        console.log("appendExcelExportProperties")
-        console.log(appendExcelExportProperties)
+      
 
         let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true);
         firstGridExport.then((fData) => {
@@ -355,13 +400,10 @@ return {
         getCdate(){
             var currentDate = new Date();
             this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
-            this.editmode = true
-            
-            return this.fechac,
-             
+            this.editmode = true        
+            return this.fechac,             
              this.editmode
-                    console.log('this.fechac')
-                    console.log(this.fechac)
+
         }
         
         },
@@ -373,7 +415,7 @@ return {
         this.populate()
     },
   provide: {
-grid: [Toolbar, ExcelExport]
+grid: [Toolbar, ExcelExport,  Page, Sort, PdfExport]
   }
 }
 
