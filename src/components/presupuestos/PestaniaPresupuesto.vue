@@ -548,11 +548,16 @@ export default {
 
             }
         },
-        getTotalIPK() {
+        getTotalIPK: {
+            get(){
                 return this.totalPP = this.getPresupuestoByID(1).subTotalIPK +
                     this.getPresupuestoByID(2).subTotalIPK +
                     this.getPresupuestoByID(3).subTotalIPK +
                     this.getPresupuestoByID(4).subTotalIPK
+            },
+            set(){
+                
+            }
         },
         isLoaded() {
            return this.isLoad

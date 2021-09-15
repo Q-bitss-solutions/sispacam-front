@@ -1,37 +1,43 @@
 <template>
-<Modal 
-    v-model="isShowModal" 
-    title="Partidas Extraordinarias" 
-    :modal-class="`modal1 ${modal_xl}`"
-    wrapper-class="modal-wrapper"
-    :enable-close="enableClose"
-    @before-open="beforeOpen"
->
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-md-12">
-                <grid 
-                    :auto-width="true"
-                    :width="width"
-                    :cols="cols" 
-                    :rows="rows"            
-                    :search="true"   
-                    :language="language" 
-                    :class-names="className"
-                >
-                </grid>
-            </div>
-        </div>   
+    <Modal 
+        v-model="isShowModal" 
+        title="Partidas Extraordinarias" 
+        :modal-class="`modal1 ${modal_xl}`"
+        wrapper-class="modal-wrapper"
+        :enable-close="enableClose"
+        @before-open="beforeOpen"
+    >
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <grid 
+                        :auto-width="true"
+                        :width="width"
+                        :cols="cols" 
+                        :rows="rows"            
+                        :search="true"   
+                        :language="language" 
+                        :class-names="className"
+                    >
+                    </grid>
+                </div>
+            </div>   
 
-        <div class="row">
-            <div class="col-md-12 text-right">
-            <hr />
-            <button @click="closeModal" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>         
-    </div> 
-</Modal>
-
+            <div class="row">
+                <div class="col-md-6 text-left">
+                <hr />
+                <button @click="showAdminCatalogo" type="button" class="btn btn-default">Administrar Catalogo</button>
+                </div>            
+                <div class="col-md-6 text-right">
+                <hr />
+                <button @click="closeModal" type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>         
+        </div> 
+        <adminExtraordinarios
+            ref="modalAdmPartidas"
+        />
+    </Modal>
 </template>
 
 <script>
@@ -40,6 +46,7 @@ import '@kouts/vue-modal/dist/vue-modal.css'
 import {Grid  } from 'gridjs-vue'
 import { h } from "gridjs";
 import bodyScroll from 'body-scroll-freezer'
+import adminExtraordinarios from '@/components/Modals/AdminPartidas'
 import { getAllExtraordinarios }  from '@/api/extraordinarios'
 
 
@@ -47,6 +54,7 @@ export default {
     name:'modalExtraordinarios',
     components: {
         'Modal': VueModal,
+        adminExtraordinarios,
         Grid
     },
     props: {
@@ -64,6 +72,7 @@ export default {
             width:'100%',
             enableClose: false,
             modal_xl:'modal-xl',
+            showSecondModal: false,
             language: {
                 'search': {
                     'placeholder': 'Buscar...'
@@ -76,7 +85,7 @@ export default {
                     of: 'de',
                     to: 'a',                
                 },
-                loading: 'Crgandoa...',
+                loading: 'Cargando...',
                 noRecordsFound: 'No hay conceptos para agregar',
                 error: 'Ocurrio un error al obtener los datos',
             },
@@ -118,7 +127,7 @@ export default {
                             className: 'btn btn-primary btn-sm',
                             onClick: ()  => this.addExtraordinario(row)
                         }, 'Agregar');
-                        }
+                    }
                 },                                
             ],
             rows: [
@@ -134,7 +143,6 @@ export default {
         beforeOpen() {
             bodyScroll.freeze()
             this.populate()
-            console.log('beforeOpen')
         },  
         beforeClose() {
             bodyScroll.unfreeze()
@@ -144,8 +152,6 @@ export default {
             this.$emit('update:showModal', false)
         },
         addExtraordinario(data){
-            console.log('data')
-            console.log(data.cells[0].data)
             const concept = {
                 id:data.cells[0].data,
                 concepto:data.cells[1].data,
@@ -163,14 +169,13 @@ export default {
         async populate(){
             let ids = []
             this.loadedExtraordinarios.map( i => ids.push(i.id))
-            console.log('ids')
-            console.log(ids)
             let { results } = await getAllExtraordinarios()
-            console.log('data')
-            console.log(results)
             results = results.filter( el => !ids.includes(el.id) )
-            console.log(results)
             this.rows = results
+        },
+        showAdminCatalogo(){
+            console.log(this.$refs)
+            this.$refs.modalAdmPartidas.showAdminCatalogo()
         }
     },    
     computed:{
