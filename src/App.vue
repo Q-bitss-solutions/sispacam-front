@@ -37,7 +37,7 @@
             </ul>    
           </li>
           <!-- SUBMENÚ Finaciero-->
-          <li class="dropdown" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
+          <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
             <a
               href="#"
               class="dropdown-toggle"
@@ -47,7 +47,7 @@
               >Financiero <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">                            
-              <li ><a href="/financiero">Consulta SIA</a></li>                 
+              <li ><a href="/financiero">Consulta Presupuestal</a></li>                 
             </ul>    
           </li>
         </ul>
@@ -149,7 +149,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.7')
+    console.log('version::v2.9')
   }
 }
 </script>
