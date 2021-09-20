@@ -99,6 +99,13 @@ validations: {
   },
   mounted: function () {
     this.setAuthenticated(false)
+    console.log('montado')
+    const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
+    const API2 = process.env.VUE_APP_BASE_URL;
+    console.log('API')
+    console.log(API)
+    console.log('API2')
+    console.log(API2)
   }
 }
 </script>

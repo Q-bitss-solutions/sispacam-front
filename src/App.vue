@@ -30,18 +30,14 @@
               >Opciones <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">              
-              <li><a href="/altacamino">Alta</a></li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
-                  <a href="/busqueda">Búsqueda</a>
-              </li>
-              <li v-if="$route.params.obraId">
-                <a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a>                
-              </li>   
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/busqueda">Búsqueda</a></li>
+              <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>   
            
             </ul>    
           </li>
           <!-- SUBMENÚ Finaciero-->
-          <li class="dropdown">
+          <li class="dropdown" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
             <a
               href="#"
               class="dropdown-toggle"
@@ -51,7 +47,7 @@
               >Financiero <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">                            
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/financiero">Consulta SIA</a></li>                 
+              <li ><a href="/financiero">Consulta SIA</a></li>                 
             </ul>    
           </li>
         </ul>

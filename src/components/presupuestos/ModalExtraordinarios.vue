@@ -117,7 +117,7 @@ export default {
                     id:'importe',
                     name:'Precio Unitario',
                     formatter: (_, row) => `$${(Number(row.cells[4].data)).toLocaleString(
-                        undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}
+                        'en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}
                             )}`
                 },                                               
                 {

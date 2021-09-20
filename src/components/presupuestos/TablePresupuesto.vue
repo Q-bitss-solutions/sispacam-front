@@ -91,7 +91,7 @@
                 class="form-control precio-unitario" 
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-                :read-only="isPBase?true:false"
+                :read-only="isPuEditable"
                 >
             </vue-numeric>
         </td>  
@@ -316,7 +316,14 @@ export default {
             },
             set (val) {}
 
+        },
+    isPuEditable(){
+        let isnormativo = this.$store.getters['user/StateRol']=='NORMATIVO'?true:false
+        if(!this.isPBase && isnormativo){
+            return false
         }
+        return true
+    }
     },
     created: function () {        
         this.presupuesto = this.conceptos.presupuestoStart

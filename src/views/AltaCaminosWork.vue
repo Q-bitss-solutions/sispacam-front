@@ -23,7 +23,7 @@
             Asignar
           </a>
         </li>      
-         <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabAsina">
+         <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Programación
           </a>
@@ -52,11 +52,7 @@
         </div>      
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">
           <convenio :camino_id="getCaminoId"> </convenio>
-        </div> 
-        <div role="tabpanel" class="tab-pane" id="datosFinancieros">
-          <DatosFinancieros> </DatosFinancieros>
-        </div>   
-        
+        </div>     
     </div>
   <div>
     <div v-if="msgError" class="alert alert-danger">{{ msgError }}</div>
