@@ -37,7 +37,7 @@
             </ul>    
           </li>
           <!-- SUBMENÚ Finaciero-->
-          <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" -->>
+          <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
             <a
               href="#"
               class="dropdown-toggle"
