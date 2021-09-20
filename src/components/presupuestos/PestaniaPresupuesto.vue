@@ -7,7 +7,7 @@
             <th>CONCEPTOS Y PARTIDAS</th>
             <th v-if="isPBase">CANTIDAD POR KILOMETRO</th>            
             <th v-if="!isPBase">CANTIDAD TOTAL</th>
-            <th>UNIDAD</th>
+            <th>UNIDAD DE MEDIDA</th>
             <th v-if="isPBase">IMPORTE POR KILOMETRO</th>
             <th>PRECIO UNITARIO</th>
             <th>IMPORTE TOTAL POR LONGITUD</th>

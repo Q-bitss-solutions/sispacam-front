@@ -3,36 +3,49 @@
   <div class="row">  
     <div class="col-md-4 col-md-offset-3" >
         <label for="start" >Fecha Consulta:</label>
-        <input type="date" id="start" name="trip-start" 
-               v-model="fechac">
+        <input title="Fecha de consulta de informacion" type="date" id="start" name="trip-start" 
+               v-model="fechac" >
         <input type="date" id="start" name="trip-start"  v-if="tipo_camino == 'O'"
                :disabled = "editmode" v-model="fechacE"> 
+        <input type="date" id="start-2" name="trip-start-2"  v-if="tipo_camino == 'O'"
+               :disabled = "editmode" v-model="fechacI"> 
+        
     </div>
+    
     <div class="col-md-1">
         <button class="btn btn-default btn-sm" type="button" id="buscarObras" @click="submit">
         <span  ></span>Buscar</button>
     </div> 
-  </div>
-    <div class="col-md-12 mx-auto">
-       <div class="row">
-            <h2>Consulta SIA</h2>
-      </div>
     </div>
+    
     <div id="app">
     <div class="row">
+        <div class="col-md-12 mx-auto">
+       <div class="row">
+            <h2>Consulta Presupuestal</h2>
+      </div>
+    </div>
        <div class="col-md-12"> 
             <div class="row">
-                <h3>Clave Presupuestal</h3>
+                <h3>Presupuesto Calendarizado</h3>
                 <hr class="red">
+                <h6 class="navbar-right" >La información que se muestra es al corte del día  {{fechac}} </h6>
+                
             </div>
+            
+
+
         <ejs-grid ref='grid1' 
         id='FirstGrid' 
+         height='450px' width="100%"
         :dataSource='clave'
         :toolbar='toolbarOptions' 
         :toolbarClick='gridExport'
         :pageSettings='pageSettings'
         :allowExcelExport='true' 
         :allowPdfExport='true'
+        :allowSorting='true'
+        :allowTextWrap='true'
         >
             <e-columns>
                         <e-column field='mes'           headerText='Mes' ></e-column>
@@ -46,7 +59,7 @@
        </div>
     </div>
     <div class="row">
-            <h3>Pagos SIA</h3>
+            <h3>Pagos a beneficiario</h3>
             <hr class="red">
     </div>
     <div class="tab-pane">
@@ -79,29 +92,26 @@
             </div>        
         </div>
     </div>
-    <ejs-grid ref='grid2' 
-    id='SecondGrid' 
-     height='450px' width='100%'
-     
-                    :allowPaging='true' 
-                    :allowSorting='true'
-                    :pageSettings='pageSettings'
-                    :allowFiltering='true'
-                    :allowTextWrap='true'
-    :dataSource='lista' 
-    :allowExcelExport='true'>
+     <ejs-grid ref='grid2' 
+     id='SecondGrid' 
+     height='450px' width="100%"
+     :dataSource='lista' 
+     :allowPdfExport='true'
+     :allowExcelExport='true'
+     :allowSorting='true'
+     :allowTextWrap='true'
+     >
         <e-columns>
-                        <e-column field='idpago'         headerText='id' :visible='flag' width=120></e-column>
-                        <e-column field='rfc_benef'  headerText='RFC' width=150></e-column>
-                        <e-column field='nombre'      headerText='Beneficiario' width=150></e-column>
-                        <e-column field='importe'      headerText='Monto' textAlign='right' format='C2' width=150></e-column>
-                        <e-column field='reintegro'  headerText='Reintegro' textAlign='right' format='C2' width=150></e-column>
-                        <e-column field='f_elab'      headerText='Fecha Elab' width=150></e-column>
-                        <e-column field='f_pago'      headerText='Fecha Pago' width=150></e-column>  
-                        <e-column field='estatus'    headerText='Estatus' width=150></e-column>              
-                    </e-columns>  
+            <e-column field='idpago'         headerText='id' :visible='flag' ></e-column>
+            <e-column field='rfc_benef'  headerText='RFC' width=120></e-column>
+            <e-column field='nombre'      headerText='Beneficiario' width=150></e-column>
+            <e-column field='importe'      headerText='Monto' textAlign='right' format='C2' width=100></e-column>
+            <e-column field='reintegro'  headerText='Reintegro' textAlign='right' format='C2' width=100></e-column>
+            <e-column field='f_elab'      headerText='Fecha Elab' width=70></e-column>
+            <e-column field='f_pago'      headerText='Fecha Pago' width=70></e-column>  
+            <e-column field='estatus'    headerText='Estatus' width=70></e-column>              
+        </e-columns>  
     </ejs-grid>
-    
 </div>
 </table> 
 </template>
@@ -114,14 +124,12 @@ import ButtonGrid  from '@/components/ButtonGrid'
 import { getCvepres, getSpago, getMescons} from '@/api/obras'
 import VueCurrencyFilter from 'vue-currency-filter'
 import excel from 'vue-excel-export'
-
 import { GridPlugin, Toolbar, ExcelExport, PdfExport, Sort, Page } from '@syncfusion/ej2-vue-grids';
 
 Vue.use(GridPlugin);
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
 Vue.use(excel);
-
 Vue.use(VueCurrencyFilter, {
   symbol: '$', // El símbolo, por ejemplo €
   thousandsSeparator: ',', // Separador de miles
@@ -158,8 +166,8 @@ export default {
                 var ft =f.getFullYear() + '-' + 
                         dt + '-' + 
                         dy 
-                var ftE =dy + dt + f.getFullYear() 
-                       
+                var ftE = f.getFullYear()  + dt + dy    
+                var ftI = dy + "/" +  dt + "/" +  f.getFullYear()                
 return {
   editmode: false,
   tipo_camino: null,
@@ -180,9 +188,9 @@ return {
             downloadLoading: false,
             fechac :ft,
             fechacE :ftE,
+            fechacI : ftI,
             vname:'',
             toolbarOptions: ['ExcelExport', 'PdfExport'],
-
 };
   },
   methods: {
@@ -208,8 +216,6 @@ return {
                  this.lista = await getSpago(this.fechac) 
             }
         },
-
-  
   async populate () {
             try{
                 let results  = []
@@ -223,8 +229,8 @@ return {
                     this.fdata = await getCvepres(this.fechac) 
                     this.lista = await getSpago(this.fechac)   
                     this.sdata = await getSpago(this.fechac)  
-                    this.nama1 = this.fechacE + '-' + 'Pagos_SIA.pdf'
-                    this.nama2 = this.fechacE + '-' + 'Pagos_SIA.xlsx'
+                    this.nama1 = 'SolicitudPago' + '_' + this.fechac + '.pdf'
+                    this.nama2 = 'SolicitudPago' + '_' + this.fechac + '.xlsx'
                     this.tit1 = ['', '', '',  '' ,'Calendario de Recursos SIA']
                     this.tit2 = ['', '', '',  'Programa Presupuestario U004 “Mejora en la conectividad municipal a través de caminos rurales y carreteras alimentadoras”' ,'Reporte de pagos del SIA']
        
@@ -234,14 +240,93 @@ return {
                 console.log(e)
             }
         },
-    gridExport(args){
+ gridExport(args){
       var gridInst = this.$refs.grid1;
+      var gridSeco = this.$refs.grid2;
       if(gridInst){
         if (args.item.id === 'FirstGrid_pdfexport'){
-            gridInst.pdfExport({
-                fileName: this.nama1,
+            let firstGridPdfExport = this.$refs.grid1.pdfExport({
+                header:{
+                    fromTop: 200,
+                    height: 130,
+                    contents: [{
+                        type: "Text",
+                        value: "SUBSECRETARIA DE INFRAESTRUCTURA ",
+                        position:{ x: 100, y: 0 },
+                        style: { fontSize: 20}
+                    }
+                    ]
+                }
+            }, true);
+            firstGridPdfExport.then((lista) => {
+                this.$refs.grid2.pdfExport({
+                    fileName: this.nama1,
+                    header:{
+                    fromTop: 200,
+                    height: 130,
+                    contents: [{
+                        type: "Text",
+                        value: "SUBSECRETARIA DE INFRAESTRUCTURA ",
+                        position:{ x: 100, y: 0 },
+                        style: { fontSize: 20}
+                    },
+                    {
+                     type: "Text",
+                        value: "DIRECCION GENERAL DE CARRETERAS",
+                        position:{ x: 125, y: 20 },
+                        style: { fontSize: 15}
+                   },
+                   {
+                     type: "Text",
+                        value: "DIRECCION COORDINADORA DE CAMINOS RURALES Y ALIMENTADORES",
+                        position:{ x: 30, y: 35 },
+                        style: { fontSize: 15}
+                   },
+                   {
+                     type: "Text",
+                        value: "Programa Presupuestario U004 Mejora en la conectividad municipal a través de caminos rurales y carreteras alimentadoras",
+                        position:{ x: 15, y: 55 },
+                        style: { fontSize: 12}
+                   },
+                    ]
+                    },
+                                footer:{
+                    contents: [
+                       {
+            type: 'PageNumber',
+            pageNumberType: 'Number',
+            format: 'Pagina {$current} de {$total}', //optional
+            position: { x: 0, y: 65 },
+            style: { fontSize: 10, hAlign: 'Center' }
+                        }
+            ] ,
+            fromBottom: 130,
+            height: 130,
+
+                    }
+                   }, false, lista);
+                gridInst.pdfExport({ 
+                    fileName: this.nama1,
+                    header:{
+                    fromTop: 0,
+                    height: 0,
+                    }, 
+                    footer:{
+                    contents: [
+                       {
+            type: 'PageNumber',
+            pageNumberType: 'Number',
+            format: 'Pagina {$current} de {$total}', //optional
+            position: { x: 0, y: 65 },
+            style: {  fontSize: 10, hAlign: 'Center' }
+                        }
+            ] ,
+            fromBottom: 130,
+            height: 130,
+
+                    }}) 
             });
-        } else if (args.item.id === 'FirstGrid_excelexport'){
+        }else if (args.item.id === 'FirstGrid_excelexport'){
              let appendExcelExportProperties = {
                 multipleExport: { type: 'NewSheet' },
             fileName: this.nama2,
@@ -278,72 +363,60 @@ return {
                         }],
                     }
                     ],
-
-            }, 
-                 
+            },   
              }
-             console.log("appendExcelExportProperties")
-        console.log(appendExcelExportProperties)
-
-        let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true);
+        let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true); 
         firstGridExport.then((fData) => {
             this.$refs.grid2.excelExport(appendExcelExportProperties, false, fData);
-        });
+        }); 
           }   
       }
     },
     toolbarClick : function (args) {
       if (args.item.id === 'FirstGrid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
         let appendExcelExportProperties = {
-           
             multipleExport: { type: 'NewSheet' },
             fileName: this.nama2,
             header: {
                headerRows: 5,
-                rows: [
-                                        {
+                rows: [{
                         cells:[{
                             colSpan: 8,
                             value: 'SUBSECRETARIA DE INFRAESTRUCTURA',
                             style: {fontSize: 20, hAlign:'Center', bold: true}
 
                         }],
-                     
-                    },
-                    { cells:[{
+                       },
+                       { cells:[{
                             colSpan: 8,
                             value: 'DIRECCION GENERAL DE CARRETERAS',
                             style: {fontSize: 20, hAlign:'Center', bold: true}
 
-                        }],
-                    },
-                    { cells:[{
+                          }],
+                        },
+                        { cells:[{
                             colSpan: 8,
                             value: 'DIRECCION COORDINADORA DE CAMINOS RURALES Y ALIMENTADORES',
                             style: {fontSize: 10, hAlign:'Center', bold: true}
 
-                        }],
-                    },
-                    { cells:[{
+                           }],
+                        },
+                        { cells:[{
                             colSpan: 8,
                             value: 'Programa Presupuestario U004 “Mejora en la conectividad municipal a través de caminos rurales y carreteras alimentadoras”',
                             style: {fontSize: 10, hAlign:'Center', bold: true}
 
-                        }],
-                    }
-                    ],
-
+                          }],
+                        }
+                ],
             }, 
         };
-      
-
         let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true);
-        firstGridExport.then((fData) => {
-            this.$refs.grid2.excelExport(appendExcelExportProperties, false, fData);
-        });
+            firstGridExport.then((fData) => {
+                this.$refs.grid2.excelExport(appendExcelExportProperties, false, fData);
+             });
     }
   },
-  
  submit() { 
      this.populate()
   },
@@ -394,32 +467,26 @@ return {
                 }
             }
         },
-        },
-        computed:{
-       
-        getCdate(){
-            var currentDate = new Date();
-            this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
-            this.editmode = true        
-            return this.fechac,             
-             this.editmode
-
-        }
-        
-        },
-
-     created(){
-        if(this.$route.params.obraId){
-            this.editmode = true
-        }
-        this.populate()
-    },
-  provide: {
-grid: [Toolbar, ExcelExport,  Page, Sort, PdfExport]
-  }
+},
+computed:{     
+    getCdate(){
+        var currentDate = new Date();
+        this.fechac=currentDate.getDate()+'/'+currentDate.getMonth()+1+'/'+ currentDate.getYear()
+        this.editmode = true        
+        return this.fechac,             
+        this.editmode
+    }
+},
+created(){
+    if(this.$route.params.obraId){
+        this.editmode = true
+    }
+    this.populate()
+},
+provide: {
+    grid: [Toolbar, ExcelExport,  Page, Sort, PdfExport]
 }
-
+}
 </script>
 <style>
-
 </style>
