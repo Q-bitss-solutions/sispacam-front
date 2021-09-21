@@ -237,7 +237,11 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import { Loading } from 'element-ui';
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+  inject: true,
+  fieldsBagName: 'veeFields'
+});
+
 
 export default {
     name:'PestaniaPresupuesto',

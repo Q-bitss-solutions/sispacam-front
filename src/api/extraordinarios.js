@@ -3,14 +3,12 @@ import request from '@/utils/request'
 //catalogo
 export function getAllExtraordinarios(data) {
     return request ({
-        url:'/partidas/extraordinarias/',
+        url:'/partidas/extraordinarias/list',
         method:'get',
     })
 }
 
 export function saveExtraordinarios(data) {
-    console.log('saveExtraordinarios')
-    console.log(data)
     return request ({
         url:'/convenio/conceptos/extraordinarios/insert',
         method:'post',
@@ -18,14 +16,12 @@ export function saveExtraordinarios(data) {
     })
 }
 
-
 export function getExtraordinariosByIdConvenio(id) {
     return request ({
         url:`/convenio/conceptos/extraordinarios/?convenio=${id}`,
         method:'get',
     })
 }
-
 
 export function deleteExtraordinario(id){
     return request ({
@@ -41,6 +37,13 @@ export function updateExtraordinario({ id, cantidad }) {
         data: {
             cantidad: cantidad
         }
+    })
+}
+
+export function getExtraordinariosLibres(id) {
+    return request ({
+        url:'/partidas/libres',
+        method:'get',
     })
 }
 

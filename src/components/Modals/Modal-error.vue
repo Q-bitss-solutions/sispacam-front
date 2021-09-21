@@ -65,7 +65,6 @@ export default {
     },
     methods: {
         openmodal(error){
-          console.log("openmodal")
           this.msg_error = error
           //$('#save').modal('show')
           $('#Error').modal('show')

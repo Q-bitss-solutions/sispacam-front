@@ -22,6 +22,9 @@ export default new Vuex.Store({
       cancel: {
           id:null
       },
+      reactivar:{
+          id:null
+      },
       cancelConvenio: {
         id:null
     }
@@ -33,6 +36,9 @@ export default new Vuex.Store({
         setIdCancelacion(state, idObraCancelacion) {
             state.cancel.id = idObraCancelacion
         },
+        setIdReactivacion(state, id) {
+            state.reactivar.id = id
+        },        
         setIdCancelacionConvenio(state, idConvenio) {
             state.cancelConvenio.id = idConvenio
         },

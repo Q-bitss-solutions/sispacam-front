@@ -141,7 +141,7 @@ export default {
     ...mapActions(["test"]),
     ...mapMutations('user',['setAuthenticated']),
     saludar () {
-      this.test({ username: 'Guchi' })
+      this.test({ username: '' })
     },
     logout(){
       this.setAuthenticated(false)
@@ -149,7 +149,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.9')
+    console.log('::v3.0')
   }
 }
 </script>

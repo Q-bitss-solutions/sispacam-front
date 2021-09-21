@@ -18,6 +18,9 @@
                         :search="true"   
                         :language="language" 
                         :class-names="className"
+                        :pagination="pagination"
+                        height="250px"
+                        :fixedHeader="fixedHeader"
                     >
                     </grid>
                 </div>
@@ -35,6 +38,7 @@
             </div>         
         </div> 
         <adminExtraordinarios
+            @reloadGrid="populate"
             ref="modalAdmPartidas"
         />
     </Modal>
@@ -44,10 +48,11 @@
 import VueModal from '@kouts/vue-modal'
 import '@kouts/vue-modal/dist/vue-modal.css'
 import {Grid  } from 'gridjs-vue'
+import { Loading } from 'element-ui';
 import { h } from "gridjs";
 import bodyScroll from 'body-scroll-freezer'
 import adminExtraordinarios from '@/components/Modals/AdminPartidas'
-import { getAllExtraordinarios }  from '@/api/extraordinarios'
+import { getAllExtraordinarios }  from '@/api/catalogo_pe'
 
 
 export default {
@@ -72,6 +77,10 @@ export default {
             width:'100%',
             enableClose: false,
             modal_xl:'modal-xl',
+            pagination: {
+                limit: 5
+            },
+            fixedHeader:true,
             showSecondModal: false,
             language: {
                 'search': {
@@ -88,9 +97,6 @@ export default {
                 loading: 'Cargando...',
                 noRecordsFound: 'No hay conceptos para agregar',
                 error: 'Ocurrio un error al obtener los datos',
-            },
-            pagination: {
-                limit: 20
             },
             cols: [
                 { 
@@ -167,15 +173,17 @@ export default {
             this.$emit('update:showModal', false)
         },
         async populate(){
+            let loadingInstance = Loading.service({ fullscreen: true, lock: true });
             let ids = []
             this.loadedExtraordinarios.map( i => ids.push(i.id))
-            let { results } = await getAllExtraordinarios()
+            let { results } = await getAllExtraordinarios().finally(_=>{
+                loadingInstance.close();        
+            })
             results = results.filter( el => !ids.includes(el.id) )
             this.rows = results
         },
         showAdminCatalogo(){
-            console.log(this.$refs)
-            this.$refs.modalAdmPartidas.showAdminCatalogo()
+            this.$refs.modalAdmPartidas.showAdminCatalogo(this.loadedExtraordinarios)
         }
     },    
     computed:{
@@ -224,7 +232,7 @@ export default {
   margin-right: -14px;
 }
 .gridjs-td {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .vm-titlebar {

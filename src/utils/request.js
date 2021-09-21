@@ -6,7 +6,7 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 const service = axios.create({
   //baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
   baseURL: process.env.VUE_APP_SCT_SVC_BACK_BASE_URL, 
-  timeout: 5000, // request timeou
+  timeout: 15000, // request timeou
 })
 
 //refresh
@@ -55,7 +55,7 @@ service.interceptors.response.use(
         }
     },
     error => {
-
+      console.log(error);
         let { response, message } = error
         if (error.response && error.response.data) {
           const { status, data } = response
