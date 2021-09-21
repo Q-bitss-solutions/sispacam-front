@@ -504,7 +504,6 @@ export default {
             
             const edoSelect = this.estadosData.executeLocal(new Query())
                                 .filter(a => a.cve_agee == this.icve_estado_inegi)                        
-            console.table(edoSelect)
             this.DatosGeograficos.iso = edoSelect[0].iso
             this.DatosGeograficos.cve_agee = this.icve_estado_inegi
  /*           this.$emit("set-icveEdo", {

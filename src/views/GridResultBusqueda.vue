@@ -6,21 +6,23 @@
           <p class="small">Se encontraron <strong>{{ count }}</strong> resultados en la búsqueda.</p>
 
         <ejs-grid   ref="grid"
-                    :dataSource="data" :gridLines='lines' 
+                    :dataSource="data" 
+                    :gridLines='lines' 
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
                     :allowTextWrap='true'
+                    toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})"
                     >
             <e-columns>
                 <e-column field='clave' headerText='ID de la Obra'></e-column>
                 <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
                 <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
-                <e-column field='estrategia' headerText='Estrategia de Gobierno Federal' ></e-column>
-                <e-column field='marginacion' headerText='Grado de Marginación' ></e-column>
+                <e-column field='estrategia' headerText='Estrategia de Gobierno Federal' ></e-column>   
+                <e-column field='marginacion' headerText='Grado de Marginación' ></e-column>    
                 <e-column field='poblacion_indigena' headerText='Tipo Poblacion' ></e-column>
-                <e-column field="clave" :template='editTemplate' headerText='Editar Obra' textAlign='Center' :visible='flagEdicion'></e-column>
-                <e-column field="clave" :template='cancelTemplate' headerText='Cancelar Obra' textAlign='Center' :visible='flag'></e-column>
+                <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra' textAlign='Center' :visible='flagEdicion'></e-column>
+                <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra' textAlign='Center' :visible='flag'></e-column>
             </e-columns>
         </ejs-grid>
         </div>
@@ -37,7 +39,7 @@
 <script>
 import Vue from "vue";
 import { mapMutations } from 'vuex'
-import { GridPlugin, Sort, Page } from '@syncfusion/ej2-vue-grids';
+import { GridPlugin, Sort, Page, } from '@syncfusion/ej2-vue-grids';
 import { getObrasByUsuario, getObraByClave, getObraByParmas } from '@/api/obras'
 import ButtonGrid from '@/components/ButtonGrid'
 import CancelaObra from '@/components/CancelaObra'
@@ -120,6 +122,18 @@ export default {
         },
         ...mapMutations(['setBreadcrumb']),  
         dataBound: function() {                    
+        },
+        isActive(data){
+            console.log(data)
+            console.log(data.estatus)
+            console.log(data.estatus === 'A')
+            if(data.estatus === 'A'){
+                return true
+            }else{
+                return false
+            }
+            
+
         }
     },
     mounted () {
