@@ -41,6 +41,7 @@ const routes = [
     path: '/editcamino/:obraId',
     name: 'AltaCaminoEdit',
     component: AltaCamino,
+    props: true,
     meta: { requiresAuth: true }
   },  
   {

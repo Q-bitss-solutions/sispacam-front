@@ -120,7 +120,6 @@ export function getResidentes(system, group) {
 export function generarConvenio(data, id_camino){
 
   return request({
-
       url:  `/convenio/${id_camino}/ `,
       method: 'post',
       data:data,
@@ -152,7 +151,6 @@ export function getlistaConvenio(clave) {
   })
 }
 
-
 export function updateConvenio(data,convenio_id ){
   return request({
     url:`/convenio/${convenio_id}/update/`,
@@ -160,3 +158,13 @@ export function updateConvenio(data,convenio_id ){
     data
   })
 }
+
+export function reactivarObra(data){
+  return request({
+    url:'/justificar/',
+    method:'post',
+    data:data,
+    headers: { "Content-Type": "multipart/form-data" } 
+  })
+}
+

@@ -13,7 +13,6 @@
         <button class="btn btn-primary btn-sm cancelObra" type="button" aria-label="Editar datos"
                 data-toggle="modal"
                 data-target="#mdlReactivarObra"
-                @click="setId(data.clave)"
                 :disabled="!data.isCanceled"
                 :title="data.isCanceled==true?'Reactivar la Obra':''"
                 v-if="data.isCanceled">
@@ -60,17 +59,20 @@
                         <p>Escriba la justificación de reactivación:</p>
                           <div class="form-group">
                             <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""   
-                                placeholder="Justificación de reactivación" v-model="motivoCancelacion">
-                            </textarea>                    
+                                placeholder="Justificación de reactivación" v-model="formReactivar.motivoReactivacion">
+                            </textarea>  
+                            <small v-if="!$v.formReactivar.motivoReactivacion.required" class="form-text form-text-error">
+                                Este campo es obligatorio
+                            </small>                                              
                         </div>   
                         <div class="form-group text-left">
                             <label class="control-label" for="reactivacion">Cargar archivo:</label>
-                            <input id="reactivacion" type="file" @change="onFileSelected" accept=".pdf">
+                            <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
                         </div>                                             
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="cerrarCnclObra" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" @click="reactivar(data.clave)">Guardar</button>
+                        <button type="button" class="btn btn-primary" @click="reactivar(data)">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -79,20 +81,38 @@
 </template>
 
 <script>
-import { cancelarObra, } from '@/api/obras'
+import Vue from 'vue'
+import Vuelidate from 'vuelidate'
+import { Loading } from 'element-ui';
+import { required } from 'vuelidate/lib/validators'
+import { cancelarObra, reactivarObra } from '@/api/obras'
+
+Vue.use(Vuelidate)
 
 export default {
     name:'CancelaObra',
     data() { 
-        return {             
+        return {      
+            idReactivacion:null,       
             motivoCancelacion:'',
             id:null,
             data: { 
                 data: {
-
                 } 
-            }             
+            },
+            formReactivar:{
+                motivoReactivacion:null,
+                file:null
+            }   
         };
+    },
+    validations: {
+        formReactivar: {
+            motivoReactivacion:{
+                required
+            }
+   
+        }
     },
     methods:{
         async CancelarObra (myId){
@@ -105,18 +125,38 @@ export default {
             const data = await cancelarObra(this.$store.state.cancel.id, formData)
             this.$parent.$parent.populate()
         },
-        async reactivar(){
-
+        async reactivar(data){
+            if(!this.$v.formReactivar.$invalid){ 
+                let loadingInstance = Loading.service({ fullscreen: true, lock: true });
+                let formData = new FormData();
+                formData.append("justificacion", this.formReactivar.motivoReactivacion);  
+                formData.append("direccion", 'reactivar');  
+                formData.append("obra", data.id);  
+                if(this.formReactivar.file){
+                    formData.append("archivo", this.formReactivar.file);
+                }  
+                 this.$alert('La Obra se ha reactivado', '', {
+                        confirmButtonText: 'Cerrar',
+                    });                           
+                await reactivarObra(formData)
+                .then(_ => {
+                    this.$alert('La Obra se ha reactivado', '', {
+                        confirmButtonText: 'Cerrar',
+                    });
+                }).finally(_=>{
+                    loadingInstance.close();
+                })
+            }    
         },        
         setId(clave) {
             this.$store.commit('setIdCancelacion', clave)            
-        },
-        setIdActivacion(clave) {
-            this.$store.commit('setIdReactivacion', clave)            
         },        
         onFileSelected (event) {
             this.file = event.target.files[0];                               
-        },      
+        },    
+        onFileReactivacion (event) {
+            this.formReactivar.file = event.target.files[0];                               
+        },              
     }
     
 }
