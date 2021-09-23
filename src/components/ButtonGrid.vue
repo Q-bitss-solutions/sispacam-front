@@ -11,6 +11,7 @@
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
         </button>
         <button 
+            v-if="data.isCanceled"
             class="btn btn-primary btn-sm editObra" 
             type="button" 
             aria-label="Ver"

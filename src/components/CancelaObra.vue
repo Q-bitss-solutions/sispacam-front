@@ -1,6 +1,5 @@
 <template>
     <div> 
-
         <button class="btn btn-primary btn-sm cancelObra" type="button" aria-label="Editar datos"
                 data-toggle="modal"
                 data-target="#mdlCancelarObra"
@@ -8,15 +7,18 @@
                 :disabled="data.isCanceled"
                 :title="!data.isCanceled==true?'':'Cancelar la Obra'"
                 v-if="!data.isCanceled">
-            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true">
+            </span>
         </button>
         <button class="btn btn-primary btn-sm cancelObra" type="button" aria-label="Editar datos"
                 data-toggle="modal"
                 data-target="#mdlReactivarObra"
+                @click="setIdReactivacion(data.id)"
                 :disabled="!data.isCanceled"
                 :title="data.isCanceled==true?'Reactivar la Obra':''"
                 v-if="data.isCanceled">
-            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true">
+            </span>
         </button>
         
         <!--CANCELAR-->
@@ -122,8 +124,16 @@ export default {
             if(this.file){
                 formData.append("archivo", this.file);
             }         
-            const data = await cancelarObra(this.$store.state.cancel.id, formData)
-            this.$parent.$parent.populate()
+           await cancelarObra(this.$store.state.cancel.id, formData).then(_ => {
+                this.$parent.$parent.populate()
+                this.$alert('La Obra se ha Cancelado', '', {
+                        confirmButtonText: 'Cerrar',
+                        callback: action => {                            
+                        }                        
+                });
+           })
+
+
         },
         async reactivar(data){
             if(!this.$v.formReactivar.$invalid){ 
@@ -131,17 +141,18 @@ export default {
                 let formData = new FormData();
                 formData.append("justificacion", this.formReactivar.motivoReactivacion);  
                 formData.append("direccion", 'reactivar');  
-                formData.append("obra", data.id);  
+                formData.append("obra", this.$store.state.reactivar.id);  
                 if(this.formReactivar.file){
                     formData.append("archivo", this.formReactivar.file);
-                }  
-                 this.$alert('La Obra se ha reactivado', '', {
-                        confirmButtonText: 'Cerrar',
-                    });                           
+                }                           
                 await reactivarObra(formData)
                 .then(_ => {
-                    this.$alert('La Obra se ha reactivado', '', {
+                    $(this.$refs['mdlReactivarObra']).modal('hide')
+                    this.$parent.$parent.populate()
+                    this.$alert('La Obra se ha Reactivado', '', {
                         confirmButtonText: 'Cerrar',
+                        callback: action => {                            
+                        }                        
                     });
                 }).finally(_=>{
                     loadingInstance.close();
@@ -150,14 +161,19 @@ export default {
         },        
         setId(clave) {
             this.$store.commit('setIdCancelacion', clave)            
-        },        
+        },   
+        setIdReactivacion(clave) {
+            this.formReactivar.motivoReactivacion=null,
+            this.formReactivar.file= null  
+            this.$store.commit('setIdReactivacion', clave)            
+        },              
         onFileSelected (event) {
             this.file = event.target.files[0];                               
         },    
         onFileReactivacion (event) {
             this.formReactivar.file = event.target.files[0];                               
         },              
-    }
+    },
     
 }
 </script>
