@@ -150,8 +150,11 @@
                 <!--FIN Extraordinarios-->             
                 <tr v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                     <td>
-                            <button class="btn btn-danger btn-sm" type="button" 
-                            @click="showModal = true">
+                            <button 
+                                id="btn-add-partida"
+                                class="btn btn-danger btn-sm" type="button" 
+                                @click="showModal = true"
+                            >
                                 <span class="glyphicon glyphicon-plus"></span> 
                                 Agregar partida extraordinaria
                             </button>

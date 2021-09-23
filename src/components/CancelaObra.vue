@@ -60,7 +60,7 @@
                     <div class="modal-body text-left">
                         <p>Escriba la justificación de reactivación:</p>
                           <div class="form-group">
-                            <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""   
+                            <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""   
                                 placeholder="Justificación de reactivación" v-model="formReactivar.motivoReactivacion">
                             </textarea>  
                             <small v-if="!$v.formReactivar.motivoReactivacion.required" class="form-text form-text-error">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="cerrarCnclObra" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" @click="reactivar(data)">Guardar</button>
+                        <button type="button" class="btn btn-primary" @click="reactivar(data)" id="btn-sbmt-reactivar">Guardar</button>
                     </div>
                 </div>
             </div>

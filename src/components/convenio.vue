@@ -93,7 +93,7 @@
                             v-model="meta"
                             :min="min"
                             :max="max"
-                            disabled = "cons"
+                            :disabled="cons"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
