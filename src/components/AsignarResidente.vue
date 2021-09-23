@@ -22,7 +22,7 @@
                     :allowSorting='true'
                     :pageSettings='pageSettings'
                     :rowSelected='rowSelected'     
-                    :disabled = "cons"               
+                    :disabled="cons"               
                     >
             <e-columns>
                 <e-column field='id' headerText='id' :visible='flag'></e-column>
@@ -57,7 +57,11 @@ export default {
         }    
     },    
     props: {
-        idUsr: Number 
+        idUsr: Number ,
+        isCanceled:{
+            required:true
+        }
+
     },
     provide: {
         grid: [Sort, Page, Filter]
@@ -81,13 +85,6 @@ export default {
                 this.id_usuario_asignado = response.usuarios
             }
         },
-         beforeMount: function () {    
-            if(this.isCanceled){
-                this.cons = true
-            }else{
-                this.cons= false
-            }
-         },
         async fetchUsers() {
             const { users } = await getResidentes(this.$systemId, this.$residenteGroup) 
             if(users) {
@@ -106,9 +103,14 @@ export default {
         }
     },
     async created() {
-        await this.getUserAsign()
+        if(this.$route.params.obraId){
+            await this.getUserAsign()            
+        }
         await this.fetchUsers()
-    }
+    },
+    beforeMount: function () {    
+        this.cons=this.isCanceled
+    }     
 
 }
 

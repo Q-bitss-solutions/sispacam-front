@@ -39,15 +39,11 @@ export default {
     },
     methods:{
         toEdit () {
-            this.$router.push({
-                path:'/editcamino/'+this.data.clave,
-                name:'AltaCaminoEdit',
-                params: { isCanceled:false, obraId:this.data.clave }
-                })
-            },
+            this.$store.commit('setStatusCamino', this.data.isCanceled)   
+            this.$router.push('/editcamino/'+this.data.clave)
+        },
         toVer(){
-            console.log('data')
-            console.log(this.data)
+            this.$store.commit('setStatusCamino', this.data.isCanceled) 
             this.$router.push({
                 path:'/editcamino/'+this.data.clave,
                 name:'AltaCaminoEdit',

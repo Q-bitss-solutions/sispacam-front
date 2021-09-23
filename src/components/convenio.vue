@@ -29,9 +29,11 @@
                         placeholder="Selecciona el año"
                         v-model="anio"
                         v-model.trim="$v.anio.$model"
-                        :disabled="cons"
-                        :change="setData">
-                        </ejs-dropdownlist>
+                        :enabled="!cons"
+                        ref="anio"
+                        :change="setData"
+                      >
+                      </ejs-dropdownlist>
                     </div>
                     <div class="row col-md-10">
                             <small v-if="!$v.anio.required && $v.anio.$error" class="form-text form-text-error">
@@ -48,8 +50,8 @@
                         class="form-control"  
                         type="text" 
                         placeholder="Ingrese el Tramo"  
-                        disabled = "cons"
-                        value=""/>  
+                        :disabled="cons"
+                        />  
                     </div>
                   </div>
                   <div class="col-md-3 form-group">
@@ -61,7 +63,7 @@
                             v-model="monto"
                             :min="min"
                             :max="max"
-                            disabled = "cons"
+                            :disabled="cons"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
@@ -75,7 +77,7 @@
                         id="origen"    
                         :dataSource="origenRecData"
                         :fields="origenRecFields"
-                        :disabled = "cons"
+                        :enabled="!cons"
                         placeholder="Selecciona el Origen de  Recurso"
                         v-model="origen"
                         >
@@ -114,14 +116,19 @@
                 </div>
                   <div class="col-md-4 form-group">
                     <label class="control-label">Archivo del Convenio (PDF):</label>
-                    <input  id="fileconvenio" type="file" accept=".pdf" @change="onFileSelected" name="myfile" >
+                    <input :disabled="cons"  id="fileconvenio" type="file" accept=".pdf" @change="onFileSelected" name="myfile" >
                     <p>
                     <div class="col-md-12 table-responsive">
                     <label class="col-md-12 form-group" >Nota: El archivo no debe exceder el tamaño de 12 megas</label>
                   </div>
                   </div>
-                  <div class="col-md-12">
-                    <button type="button" v-on:click="GuardaDatosConvenio" class="btn btn-default pull-right vertical-buffer" data-toggle="modal">Agregar Convenio</button>
+                  <div v-if="!cons" class="col-md-12">
+                    <button 
+                      :disabled="cons" 
+                      type="button" 
+                      v-on:click="GuardaDatosConvenio" 
+                      class="btn btn-default pull-right vertical-buffer" 
+                      data-toggle="modal">Agregar Convenio</button>
                   </div>  
               </div>
             </div>
@@ -253,11 +260,13 @@ export default {
     props: {
         camino_id:{
             type:Number
-        }
+        },
+        isObraCanceled:{
+            required:true,
+            default:false
+        }        
     },
     
-
-
     data(){
         return {
             editmode:false,
@@ -295,7 +304,8 @@ export default {
             origenRecData: new DataManager([
                { id: 'PEF', name: 'PEF' },
                { id: 'INDEP', name: 'INDEP' },
-            ]),  
+            ]),
+            cons:false  
         }
         
     },
@@ -464,7 +474,7 @@ export default {
       this.listaconvenio()
       this.longitudP =  this.formatNum(this.$route.params.longitud_pavimenta)
  
-    },
+    },  
     computed:{
       isCanceled:function(){
         if(this.$store.state.cancelConvenio.id){
@@ -486,18 +496,13 @@ export default {
       getmeta2(){
         return this.formatNum(this.meta)
       },
-      beforeMount: function () {    
-            if(this.$route.params.iscancel){
-                this.cons = true
-            }else{
-                this.cons= false
-            }
-         },
       validaLongitud(){
         return this.getmeta2 > (this.longitudP - this.getmeta)   
       }          
     },
-    
+    beforeMount: function () {  
+      this.cons=this.isObraCanceled
+    },      
 }
 
  

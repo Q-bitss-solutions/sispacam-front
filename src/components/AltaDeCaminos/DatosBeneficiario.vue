@@ -9,7 +9,7 @@
                 <div class="form-group">
                     <div class="col-sm-4">
                         <label class="control-label" for="nombre">Nombre o nombres</label>
-                        <input class="form-control" id="nombre" placeholder="Nombre o nombres" type="text"  v-model="nombre" :class="{'form-control-error': $v.nombre.$error}" disabled = "cons">
+                        <input class="form-control" id="nombre" placeholder="Nombre o nombres" type="text"  v-model="nombre" :class="{'form-control-error': $v.nombre.$error}" :disabled="cons">
                         <div class="row col-md-10">
                             <small v-if="!$v.nombre.required && $v.nombre.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -18,7 +18,7 @@
                     </div>                                  
                     <div class="col-sm-4">
                         <label class="control-label" for="papellido">Primer apellido</label>
-                        <input class="form-control" id="apaterno" placeholder="Primer apellido" type="text" v-model="apaterno" :class="{'form-control-error': $v.apaterno.$error}" disabled = "cons">
+                        <input class="form-control" id="apaterno" placeholder="Primer apellido" type="text" v-model="apaterno" :class="{'form-control-error': $v.apaterno.$error}" :disabled="cons">
                         <div class="row col-md-10">
                             <small v-if="!$v.apaterno.required && $v.apaterno.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-sm-4">
                         <label class="control-label" for="sapellido">Segundo apellido</label>
-                        <input class="form-control" id="amaterno" disabled = "cons" placeholder="Segundo apellido" type="text" v-model="amaterno" :class="{'form-control-error': $v.amaterno.$error}">
+                        <input class="form-control" id="amaterno" :disabled="cons" placeholder="Segundo apellido" type="text" v-model="amaterno" :class="{'form-control-error': $v.amaterno.$error}">
                         <div class="row col-md-10">
                             <small v-if="!$v.amaterno.required && $v.amaterno.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -36,14 +36,22 @@
                     </div>
                     <div class="col-sm-4">
                             <label class="control-label" for="juridica">Personalidad Juridica</label>
-                            <select class="form-control" id="juridica"  v-model="tipocalle" disabled = "cons">
+                            <select class="form-control" id="juridica"  v-model="tipocalle" :disabled="cons">
                                 <option>Fisica</option>
                                 <option>Moral</option>
                             </select>
                         </div>
                         <div class="col-sm-4">
                             <label class="control-label" for="rfc">RFC del Beneficiario</label>
-                            <input class="form-control" id="rfc_benef" @blur = "valbenef"   placeholder="RFC del Beneficiario" type="text" v-model="rfc_benef" :class="{'form-control-error': $v.rfc_benef.$error}" disabled = "cons" >
+                            <input 
+                                class="form-control" 
+                                id="rfc_benef" 
+                                @blur="valbenef"
+                                placeholder="RFC del Beneficiario" 
+                                type="text" 
+                                v-model="rfc_benef" 
+                                :class="{'form-control-error': $v.rfc_benef.$error}" 
+                                >
                             <div class="row col-md-10">
                             <small v-if="!$v.rfc_benef.required && $v.rfc_benef.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
@@ -52,7 +60,7 @@
                         </div>
                         <div class="col-sm-4">
                             <label class="control-label" for="cuenta">Clabe Interbancaria</label>
-                            <input class="form-control" id="clabe" disabled="cons" placeholder="Clabe Interbancaria" type="number" onKeyPress="if(this.value.length==18) return false;" min="0" v-model="clabe" :class="{'form-control-error': $v.clabe.$error}">
+                            <input class="form-control" id="clabe" :disabled="cons" placeholder="Clabe Interbancaria" type="number" onKeyPress="if(this.value.length==18) return false;" min="0" v-model="clabe" :class="{'form-control-error': $v.clabe.$error}">
                             <div class="row col-md-10">
                                 <small v-if="!$v.clabe.required && $v.clabe.$error" class="form-text form-text-error">
                                 Este campo es obligatorio
@@ -62,24 +70,24 @@
                     <br>
                         <div class="col-sm-4">
                             <label class="control-label" for="calle">Calle</label>
-                            <input class="form-control" id="calle" disabled="cons" placeholder="Calle" type="text" v-model="calle">
+                            <input class="form-control" id="calle" :disabled="cons" placeholder="Calle" type="text" v-model="calle">
                         </div>                        
                         <div class="col-sm-4">
                              <label class="control-label" for="numexterior">Núm. Exterior</label>
-                             <input class="form-control" id="next" disabled="cons" placeholder="Núm. Exterior" type="text" v-model="next">
+                             <input class="form-control" id="next" :disabled="cons" placeholder="Núm. Exterior" type="text" v-model="next">
                         </div>   
                         <div class="col-sm-4">
                             <label class="control-label" for="colonia">Colonia</label>
-                            <input class="form-control" id="colonia" disabled="cons" placeholder="Colonia" type="text" v-model="colonia">
+                            <input class="form-control" id="colonia" :disabled="cons" placeholder="Colonia" type="text" v-model="colonia">
                         </div>                   
                     
                         <div class="col-sm-4">
                             <label class="control-label" for="codpostal">Código postal</label>
-                            <input class="form-control" id="cp" disabled="cons" placeholder="Código postal" type="number" onKeyPress="if(this.value.length==5) return false;" min="0" v-model="cp">
+                            <input class="form-control" id="cp" :disabled="cons" placeholder="Código postal" type="number" onKeyPress="if(this.value.length==5) return false;" min="0" v-model="cp">
                         </div>
                         <div class="col-sm-4">
                             <label class="control-label" for="tipocalle">Tipo de calle</label>
-                            <select class="form-control" id="tipocalle"  v-model="tipocalle" disabled="cons">
+                            <select class="form-control" id="tipocalle"  v-model="tipocalle" :disabled="cons">
                                 <option>Calle</option>
                                 <option>Boulevard</option>
                                 <option>Avenida Principal</option>
@@ -97,7 +105,7 @@
         <div class="form-group">
             <div class="col-md-8 form-group">
                 <label class="control-label">Beneficiario asignado:</label>
-                <input class="form-control" v-model="usuario" type="text" disabled="cons" placeholder="No hay beneficiario asigando">
+                <input class="form-control" v-model="usuario" type="text" :disabled="cons" placeholder="No hay beneficiario asigando">
                 <input class="form-control" v-model="benefasig" type="text" v-show="false">
             </div>           
         </div>
@@ -157,6 +165,10 @@ export default {
             abreviaturaEdo:'',
             iso:''
         },
+        isCanceled:{
+            required:true,
+            default:false
+        }        
     },
     data(){
         return {
@@ -281,13 +293,8 @@ editTemplateB () {
             }
         }
     },
-    
      beforeMount: function () {    
-    if(this.$route.params.iscancel){
-      this.cons = true
-    }else{
-      this.cons= false
-    }
+      this.cons = this.isCanceled
   },  
      created(){
         if(this.$route.params.obraId){

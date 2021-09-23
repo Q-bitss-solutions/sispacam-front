@@ -16,15 +16,36 @@
                 <label>Estrategia Gobierno Federal:</label>
                 <div>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="ciit" value="true"  name="ciit" v-model="ciit" disabled = "cons"> 
+                        <input 
+                            type="checkbox" 
+                            id="ciit" 
+                            value="true"  
+                            name="ciit" 
+                            v-model="ciit" 
+                            :disabled="cons"
+                        > 
                         CIIT
                     </label>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" v-model="tren_maya" disabled = "cons"> 
+                        <input 
+                            type="checkbox" 
+                            id="trenMaya" 
+                            value="trenMaya" 
+                            name="trenMaya" 
+                            v-model="tren_maya" 
+                            :disabled = "cons"
+                        > 
                         Tren Maya
                     </label>               
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="caminosOriginales" value="caminosOriginales" name="caminosOriginales" v-model="caminosOriginales" disabled = "cons"> 
+                        <input 
+                            type="checkbox" 
+                            id="caminosOriginales" 
+                            value="caminosOriginales" 
+                            name="caminosOriginales" 
+                            v-model="caminosOriginales" 
+                            :disabled="cons"
+                        > 
                         Caminos Originales
                     </label>                                                             
                 </div>
@@ -34,10 +55,25 @@
                 <label for="tipoCamino">Tipo de Camino:</label>
                 <div id="tipoCamino">
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="cabecera" name="tipo_camino" value="C" :disabled = "cons"> Cabecera
+                        <input 
+                            v-model="tipo_camino" 
+                            type="radio" id="cabecera" 
+                            name="tipo_camino" 
+                            value="C" 
+                            :disabled="cons"
+                        /> 
+                        Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="agencia" name="tipo_camino" value="A"  :disabled = "cons" > Agencia
+                        <input 
+                            v-model="tipo_camino" 
+                            type="radio" 
+                            id="agencia" 
+                            name="tipo_camino" 
+                            value="A"  
+                            :disabled="cons"
+                        /> 
+                        Agencia
                     </label>
                     <label class="radio-inline">
                         <input v-model="tipo_camino" type="radio" id="otro" name="tipo_camino" value="O" :disabled = "cons"> Otro
@@ -47,7 +83,7 @@
                     </label> 
                     <div class="row col-md-10">
                     <small v-if="tipo_camino == 'A' && this.edo.localidades  && (this.edo.localidades.length < 1 || this.edo.localidades.length  > 1)" class="form-text form-text-error">
-                     Para esta opcion debe seleccionar una Localidad 
+                        Para esta opcion debe seleccionar una Localidad 
                     </small>  
                     </div>                                   
                 </div>                    
@@ -57,7 +93,7 @@
                 <div class="col-md-4" v-show="false">       
                     <div >
                         <label for="camino">ID Camino:</label>
-                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" disabled = "cons" v-model="idcamino"> 
+                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" :disabled="cons" v-model="idcamino"> 
                     </div>
                 </div>
                 <div class="col-md-12"> 
@@ -69,7 +105,7 @@
                         class="form-control"  
                         type="text" 
                         placeholder="Nombre del Camino"  
-                        disabled = "cons"
+                        :disabled="cons"
                         value=""/>  
                         <div class="row col-md-10">
                             <small v-if="!$v.nombre_camino.required && $v.nombre_camino.$error" class="form-text form-text-error">
@@ -108,7 +144,6 @@
                             id="longitud_pavimentar"
                             placeholder="Longitud a pavimentar 2019-2014(km)"
                             v-model="fLongitdTotalAPavimentar" 
-                            :change="valnum"
                             :min="min"                             
                             :max="max"
                             :disabled = "cons"
@@ -133,7 +168,7 @@
                         v-model="ancho_camino"
                         v-model.trim="$v.ancho_camino.$model"
                         ref="refAncho"
-                        :disabled = "cons"
+                        :disabled="cons"
                         >
                         </ejs-dropdownlist> 
                         <div class="row col-md-10">
@@ -157,7 +192,7 @@
                 <label>Datos de Georreferencia:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        disabled = "cons" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
+                        :disabled="cons" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -171,7 +206,7 @@
                 <label>Características actuales del camino:</label>    
                 <div> 
                     <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                        disabled = "cons" placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
+                        :disabled="cons" placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
                     </textarea>
                 </div>                                
             </div>
@@ -189,7 +224,7 @@
                     <label>Beneficios del Camino:</label>
                     <div>
                         <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
-                            disabled = "cons" placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
+                            :disabled="cons" placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
                         </textarea>                    
                     </div>
                 </div>
@@ -232,8 +267,11 @@
            </div><!-- /.modal-dialog -->
        </div><!-- /.modal -->
 <div class="form-group">
-    <div class="row">
-        <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
+    <div class="row" v-if="!cons">
+        <button            
+            type="button" 
+            class="btn btn-default pull-right vertical-buffer" 
+            data-toggle="modal"
             v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
             Guardar Datos
         </button>
@@ -401,15 +439,6 @@ export default {
 
           },
 
-          async valnum() {
-    // ...
-
-
-      
-       
-    
-  },
-
           async CargaDatos(clave){
               const response = await getupdate(clave)
               this.ciit = response.ciit
@@ -443,7 +472,7 @@ export default {
               if(this.ancho_camino == 2)  this.Presup = "$ 3,100,198.29"
               if(this.ancho_camino == 3)  this.Presup = "$ 3,507,565.95"
               if(this.ancho_camino == 4)  this.Presup = "$ 3,929,902.41"
-              if(this.ancho_camino == 5)  this.Presup = "$ 4,300,019.57"  
+              if(this.ancho_camino == 5)  this.Presup = "$ 4,300,019.57" 
           },
 
 
@@ -455,9 +484,6 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-
-                 
-                 
                  const data = {
                     iso:this.edo.iso,
                     cve_agee:this.edo.cve_agee,
@@ -476,6 +502,7 @@ export default {
                     icveestados:this.edo.icveestados,
                     region:this.edo.region,
                     ubicacion:this.edo.ubicacion,
+                    ubicacion_camino:'ubicacion_camino',
                     poblacion_indigena:this.edo.poblacion_indigena,
                     totpoblacion:this.edo.totpoblacion,
                     icve_estado_inegi:Number.parseInt(this.edo.icve_estado_inegi) ,
@@ -519,12 +546,8 @@ export default {
         }
     },   
     
-     beforeMount: function () {    
-    if(this.isCanceled){
-      this.cons = true
-    }else{
-      this.cons= false
-    }
+     beforeMount: function () {
+        this.cons=this.isCanceled
   },    
 }
 </script>

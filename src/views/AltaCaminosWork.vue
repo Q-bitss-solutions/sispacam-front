@@ -13,19 +13,15 @@
             Datos del Camino
           </a>
         </li>  
-        <li role="presentation"  id="tabDatosBeneficiario">
-          <div v-show="!isCanceled" role="presentation"  id="tabDatosBeneficiario">
+        <li v-if="!isCanceled" role="presentation"  id="tabDatosBeneficiario">
             <a href="#datosBeneficiario"  aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
               Beneficiario
-            </a>
-          </div>  
+            </a>  
         </li>   
-        <li v-if="$route.params.obraId  && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false " role="presentation"  id="tabAsina">
-        <div v-show="!isCanceled">
-          <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Asignar {{isCanceled}}
-          </a>
-        </div> 
+        <li v-if="($route.params.obraId  && this.$store.getters['user/StateRol']=='NORMATIVO' && isCanceled==false)" role="presentation"  id="tabAsina">
+            <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
+              Asignar
+            </a> 
         </li>      
          <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
@@ -51,11 +47,11 @@
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
           <DatosBeneficiario :isCanceled="isCanceled"> </DatosBeneficiario>
         </div>      
-        <div v-if="getCaminoId != 0 || !isCanceled" role="tabpanel" class="tab-pane" id="asignarresidente">
+        <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="asignarresidente">
           <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente>
         </div>      
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">
-          <convenio :camino_id="getCaminoId"> </convenio>
+          <convenio :camino_id="getCaminoId" :isObraCanceled="isCanceled"> </convenio>
         </div>     
     </div>
   <div>
@@ -66,7 +62,9 @@
 </template>
 
 <script>
+
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
+import { getupdate } from '@/api/alta-camino';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
@@ -84,18 +82,14 @@ export default {
                 DatosFinancieros
               },
     props:{
-      isCanceled:{
-        required:true,
-        default:true
-      },
     },
   data () {
     return {
-        camino_id:0,
-        cEstado: '',
-        msgError: null,
-        cons:false,
-        breadcrumb: ['Camino '+ this.$route.params.obraId],
+      isCanceled:false,
+      camino_id:0,
+      cEstado: '',
+      msgError: null,
+      breadcrumb: ['Camino '+ this.$route.params.obraId],
     }    
   },
   methods: {
@@ -106,10 +100,13 @@ export default {
     showError(e){
       console.log('show-error')
       this.msgError = e;
-      console.log(e)
       //setTimeout(() => this.msgError = false, 10000);
     },
     ...mapMutations(['setBreadcrumb']),    
+    async getStatus(clave){
+      const response = await getupdate(clave)    
+      this.isCanceled = response.estatus=='C'?true:false
+    }
   },
   computed: {
       getCaminoId(){
@@ -121,17 +118,8 @@ export default {
   beforeMount: function () {    
     if(this.$route.params.obraId){
       this.setBreadcrumb(this.breadcrumb)
+      this.getStatus(this.$route.params.obraId)
     }
-    if(this.isCanceled){
-      this.cons = true
-    }else{
-      this.cons = false
-    }
-    console.log("isCanceled")
-    console.log(this.isCanceled)
   }
 }
 </script>
-
-
-

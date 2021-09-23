@@ -21,7 +21,7 @@
                           :change="obtenerMunicipios"
                           :enabled="estadosHabilitado"
                           v-model="icve_estado_inegi"
-                          :disabled = "cons"
+                          :disabled="cons"
                           ref="refEstado"
                           :value="valueEstado"
                           
@@ -43,7 +43,7 @@
                             :close="obtenerLocalidades"
                             :enabled="municipiosHabilitado"
                             v-model="icve_municipio"
-                            :disabled = "cons"
+                            :disabled="cons"
                             ref="refMunicipio"
                         >
                         </ejs-combobox>                   
@@ -85,49 +85,49 @@
                         <label>Regi&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input id="region" v-on:change="actualizadatos" v-model="region" disabled = "cons" placeholder="Región" maxlength="40" class="form-control">
+                        <input id="region" v-on:change="actualizadatos" v-model="region" :disabled="cons" placeholder="Región" maxlength="40" class="form-control">
                     </div> 
                     <div class="col-md-12 help-block"></div>   
                     <div class="col-md-6">
                         <label>Ubicaci&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input id="ubicacion" v-on:change="actualizadatos" v-model="ubicacion" disabled = "cons" v-on:keyup="fubicacion" placeholder="Ubicación" class="form-control">
+                        <input id="ubicacion" v-on:change="actualizadatos" v-model="ubicacion" :disabled="cons" v-on:keyup="fubicacion" placeholder="Ubicación" class="form-control">
                     </div>
                     <div class="col-md-12 help-block"></div>            
                     <div class="col-md-6">
                         <label>Poblacion ind&iacute;gena</label>
                     </div>                                  
                     <div class="col-md-6">
-                        <input v-model="poblacion_indigena" class="form-control" type="text" placeholder="Población indígena" id="poblacion_indigena" disabled = "cons">
+                        <input v-model="poblacion_indigena" class="form-control" type="text" placeholder="Población indígena" id="poblacion_indigena" disabled>
                     </div>                       
                     <div class="col-md-12 help-block"></div>          
                     <div class="col-md-6">
                         <label>Grado de marginaci&oacute;n:</label>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" disabled = "cons" v-model="marginacion" class="form-control">                      
+                        <input type="text" v-model="marginacion" class="form-control" disabled>                      
                     </div>  
                     <div class="col-md-12 help-block"></div>   
                     <div class="col-md-6">
                         <label >Total de población indígena:</label>
                     </div>
                     <div class="col-md-6">
-                        <input :value="iTotalPoblacionIndigena"   placeholder="Total de población indígena"  class="form-control"   disabled = "cons"  >
+                        <input :value="iTotalPoblacionIndigena"  placeholder="Total de población indígena"  class="form-control" disabled>
                     </div>        
                     <div class="col-md-12 help-block"></div>
                     <div class="col-md-6">
                         <label>Clave INEGI estado:</label>
                     </div>          
                     <div class="col-md-6">  
-                        <input v-model.number="icve_estado_inegi" class="form-control" type="number" disabled = "cons">  
+                        <input v-model.number="icve_estado_inegi" class="form-control" type="number" disabled>  
                      </div>   
                      <div class="col-md-12 help-block"></div>    
                     <div class="col-md-6">
                         <label>Clave INEGI municipio:</label>
                     </div>          
                     <div class="col-md-6">  
-                        <input id="icve_municipio" v-model.number="icve_municipio" class="form-control" type="number" disabled = "cons">  
+                        <input id="icve_municipio" v-model.number="icve_municipio" class="form-control" type="number" disabled>  
                      </div> 
                 <!--<div id="datosNivelMunicipal" class="table-responsive"> -->      
                    <div class="col-md-12 help-block"></div> 
@@ -139,7 +139,7 @@
                             format='n' 
                             :showSpinButton='false'
                             v-model.number="ip_poblacion_total_localidades" 
-                            :disabled = "cons"
+                            :disabled="cons"
                             :enabled='false'
                             aria-disabled='false'
                             value="0">                                            
@@ -162,7 +162,7 @@
                                         <label>Numero de Localidades: </label>                                        
                                     </th>
                                     <th class="col-md-6">                                        
-                                        <input id="noLocalidadesMun" v-model.number="ilocalidades_municipio" class="form-control" type="number" disabled = "cons">
+                                        <input id="noLocalidadesMun" v-model.number="ilocalidades_municipio" class="form-control" type="number" disabled>
                                     </th>
                                 </tr>
 
@@ -190,7 +190,6 @@
                                         :showSpinButton='false'
                                         v-model.number="ipoblacion_municipio" 
                                         :enabled='false'
-                                        :disabled = "cons"
                                         value="0">                                            
                                     </ejs-numerictextbox>                        
                                 </div>  
@@ -354,7 +353,8 @@ export default {
               //this.ilocalidades_municipio = response.datos_geograficos[0].ilocalidades_municipio
               this.setEdoIso()
               this.recalcularPoblacionTotal()   
-              this.estadosHabilitado = false                
+              this.estadosHabilitado = false  
+              this.cons = response.estatus=='C'?true:false              
         },
         //Envia datos Ubicacion
         enviardatos_u(){
@@ -562,11 +562,7 @@ export default {
         }               
     },
      beforeMount: function () {    
-    if(this.isCanceled){
-      this.cons = true
-    }else{
-      this.cons= false
-    }
+      this.cons = this.isCanceled
   }, 
     computed:{
         getEditmode(){
