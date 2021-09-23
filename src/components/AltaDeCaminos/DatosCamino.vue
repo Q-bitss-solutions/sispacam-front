@@ -22,7 +22,7 @@
                             value="true"  
                             name="ciit" 
                             v-model="ciit" 
-                            :disabled="cons"
+                            :disabled="isCanceled"
                         > 
                         CIIT
                     </label>
@@ -33,7 +33,7 @@
                             value="trenMaya" 
                             name="trenMaya" 
                             v-model="tren_maya" 
-                            :disabled = "cons"
+                            :disabled ="isCanceled"
                         > 
                         Tren Maya
                     </label>               
@@ -44,7 +44,7 @@
                             value="caminosOriginales" 
                             name="caminosOriginales" 
                             v-model="caminosOriginales" 
-                            :disabled="cons"
+                            :disabled="isCanceled"
                         > 
                         Caminos Originales
                     </label>                                                             
@@ -60,7 +60,7 @@
                             type="radio" id="cabecera" 
                             name="tipo_camino" 
                             value="C" 
-                            :disabled="cons"
+                            :disabled="isCanceled"
                         /> 
                         Cabecera
                     </label>
@@ -71,12 +71,12 @@
                             id="agencia" 
                             name="tipo_camino" 
                             value="A"  
-                            :disabled="cons"
+                            :disabled="isCanceled"
                         /> 
                         Agencia
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="otro" name="tipo_camino" value="O" :disabled = "cons"> Otro
+                        <input v-model="tipo_camino" type="radio" id="otro" name="tipo_camino" value="O" :disabled="isCanceled"> Otro
                     </label>
                     <label class="radio-inline">
                         <input v-model="otroTipoCamino" v-if="tipo_camino == 'O'" placeholder="Especificar otro" />              
@@ -93,7 +93,7 @@
                 <div class="col-md-4" v-show="false">       
                     <div >
                         <label for="camino">ID Camino:</label>
-                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" :disabled="cons" v-model="idcamino"> 
+                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" :disabled="isCanceled" v-model="idcamino"> 
                     </div>
                 </div>
                 <div class="col-md-12"> 
@@ -105,7 +105,7 @@
                         class="form-control"  
                         type="text" 
                         placeholder="Nombre del Camino"  
-                        :disabled="cons"
+                        :disabled="isCanceled"
                         value=""/>  
                         <div class="row col-md-10">
                             <small v-if="!$v.nombre_camino.required && $v.nombre_camino.$error" class="form-text form-text-error">
@@ -127,7 +127,7 @@
                             v-model="fLongitdTotal"
                             :min="min"
                             :max="max"
-                            :disabled = "cons"
+                            :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
@@ -146,7 +146,7 @@
                             v-model="fLongitdTotalAPavimentar" 
                             :min="min"                             
                             :max="max"
-                            :disabled = "cons"
+                            :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                         <div class="row col-md-10">
@@ -168,7 +168,7 @@
                         v-model="ancho_camino"
                         v-model.trim="$v.ancho_camino.$model"
                         ref="refAncho"
-                        :disabled="cons"
+                        :enabled="!isCanceled"
                         >
                         </ejs-dropdownlist> 
                         <div class="row col-md-10">
@@ -179,7 +179,7 @@
                 </div>       
                 <div class="col-md-4">
                     <label>Presupuesto Base:</label>
-                    <input id="Presup"  type="text" class="form-control"  placeholder="" value="" disabled = "cons" v-model="Presup">
+                    <input id="Presup"  type="text" class="form-control"  placeholder="" value="" :disabled="isCanceled" v-model="Presup">
                 </div> 
              </div>         
         </td>
@@ -192,7 +192,7 @@
                 <label>Datos de Georreferencia:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        :disabled="cons" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
+                        :disabled="isCanceled" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -206,7 +206,7 @@
                 <label>Características actuales del camino:</label>    
                 <div> 
                     <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                        :disabled="cons" placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
+                        :disabled="isCanceled" placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
                     </textarea>
                 </div>                                
             </div>
@@ -224,7 +224,7 @@
                     <label>Beneficios del Camino:</label>
                     <div>
                         <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
-                            :disabled="cons" placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
+                            :disabled="isCanceled" placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
                         </textarea>                    
                     </div>
                 </div>
@@ -267,7 +267,7 @@
            </div><!-- /.modal-dialog -->
        </div><!-- /.modal -->
 <div class="form-group">
-    <div class="row" v-if="!cons">
+    <div class="row" v-if="!isCanceled">
         <button            
             type="button" 
             class="btn btn-default pull-right vertical-buffer" 
