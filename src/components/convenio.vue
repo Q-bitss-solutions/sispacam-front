@@ -160,8 +160,7 @@
                 <e-column field='meta' headerText='Meta' textAlign='right'></e-column>
                 <e-column field='archivo' headerText='Archivo' textAlign='Center'></e-column>
                 <e-column field="id" :template='editTemplateA' headerText='Edicion' textAlign='Center' :visible='flagEdicion'></e-column>
-                <e-column field="id" :template='cancelTemplate' headerText='Cancelar' textAlign='Center' :visible='flagEdicion'></e-column>                
-                <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion'></e-column>               
+                <e-column field="id" :template='editTemplateP' headerText='Presupuesto' textAlign='Center' :visible='flagEdicion' width=150></e-column>               
             </e-columns>          
         </ejs-grid>  
         </div>
@@ -242,7 +241,7 @@ import Vue from "vue";
 import { required } from 'vuelidate/lib/validators';
 import VueResource from 'vue-resource';
 import { generarConvenio, updateConvenio } from '@/api/obras';
-import ButtonGrid  from '@/components/ButtonGrid'
+import ButtonGridConvenio  from '@/components/ButtonGridConvenio'
 import ButtonGridToPresupuesto  from '@/components/presupuestos/ButtonGridToPresupuesto'
 import Cancelaconvenio   from '@/components/Cancelaconvenio'
 import { getlistaConvenio, cancelarConvenio } from '@/api/obras'; 
@@ -355,7 +354,7 @@ export default {
       },
       editTemplateA () { 
             return { 
-                template:ButtonGrid,
+                template:ButtonGridConvenio,
             }    
         },
         editTemplateP () { 
@@ -502,6 +501,7 @@ export default {
     },
     beforeMount: function () {  
       this.cons=this.isObraCanceled
+      this.flagEdicion=!this.cons
     },      
 }
 

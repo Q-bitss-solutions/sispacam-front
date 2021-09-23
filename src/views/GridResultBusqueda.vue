@@ -80,7 +80,7 @@ export default {
                 let data = null
                 if(this.flag){
                     if(this.$route.params.values.clave){
-                        data = await getObraByClave(this.$route.params.values.clave)    
+                        data = await getObraByClave(this.$route.params.values.clave.trim())    
                         const aRR = []
                         aRR.push(data)
                         results = aRR    
