@@ -29,7 +29,7 @@
                         placeholder="Selecciona el año"
                         v-model="anio"
                         v-model.trim="$v.anio.$model"
-                        :disabled="editmode"
+                        :disabled="cons"
                         :change="setData">
                         </ejs-dropdownlist>
                     </div>
@@ -48,7 +48,7 @@
                         class="form-control"  
                         type="text" 
                         placeholder="Ingrese el Tramo"  
-                        :disabled = "editmode"
+                        disabled = "cons"
                         value=""/>  
                     </div>
                   </div>
@@ -61,6 +61,7 @@
                             v-model="monto"
                             :min="min"
                             :max="max"
+                            disabled = "cons"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
@@ -74,6 +75,7 @@
                         id="origen"    
                         :dataSource="origenRecData"
                         :fields="origenRecFields"
+                        :disabled = "cons"
                         placeholder="Selecciona el Origen de  Recurso"
                         v-model="origen"
                         >
@@ -89,6 +91,7 @@
                             v-model="meta"
                             :min="min"
                             :max="max"
+                            disabled = "cons"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                     </div>
@@ -483,6 +486,13 @@ export default {
       getmeta2(){
         return this.formatNum(this.meta)
       },
+      beforeMount: function () {    
+            if(this.$route.params.iscancel){
+                this.cons = true
+            }else{
+                this.cons= false
+            }
+         },
       validaLongitud(){
         return this.getmeta2 > (this.longitudP - this.getmeta)   
       }          

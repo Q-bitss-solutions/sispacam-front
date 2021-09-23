@@ -6,12 +6,12 @@
         <div class="form-group">
             <div class="col-md-8 form-group">
                 <label class="control-label">Residente asignado:</label>
-                <input class="form-control" v-model="usuario" type="text" disabled placeholder="No hay usuario asigando">
+                <input class="form-control" v-model="usuario" type="text" disabled = "cons" placeholder="No hay usuario asigando">
                 <input class="form-control" v-model="id" type="text" v-show="false">
             </div>           
         </div>
                 <div class="col-md-4 text-right">
-                    <button class="btn btn-default" type="button" id="buscarObras" @click="asignar">
+                    <button class="btn btn-default" type="button" id="buscarObras" @click="asignar" disabled = "cons">
                     <span class="icon" style="margin-right: 8px;"></span>Asignar</button>
                 </div>         
         </div>  
@@ -21,7 +21,8 @@
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
-                    :rowSelected='rowSelected'                    
+                    :rowSelected='rowSelected'     
+                    :disabled = "cons"               
                     >
             <e-columns>
                 <e-column field='id' headerText='id' :visible='flag'></e-column>
@@ -80,6 +81,13 @@ export default {
                 this.id_usuario_asignado = response.usuarios
             }
         },
+         beforeMount: function () {    
+            if(this.isCanceled){
+                this.cons = true
+            }else{
+                this.cons= false
+            }
+         },
         async fetchUsers() {
             const { users } = await getResidentes(this.$systemId, this.$residenteGroup) 
             if(users) {

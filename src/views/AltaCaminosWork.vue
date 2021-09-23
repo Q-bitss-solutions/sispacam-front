@@ -14,14 +14,18 @@
           </a>
         </li>  
         <li role="presentation"  id="tabDatosBeneficiario">
-          <a href="#datosBeneficiario" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
-            Beneficiario
-          </a>
+          <div v-show="!isCanceled" role="presentation"  id="tabDatosBeneficiario">
+            <a href="#datosBeneficiario"  aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
+              Beneficiario
+            </a>
+          </div>  
         </li>   
-        <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabAsina">
+        <li v-if="$route.params.obraId  && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false " role="presentation"  id="tabAsina">
+        <div v-show="!isCanceled">
           <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Asignar
+            Asignar {{isCanceled}}
           </a>
+        </div> 
         </li>      
          <li v-if="$route.params.obraId" role="presentation"  id="tabAsina">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
@@ -38,17 +42,17 @@
     </ul>
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="datosGeograficos">
-          <DatosGeograficos  @set-icveEdo="setCEdo" @show-error="showError" 
+          <DatosGeograficos :isCanceled="isCanceled" @set-icveEdo="setCEdo" @show-error="showError" 
             :camino_id.sync="camino_id"/>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosCamino">
-          <DatosCamino :edo='cEstado' @show-error="showError"> </DatosCamino>
+          <DatosCamino :isCanceled="isCanceled" :edo='cEstado' @show-error="showError"> </DatosCamino>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
-          <DatosBeneficiario> </DatosBeneficiario>
+          <DatosBeneficiario :isCanceled="isCanceled"> </DatosBeneficiario>
         </div>      
-        <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="asignarresidente">
-          <AsignarResidente> </AsignarResidente>
+        <div v-if="getCaminoId != 0 || !isCanceled" role="tabpanel" class="tab-pane" id="asignarresidente">
+          <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente>
         </div>      
         <div v-if="getCaminoId != 0" role="tabpanel" class="tab-pane" id="convenio">
           <convenio :camino_id="getCaminoId"> </convenio>
@@ -79,11 +83,18 @@ export default {
                 convenio,
                 DatosFinancieros
               },
+    props:{
+      isCanceled:{
+        required:true,
+        default:true
+      },
+    },
   data () {
     return {
         camino_id:0,
         cEstado: '',
         msgError: null,
+        cons:false,
         breadcrumb: ['Camino '+ this.$route.params.obraId],
     }    
   },
@@ -111,7 +122,14 @@ export default {
     if(this.$route.params.obraId){
       this.setBreadcrumb(this.breadcrumb)
     }
-  }, 
+    if(this.isCanceled){
+      this.cons = true
+    }else{
+      this.cons = false
+    }
+    console.log("isCanceled")
+    console.log(this.isCanceled)
+  }
 }
 </script>
 
