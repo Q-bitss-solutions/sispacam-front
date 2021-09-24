@@ -149,7 +149,7 @@ export default {
     }
   },
   created(){
-    console.log('::v3.0.4')
+    console.log('::v3.0.5')
   }
 }
 </script>
