@@ -46,6 +46,7 @@
         :allowPdfExport='true'
         :allowSorting='true'
         :allowTextWrap='true'
+        
         >
             <e-columns>
                         <e-column field='mes'           headerText='Mes' ></e-column>
@@ -94,19 +95,24 @@
     </div>
      <ejs-grid ref='grid2' 
      id='SecondGrid' 
-     height='450px' width="100%"
      :dataSource='lista' 
+      width="100%"
+     
      :allowPdfExport='true'
      :allowExcelExport='true'
      :allowSorting='true'
      :allowTextWrap='true'
-     >
+     :allowFiltering='true'
+     :toolbar='toolbarOptions' 
+     :allowPaging='false'
+      height='450px'
+     >    
         <e-columns>
             <e-column field='idpago'         headerText='id' :visible='flag' ></e-column>
             <e-column field='rfc_benef'  headerText='RFC' width=120></e-column>
             <e-column field='nombre'      headerText='Beneficiario' width=150></e-column>
-            <e-column field='importe'      headerText='Monto' textAlign='right' format='C2' width=100></e-column>
-            <e-column field='reintegro'  headerText='Reintegro' textAlign='right' format='C2' width=100></e-column>
+            <e-column field='importe'      headerText='Monto' textAlign='right' format='C2' width=150></e-column>
+            <e-column field='reintegro'  headerText='Reintegro' textAlign='right' format='C2' width=150></e-column>
             <e-column field='f_elab'      headerText='Fecha Elab' width=70></e-column>
             <e-column field='f_pago'      headerText='Fecha Pago' width=70></e-column>  
             <e-column field='estatus'    headerText='Estatus' width=70></e-column>              
@@ -124,7 +130,7 @@ import ButtonGrid  from '@/components/ButtonGrid'
 import { getCvepres, getSpago, getMescons} from '@/api/obras'
 import VueCurrencyFilter from 'vue-currency-filter'
 import excel from 'vue-excel-export'
-import { GridPlugin, Toolbar, ExcelExport, PdfExport, Sort, Page } from '@syncfusion/ej2-vue-grids';
+import { GridPlugin, Toolbar, ExcelExport, PdfExport, Sort, Page, Filter} from '@syncfusion/ej2-vue-grids';
 
 Vue.use(GridPlugin);
 Vue.use(DropDownListPlugin);
@@ -215,6 +221,36 @@ return {
             }else{
                  this.lista = await getSpago(this.fechac) 
             }
+           console.log("this.lista")
+          console.log(this.lista)
+            
+            var v_tot =  this.lista.reduce((a,b) => {
+                return a + b.importe;
+            }, 0)
+
+            var v_rei =  this.lista.reduce((a,b) => {
+                return a + b.reintegro;
+            }, 0)
+            this.lista.map(i => {
+                if(i.nombre == 'Total General'){
+
+                }
+            })
+        const subtot={ 
+            idpago: 1,
+            rfc_benef: "",
+            nombre: "Total",
+            importe: v_tot,
+            reintegro: v_rei,
+            f_elab: null,
+            f_pago: null,
+            estatus: "",
+            f_carga: this.fechac
+  
+          }
+          this.lista.unshift(subtot)
+
+
         },
   async populate () {
             try{
@@ -375,6 +411,7 @@ return {
     toolbarClick : function (args) {
       if (args.item.id === 'FirstGrid_excelexport') { // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
         let appendExcelExportProperties = {
+           
             multipleExport: { type: 'NewSheet' },
             fileName: this.nama2,
             header: {
@@ -414,8 +451,11 @@ return {
         let firstGridExport = this.$refs.grid1.excelExport(appendExcelExportProperties, true);
             firstGridExport.then((fData) => {
                 this.$refs.grid2.excelExport(appendExcelExportProperties, false, fData);
+                
              });
+             
     }
+   
   },
  submit() { 
      this.populate()
