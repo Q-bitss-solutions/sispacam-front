@@ -171,7 +171,7 @@
           </small>
         </div> 
       </form>
-      <form class="form-row" v-if="mode == 'edit' && !form.es_modificatorio && form.modificatorio == 0 && isNormativo">
+      <form class="form-row" v-if="false && mode == 'edit' && !form.es_modificatorio && form.modificatorio == 0 && isNormativo">
         <div class="form-group col-md-12 text-right">
           <button 
             class="btn btn-default btn-sm" 
@@ -244,12 +244,12 @@
             <label for="meta">Meta:</label>                 
             <input  
               class="form-control modificatorio" 
-              v-model="formMoficatorio.meta"
+              v-model="form.meta"
               id="metaMod" 
               type="number" 
               :disabled="isDisabledMod"
               placeholder="Ingrese la Meta(km)"
-              :class="!$v.formMoficatorio.meta.required? 'form-control-error': ''"
+              :class="!$v.form.meta.required? 'form-control-error': ''"
             />                     
         </div>        
       </div>
@@ -417,7 +417,7 @@ export default {
               template: `
                   <button
                     @click="toEdit"
-                    :disabled="!isNormativo"
+                    :disabled="getDisabled"
                     class="btn btn-primary btn-sm"  
                     type="button" 
                     >
@@ -451,6 +451,12 @@ export default {
                   }
                   this.$parent.$parent.showAdminModalConvenio = true                
                 },
+                getDisabled(){
+                  if(!this.isNormativo || this.data.archivo || this.data.modificatorio.length > 0){
+                    return false
+                  }
+                  return true
+                }
               },
               created(){
                 this.isNormativo = this.$parent.$parent.isNormativo
@@ -498,7 +504,9 @@ export default {
                   if((this.isNormativo  && this.data.archivo )
                       ||(this.isNormativo 
                         && this.data.hasOwnProperty('hasChildRecords') 
-                        && this.data.childRecords.length > 0 )){
+                        && this.data.childRecords.length > 0 ) 
+                        || !this.isNormativo
+                        ){
                     return true
                   }
                   return false
