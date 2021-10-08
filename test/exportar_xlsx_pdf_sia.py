@@ -11,7 +11,7 @@ from time import sleep
 from selenium.webdriver.chrome.options import Options
 
 
-class TestCatalogoPartidas():
+class TestEsportarArchivosConsultaSIA():
     def setup_method(self):
         self.driver = webdriver.Chrome('/home/diego/webdriver/chromedriver')
 
@@ -28,28 +28,18 @@ class TestCatalogoPartidas():
         pwd.send_keys("internet")  
         time.sleep(3)         
         login = self.driver.find_element(By.ID, "sbtlogin")
-        login.click()         
+        login.click() 
         time.sleep(3) 
-        self.driver.get("http://192.168.1.73:8080/presupuesto/3-BCN-A/2019/2/131/2/")
+        self.driver.find_element_by_link_text("Financiero").click()             
         time.sleep(3) 
-        self.driver.find_element_by_link_text("PRESUPUESTO REAL").click()
-        self.driver.execute_script(scroll10000)      
+        self.driver.find_element_by_link_text("Consulta Presupuestal").click()             
         time.sleep(3) 
-        self.driver.find_element(By.ID, 'btn-add-partida').click()     
+        self.driver.execute_script(scroll400)
         time.sleep(3) 
-        self.driver.find_element(By.XPATH, '//*[text()="Administrar Catalogo"]').click()           
+        self.driver.execute_script(scroll400)
         time.sleep(3) 
-        self.driver.find_element(By.XPATH, '//*[text()="Nueva Partida"]').click()           
-        time.sleep(2)       
-        concepto  = self.driver.find_element(By.ID, "concepto")
-        concepto.send_keys("ROBOTFRAMEWORK CONCEPTO PRUEBA")
-        time.sleep(2)       
-        unidad = Select(self.driver.find_element_by_id("unidad"))
-        unidad.select_by_index(2)  
-        time.sleep(2)       
-        unitario  = self.driver.find_element(By.ID, "unitario")
-        unitario.send_keys("65.20")             
-        time.sleep(2)    
-        self.driver.find_element(By.XPATH, '//*[text()="Guardar"]').click()           
-        time.sleep(2)            
+        self.driver.find_element(By.XPATH, '//*[text()="Excel Export"]').click()        
+        time.sleep(3) 
+        self.driver.find_element(By.XPATH, '//*[text()="PDF Export"]').click()            
+        time.sleep(3)                         
         self.driver.close()        

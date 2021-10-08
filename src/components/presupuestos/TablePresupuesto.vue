@@ -61,12 +61,14 @@
         <td>{{ partida.partida.descripcion }} </td>         
         <td>                    
             <input v-show="false"  v-model="inportek">
-            <vue-numeric v-bind:precision="2" separator="," 
+            <vue-numeric 
+                v-bind:precision="2" 
+                separator="," 
                 v-if="!partida.partida.subconcepto"
                 class="form-control cantidad-total"   
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
-                :read-only="isPBase?true:false"
+                :read-only="isPBase?true:readOnly"
                 >
             </vue-numeric>
         </td>
@@ -162,19 +164,23 @@ export default {
             default: 0,
             type: Number,
             required: false
-        }
+        },
+        readOnly:{
+            type: Boolean,
+            default:false           
+        },
     },
     data () {
         return {
+            pu:0,
+            codigo:'',
             vnumeric:true,
+            revisar:0.12,
             presupuesto:[],
             nombreConcepto:'',
-            revisar:0.12,
-            pu:0,
-            totalprecioUnitario:0,
             importePorLongitud:0,
+            totalprecioUnitario:0,
             importeTotalPorKilimetro:0,
-            codigo:''            
         }
     },
     methods:{
@@ -188,13 +194,12 @@ export default {
                 codigo: this.codigo 
             })            
     },
-    validaCero(item){
-        if(item =='' || isNaN(item) ||  item == 0){
-           return 0.00100                    
-        }
-        return item
-
-    }
+        validaCero(item){
+            if(item =='' || isNaN(item) ||  item == 0){
+                return 0.00100                    
+            }
+            return item
+        },
     },
     computed:{
         inportek (){
@@ -319,13 +324,14 @@ export default {
         },
     isPuEditable(){
         let isnormativo = this.$store.getters['user/StateRol']=='NORMATIVO'?true:false
-        if(!this.isPBase && isnormativo){
+        if(this.readOnly)return true
+        if(!this.isPBase && isnormativo){            
             return false
         }
         return true
     }
     },
-    created: function () {        
+    created: function () {     
         this.presupuesto = this.conceptos.presupuestoStart
         this.nombreConcepto = this.conceptos.name
         this.codigo = this.conceptos.codigo

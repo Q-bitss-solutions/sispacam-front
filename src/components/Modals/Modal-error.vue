@@ -72,6 +72,10 @@ export default {
         reload(){
             console.log('reload')
             this.$emit('cancel')
+            this.$router.push({
+                name:'AltaCaminoEdit',
+                params: {tabConv:true, obraId:this.$route.params.obraId}
+            }).catch(()=>{});
         }        
     }
 }

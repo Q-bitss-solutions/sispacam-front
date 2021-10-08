@@ -7,7 +7,6 @@ export function getObras() {
     })
 }
 
-
 export function getObraByClave(clave) {
   return request({
     url: `/camino/${clave}/`,
@@ -53,7 +52,6 @@ export function getSpago(fecha) {
     })
   }
 
-
 export function getAllObras(){
   return request({
     url: '/camino/list/1/',
@@ -78,7 +76,6 @@ export function getObraByParmas (params) {
   })
 }
 
-
 export function cancelarObra(clave, data) {
   return request({
     url: '/camino/status/'+ clave + '/',
@@ -87,7 +84,6 @@ export function cancelarObra(clave, data) {
     headers: { "Content-Type": "multipart/form-data" } 
   })
 }
-
 
 export function asignarUsuario(claveObra, usuario) {
   return request({
@@ -117,48 +113,6 @@ export function getResidentes(system, group) {
     })
   }
 
-export function generarConvenio(data, id_camino){
-
-  return request({
-      url:  `/convenio/${id_camino}/ `,
-      method: 'post',
-      data:data,
-      headers: { "Content-Type": "multipart/form-data" } 
-  })  
-}
-
-export function cancelarConvenio(clave) {
-  return request({
-    url: '/convenio/estatus/'+ clave + '/',
-    method: 'patch',
-    data:{
-      estatus:"C"
-    }
-  })
-}
-
-export function getconvenio(id_camino) {
-  return request({
-    url:'/convenio/' + id_camino + '/',
-    method: 'get'
-  })
-}
-
-export function getlistaConvenio(clave) {
-  return request({
-    url: '/convenio/' +clave+ '/list/',
-    method: 'get'
-  })
-}
-
-export function updateConvenio(data,convenio_id ){
-  return request({
-    url:`/convenio/${convenio_id}/update/`,
-    method:'patch',
-    data
-  })
-}
-
 export function reactivarObra(data){
   return request({
     url:'/justificar/',
@@ -167,4 +121,3 @@ export function reactivarObra(data){
     headers: { "Content-Type": "multipart/form-data" } 
   })
 }
-

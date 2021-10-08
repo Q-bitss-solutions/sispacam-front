@@ -25,6 +25,7 @@
                  :totalPP.sync="getPresupuestoByID(1).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(1).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
@@ -37,6 +38,7 @@
                  :totalPP.sync="getPresupuestoByID(2).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(2).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />     
             <!-- SUPERFICIE DE RODAMIENTO --> 
             <TablePresupuesto
@@ -49,6 +51,7 @@
                  :totalPP.sync="getPresupuestoByID(3).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(3).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />      
             <!-- SENALAMIENTO --> 
             <TablePresupuesto
@@ -61,6 +64,7 @@
                  :totalPP.sync="getPresupuestoByID(4).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(4).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />   
             <tbody  v-if="isVisible.find( el => el.id ===   5).mostrar && !isPBase">
                 <tr class="concepto">
@@ -88,7 +92,10 @@
                     <td>    
                         <div class="row">
                             <div class="col-md-1" v-if="isPuEditable()">
-                                <button class="btn btn-primary btn-sm" type="button"  @click="deleteRow(k, extraordinario)">
+                                <button 
+                                    :disabled="getReadOnly"
+                                    class="btn btn-primary btn-sm" type="button"  
+                                    @click="deleteRow(k, extraordinario)">
                                     <span class="glyphicon glyphicon-remove"></span> 
                                 </button>
                             </div>
@@ -106,6 +113,7 @@
                             v-model="extraordinario.cantidad_total"
                             v-on:keypress.native="checa(k)"
                             v-validate="{required: true, min_value:1}"
+                            :read-only="getReadOnly"
                             >                                       
                         </vue-numeric>  
                         <p v-if="errors.has('name'+k)  && showError" class="text-danger">La cantidad debe ser mayor a cero</p>                                                                                         
@@ -154,6 +162,7 @@
                                 id="btn-add-partida"
                                 class="btn btn-danger btn-sm" type="button" 
                                 @click="showModal = true"
+                                :disabled="getReadOnly"
                             >
                                 <span class="glyphicon glyphicon-plus"></span> 
                                 Agregar partida extraordinaria
@@ -231,15 +240,16 @@
 </template>
 
 <script>
-import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
-import { mapMutations, mapGetters } from 'vuex'
-import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
-import { getExtraordinariosByIdConvenio, deleteExtraordinario } from '@/api/extraordinarios'
-import modalExtraordinarios from '@/components/presupuestos/ModalExtraordinarios'
-import Vue from 'vue';
-import VeeValidate from 'vee-validate';
-import { Loading } from 'element-ui';
 
+import Vue from 'vue';
+import { Loading } from 'element-ui';
+import VeeValidate from 'vee-validate';
+import { mapMutations, mapGetters } from 'vuex'
+import { getConvenioById } from '@/api/convenio'; 
+import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
+import modalExtraordinarios from '@/components/presupuestos/ModalExtraordinarios'
+import { getExtraordinariosByIdConvenio, deleteExtraordinario } from '@/api/extraordinarios'
+import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
 Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
@@ -285,6 +295,7 @@ export default {
             totalIPL:0,
             totalPP:0,
             TotalIPK:0,
+            readOnly:false,
             extraordinarios:[],
             presupuestos: [
                 {                    
@@ -486,7 +497,19 @@ export default {
                 return true
             }
             return false
-        }             
+        },
+        async setDataConvenio(){
+            const convenio = await getConvenioById(this.$route.params.convenioId)            
+            console.log('dataconvenio')
+            console.log(convenio)
+            if(convenio.estatus == 'A'){
+                this.readOnly=false
+            }else{
+                this.readOnly=true
+            }
+            console.log('convenio')
+            console.log(convenio.estatus, this.readOnly)
+        }                     
     },
     computed:{
         isVisible(){
@@ -580,16 +603,27 @@ export default {
         isShowModal: {
             get(){
                 return this.showModal
-            }
+            },
+            set (val) {
+                this.showModal = val            
+            }            
         },
-        set (val) {
-            this.showModal = val            
+        getReadOnly() {
+            console.log('getread')
+            console.log(this.readOnly)
+            return this.readOnly
         }
     },
     beforeMount(){
         this.fetchPresupuestoReal()
         this.fetchPresupuestoBase()        
-    } 
+    },
+    created() {
+        console.log('created')
+        if(!this.isPBase){
+            this.setDataConvenio()
+        }        
+    },    
 }
 
 const unidad_medida = [

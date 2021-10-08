@@ -124,9 +124,6 @@ export default {
         dataBound: function() {                    
         },
         isActive(data){
-            console.log(data)
-            console.log(data.estatus)
-            console.log(data.estatus === 'A')
             if(data.estatus === 'A'){
                 return true
             }else{

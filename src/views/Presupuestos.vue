@@ -176,6 +176,10 @@ export default {
             this.filtro = 0
             this.contador++
             window.scrollTo(0, 0)
+            this.$router.push({
+                name:'AltaCaminoEdit',
+                params: {tabConv:true}
+            }).catch(()=>{});
         },
         async save() {
             let loadingInstance = Loading.service({ fullscreen: true, lock: true });
@@ -209,22 +213,21 @@ export default {
                     id_datoconvenio:this.$route.params.convenioId
                 })                           
             })
-        let response = ''  
-        if(this.getEditMode){
-            response = await updatePresupuesto(this.$route.params.convenioId, data).catch(err => {
+            let response = ''  
+            if(this.getEditMode){
+                response = await updatePresupuesto(this.$route.params.convenioId, data).catch(err => {
+                    loadingInstance.close();
+                })
+            }else{
+                response = await savePresupuesto(data).catch(err => {
+                    loadingInstance.close();
+                })
+            }
+            await this.seveExtraordinarios().catch(err => {
                 loadingInstance.close();
             })
-        }else{
-            response = await savePresupuesto(data).catch(err => {
-                loadingInstance.close();
-            })
-        }
-        await this.seveExtraordinarios().catch(err => {
             loadingInstance.close();
-        })
-        loadingInstance.close();
-        $('#save').modal('show')
-
+            $('#save').modal('show')
        },
         async seveExtraordinarios(){
            const conceptosExt = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptosExtraordinarios))
