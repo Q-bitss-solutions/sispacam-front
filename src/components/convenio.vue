@@ -40,9 +40,9 @@
         <e-column :template="editTemplate" headerText='Editar' width=110></e-column>    
         <e-column :template="deleteTemplate" headerText='Eliminar <br> Tramo' :disableHtmlEncode='false' width=140></e-column>          
         <e-column field='anio'  headerText='Año <br> del Convenio'  :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
-        <e-column field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
-        <e-column field='monto' headerText='Monto(mdp)' textAlign='right' width=90></e-column>
-        <e-column field='origen' headerText='Origen  <br> del recurso' :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
+        <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
+        <e-column :template="montoTemplate" field='monto' headerText='Monto(mdp)' textAlign='right' width=90></e-column>
+        <e-column :template="origenTemplate" field='origen' headerText='Origen  <br> del recurso' :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
         <e-column field='meta' headerText='Meta(km)' textAlign='right' width=80></e-column>
         <e-column :template="modificatorioTemplate" headerText='Tiene Convenio <br> Modificatorio' :disableHtmlEncode='false' textAlign='Center' width=160></e-column>    
         <e-column :template="fileTemplate" headerText='Archivo' textAlign='Center' width=100></e-column>    
@@ -171,7 +171,7 @@
           </small>
         </div> 
       </form>
-      <form class="form-row" v-if="mode == 'edit' && !form.es_modificatorio && form.modificatorio == 0 && isNormativo">
+      <form class="form-row" v-if="false && mode == 'edit' && !form.es_modificatorio && form.modificatorio == 0 && isNormativo">
         <div class="form-group col-md-12 text-right">
           <button 
             class="btn btn-default btn-sm" 
@@ -244,12 +244,12 @@
             <label for="meta">Meta:</label>                 
             <input  
               class="form-control modificatorio" 
-              v-model="formMoficatorio.meta"
+              v-model="form.meta"
               id="metaMod" 
               type="number" 
               :disabled="isDisabledMod"
               placeholder="Ingrese la Meta(km)"
-              :class="!$v.formMoficatorio.meta.required? 'form-control-error': ''"
+              :class="!$v.form.meta.required? 'form-control-error': ''"
             />                     
         </div>        
       </div>
@@ -338,7 +338,7 @@ import { required, maxValue, } from 'vuelidate/lib/validators'
 import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
 import { updateEstatus, getConvenios } from '@/api/convenio'; 
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
-import { generarConvenio, updateConvenio, createModificatorio } from '@/api/convenio';
+import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio } from '@/api/convenio';
 
 Vue.use(Vuelidate)
 Vue.use(GridPlugin);
@@ -417,7 +417,7 @@ export default {
               template: `
                   <button
                     @click="toEdit"
-                    :disabled="!isNormativo"
+                    :disabled="getDisabled()"
                     class="btn btn-primary btn-sm"  
                     type="button" 
                     >
@@ -451,6 +451,17 @@ export default {
                   }
                   this.$parent.$parent.showAdminModalConvenio = true                
                 },
+                getDisabled(){
+                  if(this.isNormativo){
+                    if(this.data.hasOwnProperty('hasChildRecords')
+                        && this.data.childRecords.length > 0){                        
+                        return true
+                      }                    
+                    return false
+                  }else{
+                    return true
+                  }                  
+                }
               },
               created(){
                 this.isNormativo = this.$parent.$parent.isNormativo
@@ -466,7 +477,7 @@ export default {
               template: `
               <div class="text-center">
                   <button
-                    :disabled="getDisabled"
+                    :disabled="getDisabled()"
                     @click="toDelete"
                     class="btn btn-primary btn-sm"  
                     type="button" 
@@ -491,19 +502,19 @@ export default {
                     el:this.data,
                     parent:id
                   })
-                }
-              }, 
-              computed:{
-                getDisabled(){                       
-                  if((this.isNormativo  && this.data.archivo )
-                      ||(this.isNormativo 
-                        && this.data.hasOwnProperty('hasChildRecords') 
-                        && this.data.childRecords.length > 0 )){
+                },
+                getDisabled(){                      
+                  if(this.isNormativo){    
+                    if(this.data.hasOwnProperty('hasChildRecords')
+                        && this.data.childRecords.length > 0){
+                        return true
+                      }                                     
+                    return false
+                  }else{
                     return true
-                  }
-                  return false
-                }
-              },
+                  }                  
+                }                
+              }, 
               created(){
                 EventBus.$on("setPerfil",(el)=>{
                   this.isNormativo = el
@@ -594,6 +605,75 @@ export default {
             })
           };
         },
+        montoTemplate: function(){
+          return {
+            template: Vue.component("montoTemplate", {
+              template: `<div class="text-center">
+              {{ getData() }}                 
+                </div>`,
+              data: function() {
+                return {
+                  data: {}
+                }
+              },
+              methods: {
+                getData(){
+                  if(this.data.monto == 'null'){
+                    return '-'                 
+                  }else{
+                    return this.data.monto
+                  }
+                }
+              }              
+            })
+          }
+        },    
+        tramoTemplate: function(){
+          return {
+            template: Vue.component("tramoTemplate", {
+              template: `<div class="text-center">
+              {{ getData() }}                 
+                </div>`,
+              data: function() {
+                return {
+                  data: {}
+                }
+              },
+              methods: {
+                getData(){
+                  if(this.data.tramo == 'null'){
+                    return '-'                 
+                  }else{
+                    return this.data.tramo
+                  }
+                }
+              }              
+            })
+          }
+        }, 
+        origenTemplate: function(){
+          return {
+            template: Vue.component("origenTemplate", {
+              template: `<div class="text-center">
+              {{ getData() }}                 
+                </div>`,
+              data: function() {
+                return {
+                  data: {}
+                }
+              },
+              methods: {
+                getData(){
+                  if(this.data.origen == 'null'){
+                    return '-'                 
+                  }else{
+                    return this.data.origen
+                  }
+                }
+              }              
+            })
+          }
+        },                        
         footerTotal: function () {
           return  { template : Vue.component('maxTemplate', {
               template: `<span><strong>Total:</strong></span>`,
@@ -714,21 +794,14 @@ export default {
             type: 'warning'
           }).then( async () => {
             let loadingInstance = Loading.service({ fullscreen: true, lock: true });
-            await updateEstatus(this.form.id, "C").then( async () => {
-              if(this.form.padre){
-                let formData = new FormData();
-                formData.append("anio", this.form.anio);
-                formData.append("estatus","A");              
-                await updateConvenio(formData, this.form.padre)
-
-              }              
-              await this.listaconvenio()
-              this.$refs.gridConvenios.refresh()
-              this.$alert(`El convenio ha sido cancelado`, 'INFORMACIÓN',{
-                  confirmButtonText: 'Cerrar',
-                  customClass: 'box-msg-login',
-              })                 
-            }).catch( async (e) => {
+            await bajaConvenio(this.form.id).then( async () => {            
+            await this.listaconvenio()
+            this.$refs.gridConvenios.refresh()
+            this.$alert(`El convenio ha sido cancelado`, 'INFORMACIÓN',{
+                confirmButtonText: 'Cerrar',
+                customClass: 'box-msg-login',
+            })                 
+          }).catch( async (e) => {
               console.log(e)  
               let second = 10;
               const timer = setInterval(() => {
@@ -922,11 +995,11 @@ export default {
         const sumMonto = data.result.reduce((tot, element) => {
           if(element.hasChildRecords &&
             element.modificatorio.length > 0){
-            return tot
+            return (tot || 0)
           }
-          return tot + Number((element.monto || 0))
+          return tot + Number((element.monto=='null'?0:element.monto))
         },0)
-        return sumMonto
+        return sumMonto 
       }, 
       validaMetaMoficatorio(){
 
