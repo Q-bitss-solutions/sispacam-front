@@ -69,3 +69,13 @@ export function getConvenioById(id_convenio){
       }
   })  
 }
+
+export function bajaConvenio(id_convenio){
+  return request({
+      url:  `/convenio/bajar`,
+      method: 'post',
+      data:{
+        id:id_convenio
+      },
+  })  
+}
