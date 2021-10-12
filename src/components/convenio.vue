@@ -508,7 +508,10 @@ export default {
                     if(this.data.hasOwnProperty('hasChildRecords')
                         && this.data.childRecords.length > 0){
                         return true
-                      }                                     
+                      }
+                    if(this.data.archivo){
+                      return true
+                    }                                     
                     return false
                   }else{
                     return true
