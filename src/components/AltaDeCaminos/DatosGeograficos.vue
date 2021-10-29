@@ -256,15 +256,15 @@ export default {
             region: '',
             icve_estado_inegi: null,
             estadosHabilitado: false,
-            estadosData: new DataManager([]),
+            estadosData:[],
             estadosFields: { text: 'nom_agee', value: 'cve_agee' },
             icve_municipio: null,
             municipiosHabilitado: false,
-            municipiosData: new DataManager([]),
+            municipiosData: [],
             municipiosFields: { text: 'nom_agem', value: 'cve_agem', custom: 'cve_agee' },
             localidades: [],
             localidadesHabilitado: false,
-            localidadesData: new DataManager([]),
+            localidadesData: [],
             localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
             localidadesTabla: [],
             iTotalPoblacionIndigena: null,
@@ -307,9 +307,6 @@ export default {
         },
     },
     
- 
- 
-
     methods: {
         //Envia datos Region
         enviardatos_r(){
@@ -323,7 +320,7 @@ export default {
               
               this.$refs.refEstado.ej2Instances.value = response.cve_agee
               const {results} = await getMunicipios(response.cve_agee)
-              this.municipiosData = new DataManager(results);
+              this.municipiosData = results;
               this.$refs.refMunicipio.ej2Instances.value = response.icve_municipio
               
               const res = await getLocalidades(response.cve_agee, 
@@ -334,7 +331,7 @@ export default {
                     },0)
                 this.icve_estado_inegi = response.cve_agee
                 this.localidadesHabilitado = false;            
-                this.localidadesData = new DataManager(res);
+                this.localidadesData = res;
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
                 this.localidades = this.$refs.localidades.ej2Instances.value
@@ -388,6 +385,7 @@ export default {
             },
         async initData() {
             try{
+
                 const res = await getEdos()
                 const results = res.results;
                 this.estadosData = res.results;//new DataManager(results);
@@ -524,8 +522,6 @@ export default {
  */         
             const munSelect = this.municipiosData
                                 .filter(a => a.cve_agem == this.icve_municipio)
-            console.log('munSelect') 
-            console.log(munSelect) 
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacion_indigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
