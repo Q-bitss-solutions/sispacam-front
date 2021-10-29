@@ -299,6 +299,12 @@ const isValidCurp = () => curpValida(value)
                 this.formBeneficiario.cveInterbancaria = value['itemData'].clabe
                 this.formBeneficiario.id = value['itemData'].idbenef
                 this.formBeneficiario.cp = value['itemData'].cp
+                this.formBeneficiario.curp = value['itemData'].curp
+                this.formBeneficiario.edad = value['itemData'].edad
+                this.formBeneficiario.genero = value['itemData'].genero
+                this.formBeneficiario.calle = value['itemData'].calle
+                this.formBeneficiario.next = value['itemData'].next
+                this.formBeneficiario.colonia = value['itemData'].colonia
 
 
             },
@@ -316,23 +322,41 @@ const isValidCurp = () => curpValida(value)
                 this.formBeneficiario.findRazonSocial = ''                
             },
             async updateBeneficiario(){
-                console.log(this.$parent)
+                let loadingInstance = Loading.service({ 
+                    fullscreen: false, 
+                    lock: true,
+                 });                
                 await updateBebeniciarioSia(this.formBeneficiario)
                     .then(() => {
-
+                        console.log(this.$parent.beneficiario_id = this.formBeneficiario.id)
+                        this.showAdminModalBeneficiario = false
                     })
                     .catch((error) => {
                         console.log('error')
                         console.log(error)
                     })
                     .finally(() => {
-
+                        loadingInstance.close();
                     })
 
             },
+            async loadbeneficiario(idbenef){
+                if(idbenef!= 0){
+                const resp = await getBeneficiario(idbenef)                
+                    this.formBeneficiario.razonSocial = resp[0].beneficiario
+                    this.formBeneficiario.rfc = resp[0].rfc_benef
+                    this.formBeneficiario.cveInterbancaria = resp[0].clabe
+                    this.formBeneficiario.id = resp[0].idbenef
+                    this.formBeneficiario.cp = resp[0].cp
+                    this.formBeneficiario.curp = resp[0].curp
+                    this.formBeneficiario.edad = resp[0].edad
+                    this.formBeneficiario.genero = resp[0].genero
+                    this.formBeneficiario.calle = resp[0].calle
+                    this.formBeneficiario.next = resp[0].next
+                    this.formBeneficiario.colonia = resp[0].colonia    
+                }            
+            },
             onChange(value){
-                console.log('event')
-                console.log(value)
                 if(!value){
                     this.clearData()
                 }
@@ -362,6 +386,8 @@ const isValidCurp = () => curpValida(value)
                 }
             },
             curpValida(curp) {
+                this.formBeneficiario.edad = ''
+                this.formBeneficiario.genero = ''                   
                 if(typeof curp === 'string'){
                     if(curp.length == 18){
                         var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
@@ -387,7 +413,7 @@ const isValidCurp = () => curpValida(value)
                         return true; //Validado
                     } 
                 } 
-                return true
+                return false
             }
           
         },

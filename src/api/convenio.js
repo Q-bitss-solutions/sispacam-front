@@ -103,7 +103,12 @@ export function updateBebeniciarioSia(beneficiario){
   return request({
     url:`/beneficiary/${beneficiario.id}/update/`,
     method: 'patch',
-    beneficiario
+    data: {
+      calle:beneficiario.calle,
+      next:beneficiario.next,
+      colonia:beneficiario.colonia,
+      curp:beneficiario.curp
+    }
   })
 }
 

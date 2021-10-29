@@ -61,6 +61,7 @@
     </div>
   </div>
 
+<!--Convenio Nuevo & Edit--->
   <Modal
     :title="modalTitle" 
     modal-class="modal2"
@@ -926,6 +927,7 @@ export default {
         this.form.modificatorio = 0
         this.isDisabled = false
         this.btnIsDisabled = false
+        this.beneficiario_id = 0
       
       }, 
       beforeOpen() { 
@@ -1148,7 +1150,7 @@ export default {
         this.formMoficatorio.monto = this.form.monto
         this.formMoficatorio.origen = this.form.origen
         this.formMoficatorio.meta = this.form.meta
-
+        this.loadMesAvence(false)
         this.showAdminModalConvenioMod = true
       },      
       async actualizarConvenio(formData){
@@ -1201,9 +1203,9 @@ export default {
       async fetchDataAvance(idConvenio){
         this.dataAvance = await getAvanceConvenio(idConvenio)
       },
-      openModalBeneficiario(){            
+      openModalBeneficiario(){
+        this.$refs.modalBeneficiario.loadbeneficiario(this.beneficiario_id)           
         this.$refs.modalBeneficiario.showAdminModalBeneficiario = true
-
       },
       openModalCalendarioObra(){
         this.dataAvance = []
@@ -1227,8 +1229,7 @@ export default {
       },
       async loadMesAvence(isNew){
         this.sumMesAvance = 0
-        if(!isNew){
-          console.log('this.dataAvance')      
+        if(!isNew){     
           await this.fetchDataAvance(this.form.id)
           this.mesesMetas.map(e =>{
             const mes = this.dataAvance.findIndex( item => item.mes === e.mes)
