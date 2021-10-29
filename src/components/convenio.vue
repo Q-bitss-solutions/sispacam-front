@@ -63,13 +63,13 @@
 
   <Modal
     :title="modalTitle" 
-    modal-class="modal2  scrollable-modal"
+    modal-class="modal2"
     wrapper-class="modal-wrapper"   
     v-model="showAdminModalConvenio" 
     @before-open="beforeOpen" 
     @before-close="beforeClose"
   >
-    <form>
+    <form class="scrollable-content">
        <div class="form-row">
           <div class="form-group col-md-6">
               <label for="anio">Año del Convenio:</label>
@@ -87,6 +87,7 @@
           <div class="form-group col-md-6">
             <label for="tramo">Tramo:</label>
             <input 
+              autocomplete="off"
               id="tramo" 
               :disabled="isDisabled"
               v-model="form.tramo"
@@ -101,6 +102,7 @@
             <label for="monto">Monto(mdp):</label>            
             <input 
               id="monto"
+              autocomplete="off"
               v-model="form.monto"
               type="number" 
               :disabled="isDisabled"
@@ -112,6 +114,7 @@
         <div class="form-group col-md-6"> 
             <label for="meta">Meta:</label>                 
             <input  
+              autocomplete="off"
               class="form-control convenio" 
               v-model="form.meta"
               id="meta" 
@@ -122,7 +125,7 @@
             />                     
         </div>        
       </div>
-      <form class="form-row">
+      <div class="form-row">
         <div class="form-group col-md-6"> 
             <label for="tramo">Origen del recurso:</label>
             <select 
@@ -147,8 +150,8 @@
              id="f-convenio"
             />          
         </div>               
-      </form>
-      <form class="form-row">
+      </div>
+      <div class="form-row">
         <div class="form-group col-md-5"> 
           <label class="control-label">Longitud a Pavimentar</label>
           <input 
@@ -163,31 +166,74 @@
           <label class="control-label">Longitud por programar</label>
           <input v-model="getSumMeta" type="number" class="form-control" disabled>
         </div>        
-      </form>
-      <form>
+      </div>
+      <div>
         <div v-for="(error, index) in  convenioErrors" :key="index" class="col-md-12">
           <small style="color: red!important;" class="form-text form-text-error">
               {{error.error}}
           </small>
         </div> 
-      </form>
-      <form class="form-row" v-if="false && mode == 'edit' && !form.es_modificatorio && form.modificatorio == 0 && isNormativo">
-        <div class="form-group col-md-12 text-right">
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <button 
+            class="btn btn-default btn-sm" 
+            type="button" 
+            @click="openModalBeneficiario()"
+            :disabled="(mode === 'delete')"
+          >
+            Beneficiario
+          </button>       
+        </div>  
+        <div class="form-group col-md-6">
+          <button 
+            class="btn btn-default btn-sm" 
+            type="button" 
+            @click="openModalCalendarioObra()"
+            :disabled="((mode === 'delete'))"
+          >
+            Calendario de Obra
+          </button>       
+        </div>                                
+      </div>   
+      <div class="form-row">
+        <div class="form-group col-md-12" 
+          v-if="mode == 'edit' 
+            && !form.es_modificatorio 
+              && form.modificatorio == 0 
+                && isNormativo"
+        >
           <button 
             class="btn btn-default btn-sm" 
             type="button" 
             @click="openModalModificatorio"
           >
-            Agregar convenio modificatorio
+          Agregar convenio modificatorio
           </button>       
-        </div>        
-      </form>      
+        </div>          
+      </div> 
+
       <div class="row modal-footer text-right">
         <div class="col-md-12 text-right">
             <button class="btn btn-primary" type="button" @click="closeModal">Cancelar</button>
-            <button :disabled="btnIsDisabled" v-if="mode === 'new'" class="btn btn-default" type="button" @click="saveEditConvenio(true)">Agregar Convenio</button>
-            <button :disabled="btnIsDisabled" v-if="mode === 'edit'" class="btn btn-default" type="button" @click="saveEditConvenio(false)">Actualizar Convenio</button>
-            <button :disabled="btnIsDisabled" v-if="mode === 'delete'" class="btn btn-default" type="button" @click="deleteConvenio">Eliminar Convenio</button>
+            <button :disabled="btnIsDisabled" 
+              v-if="mode === 'new'" 
+              class="btn btn-default" 
+              type="button" 
+              @click="saveEditConvenio(true)">Agregar Convenio
+            </button>
+            <button :disabled="btnIsDisabled" 
+              v-if="mode === 'edit'" 
+              class="btn btn-default" 
+              type="button" 
+              @click="saveEditConvenio(false)">Actualizar Convenio
+            </button>
+            <button :disabled="btnIsDisabled" 
+              v-if="mode === 'delete'" 
+              class="btn btn-default" 
+              type="button" 
+              @click="deleteConvenio">Eliminar Convenio
+            </button>
           </div>
       </div>
     </form>
@@ -196,11 +242,23 @@
  <!--modificatorio--->
    <Modal
     title="Convenio Modificatorio" 
-    modal-class="modal2  scrollable-modal"
+    modal-class="modal2 fullscreen-modal"
     wrapper-class="modal-wrapper"   
-    v-model="showAdminModalConvenioMod" 
+    v-model="showAdminModalConvenioMod"
+    in-class="animate__backInDown"
+    bg-class="animate__animated"    
+    bg-in-class="animate__fadeInUp"    
   >
     <form>
+      <div class="form-row">
+        <div class="form-gruop com-md-12">
+          <p>
+            <small class="label" style="background-color: grey;">
+              Al ingresar un nuevo convenio modificatorio, el convenio original estará en modo de consulta.
+            </small>            
+          </p>
+        </div>
+      </div>
        <div class="form-row">
           <div class="form-group col-md-6">
               <label for="anio">Año del Convenio:</label>
@@ -218,6 +276,7 @@
           <div class="form-group col-md-6">
             <label for="tramo">Tramo:</label>
             <input 
+              autocomplete="off"
               id="tramo" 
               :disabled="isDisabledMod"
               v-model="formMoficatorio.tramo"
@@ -231,6 +290,7 @@
         <div class="form-group col-md-6">              
             <label for="monto">Monto(mdp):</label>            
             <input 
+              autocomplete="off"
               id="monto"
               v-model="formMoficatorio.monto"
               type="text" 
@@ -242,7 +302,8 @@
         </div>  
         <div class="form-group col-md-6"> 
             <label for="meta">Meta:</label>                 
-            <input  
+            <input
+              autocomplete="off"
               class="form-control modificatorio" 
               v-model="form.meta"
               id="metaMod" 
@@ -254,7 +315,7 @@
         </div>        
       </div>
  
-      <form class="form-row">
+      <div class="form-row">
         <div class="form-group col-md-6"> 
             <label for="tramo">Origen del recurso:</label>
             <select 
@@ -278,8 +339,8 @@
             name="myfile"
           >
         </div>               
-      </form>
-      <form class="form-row">
+      </div>
+      <div class="form-row">
         <div class="form-group col-md-5"> 
           <label class="control-label">Longitud a Pavimentar</label>
           <input 
@@ -291,14 +352,36 @@
           <label class="control-label">Longitud por programar</label>
           <input type="number" v-model="getSumMeta" class="form-control" disabled>
         </div>        
-      </form>
-      <form>
+      </div>
+      <div>
         <div v-for="(error, index) in  convenioModificatrioErrors" :key="index" class="col-md-12">
           <small style="color: red!important;" class="form-text form-text-error">
               {{error.error}}
           </small>
         </div> 
-      </form>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <button 
+            class="btn btn-default btn-sm modificatorio" 
+            type="button" 
+            @click="openModalBeneficiario(), btnIsDisabled = false"
+            :disabled="(mode === 'delete')"
+          >
+            Beneficiario
+          </button>       
+        </div>  
+        <div class="form-group col-md-6">
+          <button 
+            class="btn btn-default btn-sm modificatorio" 
+            type="button" 
+            @click="openModalCalendarioObra(); btnIsDisabled = false"
+            :disabled="((mode === 'delete'))"
+          >
+            Calendario de Obra
+          </button>       
+        </div>                                
+      </div>      
       <div class="row modal-footer">
         <div class="col-md-12">
           <div class="float-right">
@@ -321,6 +404,78 @@
       </div>
     </form>
   </Modal>
+  <!--Modal Beneficiario-->
+  <ModalBeneficiario
+    ref="modalBeneficiario"
+    :isReadOnly="btnIsDisabled"
+    :beneficiario_id="beneficiario_id"
+  />
+  <!--Modal Calendario de Obra-->
+  <Modal
+    title="Calendario de Obra" 
+    modal-class="scrollable-modal"  
+    wrapper-class="animate__animated"
+    v-model="showModalCalendarioObra"  
+    in-class="animate__backInDown"  
+    bg-in-class="animate__fadeInUp"   
+  >
+    <div class="scrollable-content">
+      <table class="table table-responsive">
+        <thead>
+          <th>
+            Mes
+          </th>
+          <th>
+            Avance(Km)
+          </th>
+        </thead>
+        <tbody>
+          <tr  v-for="(mes, key) in mesesMetas" :key="key">
+            <td>{{mes.descripcion}}</td>
+            <td>
+              <vue-numeric 
+                v-bind:precision="2" 
+                separator="," 
+                class="form-control" 
+                v-model="mesesMetas[key].avance" 
+                :read-only="btnIsDisabled"
+              >
+              </vue-numeric>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td><strong>Total</strong> </td>
+            <td>
+              <vue-numeric 
+                v-bind:precision="2" 
+                separator="," 
+                class="form-control" 
+                :value="getTotalAvanceMeta" 
+                :read-only="true"
+              >
+              </vue-numeric>            
+            </td>
+          </tr>
+        </tfoot>
+      </table>   
+      <div class="row modal-footer text-right">
+        <div class="col-md-12 text-right">
+          <button class="btn btn-primary" 
+            type="button" 
+            @click="closeModalCalMeta"
+          >Cancelar</button>
+          <button 
+            class="btn btn-default" 
+            :disabled="btnIsDisabled"
+            type="button" 
+            @click="saveCalendarioMeta"
+          >Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </Modal>
 </div>
 </template>
   
@@ -329,17 +484,21 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate'
 import { Loading } from 'element-ui';
 import VueModal from '@kouts/vue-modal'
+import '@kouts/vue-modal/dist/vue-modal.css'
+import ModalBeneficiario from './Modals/Beneficiario.vue'
 import EventBus from '../utils/EventBus.js';
 import bodyScroll from 'body-scroll-freezer'
-import '@kouts/vue-modal/dist/vue-modal.css'
 import { GridPlugin } from '@syncfusion/ej2-vue-grids';
 import { CustomSummaryType } from '@syncfusion/ej2-grids';
 import { required, maxValue, } from 'vuelidate/lib/validators'
 import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
-import { updateEstatus, getConvenios } from '@/api/convenio'; 
+import { updateEstatus, getConvenios, getCatMeses } from '@/api/convenio'; 
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
-import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio } from '@/api/convenio';
+import { generarConvenio, updateConvenio, 
+          createModificatorio, bajaConvenio, getAvanceConvenio } from '@/api/convenio';
+import VueNumeric from 'vue-numeric'
 
+Vue.use(VueNumeric)
 Vue.use(Vuelidate)
 Vue.use(GridPlugin);
 Vue.use(TreeGridPlugin);
@@ -361,6 +520,7 @@ export default {
     },
     components:{
       'Modal': VueModal,
+      ModalBeneficiario
     },
     data(){
       return {
@@ -374,8 +534,7 @@ export default {
           archivo: null,
           modificatorio:0,
           padre:null,
-          es_modificatorio:false,
-
+          es_modificatorio:false,          
         },
         formMoficatorio: {
           anio:'',
@@ -398,6 +557,9 @@ export default {
         max: 999999,   
         flag: false,
         lines: 'Both',
+        sumMesAvance:0,
+        dataAvance:[],
+        mesesMetas:[],
         convenios: [],
         longitudP:'',
         aniosEdit:[],
@@ -406,8 +568,10 @@ export default {
         isDisabledMod:false,
         flagEdicion:true,
         btnIsDisabled:false,
+        beneficiario_id:0,        
         btnSaveDisabled: true,
         showAdminModalConvenio:false,
+        showModalCalendarioObra:false,
         showAdminModalConvenioMod:false,
         convenioModificatrioErrors:[],
         pageSettings: { pageCount: 6, pageSize: 20  },        
@@ -417,11 +581,11 @@ export default {
               template: `
                   <button
                     @click="toEdit"
-                    :disabled="getDisabled()"
                     class="btn btn-primary btn-sm"  
                     type="button" 
                     >
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    <span v-if="!getDisabled()" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    <span v-if="getDisabled()" class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>                    
                   </button> 
               `,
               data: function() {
@@ -449,6 +613,9 @@ export default {
                     this.$parent.$parent.btnIsDisabled = true
 
                   }
+                  this.$parent.$parent.loadMesAvence(false)
+                  console.log(this.data)
+                  this.$parent.$parent.beneficiario_id = 0
                   this.$parent.$parent.showAdminModalConvenio = true                
                 },
                 getDisabled(){
@@ -736,6 +903,8 @@ export default {
       openModalAddConvenio(){
         this.clearForm()
         this.loadAnios()
+        this.clearMesasAvance()
+        this.loadMesAvence(true)
         this.mode = 'new'
         this.modalTitle = 'Ingresar Datos del Convenio'
         this.showAdminModalConvenio = true
@@ -787,8 +956,6 @@ export default {
       },    
       async listaconvenio(){
         this.convenios = await getConvenios(this.camino_id)
-        console.log('this.convenios')
-        console.log(this.convenios)
       },      
       deleteConvenio(){
         this.$confirm('¿Desea eliminar el presente convenio?', 'Warning', {
@@ -843,14 +1010,23 @@ export default {
           })            
           return;
         }     
-        let formData = new FormData();
+        let formData = new FormData();                  
         formData.append("anio", this.form.anio);
         formData.append("tramo",this.form.tramo);
         formData.append("monto",this.form.monto);
         formData.append("origen",this.form.origen);
         formData.append("meta",this.form.meta);
         formData.append("estatus","A");
-      
+        formData.append("beneficiario_id",this.beneficiario_id);
+        let avanceMes = []
+        this.mesesMetas.map(e=>{
+          avanceMes.push({
+            "mes":e.mes,
+            "avance":e.avance
+          })          
+        })
+        
+        formData.append("avances",JSON.stringify(avanceMes))   
         if(this.form.archivo) {
           formData.append("archivo", this.form.archivo);
         }else{
@@ -858,7 +1034,7 @@ export default {
         }
         if(isNew){
           formData.append("modificatorio", false)
-          formData.append("padre", 0)
+          formData.append("padre", 0)        
           await this.crearConvenio(formData)
         }else{
           await this.actualizarConvenio(formData)
@@ -914,12 +1090,19 @@ export default {
         formData.append("tramo",this.formMoficatorio.tramo);
         formData.append("monto",this.formMoficatorio.monto);
         formData.append("origen",this.formMoficatorio.origen);
-        formData.append("meta",this.formMoficatorio.meta);
+        formData.append("meta",this.form.meta);
         formData.append("padre",this.formMoficatorio.padre);
         formData.append("estatus","A");
+        let avanceMes = []
+        this.mesesMetas.map(e=>{
+          avanceMes.push({
+            "mes":e.mes,
+            "avance":e.avance
+          })          
+        })        
+        formData.append("avances",JSON.stringify(avanceMes))  
+        formData.append("beneficiario_id",this.beneficiario_id); 
         if(this.formMoficatorio.archivo) {
-          //@todo descometar verificar si hjay archivo  ya no se puede editas
-          // solo convenio modificatorio
           formData.append("archivo", this.formMoficatorio.archivo);
         }   
         await createModificatorio(formData).then( async () =>{
@@ -1004,9 +1187,6 @@ export default {
         },0)
         return sumMonto 
       }, 
-      validaMetaMoficatorio(){
-
-      },
       customAggregateMetaFn(data) {
         const sumMeta = data.result.reduce((tot, element) => {
           if((element.hasChildRecords) 
@@ -1018,14 +1198,68 @@ export default {
         },0)
         return sumMeta
       }, 
+      async fetchDataAvance(idConvenio){
+        this.dataAvance = await getAvanceConvenio(idConvenio)
+      },
+      openModalBeneficiario(){            
+        this.$refs.modalBeneficiario.showAdminModalBeneficiario = true
+
+      },
+      openModalCalendarioObra(){
+        this.dataAvance = []
+        if(!this.form.meta || this.form.meta === 0){
+          this.$alert('Primero debe establecer la Meta', '', {
+                  confirmButtonText: 'Cerrar',
+                  callback: action => {                            
+                  }                        
+          });   
+          return       
+        }
+        if(this.getSumMeta<0){
+          this.$alert(`La Meta del convenio sobre pasa la Longitud por programar`, 'INFORMACIÓN',{
+              confirmButtonText: 'Cerrar',
+              customClass: 'box-msg-login',
+          }) 
+          return           
+        }        
+        this.showModalCalendarioObra = true
+
+      },
+      async loadMesAvence(isNew){
+        this.sumMesAvance = 0
+        if(!isNew){
+          console.log('this.dataAvance')      
+          await this.fetchDataAvance(this.form.id)
+          this.mesesMetas.map(e =>{
+            const mes = this.dataAvance.findIndex( item => item.mes === e.mes)
+            e.avance = this.dataAvance[mes].avance
+          })
+          this.getTotalAvanceMeta = 1
+        }
+      },
       getErrors(form){        
         this.$v[form].$touch()
         let errors=[]
-        if(this[form].archivo){
+        let metaError = false
+        if(this[form].archivo){          
           errors = [].concat(validateFile(this[form]))
+
+          if(this.sumMesAvance!=this.form.meta){
+            metaError = true 
+            errors.push({error:`*La Sumatoria de la Meta 
+              Calendarizada no coincide con la Meta del Convenio`})            
+          }         
         }    
         if(!this.$v[form].anio.required){
           errors.push({error:'*El año es obligatorio'})
+        }
+   
+        if(this.$v[form].anio.required && !metaError){ 
+          if(Number(this[form].anio)<Number(new Date().getFullYear())
+            && this.sumMesAvance!=this.form.meta){
+            errors.push({error:`*La Sumatoria de la Meta 
+              Calendarizada no coincide con la Meta del Convenio`})
+          }
         }
         if(!this.$v[form].meta.required){
           errors.push({error:'*La meta es obligatoria'})
@@ -1034,7 +1268,46 @@ export default {
           errors.push({error:'*La Meta no pede ser mayor a la longitud total'})
         } 
         return {isValido:errors.length > 0?false:true, errors:errors  }
-      }                                  
+      }, 
+      clearMesasAvance(){
+        this.dataAvance = []
+        this.mesesMetas.map(m => {
+          m.avance = 0
+        })
+      },
+      closeModalCalMeta(){
+        this.clearMesasAvance()
+        this.showModalCalendarioObra = false
+      },
+      saveCalendarioMeta(){
+        if(this.sumMesAvance>this.form.meta){
+          this.$alert(`La sumatoria del avance mensual 
+            no puede ser mayor a la meta del Convenio: ${this.form.meta}`, 'INFORMACIÓN',{
+              confirmButtonText: 'Cerrar',
+              customClass: 'box-msg-login',
+          }) 
+          return          
+        }
+        this.showModalCalendarioObra = false
+      },  
+      async setCatMeses(){
+         this.mesesMetas = await getCatMeses()
+         this.mesesMetas.sort(function (a, b) {
+            if (a.id > b.id) {
+              return 1;
+            }
+            if (a.id < b.id) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+          this.mesesMetas = this.mesesMetas.map(e =>({
+            ...e,
+            mes:e.id,
+            avance:0
+          }))
+      }                     
     },
     computed:{
       isCanceled:function(){
@@ -1056,8 +1329,23 @@ export default {
       },  
       getSumMeta(){
         return this.longitudP - this.getCurrentLongitud
-      },              
+      }, 
+      getTotalAvanceMeta: {
+        get: function (){
+          console.log('getTotalAvanceMeta')
+          const avance = this.mesesMetas.reduce((tot, m)=> {
+            return Number(tot) + Number(m.avance)
+          },0)
+          this.sumMesAvance = avance
+          return this.sumMesAvance
+        },
+        set: function(val){
+
+        }
+      }
+
     },
+
     created: function(){
       this.listaconvenio() 
       this.longitudP = this.longitud_pavimentar
@@ -1078,7 +1366,6 @@ export default {
         this.btnIsDisabled = false
         this.showAdminModalConvenio = true
       }); 
-
       EventBus.$on('toBudget', (el) => {
         this.$store.commit('setIdConcevenio', el.id)  
         this.$router.push(`/presupuesto/${this.$route.params.obraId}/${el.anio}/${this.$store.state.camino.ancho}/${el.id}/${el.meta}/`).catch((e)=>{console.log('')});
@@ -1086,7 +1373,8 @@ export default {
       EventBus.$on("getPerfil",(el)=> {
         EventBus.$emit("setPerfil", this.isNormativo)
       })
-    },     
+      this.setCatMeses()
+    },  
     beforeMount: function () {  
       this.isNormativo = (this.$store.getters['user/StateRol']=='NORMATIVO')
       this.cons=this.isObraCanceled
@@ -1107,7 +1395,11 @@ export default {
         {anio:2023},
         {anio:2024},
       ]      
-    },      
+    },  
+    mounted(){
+      this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";   
+      bodyScroll.init()
+    }    
 }
 
 function getActiveConvenio(convenio) {
@@ -1163,7 +1455,9 @@ function validateFile(form){
 }
 </script>
 
-<style scoped>
+<style>
+@import '~animate.css/animate.css';
+
 .form-control-tramo{
     width: 20%;
  
@@ -1173,33 +1467,70 @@ function validateFile(form){
 }
 
 .scrollable-modal {
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 50px);
+  display: flex!important;
+  flex-direction: column!important;
+  height: calc(100% - 150px)!important;
 }
 .scrollable-modal .vm-titlebar {
-  flex-shrink: 0;
+  flex-shrink: 0!important;
 }
 .scrollable-modal .vm-content {
-  padding: 0;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0; 
+  padding: 0!important;
+  flex-grow: 1!important;
+  display: flex!important;
+  flex-direction: column!important;
+  min-height: 0!important; 
 }
 .scrollable-modal .vm-content .scrollable-content {
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 10px 15px 10px 15px;
-  flex-grow: 1;
+  position: relative!important;
+  overflow-y: auto!important;
+  overflow-x: hidden!important;
+  padding: 10px 15px 10px 15px!important;
+  flex-grow: 1!important;
 }
 .scrollable-modal .scrollable-modal-footer {
-  padding: 15px 0px 15px 0px;
-  border-top: 1px solid #e5e5e5;
-  margin-left: 0;
-  margin-right: 0;
+  padding: 15px 0px 15px 0px!important;
+  border-top: 1px solid #e5e5e5!important;
+  margin-left: 0!important;
+  margin-right: 0!important;
 }
 
+.modal-wrapper {
+  display: flex!important;
+  align-items: center!important;
+}
+.modal-wrapper .vm {
+  top: auto!important;
+}
 
+.modal {
+  min-width: 300px;
+}
+@media (min-width: 480px) {
+  .modal.modal-sm {
+    max-width: 300px!important;
+  }
+}
+@media (min-width: 992px) {
+  .modal.modal-lg,
+  .modal.modal-xl {
+    max-width: 800px!important;
+  }
+}
+@media (min-width: 1200px) {
+  .modal.modal-xl {
+    max-width: 1140px!important;
+  }
+}
+.modal-footer {
+  padding: 15px 0px 0px 0px!important;
+  border-top: 1px solid #e5e5e5!important;
+  margin-left: -14px!important;
+  margin-right: -14px!important;
+}
+
+.fullscreen-modal {
+  width: 50%;
+  max-width: 50%;
+}
 </style>

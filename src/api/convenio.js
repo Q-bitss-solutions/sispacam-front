@@ -23,6 +23,8 @@ export function updateConvenio(data,convenio_id ){
 }
 
 export function generarConvenio(data, id_camino){
+  console.log('data')
+  console.log(data.get('avances'))
   return request({
       url:  `/convenio/${id_camino}/ `,
       method: 'post',
@@ -55,8 +57,11 @@ export function createModificatorio(data){
   return request({
       url:  `/modificatorio/crear`,
       method: 'post',
-      data:data,
-      headers: { "Content-Type": "multipart/form-data" } 
+      data:data,      
+      headers: { 
+        'Accept': 'application/json',
+        "Content-Type": "multipart/form-data"
+      } 
   })  
 }
 
@@ -78,4 +83,51 @@ export function bajaConvenio(id_convenio){
         id:id_convenio
       },
   })  
+}
+
+export function searchBeneficiario(text){
+  return request({
+    url:`/beneficiary/search_by_bm/${text}/`,
+    method: 'get',
+  })
+}
+
+export function getCatMeses(){
+  return request({
+    url:'/mes/listado',
+    method: 'get',
+  })
+}
+export function updateBebeniciarioSia(beneficiario){
+  console.log(beneficiario)
+  return request({
+    url:`/beneficiary/${beneficiario.id}/update/`,
+    method: 'patch',
+    beneficiario
+  })
+}
+
+export function getEdadAndGenero(curp){
+  return request({
+    url:`/curp/${curp}/`,
+    method: 'get'
+  })
+
+}
+
+export function getAvanceConvenio(id_convenio){
+  return request({
+    url:'/convenio/avance',
+    method: 'post',
+    data:{
+      id:id_convenio,
+    }
+  })
+}
+
+export function getBeneficiario(id_beneficiario){
+  return request({
+    url:`/beneficiary/datails/${id_beneficiario}/`,
+    method: 'get'
+  })
 }
