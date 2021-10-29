@@ -328,7 +328,10 @@ const isValidCurp = () => curpValida(value)
                  });                
                 await updateBebeniciarioSia(this.formBeneficiario)
                     .then(() => {
-                        console.log(this.$parent.beneficiario_id = this.formBeneficiario.id)
+                        console.log(this.formBeneficiario.id)
+                        console.log(this.$parent)
+                        this.$parent.beneficiario_id = this.formBeneficiario.id
+                        console.log(this.$parent)
                         this.showAdminModalBeneficiario = false
                     })
                     .catch((error) => {
@@ -341,8 +344,11 @@ const isValidCurp = () => curpValida(value)
 
             },
             async loadbeneficiario(idbenef){
+                console.log('idbenef')
+                console.log(idbenef)
                 if(idbenef!= 0){
-                const resp = await getBeneficiario(idbenef)                
+                let loadingInstance = Loading.service({ fullscreen: true, lock: true });
+                const resp = await getBeneficiario(idbenef)              
                     this.formBeneficiario.razonSocial = resp[0].beneficiario
                     this.formBeneficiario.rfc = resp[0].rfc_benef
                     this.formBeneficiario.cveInterbancaria = resp[0].clabe
@@ -354,6 +360,7 @@ const isValidCurp = () => curpValida(value)
                     this.formBeneficiario.calle = resp[0].calle
                     this.formBeneficiario.next = resp[0].next
                     this.formBeneficiario.colonia = resp[0].colonia    
+                    loadingInstance.close();  
                 }            
             },
             onChange(value){
