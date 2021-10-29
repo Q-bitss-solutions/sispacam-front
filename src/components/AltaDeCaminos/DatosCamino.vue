@@ -242,9 +242,9 @@
                    <div class="modal-body">
                        <p>Se guardaron correctamente los datos del camino,</p>
                        <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <div class="text-right">
+                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       </div>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -396,13 +396,13 @@ export default {
             Presup: '',
             cons:"true",
             anchoCaminoFields: { text: 'name', value: 'id' },     
-            anchoCaminoData: new DataManager([
+            anchoCaminoData: [
                { id: 1, name: '4.0' },
                { id: 2, name: '4.5' },
                { id: 3, name: '5.0' },
                { id: 4, name: '5.5' },
                { id: 5, name: '6.0' },
-            ]),  
+            ],  
             editmode: false              
 
         }

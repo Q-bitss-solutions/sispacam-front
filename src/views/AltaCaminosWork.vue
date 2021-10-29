@@ -13,7 +13,7 @@
             Datos del Camino
           </a>
         </li>  
-        <li v-if="!isCanceled" role="presentation"  id="tabDatosBeneficiario">
+        <li v-if="false" role="presentation"  id="tabDatosBeneficiario">
             <a href="#datosBeneficiario"  aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
               Beneficiario
             </a>  
