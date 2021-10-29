@@ -259,9 +259,9 @@
                    </div>
                    <div class="modal-body">
                        <p>Se actualizarón correctamente los datos del camino,</p>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <div class="text-right">
+                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       </div>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -342,6 +342,7 @@
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
+import { Loading } from 'element-ui';
 import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
@@ -520,10 +521,22 @@ export default {
                          return
                 }
                 if(this.editmode) {
-                 const response1 = await CaminoPut(data, this.$route.params.obraId)
+                let loadingInstance = Loading.service({ 
+                    fullscreen: false, 
+                    lock: true,
+                 });                     
+                 const response1 = await CaminoPut(data, this.$route.params.obraId).finally(() =>{
+                     loadingInstance.close()
+                 })
                  $('#UpdateCamino').modal('show')
                 }else{
-                 const response = await generarId(data)
+                let loadingInstance = Loading.service({ 
+                    fullscreen: false, 
+                    lock: true,
+                 });                    
+                 const response = await generarId(data).finally(() =>{
+                     loadingInstance.close()
+                 })
                  this.idcamino = response.clave
                  $('#addCamino').modal('show')
                  this.btnSaveDisabled  = false
