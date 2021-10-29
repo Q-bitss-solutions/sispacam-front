@@ -338,7 +338,7 @@ export default {
                 this.icve_municipio = response.icve_municipio
                 this.$refs.localidades.ej2Instances.value = response.localidades
                 this.localidades = this.$refs.localidades.ej2Instances.value
-                const localidadesData = this.localidadesData.executeLocal(new Query());
+                const localidadesData = this.localidadesData;
                 this.localidadesTabla = localidadesData
                 .filter(a => this.localidades.includes(a.cve_loc));
               this.region = response.datos_geograficos.region
@@ -390,7 +390,7 @@ export default {
             try{
                 const res = await getEdos()
                 const results = res.results;
-                this.estadosData = new DataManager(results);
+                this.estadosData = res.results;//new DataManager(results);
                 this.estadosHabilitado = true;
                 this.icve_estado_inegi = null;       
             }catch(error) {             
@@ -403,12 +403,12 @@ export default {
         async obtenerMunicipios(){            
             this.$emit("show-error", false);
             this.icve_municipio = null;
-            this.municipiosData = new DataManager([]);
+            //this.municipiosData = new DataManager([]);
             this.municipiosHabilitado = true;    
             this.clearLocalidades();            
             try{
                 const {results} = await getMunicipios(this.icve_estado_inegi)
-                this.municipiosData = new DataManager(results);
+                this.municipiosData = results//new DataManager(results);
                 this.municipiosHabilitado = true;            
             }catch(err){
                 console.log('error al obtener municipios')
@@ -429,7 +429,7 @@ export default {
                     },0)
                 
                 this.localidadesHabilitado = true;            
-                this.localidadesData = new DataManager(res);
+                this.localidadesData = res//new DataManager(res);
                 this.setEdoIso()
                  this.DatosGeograficos.localidades = this.localidades
                  this.DatosGeograficos.icveestados = this.icveestados
@@ -456,7 +456,7 @@ export default {
         recalcularPoblacionTotal() {      
                         
             if (this.localidades.length > 0) {   
-                const localidadesData = this.localidadesData.executeLocal(new Query());
+                const localidadesData = this.localidadesData;
                 this.localidadesTabla = localidadesData
                 .filter(a => this.localidades.includes(a.cve_loc));
 
@@ -511,7 +511,7 @@ export default {
 
         setEdoIso(){
             
-            const edoSelect = this.estadosData.executeLocal(new Query())
+            const edoSelect = this.estadosData
                                 .filter(a => a.cve_agee == this.icve_estado_inegi)                        
             this.DatosGeograficos.iso = edoSelect[0].iso
             this.DatosGeograficos.cve_agee = this.icve_estado_inegi
@@ -522,8 +522,10 @@ export default {
                 }
                 }); 
  */         
-            const munSelect = this.municipiosData.executeLocal(new Query())
-                                .filter(a => a.cve_agem == this.icve_municipio) 
+            const munSelect = this.municipiosData
+                                .filter(a => a.cve_agem == this.icve_municipio)
+            console.log('munSelect') 
+            console.log(munSelect) 
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacion_indigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
