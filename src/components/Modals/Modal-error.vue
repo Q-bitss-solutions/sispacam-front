@@ -16,13 +16,14 @@
             </div>
             <div class="modal-body">
                 <p>Se guardaron correctamente los datos del presupuesto</p>
-            </div>
-            <div class="modal-footer">
-                <button 
+                <div class="text-right">
+                                <button 
                     @click="reload" 
                     type="button" 
                     class="btn btn-default" data-dismiss="modal">Cerrar
                     </button>
+                </div>
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

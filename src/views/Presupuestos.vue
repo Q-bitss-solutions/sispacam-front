@@ -102,7 +102,7 @@
         <div class="col-md-12 text-right">
           <hr />
           <button @click="cancel" class="btn btn-default" type="button">Cancelar</button>
-          <button @click="save" class="btn btn-primary" type="button">Guardar cambios</button>
+          <button :disabled="readOnly" @click="save" class="btn btn-primary" type="button">Guardar cambios</button>
         </div>
       </div>
 
@@ -117,6 +117,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import Vue from 'vue'
+import { getConvenioById } from '@/api/convenio'; 
 import  ModalError  from '@/components/Modals/Modal-error'
 import PestaniaPresupuesto from '@/components/presupuestos/PestaniaPresupuesto';
 import { savePresupuesto, updatePresupuesto } from '@/api/presupuesto'
@@ -136,6 +137,7 @@ export default {
     },
     data () {
         return {
+          readOnly:false,
           filtro:'0',
           breadcrumb: ['Presupuesto del Camino '+ this.$route.params.obraId],
           terraceriasShow:true,
@@ -248,7 +250,15 @@ export default {
                         })
                 }                
             }
-       }
+       },
+        async setDataConvenio(){
+            const convenio = await getConvenioById(this.$route.params.convenioId)            
+            if(convenio.estatus == 'A'){
+                this.readOnly=false
+            }else{
+                this.readOnly=true
+            }
+        }         
 
     },
     beforeMount: function () {    
@@ -298,6 +308,7 @@ export default {
         this.anchoCamino = this.$route.params.anchoId
         this.ancho = this.ancho1.find(a => this.anchoCamino == a.id).ancho
         this.anio = this.$route.params.anio
+        this.setDataConvenio()
     }
 
 }
