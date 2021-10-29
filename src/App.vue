@@ -149,7 +149,7 @@ export default {
     }
   },
   created(){
-    console.log('::v3.1.0')
+    console.log('SISPACAM::v3.1.1')
   }
 }
 </script>

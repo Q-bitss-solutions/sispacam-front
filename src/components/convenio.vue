@@ -616,7 +616,7 @@ export default {
                   }
                   this.$parent.$parent.loadMesAvence(false)
                   console.log(this.data)
-                  this.$parent.$parent.beneficiario_id = 0
+                  this.$parent.$parent.beneficiario_id = this.data.beneficiario_id
                   this.$parent.$parent.showAdminModalConvenio = true                
                 },
                 getDisabled(){
@@ -911,6 +911,8 @@ export default {
         this.showAdminModalConvenio = true
       },
       closeModal(){
+        console.log('this.beneficiario_id')
+        console.log(this.beneficiario_id)
         this.showAdminModalConvenio = false       
         this.clearForm() 
       },
