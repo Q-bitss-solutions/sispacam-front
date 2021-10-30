@@ -437,13 +437,16 @@ const isValidCurp = () => curpValida(value)
         },
         watch:{
             'formBeneficiario.curp':function (val){
-                this.formBeneficiario.curp = this.$options.filters.upperCased(val);
+                if(val)
+                    this.formBeneficiario.curp = this.$options.filters.upperCased(val);
             },  
             'formBeneficiario.calle':function (val){
-                this.formBeneficiario.calle = this.$options.filters.upperCased(val);
+                if(val)
+                    this.formBeneficiario.calle = this.$options.filters.upperCased(val);
             },            
             'formBeneficiario.colonia':function (val){
-                this.formBeneficiario.colonia = this.$options.filters.upperCased(val);
+                if(val)
+                    this.formBeneficiario.colonia = this.$options.filters.upperCased(val);
             },                                
             deep: true
         },                   
