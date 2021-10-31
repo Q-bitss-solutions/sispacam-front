@@ -13,13 +13,11 @@ from selenium.webdriver.chrome.options import Options
 
 class TestEsportarArchivosConsultaSIA():
     def setup_method(self):
-        self.driver = webdriver.Chrome('/home/diego/webdriver/94chromedriver')
+        self.driver = webdriver.Chrome('/home/diego/webdriver/94/chromedriver')
 
     def test_lambdatest_todo_app(self):
-        scroll400 = "window.scrollTo(0,400)"
-        scroll10000 = "window.scrollTo(0,2300)"
-        #self.driver.get("https://cmqa.sct.gob.mx/")
-        self.driver.get("https://cmqa.sct.gob.mx/")
+        scroll800 = "window.scrollTo(0,800)"
+        self.driver.get("http://localhost:8080/")
         self.driver.maximize_window()
         time.sleep(3) 
         user = self.driver.find_element(By.ID, "user")
@@ -33,7 +31,7 @@ class TestEsportarArchivosConsultaSIA():
         self.driver.find_element_by_link_text("Buscar por Clave única de Obra").click()     
         time.sleep(3)   
         icveObra = self.driver.find_element(By.ID, "icveObra")
-        icveObra.send_keys("4-CHP-C") 
+        icveObra.send_keys("1-CAM-A") 
         time.sleep(3)   
         self.driver.find_element(By.ID, "buscarObras").click()    
         time.sleep(3)  
@@ -41,7 +39,7 @@ class TestEsportarArchivosConsultaSIA():
         time.sleep(5)          
         self.driver.find_element_by_link_text("Programación").click() 
         time.sleep(3)
-        self.driver.find_element(By.ID, "bt-nvo-convenio").click()   
+        self.driver.find_element(By.ID, "bt-nvo-convenio").click()
         time.sleep(3)
         option_conceptos = Select(self.driver.find_element_by_id("anio"))
         option_conceptos.select_by_index(1)
@@ -52,14 +50,30 @@ class TestEsportarArchivosConsultaSIA():
         icveObra = self.driver.find_element(By.ID, "monto")
         icveObra.send_keys("2") 
         time.sleep(3)   
-        icveObra = self.driver.find_element(By.ID, "meta")
-        icveObra.send_keys("2") 
+        meta = self.driver.find_element(By.ID, "meta")
+        meta.send_keys("12") 
         time.sleep(3)           
         option_conceptos = Select(self.driver.find_element_by_id("origen"))
         option_conceptos.select_by_index(1)
         time.sleep(2) 
-        self.driver.find_element(By.XPATH, '//*[text()="Agregar Convenio"]').click()    
+        self.driver.find_element(By.ID, "btn-open-calendario").click()
+        time.sleep(3) 
+        meses = self.driver.find_elements_by_class_name('avance-mes')  
+        print('-------->')  
+        print(meses)
+        for item in meses:
+            try:
+                item.send_keys(1) 
+                time.sleep(2)    
+            except Exception as e:
+                print('exption')
+                print(e)  
+        #self.driver.execute_script(scroll800)                                
+        time.sleep(5)  
+        self.driver.find_element(By.ID, "btn-save-avance-meses").click()
+        time.sleep(5)  
+        self.driver.find_element(By.ID, 'btn-save-convenio').click()    
         time.sleep(3)   
-        self.driver.find_element(By.XPATH, '//*[text()="Cerrar"]').click()               
-        time.sleep(3)   
+        self.driver.find_elements_by_class_name('el-button--primary')[0].click()            
+        time.sleep(5)   
         self.driver.close()        
