@@ -83,13 +83,12 @@
                 </div> 
                 <div class="form-group col-md-4">
                     <label class="control-label" for="cuenta">CURP</label>
-                    <input class="form-control" 
+                    <input 
+                        autocomplete="off"
+                        class="form-control" 
                         :disabled="isReadOnly"
                         id="curp" 
-                        placeholder="CURP" 
-                        
-                        min="0" 
-                        max="18"
+                        placeholder="CURP"                         
                         v-model="formBeneficiario.curp" 
                         :class="{'form-control-error': $v.formBeneficiario.curp.$error}"
                     >
@@ -129,6 +128,7 @@
                 <div class="form-group col-md-4">
                         <label class="control-label" for="calle">Calle</label>
                         <input 
+                            autocomplete="off"
                             :disabled="isReadOnly"
                             class="form-control" 
                             id="calle" 
@@ -142,6 +142,7 @@
                         class="control-label" 
                         for="numexterior">Núm. Exterior</label>
                     <input 
+                        autocomplete="off"
                         :disabled="isReadOnly"
                         class="form-control" 
                         id="next" 
@@ -155,6 +156,7 @@
                         class="control-label" 
                         for="colonia">Colonia</label>
                     <input 
+                        autocomplete="off"
                         :disabled="isReadOnly"
                         class="form-control" 
                         id="colonia" 

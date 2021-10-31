@@ -190,6 +190,7 @@
           <button 
             class="btn btn-default btn-sm" 
             type="button" 
+            id="btn-open-calendario"
             @click="openModalCalendarioObra()"
             :disabled="((mode === 'delete'))"
           >
@@ -207,6 +208,7 @@
           <button 
             class="btn btn-default btn-sm" 
             type="button" 
+            id="btn-modificatorio"
             @click="openModalModificatorio"
           >
           Agregar convenio modificatorio
@@ -220,6 +222,7 @@
             <button :disabled="btnIsDisabled" 
               v-if="mode === 'new'" 
               class="btn btn-default" 
+              id="btn-save-convenio"
               type="button" 
               @click="saveEditConvenio(true)">Agregar Convenio
             </button>
@@ -294,7 +297,7 @@
               autocomplete="off"
               id="monto"
               v-model="formMoficatorio.monto"
-              type="text" 
+              type="number" 
               :disabled="isDisabledMod"
               placeholder="Ingresar el monto(mdp)"          
               class="form-control modificatorio"
@@ -396,7 +399,8 @@
             <button 
               class="btn btn-default" 
               type="button" 
-              @click="saveConvenioModificatorio"
+              id="saveCnvModificatorio"
+              @click="confirmSaveModificatorio"
             >
               Agregar convenio modificatorio
             </button>
@@ -437,7 +441,7 @@
               <vue-numeric 
                 v-bind:precision="2" 
                 separator="," 
-                class="form-control" 
+                class="form-control avance-mes" 
                 v-model="mesesMetas[key].avance" 
                 :read-only="btnIsDisabled"
               >
@@ -471,6 +475,7 @@
             class="btn btn-default" 
             :disabled="btnIsDisabled"
             type="button" 
+            id="btn-save-avance-meses"
             @click="saveCalendarioMeta"
           >Aceptar</button>
         </div>
@@ -582,7 +587,7 @@ export default {
               template: `
                   <button
                     @click="toEdit"
-                    class="btn btn-primary btn-sm"  
+                    class="btn btn-primary btn-sm edit-convenio"  
                     type="button" 
                     >
                     <span v-if="!getDisabled()" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -1069,6 +1074,21 @@ export default {
           loadingInstance.close();  
           this.showAdminModalConvenio = false; 
         })   
+      },
+      confirmSaveModificatorio(){
+        this.$confirm(`Al ingresar un nuevo convenio modificatorio, 
+              el convenio original estará en modo de consulta.`, 'Alerta', {
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            customClass: 'confirmSaveModificatorio',
+            type: 'warning'
+          }).then( async () => {
+            this.saveConvenioModificatorio()
+          }).catch( async (e) => {
+              console.log(e) 
+              this.closeModalModificatorio() 
+          })
+
       },
       async saveConvenioModificatorio(){
         const {isValido, errors} = this.getErrors('formMoficatorio')        
