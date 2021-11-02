@@ -107,7 +107,11 @@ export function updateBebeniciarioSia(beneficiario){
       calle:beneficiario.calle,
       next:beneficiario.next,
       colonia:beneficiario.colonia,
-      curp:beneficiario.curp
+      curp:beneficiario.curp,
+      cp:beneficiario.cp,
+      nombre_pm:beneficiario.nombre,
+      primera_pm:beneficiario.papellido,
+      segundoa_pm:beneficiario.sapellido
     }
   })
 }

@@ -1,20 +1,20 @@
 <template>
     <Modal
         :title="modalTitle" 
-        modal-class="modal2  modal-xl"
+        modal-class="scrollable-modal modal2  modal-xl"
         wrapper-class="modal-wrapper"   
         v-model="showAdminModalBeneficiario" 
         @before-open="beforeOpen" 
         @before-close="beforeClose"    
     >     
-        <form role="form">
-             <div class="form-row">                 
-                <div class="form-group col-md-12">
-
+        <form class="form-group scrollable-content">
+             <div class="form-row row">                 
+                <div class="col-sm-12">
                     <label class="control-label" for="razonSocial">Búsqueda del Beneficiario</label>
                         <ejs-autocomplete
                             :readonly="isReadOnly"
                             autofill="true"
+                            id="inpt-bsqd-beneficiario"
                             :value="formBeneficiario.findRazonSocial"
                             v-model="formBeneficiario.findRazonSocial"
                             v-on:filtering="getBeneficiarios($event)"                            
@@ -22,6 +22,7 @@
                             :highlight="true"
                             :ignoreAccent="true"
                             :select="setValues"
+                            :itemTemplate="iTemplate"
                             v-on:change="onChange($event.value)"
                             :suggestionCount='suggestionCount'
                             placeholder="Buscar al Beneficiario"
@@ -29,8 +30,8 @@
                         ></ejs-autocomplete>                                     
                 </div> 
              </div>             
-            <div class="form-row">
-                <div class="form-group col-md-8">
+            <div class="form-row row">
+                <div class="form-group col-md-12">
                     <label class="control-label" >
                         Nombre del Beneficiario
                     </label>
@@ -46,8 +47,22 @@
                     <small v-if="!$v.formBeneficiario.razonSocial.required" class="form-text form-text-error">
                         Este campo es obligatorio
                     </small>                    
-                </div>
-                <div class="form-group col-md-4">
+                </div>                
+                              
+            </div>    
+            <div class="form-row row"> 
+                <div class="form-group col-md-5">
+                    <label class="control-label" for="cuenta">Clabe Interbancaria</label>
+                    <input class="form-control" 
+                        id="clabe" 
+                        placeholder="Clabe Interbancaria" 
+                        type="number"  
+                        disabled="true"
+                        v-model="formBeneficiario.cveInterbancaria" 
+                        :class="{'form-control-error': $v.formBeneficiario.cveInterbancaria.$error}"
+                    >                   
+                </div>   
+                <div class="form-group col-md-5">
                     <label class="control-label" for="rfc">RFC</label>
                     <input 
                         class="form-control" 
@@ -57,30 +72,56 @@
                         type="text" 
                         v-model="formBeneficiario.rfc" 
                         :class="{'form-control-error': $v.formBeneficiario.rfc.$error}" 
-                        >  
-                        <small v-if="!$v.formBeneficiario.rfc.required" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>                                           
-                </div>                 
-                              
-            </div>    
-            <div class="form-row"> 
+                        >                                          
+                </div>                                                       
+            </div>  
+            <div class="form-row row">
+                <div class="form-group col-md-12">
+                <label class="form-group-sm" style="font-weight: bold;">
+                        Presidente Municipal o representante de la comunidad
+                </label>
+                </div>
                 <div class="form-group col-md-4">
-                    <label class="control-label" for="cuenta">Clabe Interbancaria</label>
-                    <input class="form-control" 
-                        id="clabe" 
-                        placeholder="Clabe Interbancaria" 
-                        type="number"  
-                        disabled="true"
-                        min="0" 
-                        max="18"
-                        v-model="formBeneficiario.cveInterbancaria" 
-                        :class="{'form-control-error': $v.formBeneficiario.cveInterbancaria.$error}"
+                    <label for="nom_pm">
+                        Nombre(s)
+                    </label>
+                    <input 
+                        v-model="formBeneficiario.nombre" 
+                        class="form-control"
+                        name="nom_pm"
+                        id="nom_pm"
+                        type="text"
+                        placeholder="Nombre(s)"
                     >
-                    <small v-if="!$v.formBeneficiario.cveInterbancaria.required" class="form-text form-text-error">
-                        Este campo es obligatorio
-                    </small>                    
-                </div> 
+                </div>    
+                <div class="form-group col-md-4">
+                    <label for="nom_pm">
+                        Primer Apellido
+                    </label>
+                    <input 
+                        v-model="formBeneficiario.papellido" 
+                        class="form-control"
+                        name="pa_pm"
+                        id="pa_pm"
+                        type="text"
+                        placeholder="Primer Apellido"
+                    >                    
+                </div>                     
+                <div class="form-group col-md-4">
+                    <label for="seg_pm">
+                        Segundo Apellido
+                    </label>
+                    <input 
+                        v-model="formBeneficiario.sapellido" 
+                        class="form-control"
+                        name="pa_pm"
+                        id="seg_pm"
+                        type="text"
+                        placeholder="Segundo Apellido"
+                    >                     
+                </div>                                               
+            </div>
+            <div class="form-row row">
                 <div class="form-group col-md-4">
                     <label class="control-label" for="cuenta">CURP</label>
                     <input 
@@ -105,10 +146,7 @@
                         type="number" 
                         v-model="formBeneficiario.edad" 
                         :class="{'form-control-error': $v.formBeneficiario.edad.$error}"
-                    >
-                    <small v-if="!$v.formBeneficiario.edad.required" class="form-text form-text-error">
-                        Obligatorio
-                    </small>                    
+                    >                 
                 </div>  
                 <div class="form-group col-md-2">
                     <label class="control-label" for="cuenta">Género</label>
@@ -118,13 +156,8 @@
                         placeholder="Género" 
                         v-model="formBeneficiario.genero" 
                         :class="{'form-control-error': $v.formBeneficiario.genero.$error}"
-                    >
-                    <small v-if="!$v.formBeneficiario.genero.required" class="form-text form-text-error">
-                        Obligatorio
-                    </small>                    
-                </div>                                           
-            </div>  
-            <div class="form-row">
+                    >                  
+                </div>                   
                 <div class="form-group col-md-4">
                         <label class="control-label" for="calle">Calle</label>
                         <input 
@@ -137,6 +170,9 @@
                             v-model="formBeneficiario.calle"
                         > 
                 </div>
+            </div>
+
+            <div class="form-row row">
                 <div class="form-group col-md-4">
                     <label 
                         class="control-label" 
@@ -164,20 +200,21 @@
                         type="text" 
                         v-model="formBeneficiario.colonia"
                     >
-                </div>                
-            </div> 
-            <div class="form-row">
+                </div>      
                 <div class="form-group col-md-4">
+                    <label
+                        class="control-label" 
+                        for="colonia">C. P.</label>                    
                     <input 
                         class="form-control" 
                         id="cp" 
-                        disabled="true"
                         placeholder="Código Postal" 
                         type="text" 
                         v-model="formBeneficiario.cp"
                     >                    
-                </div>
-            </div>
+                </div>                          
+            </div> 
+
             <div class="row modal-footer">
                 <div class="col-md-12 text-right">
                 <div class="col-md-10"> 
@@ -220,6 +257,14 @@ import { searchBeneficiario, updateBebeniciarioSia,
 Vue.use(Vuelidate)
 Vue.use(AutoCompletePlugin);
 
+var itemVue = Vue.component("itemTemplate", {
+  template: `<span class='r-beneficiario'>{{data.beneficiario}}</span>`,
+  data() {
+    return {
+      data: {}
+    };
+  }
+});
 const isValidCurp = () => curpValida(value)
 
     export default {
@@ -241,6 +286,11 @@ const isValidCurp = () => curpValida(value)
         },        
         data(){
             return {
+                iTemplate: function(e) {
+                return {
+                    template: itemVue
+                };
+            },
                 modalTitle:'Beneficiario',                
                 showAdminModalBeneficiario:false,
                 suggestionCount: 5,
@@ -257,6 +307,9 @@ const isValidCurp = () => curpValida(value)
                     colonia:'',
                     cp:'',
                     next:'',
+                    nombre:'',
+                    papellido:'',
+                    sapellido:'',                    
                     findRazonSocial:''
                 },
                 dataFields: { text: 'beneficiario', value: 'idbenef' },
@@ -296,6 +349,7 @@ const isValidCurp = () => curpValida(value)
                 })                            
             },    
             setValues(value){
+                this. clearData()
                 this.formBeneficiario.razonSocial = value['itemData'].beneficiario
                 this.formBeneficiario.rfc = value['itemData'].rfc_benef
                 this.formBeneficiario.cveInterbancaria = value['itemData'].clabe
@@ -307,8 +361,9 @@ const isValidCurp = () => curpValida(value)
                 this.formBeneficiario.calle = value['itemData'].calle
                 this.formBeneficiario.next = value['itemData'].next
                 this.formBeneficiario.colonia = value['itemData'].colonia
-
-
+                this.formBeneficiario.nombre = value['itemData'].nombre_pm
+                this.formBeneficiario.papellido = value['itemData'].primera_pm
+                this.formBeneficiario.sapellido = value['itemData'].segundoa_pm
             },
             clearData(){
                 this.formBeneficiario.id = ''
@@ -322,6 +377,9 @@ const isValidCurp = () => curpValida(value)
                 this.formBeneficiario.colonia = ''
                 this.formBeneficiario.cp = ''
                 this.formBeneficiario.findRazonSocial = ''                
+                this.formBeneficiario.nombre = ''                
+                this.formBeneficiario.papellido = ''                
+                this.formBeneficiario.sapellido = ''                
             },
             async updateBeneficiario(){
                 let loadingInstance = Loading.service({ 
@@ -330,10 +388,7 @@ const isValidCurp = () => curpValida(value)
                  });                
                 await updateBebeniciarioSia(this.formBeneficiario)
                     .then(() => {
-                        console.log(this.formBeneficiario.id)
-                        console.log(this.$parent)
                         this.$parent.beneficiario_id = this.formBeneficiario.id
-                        console.log(this.$parent)
                         this.showAdminModalBeneficiario = false
                     })
                     .catch((error) => {
@@ -349,20 +404,23 @@ const isValidCurp = () => curpValida(value)
                 console.log('idbenef')
                 console.log(idbenef)
                 if(idbenef!= 0){
-                let loadingInstance = Loading.service({ fullscreen: true, lock: true });
-                const resp = await getBeneficiario(idbenef)              
-                    this.formBeneficiario.razonSocial = resp[0].beneficiario
-                    this.formBeneficiario.rfc = resp[0].rfc_benef
-                    this.formBeneficiario.cveInterbancaria = resp[0].clabe
-                    this.formBeneficiario.id = resp[0].idbenef
-                    this.formBeneficiario.cp = resp[0].cp
-                    this.formBeneficiario.curp = resp[0].curp
-                    this.formBeneficiario.edad = resp[0].edad
-                    this.formBeneficiario.genero = resp[0].genero
-                    this.formBeneficiario.calle = resp[0].calle
-                    this.formBeneficiario.next = resp[0].next
-                    this.formBeneficiario.colonia = resp[0].colonia    
-                    loadingInstance.close();  
+                    let loadingInstance = Loading.service({ fullscreen: true, lock: true });
+                    const resp = await getBeneficiario(idbenef)              
+                        this.formBeneficiario.razonSocial = resp[0].beneficiario
+                        this.formBeneficiario.rfc = resp[0].rfc_benef
+                        this.formBeneficiario.cveInterbancaria = resp[0].clabe
+                        this.formBeneficiario.id = resp[0].idbenef
+                        this.formBeneficiario.cp = resp[0].cp
+                        this.formBeneficiario.curp = resp[0].curp
+                        this.formBeneficiario.edad = resp[0].edad
+                        this.formBeneficiario.genero = resp[0].genero
+                        this.formBeneficiario.calle = resp[0].calle
+                        this.formBeneficiario.next = resp[0].next
+                        this.formBeneficiario.colonia = resp[0].colonia    
+                        this.formBeneficiario.nombre = resp[0].nombre_pm    
+                        this.formBeneficiario.papellido = resp[0].primera_pm
+                        this.formBeneficiario.sapellido = resp[0].segundoa_pm
+                        loadingInstance.close();  
                 }            
             },
             onChange(value){
@@ -457,7 +515,7 @@ const isValidCurp = () => curpValida(value)
     
 </script>
 
-<style>
+<style scoped>
 
 fieldset.scheduler-border {
     border: 1px groove #ddd !important;

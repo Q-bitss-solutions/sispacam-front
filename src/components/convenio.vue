@@ -176,19 +176,20 @@
         </div> 
       </div>
       <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-5">
           <button 
-            class="btn btn-default btn-sm" 
+            class="btn btn-default btn-sm active" 
             type="button" 
+            id="btn-mdl-beneficiario"
             @click="openModalBeneficiario()"
             :disabled="(mode === 'delete')"
           >
-            Beneficiario
+            Datos del Beneficiario
           </button>       
         </div>  
         <div class="form-group col-md-6">
           <button 
-            class="btn btn-default btn-sm" 
+            class="btn btn-default btn-sm active" 
             type="button" 
             id="btn-open-calendario"
             @click="openModalCalendarioObra()"
@@ -574,7 +575,7 @@ export default {
         isDisabledMod:false,
         flagEdicion:true,
         btnIsDisabled:false,
-        beneficiario_id:0,        
+        beneficiario_id:0,   
         btnSaveDisabled: true,
         showAdminModalConvenio:false,
         showModalCalendarioObra:false,
@@ -619,9 +620,8 @@ export default {
                     this.$parent.$parent.btnIsDisabled = true
 
                   }
-                  this.$parent.$parent.loadMesAvence(false)
-                  console.log(this.data)
                   this.$parent.$parent.beneficiario_id = this.data.beneficiario_id
+                  this.$parent.$parent.loadMesAvence(false)
                   this.$parent.$parent.showAdminModalConvenio = true                
                 },
                 getDisabled(){
@@ -916,8 +916,6 @@ export default {
         this.showAdminModalConvenio = true
       },
       closeModal(){
-        console.log('this.beneficiario_id')
-        console.log(this.beneficiario_id)
         this.showAdminModalConvenio = false       
         this.clearForm() 
       },
@@ -1041,6 +1039,7 @@ export default {
         }else{
           formData.append("archivo",'');
         }
+        
         if(isNew){
           formData.append("modificatorio", false)
           formData.append("padre", 0)        
@@ -1226,6 +1225,7 @@ export default {
         this.dataAvance = await getAvanceConvenio(idConvenio)
       },
       openModalBeneficiario(){
+        console.log('----------->')
         this.$refs.modalBeneficiario.loadbeneficiario(this.beneficiario_id)           
         this.$refs.modalBeneficiario.showAdminModalBeneficiario = true
       },
