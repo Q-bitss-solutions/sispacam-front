@@ -7,7 +7,7 @@
             <th>CONCEPTOS Y PARTIDAS</th>
             <th v-if="isPBase">CANTIDAD POR KILOMETRO</th>            
             <th v-if="!isPBase">CANTIDAD TOTAL</th>
-            <th>UNIDAD</th>
+            <th>UNIDAD DE MEDIDA</th>
             <th v-if="isPBase">IMPORTE POR KILOMETRO</th>
             <th>PRECIO UNITARIO</th>
             <th>IMPORTE TOTAL POR LONGITUD</th>
@@ -25,6 +25,7 @@
                  :totalPP.sync="getPresupuestoByID(1).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(1).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
@@ -37,6 +38,7 @@
                  :totalPP.sync="getPresupuestoByID(2).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(2).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />     
             <!-- SUPERFICIE DE RODAMIENTO --> 
             <TablePresupuesto
@@ -49,6 +51,7 @@
                  :totalPP.sync="getPresupuestoByID(3).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(3).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />      
             <!-- SENALAMIENTO --> 
             <TablePresupuesto
@@ -61,8 +64,9 @@
                  :totalPP.sync="getPresupuestoByID(4).subTotalPP"
                  :subTotalIPK.sync="getPresupuestoByID(4).subTotalIPK"
                  :isPBase="isPBase"
+                 :readOnly="getReadOnly"
                 />   
-            <tbody  v-if="isVisible.find( el => el.id === 5).mostrar && !isPBase">
+            <tbody  v-if="isVisible.find( el => el.id ===   5).mostrar && !isPBase">
                 <tr class="concepto">
                     <td colspan="4">PRECIOS EXTRAORDINARIOS</td>
                     <td>
@@ -82,37 +86,45 @@
                             >
                         </vue-numeric>     
                     </td>
-                </tr>               
-                <tr v-for="(extraordinario, k) in extraordinarios" :key="k">
+                </tr>     
+                <!--Extraordinarios-->          
+                <tr v-for="(extraordinario, k) in  extraordinarios" :key="k">
                     <td>    
                         <div class="row">
-                            <div class="col-md-1">
-                                <button class="btn btn-primary btn-sm" type="button"  @click="deleteRow(k, extraordinario)">
+                            <div class="col-md-1" v-if="isPuEditable()">
+                                <button 
+                                    :disabled="getReadOnly"
+                                    class="btn btn-primary btn-sm" type="button"  
+                                    @click="deleteRow(k, extraordinario)">
                                     <span class="glyphicon glyphicon-remove"></span> 
                                 </button>
                             </div>
-                            <div class="col-md-11">
-                                <input v-on:keypress="checa(k)" 
-                                        type="text" v-model="extraordinario.concepto">
+                            <div class="col-md-11">                                
+                                {{extraordinario.concepto}}
                             </div>                        
                         </div>                     
                     </td>
                     <td>
                         <vue-numeric 
+                            :name="'name'+k"
                             v-bind:precision="2" 
                             separator="," 
                             class="form-control" 
                             v-model="extraordinario.cantidad_total"
                             v-on:keypress.native="checa(k)"
-                            >
-                        </vue-numeric>                          
+                            v-validate="{required: true, min_value:1}"
+                            :read-only="getReadOnly"
+                            >                                       
+                        </vue-numeric>  
+                        <p v-if="errors.has('name'+k)  && showError" class="text-danger">La cantidad debe ser mayor a cero</p>                                                                                         
                     </td>
                     <td>
-                        <select v-model="extraordinario.unidad" id="">
+                        <select v-model="extraordinario.unidad" disabled>
                             <option value="1">HA</option>
                             <option value="2">M3</option>
                             <option value="3">ML</option>
                             <option value="4">PZA</option>
+                            <option value="5">KG</option>
                         </select>                    
                     </td>
                     <td>
@@ -120,7 +132,7 @@
                             separator="," 
                             class="form-control" 
                             v-model="extraordinario.precio_unitario"
-                            v-on:keypress.native="checa(k)"
+                            :read-only="vnumeric"
                             >
                         </vue-numeric>
                     </td>
@@ -129,24 +141,29 @@
                             v-bind:precision="2" separator="," 
                             class="form-control" 
                             v-model="colImporteTotalExt[k]" 
-                            :read-only="vnumeric"
+                            :read-only="vnumeric"  
                             >
                         </vue-numeric>                        
                     </td>
                     <td>
                         <vue-numeric v-bind:precision="2" currency="%"
-                            class="form-control"                            
+                            class="form-control"                                            
                             :read-only="vnumeric"
                             v-model="colPPExt[k]"
                             currency-symbol-position="suffix"                
                             >
                         </vue-numeric>                         
                     </td>   
-                </tr>                 
+                </tr>    
+                <!--FIN Extraordinarios-->             
                 <tr v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
                     <td>
-                            <button class="btn btn-danger btn-sm" type="button" 
-                            @click="addExtraordinario">
+                            <button 
+                                id="btn-add-partida"
+                                class="btn btn-danger btn-sm" type="button" 
+                                @click="showModal = true"
+                                :disabled="getReadOnly"
+                            >
                                 <span class="glyphicon glyphicon-plus"></span> 
                                 Agregar partida extraordinaria
                             </button>
@@ -204,7 +221,7 @@
                     currency="%"
                     currency-symbol-position="suffix" 
                     class="form-control" 
-                    value="100"
+                    v-model="totalPP"
                     :read-only="vnumeric"
                     >
                 </vue-numeric>                 
@@ -212,21 +229,40 @@
             </tr>
         </tfoot>
         </table>
-    </div>
-    </div>
+    </div>   
+    <modalExtraordinarios 
+        :showModal.sync="showModal"
+        :loadedExtraordinarios="extraordinarios"
+        @addExtraordinario="addExtraordinario"
+    >
+    </modalExtraordinarios> 
+</div>
 </template>
 
 <script>
-import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
+
+import Vue from 'vue';
+import { Loading } from 'element-ui';
+import VeeValidate from 'vee-validate';
 import { mapMutations, mapGetters } from 'vuex'
+import { getConvenioById } from '@/api/convenio'; 
+import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
+import modalExtraordinarios from '@/components/presupuestos/ModalExtraordinarios'
+import { getExtraordinariosByIdConvenio, deleteExtraordinario } from '@/api/extraordinarios'
 import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
+Vue.use(VeeValidate, {
+  inject: true,
+  fieldsBagName: 'veeFields'
+});
 
 
 export default {
     name:'PestaniaPresupuesto',
     components: {
-        TablePresupuesto
+        TablePresupuesto,
+        modalExtraordinarios
     },
+
     props: {
         filtroConceptos:{
             type:Number
@@ -247,6 +283,8 @@ export default {
     },    
     data () {
         return {
+            showError:false,
+            showModal:false,
             vnumeric:true,
             isLoad:false,
             datos:null,
@@ -257,6 +295,7 @@ export default {
             totalIPL:0,
             totalPP:0,
             TotalIPK:0,
+            readOnly:false,
             extraordinarios:[],
             presupuestos: [
                 {                    
@@ -334,7 +373,7 @@ export default {
     },
     methods:{
        ...mapGetters('presupuesto', ['getPresupuestoByName']),
-       ...mapMutations('presupuesto', ['setPresupuesto']),
+       ...mapMutations('presupuesto', ['setPresupuesto', 'setPresupuestoExtraOrdinario']),
        loadData() {           
             this.datos.map( i => {
                 let unidad = unidad_medida.find( u => i.partida.id == u.id )
@@ -345,21 +384,22 @@ export default {
             this.presupuestos.map((_presupuesto, _index) => {     
                 const data = this.datos.filter(d => d.partida.concepto.codigo === _presupuesto.codigo)
                     .map(terra => ({                        
-                        ...terra,
+                        ...terra,                        
                         precio_unitario: (terra.importe || 0) / (terra.cantidad || 1),
                         importe_total: ( (terra.importe || 0) / (terra.cantidad || 1)) * ( terra.cantidad || 1 )
                     }))            
-                console.log(data)
                 _presupuesto.presupuestoBack = data
                 _presupuesto.presupuestoStart = data
             })
 
-
             this.presupuestoReal = JSON.parse(JSON.stringify(this.presupuestos))
             this.presupuestoBase =  JSON.parse(JSON.stringify(this.presupuestos))
-            console.log('this.presupuestoBase')
-            console.log(this.presupuestoBase)
 
+              this.presupuestoReal.map(pr => {
+                        pr.presupuestoStart.map( ps => {
+                                ps.cantidad = ps.cantidad * this.$route.params.meta
+                        })
+                    })
             if(this.fetch_presupuestoReal){
                 this.fetch_presupuestoReal.map(f => {
                     this.presupuestoReal.map(pr => {
@@ -372,9 +412,19 @@ export default {
                     })
                 })                
             }
+            //if(this.isPBase)
+            this.loadDataExt()
             this.isLoad = true
         }, 
-
+        async validations(){
+            if(!this.isPBase){
+              return  this.$validator.validateAll().then((result) => {
+                    this.showError = true
+                    return result
+                }); 
+            } 
+            return true
+        },
         getPresupuestoByID(id) {                    
             if(this.isPBase){
                 return this.presupuestoBase.find( i => i.id === id)
@@ -382,37 +432,84 @@ export default {
                 return this.presupuestoReal.find( i => i.id === id)
             }              
         },
-        addExtraordinario() {
-            this.extraordinarios.push( { concepto:'', cantidad_total:0.0001, 
-                unidad:1,precio_unitario:0.0001,importe_total:0.0001,pp:0.0001
-            })
+        addExtraordinario(concepto) {
+            this.showModal = true
+            this.showError = false
+            this.extraordinarios.push(concepto)
         },
-        deleteRow(index, partida ) {
+        async deleteRow(index, partida ) {
+            let loadingInstance = Loading.service({ fullscreen: true, lock: true });
             var idx = this.extraordinarios.indexOf(partida);
             if (idx > -1) {
+                if(this.extraordinarios[idx]
+                    .convenioextraordinario){
+                        const id = Number(this.extraordinarios[idx]
+                            .convenioextraordinario)
+                        await deleteExtraordinario(id).catch(err => {
+                            loadingInstance.close();
+                        })
+                    }
                 this.extraordinarios.splice(idx, 1);
+                this.checa()
+                loadingInstance.close();
             }            
         },
-        checa(i){      
-            this.setPresupuesto( {   
+        checa(i){             
+            this.setPresupuestoExtraOrdinario( {   
                 presupuesto: this.extraordinarios, 
                 codigo: 'F' 
-            })            
+            })         
         },
         async fetchPresupuestoBase() {
             const response = await getPresupuestoBaseByAncho(this.$route.params.anchoId)
-            this.datos = response
+            this.datos = response                
             this.loadData()
         },
         async fetchPresupuestoReal() {
             const presupuesto_real = await getPresupuestoRealByIdConvenio(this.$route.params.convenioId)
             if(presupuesto_real.length > 0){
-                console.log('presupuesto_real')
-                console.log(presupuesto_real.length > 0)
                 this.$emit('update:editMode', true)
             }
             this.fetch_presupuestoReal = presupuesto_real
-        }         
+        },
+        async loadDataExt(){
+            const { count, results} = await getExtraordinariosByIdConvenio(this.$route.params.convenioId)
+
+            const extras = results.map( (e) => ({                
+                id:e.partida.id,
+                concepto:e.partida.descripcion,
+                unidad:e.partida.unidad_medida.id,
+                cantidad_total:e.cantidad,  
+                precio_unitario:e.partida.importe,
+                importe_total:0.0001,
+                pp:0.00,
+                convenioextraordinario:e.id
+            }))
+            this.extraordinarios = extras
+            this.checa()
+        } ,
+        cancel(){        
+            this.$emit('cancel')                       
+        },
+        isPuEditable(){
+            let isnormativo = this.$store.getters['user/StateRol']=='NORMATIVO'?true:false
+            if(!this.isPBase && isnormativo){
+                return true
+            }
+            return false
+        },
+        async setDataConvenio(){
+            const convenio = await getConvenioById(this.$route.params.convenioId)            
+            console.log('dataconvenio')
+            console.log(convenio)
+            if(convenio.estatus == 'A'){
+                this.readOnly=false
+            }else{
+                this.readOnly=true
+            }
+            console.log('convenio')
+            console.log(convenio.estatus, this.readOnly)
+        }                     
     },
     computed:{
         isVisible(){
@@ -451,9 +548,7 @@ export default {
                 this.getPresupuestoByID(2).subTotalPP +
                 this.getPresupuestoByID(3).subTotalPP +
                 this.getPresupuestoByID(4).subTotalPP +
-                this.extraordinarios.reduce( ( total, x ) => {
-                      return  (total || 0) + (x.importe_total || 0) 
-                },0 )
+                this.getSubtotalPPExt
 
             return this.totalPP            
         },
@@ -467,15 +562,13 @@ export default {
         },
         colPPExt() {
             return this.extraordinarios.map( (item) => {
-                return (item.importe_total  / this.getTotalIPL) * 100
+                return isNaN((item.importe_total  / this.getTotalIPL) * 100)?0:(item.importe_total  / this.getTotalIPL) * 100
             })             
         },
-        getSubtotalIPExt: {            
+        getSubtotalIPExt: {      
             get() {
-                console.log('getSubtotalIPExt')
-                console.log(this.extraordinarios)
                 return this.extraordinarios.reduce ( (total , item) => {
-                    return (total || 0 ) + ( 0 || item.importe_total )
+                    return (total || 0 ) + ( 0 || Number(item.importe_total) )
                 }, 0.000001)
             },
             set(val) {
@@ -492,26 +585,45 @@ export default {
 
             }
         },
-        getTotalIPK() {
-            console.log(this.isPBase)
-            console.log('getTotalIPK')
-            console.log(this.getPresupuestoByID(1))
+        getTotalIPK: {
+            get(){
                 return this.totalPP = this.getPresupuestoByID(1).subTotalIPK +
-                this.getPresupuestoByID(2).subTotalIPK +
-                this.getPresupuestoByID(3).subTotalIPK +
-                this.getPresupuestoByID(4).subTotalIPK
+                    this.getPresupuestoByID(2).subTotalIPK +
+                    this.getPresupuestoByID(3).subTotalIPK +
+                    this.getPresupuestoByID(4).subTotalIPK
+            },
+            set(){
+                
+            }
         },
         isLoaded() {
            return this.isLoad
+        },
+        //modal
+        isShowModal: {
+            get(){
+                return this.showModal
+            },
+            set (val) {
+                this.showModal = val            
+            }            
+        },
+        getReadOnly() {
+            console.log('getread')
+            console.log(this.readOnly)
+            return this.readOnly
         }
     },
-    created(){                
-    },
     beforeMount(){
-        console.log('mounted')
         this.fetchPresupuestoReal()
         this.fetchPresupuestoBase()        
-    } 
+    },
+    created() {
+        console.log('created')
+        if(!this.isPBase){
+            this.setDataConvenio()
+        }        
+    },    
 }
 
 const unidad_medida = [
@@ -592,5 +704,4 @@ const unidad_medida = [
 </script>
 
 <style scoped>
-
 </style>

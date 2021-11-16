@@ -30,17 +30,28 @@
               >Opciones <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">              
-              <li><a href="/altacamino">Alta</a></li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
-                  <a href="/busqueda">Búsqueda</a>
-              </li>
-              <li v-if="$route.params.obraId">
-                <a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a>                
-              </li>
-            </ul>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/busqueda">Búsqueda</a></li>
+              <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>   
+           
+            </ul>    
+          </li>
+          <!-- SUBMENÚ Finaciero-->
+          <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false"
+              >Financiero <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu" role="menu">                            
+              <li ><a href="/financiero">Consulta Presupuestal</a></li>                 
+            </ul>    
           </li>
         </ul>
-      </div>
+      </div>      
     </div>
   </nav>
 
@@ -78,6 +89,7 @@
       <h1>Dirección General de Carreteras</h1>
       <h2>Cabeceras Municipales</h2>
       <h3>{{ getBreadcrumb[0] }}</h3>
+      <h3>{{$route.params.nombre_camino}}</h3>
       <hr class="red">
     </div>
   </div>
@@ -96,6 +108,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { mapActions } from "vuex"
+import { CaminoPut } from '@/api/alta-camino';
 
 export default {
   data () {
@@ -105,9 +118,11 @@ export default {
   },
   computed: {
     isAuthenticated: function () {
-      console.log('isauth:' + this.$store.getters['user/isAuthenticated'])
       return  this.$store.getters['user/isAuthenticated']
       },
+      cData: function() {
+            return this.data
+        } ,
     getUser: function () {
       
       return this.$store.getters['user/StateUser']
@@ -118,13 +133,15 @@ export default {
     },
     getBreadcrumb: function () {
        return this.$store.state.breadcrumb
+       
+       
     }
   },
   methods: {
     ...mapActions(["test"]),
     ...mapMutations('user',['setAuthenticated']),
     saludar () {
-      this.test({ username: 'Guchi' })
+      this.test({ username: '' })
     },
     logout(){
       this.setAuthenticated(false)
@@ -132,7 +149,7 @@ export default {
     }
   },
   created(){
-    console.log('version::v2.4')
+    console.log('SISPACAM::v3.1.4')
   }
 }
 </script>

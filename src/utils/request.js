@@ -1,11 +1,12 @@
 import axios from 'axios'
 import store from '@/store/'
+import { Message } from 'element-ui'
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const service = axios.create({
-  baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
-  //baseURL: process.env.VUE_APP_BASE_URL + '/api/v1', 
-  timeout: 5000, // request timeou
+  //baseURL: 'https://backcmqa.sct.gob.mx/api/v1', 
+  baseURL: process.env.VUE_APP_SCT_SVC_BACK_BASE_URL, 
+  timeout: 15000, // request timeou
 })
 
 //refresh
@@ -33,8 +34,6 @@ function getRefreshToken(){
 function getAccessToken() {
     const camino = JSON.parse(localStorage.getItem('camino'))
     if(camino){
-        console.log('camino.user.token')
-        console.log(camino.user.token)
         return camino.user.token
     }         
     return ''
@@ -49,18 +48,23 @@ service.interceptors.request.use(request => {
 // response interceptor
 service.interceptors.response.use(
     response => {
-        if (response.status === 200  || response.status === 201  || response.status === 202) {
+        if (response.status === 200  || response.status === 201  || response.status === 202  || response.status === 204) {
             return response.data;
         } else {    
           return Promise.reject();                    
         }
     },
     error => {
-
+      console.log(error);
         let { response, message } = error
         if (error.response && error.response.data) {
           const { status, data } = response
           console.log(message + ' - ' +  status + ' ' + data)
+          Message({
+            message: 'Ocurrio un error al realizar la petición',
+            type: 'error', 
+            duration: 5 * 1000
+          })        
           return Promise.reject(data)
         } else {
 
@@ -75,6 +79,11 @@ service.interceptors.response.use(
             message = 'Backend interface' + code + 'Exception'
           }
           console.log(message)
+          Message({
+            message: 'Ocurrio un error al realizar la petición',
+            type: 'error',
+            duration: 5 * 1000
+          })          
           return Promise.reject(message)
         }
     }

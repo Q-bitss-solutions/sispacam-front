@@ -7,13 +7,50 @@ export function getObras() {
     })
 }
 
-
 export function getObraByClave(clave) {
   return request({
     url: `/camino/${clave}/`,
     method: 'get'
   })
 }
+
+export function getCvepres(fecha) {
+  return request({
+    url: `/getCvepres/${fecha}/`,
+    method: 'get'
+  })
+}
+
+export function getSpago(fecha) {
+    return request({
+      url: `/getSpago/${fecha}/`,
+      method: 'get'
+    })
+  }
+
+  export function getMescons(fecha,mes,name) {
+    let req=''
+    if(name){
+        req += 'name='+name  
+    }
+    if(mes){
+        if(name){
+            req += '&f_elab='+mes
+        }else{
+            req += 'f_elab='+mes 
+        }
+    }
+    let url=''
+    if(name || mes){
+        url=`/getMescons/${fecha}/${req}/`
+    }else{
+        url = `/getMescons/${fecha}/`
+    }  
+    return request({
+      url: url,
+      method: 'get'
+    })
+  }
 
 export function getAllObras(){
   return request({
@@ -23,9 +60,6 @@ export function getAllObras(){
 }
 
 export function getObraByParmas (params) {
-  console.log(params)
-  console.log(typeof(params))
-  console.log(params)
   let req = 'cve_agee='+params.cve_agee
   req += params.caminos_originales?'&caminos_originales='+params.caminos_originales:''
   req += params.ciit?'&ciit='+params.ciit:''
@@ -36,13 +70,11 @@ export function getObraByParmas (params) {
   req += params.marginacion!=''?'&marginacion='+params.marginacion:''
   req += params.poblacion_indigena!=''?'&poblacion_indigena='+params.poblacion_indigena:''
 
-  console.log(req)
   return request({
     url: '/camino/list/params/'+req+'/410/',
     method: 'get'
   })
 }
-
 
 export function cancelarObra(clave, data) {
   return request({
@@ -53,7 +85,6 @@ export function cancelarObra(clave, data) {
   })
 }
 
-
 export function asignarUsuario(claveObra, usuario) {
   return request({
     url: '/camino/asignar/' + claveObra + '/' + usuario + '/',
@@ -62,7 +93,6 @@ export function asignarUsuario(claveObra, usuario) {
 }
 
 export function getCaminoByClave(claveObra) {
-    console.log('getCaminoByClave --obras')    
     return request({
         url:'/camino/' + claveObra + '/',
         method: 'get'
@@ -83,46 +113,11 @@ export function getResidentes(system, group) {
     })
   }
 
-export function generarConvenio(data, id_camino){
-
+export function reactivarObra(data){
   return request({
-
-      url:  `/convenio/${id_camino}/ `,
-      method: 'post',
-      data:data,
-      headers: { "Content-Type": "multipart/form-data" } 
-  })  
-}
-
-export function cancelarConvenio(clave) {
-  return request({
-    url: '/convenio/estatus/'+ clave + '/',
-    method: 'patch',
-    data:{
-      estatus:"C"
-    }
-  })
-}
-
-export function getconvenio(id_camino) {
-  return request({
-    url:'/convenio/' + id_camino + '/',
-    method: 'get'
-  })
-}
-
-export function getlistaConvenio(clave) {
-  return request({
-    url: '/convenio/' +clave+ '/list/',
-    method: 'get'
-  })
-}
-
-
-export function updateConvenio(data,convenio_id ){
-  return request({
-    url:`/convenio/${convenio_id}/update/`,
-    method:'patch',
-    data
+    url:'/justificar/',
+    method:'post',
+    data:data,
+    headers: { "Content-Type": "multipart/form-data" } 
   })
 }

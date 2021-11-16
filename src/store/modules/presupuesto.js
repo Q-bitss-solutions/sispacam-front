@@ -22,13 +22,13 @@ export default {
                 codigo:'D',
                 name:'SEÑALAMIENTO',
                 presupuesto:null
-            },
-            {
+            }
+        ],
+        conceptosExtraordinarios: {
                 codigo:'F',
                 name:'PRECIOS EXTRAORDINARIOS',
-                presupuesto:null
+                presupuesto:[]
             }
-        ]
     },
     mutations: {
         setVisibleTerracerias (state, isVisible) {
@@ -41,6 +41,9 @@ export default {
                 }
             })
         },
+        setPresupuestoExtraOrdinario (state, { presupuesto }) {              
+            state.conceptosExtraordinarios.presupuesto = presupuesto
+        },        
         cancel (state, cancel ) {
             state.cancel = cancel
         }

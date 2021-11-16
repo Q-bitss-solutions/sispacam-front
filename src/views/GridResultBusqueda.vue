@@ -6,21 +6,23 @@
           <p class="small">Se encontraron <strong>{{ count }}</strong> resultados en la búsqueda.</p>
 
         <ejs-grid   ref="grid"
-                    :dataSource="data" :gridLines='lines' 
+                    :dataSource="data" 
+                    :gridLines='lines' 
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
                     :allowTextWrap='true'
+                    toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})"
                     >
             <e-columns>
                 <e-column field='clave' headerText='ID de la Obra'></e-column>
                 <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
                 <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
-                <e-column field='estrategia' headerText='Estrategia de Gobierno Federal' ></e-column>
-                <e-column field='marginacion' headerText='Grado de Marginación' ></e-column>
+                <e-column field='estrategia' headerText='Estrategia de Gobierno Federal' ></e-column>   
+                <e-column field='marginacion' headerText='Grado de Marginación' ></e-column>    
                 <e-column field='poblacion_indigena' headerText='Tipo Poblacion' ></e-column>
-                <e-column field="clave" :template='editTemplate' headerText='Editar Obra' textAlign='Center' :visible='flagEdicion'></e-column>
-                <e-column field="clave" :template='cancelTemplate' headerText='Cancelar Obra' textAlign='Center' :visible='flag'></e-column>
+                <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra' textAlign='Center' :visible='flagEdicion'></e-column>
+                <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra' textAlign='Center' :visible='flag'></e-column>
             </e-columns>
         </ejs-grid>
         </div>
@@ -37,7 +39,7 @@
 <script>
 import Vue from "vue";
 import { mapMutations } from 'vuex'
-import { GridPlugin, Sort, Page } from '@syncfusion/ej2-vue-grids';
+import { GridPlugin, Sort, Page, } from '@syncfusion/ej2-vue-grids';
 import { getObrasByUsuario, getObraByClave, getObraByParmas } from '@/api/obras'
 import ButtonGrid from '@/components/ButtonGrid'
 import CancelaObra from '@/components/CancelaObra'
@@ -78,7 +80,7 @@ export default {
                 let data = null
                 if(this.flag){
                     if(this.$route.params.values.clave){
-                        data = await getObraByClave(this.$route.params.values.clave)    
+                        data = await getObraByClave(this.$route.params.values.clave.trim())    
                         const aRR = []
                         aRR.push(data)
                         results = aRR    
@@ -106,13 +108,9 @@ export default {
                         obj.estrategia = obj.ciit===true?'CIIT':''
                         obj.estrategia += obj.tren_maya===true?' Tren Maya':''
                         obj.estrategia += obj.caminos_originales===true?' Caminos Originales':''
-                        console.log('obj.estatus')
-                        console.log(obj.estatus)
                         obj.isCanceled = obj.estatus=='A'?false:true
                         return obj
                     })               
-        
-                    console.log(results)   
                     this.count = results.length     
                     this.data = results 
                 }
@@ -124,20 +122,25 @@ export default {
         },
         ...mapMutations(['setBreadcrumb']),  
         dataBound: function() {                    
+        },
+        isActive(data){
+            if(data.estatus === 'A'){
+                return true
+            }else{
+                return false
+            }
+            
+
         }
     },
     mounted () {
         this.populate()
-        console.log('mounted')        
         this.$refs.grid.ej2Instances.defaultLocale.EmptyRecord = "No hay registros";   
         this.$refs.grid.ej2Instances.gridPager.ej2_instances[0].defaultConstants.currentPageInfo = '{0} de {1} Paginas' 
     },
     created() {
         this.setBreadcrumb(this.breadcrumb)
-        console.log('Params: ', this.$route.params)
         this.populate()
-        console.log('----------------------->')
-        console.log(this.$store.state.user.userRol)
     }
 }    
 </script>

@@ -31,11 +31,12 @@
                   {{ edo.nom_agee }}
                 </option>
             </select>
-          <div class="row col-md-10">
+          <!--<div class="row col-md-10">
               <small v-if="$v.obra.cve_agee.$error" class="form-text form-text-error">
               Este campo es obligatorio
               </small>
-          </div>               
+          </div>
+          -->               
           </div>
       </div>
 
@@ -198,7 +199,6 @@ export default {
   validations: {
     obra : {
       cve_agee: {
-        required,
         validateEdo
       },
       clave: {
@@ -212,7 +212,6 @@ export default {
       if(!this.isBuquedaPorIcveObra){
         this.$v.obra.cve_agee.$touch()
         if (!this.$v.obra.cve_agee.$invalid) {
-          console.log(this.obra)
           this.$router.push({ 
             name: 'Obras', 
             params: { 
@@ -232,12 +231,6 @@ export default {
           values:this.obra         
         }
       })
-      
-        /*
-        this.$v.$touch()
-        console.log('submit...')
-        if (this.$v.$invalid) return      
-        */
     },
     async initData () {
       const res = await getEdos()
@@ -250,10 +243,8 @@ export default {
         this.localidadesData = null
         this.obra.municipio =''
         this.obra.localidades =''
-        console.log(this.obra.cve_agee)
         const {results} = await getMunicipios(this.obra.cve_agee)
         this.municipiosData = results;       
-        console.log(this.municipiosData)  
       }catch(err){
           console.log('error al obtener municipios')
           console.log(err)
@@ -263,7 +254,6 @@ export default {
       this.localidadesData = null;
       this.obra.localidades =''
       try{
-        console.log('changemun')
         const res = await getLocalidades(this.obra.cve_agee, 
                       this.obra.icve_municipio)
         this.localidadesData = res
@@ -274,7 +264,6 @@ export default {
     },
     clearData () {
       this.$v.$reset()
-      console.log(this.obra.estado)
       this.obra.cve_agee = ''
       this.obra.nombre_camino= ""
       this.obra.cve_agee = ""
@@ -287,7 +276,6 @@ export default {
       this.obra.clave = ""
       this.municipiosData = null
       this.localidadesData = null
-      console.log('clear----------_>')
       this.initData()
     },
     getEstrategia(){
@@ -295,7 +283,7 @@ export default {
       this.obra.tren_maya = false
       this.obra.caminos_originales = false
       this.obra[this.estrategia]= true
-      console.log(this.obra)      
+
     }    
   },
   beforeMount: function () {    

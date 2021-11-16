@@ -6,8 +6,11 @@ import IdleVue from 'idle-vue'
 import router from './router'
 import store from './store'
 import "@/assets/css/SCT.css"
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
 
 
+Vue.use(ElementUI);
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(Vuelidate);
 Vue.prototype.$residenteGroup = 411

@@ -79,10 +79,8 @@ validations: {
     submit() { 
       this.loginError = false
       this.$v.$touch()
-      console.log('submit...')
       if (this.$v.$invalid) return
       try {
-          console.log(this.form)
           this.login(JSON.parse(JSON.stringify(this.form)))
             .catch((e) => {
                 this.loginError = true
@@ -101,8 +99,8 @@ validations: {
   },
   mounted: function () {
     this.setAuthenticated(false)
-    console.log('montado')
-    console.log(this.$store.state.breadcrumb)
+    const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
+    const API2 = process.env.VUE_APP_BASE_URL;
   }
 }
 </script>

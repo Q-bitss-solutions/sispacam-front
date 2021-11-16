@@ -12,32 +12,40 @@ export default new Vuex.Store({
         camino:{
             id:null,
             ancho:null,
+            isCanceled:null,
             id_convenio:null,
             presupuesto:{
                 edit_mode:false
             }
         },
-      foo: 'root-foo',
-      breadcrumb: [],
-      cancel: {
-          id:null
-      },
-      cancelConvenio: {
-        id:null
-    }
+        foo: 'root-foo',
+        breadcrumb: [],
+        cancel: {
+            id:null
+        },
+        reactivar:{
+            id:null
+        },
+        cancelConvenio: {
+            id:null
+        }
     },
     mutations: {
         setBreadcrumb(state, dataBreadcrumb ) {
             state.breadcrumb = dataBreadcrumb
         },
         setIdCancelacion(state, idObraCancelacion) {
-            console.log('mutation')
-            console.log(idObraCancelacion)
             state.cancel.id = idObraCancelacion
         },
+        setIdReactivacion(state, id) {
+            state.reactivar.id = id
+        },        
         setIdCancelacionConvenio(state, idConvenio) {
             state.cancelConvenio.id = idConvenio
         },
+        setStatusCamino(state, status){
+            state.camino.isCanceled = status
+        },        
         setAnchoCamino(state, ancho){
             state.camino.ancho = ancho
         },
@@ -54,10 +62,7 @@ export default new Vuex.Store({
     },
     actions: {
         async test({ commit }, user) {
-            console.log('user')
-            console.log(user)
             const data = await test(user)
-            console.log(data)
         }        
     }, 
     modules: {
@@ -66,7 +71,7 @@ export default new Vuex.Store({
     },
     plugins: [createPersistedState({
         key: 'camino',
-        paths: ['user']
+        paths: ['user', 'camino']
     })]
 })
   

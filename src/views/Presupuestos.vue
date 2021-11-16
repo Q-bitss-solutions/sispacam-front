@@ -77,7 +77,7 @@
                   :filtroConceptos="getFilterValue"
                   :upTotalIPL.sync="upTotalIPLBase"
                   :isPBase="true"
-                  :ancho="anchoCamino"
+                  :ancho="anchoCamino"                  
                   />
             </div>                         
         
@@ -90,6 +90,8 @@
                     :isPBase="false"
                     :key="'cancel'+conutCancel"
                     :ancho="anchoCamino"
+                    ref="presupuestoReal"
+                    @cancel="cancel"
                 />
             </div>                          
           </div>
@@ -100,36 +102,28 @@
         <div class="col-md-12 text-right">
           <hr />
           <button @click="cancel" class="btn btn-default" type="button">Cancelar</button>
-          <button @click="save" class="btn btn-primary" type="button">Guardar cambios</button>
+          <button :disabled="readOnly" @click="save" class="btn btn-primary" type="button">Guardar cambios</button>
         </div>
       </div>
 
-      <!-- MODAL -->
-       <div class="modal fade" id="save" tabindex="-1" role="dialog" aria-labelledby="addConcept"
-           aria-hidden="true">
-           <div class="modal-dialog">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <h4 class="modal-title">Aviso del Sistema</h4>
-                   </div>
-                   <div class="modal-body">
-                       <p>Se guardaron correctamente los datos del presupuesto</p>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                   </div>
-               </div><!-- /.modal-content -->
-           </div><!-- /.modal-dialog -->
-       </div><!-- /.modal -->    
+<ModalError 
+    ref="modals"
+    @cancel="cancel"
+/>
+
 </div>    
 </template>
 
 <script>
 import { mapMutations } from 'vuex'
 import Vue from 'vue'
+import { getConvenioById } from '@/api/convenio'; 
+import  ModalError  from '@/components/Modals/Modal-error'
 import PestaniaPresupuesto from '@/components/presupuestos/PestaniaPresupuesto';
 import { savePresupuesto, updatePresupuesto } from '@/api/presupuesto'
+import { saveExtraordinarios, updateExtraordinario } from '@/api/extraordinarios'
 import VueNumeric from 'vue-numeric'
+import { Loading } from 'element-ui';
 
 Vue.use(VueNumeric)
 
@@ -137,11 +131,13 @@ Vue.use(VueNumeric)
 export default {
     name:'Presupuestos',
     components:{
+        ModalError,
         PestaniaPresupuesto,
         VueNumeric
     },
     data () {
         return {
+          readOnly:false,
           filtro:'0',
           breadcrumb: ['Presupuesto del Camino '+ this.$route.params.obraId],
           terraceriasShow:true,
@@ -177,49 +173,92 @@ export default {
         }
     },
     methods: {
-       ...mapMutations(['setBreadcrumb']),    
+        ...mapMutations(['setBreadcrumb']),    
         cancel() {
             this.filtro = 0
             this.contador++
-            return
-       },
-       async save() {
-           const data = []
-           const conceptos = []
-           const aConceptos = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
-           console.log('aConceptos')
-           console.log(aConceptos)
-           aConceptos.map(a => {
+            window.scrollTo(0, 0)
+            this.$router.push({
+                name:'AltaCaminoEdit',
+                params: {tabConv:true}
+            }).catch(()=>{});
+        },
+        async save() {
+            let loadingInstance = Loading.service({ fullscreen: true, lock: true });
+            const validation = await this.$refs.presupuestoReal.validations()
+            if(!validation) {
+                loadingInstance.close();
+                this.$refs.modals.openmodal("La cantidad de las partidas extraordinarias no puden estar en cero"); 
+                return
+            }            
+            const data = []
+            const conceptos = []
+            const aConceptos = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
+            aConceptos.map(a => {
                 console.table(a)
             })            
-           aConceptos.map( concepto => {
-               console.log('conceptomap')   
-               if(concepto.presupuesto){
+            aConceptos.map( concepto => {
+               //F extraordinarios
+               if(concepto.presupuesto || concepto.codigo != 'F'){
                     concepto.presupuesto.map(i => {
                         conceptos.push(i)
                     })
                }      
-           })
-           conceptos.map( item => {
-                   data.push(  {
-                   ancho_camino: item.ancho_camino.id,
-                   partida: item.partida.id,
-                   precio_unitario: item.precio_unitario,
-                   cantidad: item.cantidad.toString(),
-                   importe: item.importe,
-                   id_datoconvenio:this.$route.params.convenioId
-                    })                           
             })
-        let response = ''
-        console.log('EDITMODE')
-        if(this.getEditMode){
-           response = await updatePresupuesto(this.$route.params.convenioId, data)
-        }else{
-           response = await savePresupuesto(data)
-        }
-        console.log(response)
-        $('#save').modal('show')
-       }
+            conceptos.map( item => {
+                data.push(  {
+                    ancho_camino: item.ancho_camino.id,
+                    partida: item.partida.id,
+                    precio_unitario: item.precio_unitario,
+                    cantidad: item.cantidad.toString(),
+                    importe: item.importe,
+                    id_datoconvenio:this.$route.params.convenioId
+                })                           
+            })
+            let response = ''  
+            if(this.getEditMode){
+                response = await updatePresupuesto(this.$route.params.convenioId, data).catch(err => {
+                    loadingInstance.close();
+                })
+            }else{
+                response = await savePresupuesto(data).catch(err => {
+                    loadingInstance.close();
+                })
+            }
+            await this.seveExtraordinarios().catch(err => {
+                loadingInstance.close();
+            })
+            loadingInstance.close();
+            $('#save').modal('show')
+       },
+        async seveExtraordinarios(){
+           const conceptosExt = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptosExtraordinarios))
+            for(let ext of conceptosExt.presupuesto) {
+                const extra =  {
+                    "cantidad": ext.cantidad_total,
+                    "partida": ext.id,
+                    "convenio": this.$route.params.convenioId,
+                    "id":ext.convenioextraordinario
+                }
+                if(!ext.convenioextraordinario){
+                    await saveExtraordinarios(extra).catch(err => {
+                        loadingInstance.close();
+                        })
+                }else{
+                    await updateExtraordinario(extra).catch(err => {
+                        loadingInstance.close();
+                        })
+                }                
+            }
+       },
+        async setDataConvenio(){
+            const convenio = await getConvenioById(this.$route.params.convenioId)            
+            if(convenio.estatus == 'A'){
+                this.readOnly=false
+            }else{
+                this.readOnly=true
+            }
+        }         
 
     },
     beforeMount: function () {    
@@ -266,15 +305,10 @@ export default {
        
     },
     created(){
-        console.log('aniooooo')
-        console.log(this.ancho1)
         this.anchoCamino = this.$route.params.anchoId
-        console.log(this.anchoCamino)
         this.ancho = this.ancho1.find(a => this.anchoCamino == a.id).ancho
         this.anio = this.$route.params.anio
-        console.log(this.anio)
-        console.log('this.ancho')
-        console.log(this.ancho)
+        this.setDataConvenio()
     }
 
 }

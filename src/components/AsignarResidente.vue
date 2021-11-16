@@ -6,12 +6,12 @@
         <div class="form-group">
             <div class="col-md-8 form-group">
                 <label class="control-label">Residente asignado:</label>
-                <input class="form-control" v-model="usuario" type="text" disabled placeholder="No hay usuario asigando">
+                <input class="form-control" v-model="usuario" type="text" disabled = "cons" placeholder="No hay usuario asigando">
                 <input class="form-control" v-model="id" type="text" v-show="false">
             </div>           
         </div>
                 <div class="col-md-4 text-right">
-                    <button class="btn btn-default" type="button" id="buscarObras" @click="asignar">
+                    <button class="btn btn-default" type="button" id="buscarObras" @click="asignar" :disabled="cons">
                     <span class="icon" style="margin-right: 8px;"></span>Asignar</button>
                 </div>         
         </div>  
@@ -21,7 +21,8 @@
                     :allowPaging='true' 
                     :allowSorting='true'
                     :pageSettings='pageSettings'
-                    :rowSelected='rowSelected'                    
+                    :rowSelected='rowSelected'     
+                    :disabled="cons"               
                     >
             <e-columns>
                 <e-column field='id' headerText='id' :visible='flag'></e-column>
@@ -56,7 +57,11 @@ export default {
         }    
     },    
     props: {
-        idUsr: Number 
+        idUsr: Number ,
+        isCanceled:{
+            required:true
+        }
+
     },
     provide: {
         grid: [Sort, Page, Filter]
@@ -66,7 +71,6 @@ export default {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.
             let selectedrecords = this.$refs.grid.getSelectedRecords();  // Get the selected records.
-            console.log(selectedrecords)
             this.usuario = selectedrecords[0].nombre + ' ' 
             + selectedrecords[0].primerA + ' ' + selectedrecords[0].segundoA
             this.id = selectedrecords[0].id
@@ -74,10 +78,8 @@ export default {
         async asignar(){
             const response = await asignarUsuario(this.$route.params.obraId, this.id)
             alert(response.msg)
-            console.log(response)
         },
         async getUserAsign() {
-            console.log("getUserAsign")
             const  response  = await getCaminoByClave(this.$route.params.obraId)                        
             if(response){
                 this.id_usuario_asignado = response.usuarios
@@ -97,15 +99,18 @@ export default {
                         this.usuario = u.cnombre +  ' ' + u.capmaterno + ' ' + u.cappaterno
                     }
                 })
-                console.log('residentes')
-                console.log(users)
             }
         }
     },
     async created() {
-        await this.getUserAsign()
+        if(this.$route.params.obraId){
+            await this.getUserAsign()            
+        }
         await this.fetchUsers()
-    }
+    },
+    beforeMount: function () {    
+        this.cons=this.isCanceled
+    }     
 
 }
 

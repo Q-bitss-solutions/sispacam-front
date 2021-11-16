@@ -234,7 +234,7 @@ import Vue from "vue";
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager, Query } from "@syncfusion/ej2-data";
-import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
+import { getEdos, getMunicipios, getLocalidades, getCvepres, getSpagos } from '@/api/alta-camino'
 import { required } from 'vuelidate/lib/validators'
 
 Vue.use(NumericTextBoxPlugin);
@@ -453,8 +453,6 @@ export default {
         setEdoIso(){
             const edoSelect = this.estadosData.executeLocal(new Query())
                                 .filter(a => a.cve_agee == this.icveEstadoInegi)                        
-            console.log('edoSelect')
-            console.table(edoSelect)
             this.DatosGeograficos.iso = edoSelect[0].iso,
             this.DatosGeograficos.abreviaturaEdo = this.icveEstadoInegi
  /*           this.$emit("set-icveEdo", {
@@ -466,26 +464,20 @@ export default {
  */         
             const munSelect = this.municipiosData.executeLocal(new Query())
                                 .filter(a => a.cve_agem == this.icveMunicipio) 
-            console.log('munSelect')
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacionIndigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
-            console.log('this.iTotalPoblacionIndigena')
-            console.log(this.iTotalPoblacionIndigena)
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                          
         }
     },
     
     mounted() {
-        this.$nextTick(() => {
-            //console.log('nextTick')    
+        this.$nextTick(() => { 
             })
     },
 
-    created() {
-        console.log('API2')
-        console.log(API)        
+    created() {       
         this.initData()
     }
 

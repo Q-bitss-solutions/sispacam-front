@@ -16,15 +16,36 @@
                 <label>Estrategia Gobierno Federal:</label>
                 <div>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="ciit" value="true"  name="ciit" v-model="ciit" > 
+                        <input 
+                            type="checkbox" 
+                            id="ciit" 
+                            value="true"  
+                            name="ciit" 
+                            v-model="ciit" 
+                            :disabled="isCanceled"
+                        > 
                         CIIT
                     </label>
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" v-model="tren_maya"> 
+                        <input 
+                            type="checkbox" 
+                            id="trenMaya" 
+                            value="trenMaya" 
+                            name="trenMaya" 
+                            v-model="tren_maya" 
+                            :disabled ="isCanceled"
+                        > 
                         Tren Maya
                     </label>               
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="caminosOriginales" value="caminosOriginales" name="caminosOriginales" v-model="caminosOriginales"> 
+                        <input 
+                            type="checkbox" 
+                            id="caminosOriginales" 
+                            value="caminosOriginales" 
+                            name="caminosOriginales" 
+                            v-model="caminosOriginales" 
+                            :disabled="isCanceled"
+                        > 
                         Caminos Originales
                     </label>                                                             
                 </div>
@@ -34,20 +55,35 @@
                 <label for="tipoCamino">Tipo de Camino:</label>
                 <div id="tipoCamino">
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="cabecera" name="tipo_camino" value="C" :disabled = "editmode" > Cabecera
+                        <input 
+                            v-model="tipo_camino" 
+                            type="radio" id="cabecera" 
+                            name="tipo_camino" 
+                            value="C" 
+                            :disabled="isCanceled"
+                        /> 
+                        Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="agencia" name="tipo_camino" value="A"  :disabled = "editmode" > Agencia
+                        <input 
+                            v-model="tipo_camino" 
+                            type="radio" 
+                            id="agencia" 
+                            name="tipo_camino" 
+                            value="A"  
+                            :disabled="isCanceled"
+                        /> 
+                        Agencia
                     </label>
                     <label class="radio-inline">
-                        <input v-model="tipo_camino" type="radio" id="otro" name="tipo_camino" value="O" :disabled = "editmode"> Otro
+                        <input v-model="tipo_camino" type="radio" id="otro" name="tipo_camino" value="O" :disabled="isCanceled"> Otro
                     </label>
                     <label class="radio-inline">
                         <input v-model="otroTipoCamino" v-if="tipo_camino == 'O'" placeholder="Especificar otro" />              
                     </label> 
                     <div class="row col-md-10">
                     <small v-if="tipo_camino == 'A' && this.edo.localidades  && (this.edo.localidades.length < 1 || this.edo.localidades.length  > 1)" class="form-text form-text-error">
-                     Para esta opcion debe seleccionar una Localidad 
+                        Para esta opcion debe seleccionar una Localidad 
                     </small>  
                     </div>                                   
                 </div>                    
@@ -57,7 +93,7 @@
                 <div class="col-md-4" v-show="false">       
                     <div >
                         <label for="camino">ID Camino:</label>
-                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" disabled v-model="idcamino"> 
+                        <input id="camino" name="LADA3" class="form-control"  placeholder="Id Camino" value="" :disabled="isCanceled" v-model="idcamino"> 
                     </div>
                 </div>
                 <div class="col-md-12"> 
@@ -69,7 +105,7 @@
                         class="form-control"  
                         type="text" 
                         placeholder="Nombre del Camino"  
-                
+                        :disabled="isCanceled"
                         value=""/>  
                         <div class="row col-md-10">
                             <small v-if="!$v.nombre_camino.required && $v.nombre_camino.$error" class="form-text form-text-error">
@@ -91,6 +127,7 @@
                             v-model="fLongitdTotal"
                             :min="min"
                             :max="max"
+                            :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
@@ -107,9 +144,9 @@
                             id="longitud_pavimentar"
                             placeholder="Longitud a pavimentar 2019-2014(km)"
                             v-model="fLongitdTotalAPavimentar" 
-                            :change="valnum"
                             :min="min"                             
                             :max="max"
+                            :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox> 
                         <div class="row col-md-10">
@@ -131,6 +168,7 @@
                         v-model="ancho_camino"
                         v-model.trim="$v.ancho_camino.$model"
                         ref="refAncho"
+                        :enabled="!isCanceled"
                         >
                         </ejs-dropdownlist> 
                         <div class="row col-md-10">
@@ -141,7 +179,7 @@
                 </div>       
                 <div class="col-md-4">
                     <label>Presupuesto Base:</label>
-                    <input id="Presup"  type="text" class="form-control"  placeholder="" value="" disabled v-model="Presup">
+                    <input id="Presup"  type="text" class="form-control"  placeholder="" value="" :disabled="isCanceled" v-model="Presup">
                 </div> 
              </div>         
         </td>
@@ -154,7 +192,7 @@
                 <label>Datos de Georreferencia:</label>
                 <div> 
                     <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
+                        :disabled="isCanceled" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
                 </div>
             </div>
         </td>
@@ -168,7 +206,7 @@
                 <label>Características actuales del camino:</label>    
                 <div> 
                     <textarea  rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino" class="form-control" value=""   
-                        placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
+                        :disabled="isCanceled" placeholder="Ingrese las características actuales del camino"  v-model="caracteristicasCamino">
                     </textarea>
                 </div>                                
             </div>
@@ -186,7 +224,7 @@
                     <label>Beneficios del Camino:</label>
                     <div>
                         <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino" class="form-control" value=""   
-                            placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
+                            :disabled="isCanceled" placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
                         </textarea>                    
                     </div>
                 </div>
@@ -204,9 +242,9 @@
                    <div class="modal-body">
                        <p>Se guardaron correctamente los datos del camino,</p>
                        <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <div class="text-right">
+                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       </div>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -221,16 +259,19 @@
                    </div>
                    <div class="modal-body">
                        <p>Se actualizarón correctamente los datos del camino,</p>
-                   </div>
-                   <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <div class="text-right">
+                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       </div>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
        </div><!-- /.modal -->
 <div class="form-group">
-    <div class="row">
-        <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
+    <div class="row" v-if="!isCanceled">
+        <button            
+            type="button" 
+            class="btn btn-default pull-right vertical-buffer" 
+            data-toggle="modal"
             v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
             Guardar Datos
         </button>
@@ -301,6 +342,7 @@
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { DataManager } from "@syncfusion/ej2-data";
+import { Loading } from 'element-ui';
 import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
@@ -329,6 +371,10 @@ export default {
             ilocalidades_municipioo: '',
             marginacion: '',
         },
+        isCanceled:{
+            required:true,
+            default:false
+        }
     },
     data(){
         return {
@@ -349,14 +395,15 @@ export default {
             idcamino: '',
             btnSaveDisabled: false,
             Presup: '',
+            cons:"true",
             anchoCaminoFields: { text: 'name', value: 'id' },     
-            anchoCaminoData: new DataManager([
+            anchoCaminoData: [
                { id: 1, name: '4.0' },
                { id: 2, name: '4.5' },
                { id: 3, name: '5.0' },
                { id: 4, name: '5.5' },
                { id: 5, name: '6.0' },
-            ]),  
+            ],  
             editmode: false              
 
         }
@@ -393,23 +440,8 @@ export default {
 
           },
 
-          async valnum() {
-    // ...
-    console.log("valnum")
-    console.log(this.fLongitdTotalAPavimentar)
-    console.log(this.fLongitdTotal)
-
-      
-       
-    
-  },
-
           async CargaDatos(clave){
               const response = await getupdate(clave)
-              console.log('response------------__>')
-              console.log(response)
-              console.log('this.edo.localidades')
-              console.log(this.edo.localidades)
               this.ciit = response.ciit
               this.tren_maya = response.tren_maya
               this.caminosOriginales = response.caminos_originales
@@ -441,7 +473,7 @@ export default {
               if(this.ancho_camino == 2)  this.Presup = "$ 3,100,198.29"
               if(this.ancho_camino == 3)  this.Presup = "$ 3,507,565.95"
               if(this.ancho_camino == 4)  this.Presup = "$ 3,929,902.41"
-              if(this.ancho_camino == 5)  this.Presup = "$ 4,300,019.57"  
+              if(this.ancho_camino == 5)  this.Presup = "$ 4,300,019.57" 
           },
 
 
@@ -453,10 +485,6 @@ export default {
             } else {
              this.btnSaveDisabled  = true
              try{
-                 //console.log("GenerarId22")
-                 //console.log(GenerarId22)
-                 
-                 
                  const data = {
                     iso:this.edo.iso,
                     cve_agee:this.edo.cve_agee,
@@ -475,6 +503,7 @@ export default {
                     icveestados:this.edo.icveestados,
                     region:this.edo.region,
                     ubicacion:this.edo.ubicacion,
+                    ubicacion_camino:'ubicacion_camino',
                     poblacion_indigena:this.edo.poblacion_indigena,
                     totpoblacion:this.edo.totpoblacion,
                     icve_estado_inegi:Number.parseInt(this.edo.icve_estado_inegi) ,
@@ -486,42 +515,41 @@ export default {
                     estatus:"A"
 
                 }
-                 
-                 console.log("aqui-1")
-                 
-                  console.log(this.tipo_camino)
                     if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
                          $('#alertvalnum').modal('show')
                          this.btnSaveDisabled  = false
                          return
                 }
                 if(this.editmode) {
-                    console.log('data--->')
-                    console.log(data)
-                 const response1 = await CaminoPut(data, this.$route.params.obraId)
+                let loadingInstance = Loading.service({ 
+                    fullscreen: false, 
+                    lock: true,
+                 });                     
+                 const response1 = await CaminoPut(data, this.$route.params.obraId).finally(() =>{
+                     loadingInstance.close()
+                 })
                  $('#UpdateCamino').modal('show')
-                 console.log(response1)
                 }else{
-                 const response = await generarId(data)
+                let loadingInstance = Loading.service({ 
+                    fullscreen: false, 
+                    lock: true,
+                 });                    
+                 const response = await generarId(data).finally(() =>{
+                     loadingInstance.close()
+                 })
                  this.idcamino = response.clave
                  $('#addCamino').modal('show')
                  this.btnSaveDisabled  = false
                 }
                 }
-               
                 catch(err){    
                     this.btnSaveDisabled  = false  
-                     console.log("err")
-                    console.log(err)
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
                     //$('#alertModal').modal('show')
                     this.$emit("show-error",'Error al guardar camino por');                  
-                }
-             
-                
-            }
-            
+                }                
+            }   
         }
     },
     created(){
@@ -529,7 +557,11 @@ export default {
             this.editmode = true
             this.CargaDatos(this.$route.params.obraId)
         }
-    },      
+    },   
+    
+     beforeMount: function () {
+        this.cons=this.isCanceled
+  },    
 }
 </script>
 
