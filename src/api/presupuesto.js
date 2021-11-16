@@ -18,6 +18,21 @@ export function getPresupuestoBaseByAncho(id_ancho){
     })
 }
 
+export function filterPresupuestoBase(data){
+    return request ({
+        url:'/presupuesto/base/',
+        method: 'get',
+        params: data
+    })
+}
+
+export function getAnchoCamino(){
+    return request ({
+        url:'/ancho/camino',
+        method: 'get'
+    })
+}
+
 export function getPresupuestoRealByIdConvenio(id_convenio){
 
     return request ({
