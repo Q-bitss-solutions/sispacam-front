@@ -1,4 +1,5 @@
 <template>
+
 <tbody>
     <tr class="concepto">
         <!--CONCEPTOS-->
@@ -19,7 +20,7 @@
                 class="form-control cantidad-total"   
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
-                
+
                 >
             </vue-numeric>
         </td>
@@ -32,26 +33,33 @@
                 class="form-control precio-unitario" 
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-                
+
                 >
             </vue-numeric>
-        </td>  
+        </td> 
+        <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+        <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span></button></td>
 
-
-        </td>                              
     </tr>     
 </tbody>
+
+  
+
 </template>
 
 <script>
 import Vue from 'vue'
 import VueNumeric from 'vue-numeric'
 import { mapMutations } from 'vuex'
+import editExtraordinarios from '@/components/Modals/AdminPartidas'
 
 Vue.use(VueNumeric)
 
 export default {
-    name:'TablePresupuesto',
+    name:'TablePresupuestoBase',
+     components: {
+        editExtraordinarios
+    },
     props: {
         conceptos: {
             type: Object
@@ -59,30 +67,7 @@ export default {
         myIndex:{
             default:0,
             type: Number
-        },
-        childTotalPU: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        childTotalITPL: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        totalIPL: {
-            default: 0,
-            type: Number,            
-        },
-        totalPP: {
-            default: 0,
-            type: Number,            
-        },
-        subTotalIPK: {
-            default: 0,
-            type: Number,
-            required: false
-        }
+        },showAdminCatalogo:null
     },
     data () {
         return {
@@ -98,6 +83,11 @@ export default {
         }
     },
     methods:{
+       someFunction(partida) {
+           // Do your stuff
+           this.showAdminCatalogo(partida);
+       },
+        
         formatNum(num){
             return new Intl.NumberFormat().format(num);
         },

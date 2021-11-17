@@ -41,7 +41,8 @@
   </div>
 </div>
     <div class="row">
-    <div class="col-md-12 no-padding" v-if="isLoad">
+    <div class="col-md-4 no-padding" v-if="isLoad">
+    <label class="control-label">Filtrar por concepto:</label>
     <ejs-dropdownlist 
                         id="elementos"    
                         :dataSource="presupuestos"
@@ -72,26 +73,28 @@
                 v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
                  :conceptos="getPresupuestoByID(1)"
                  :key="'terra'+getPresupuestoByID(1).update"
-
+                :showAdminCatalogo="showAdminCatalogo"
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
             v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoaded"
                  :conceptos="getPresupuestoByID(2)"
                  :key="'obras'+getPresupuestoByID(2).update"
-
+                 :showAdminCatalogo="showAdminCatalogo"
                 />     
             <!-- SUPERFICIE DE RODAMIENTO --> 
             <TablePresupuesto
             v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoaded"
                  :conceptos="getPresupuestoByID(3)"
                  :key="'superficie'+getPresupuestoByID(3).update"
+                 :showAdminCatalogo="showAdminCatalogo"
                 />      
             <!-- SENALAMIENTO --> 
             <TablePresupuesto
             v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoaded"
                  :conceptos="getPresupuestoByID(4)"
                  :key="'senalamiento'+getPresupuestoByID(4).update"
+                 :showAdminCatalogo="showAdminCatalogo"
                 />
           </table>
         </div>
@@ -105,9 +108,14 @@
   </div>
 </div>
 
-
-
+        <EditPartidas
+            :catConceptos="presupuestos"
+            :fetchPresupuestoBase="fetchPresupuestoBase"
+            ref="modalAdmPartidas"
+        />
+  
 </div>
+
 </template>
 
 <script>
@@ -116,17 +124,13 @@ import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { filterPresupuestoBase, getAnchoCamino } from '@/api/presupuesto'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuestoBase';
-
-const validateEdo = (value, vm) => {
-
-  return value !== ''
-  //return vm.items.some(edo => edo.cve_agee != '');
-};
+import EditPartidas from '@/components/Modals/EditPartidas'
 
 export default {
   name: 'BusquedaCaminos',
   components: {
-        TablePresupuesto
+        TablePresupuesto,EditPartidas
+        
     },
   data () {
     return {
@@ -221,6 +225,9 @@ export default {
   },   
   methods: {
     ...mapMutations(['setBreadcrumb']),
+    showAdminCatalogo(id){
+            this.$refs.modalAdmPartidas.editar(id)
+        },
     filtrar(){
             this.datos.map( (element) => {
                 if ( element.id == this.filtroConceptos  || this.filtroConceptos ==  0) {
@@ -244,7 +251,7 @@ export default {
         if (this.$v.$invalid) {
                 console.log("error");
         } else {
-            let data={"ancho_camino":this.ancho_camino,"anio":this.anio}
+            let data={"ancho":this.ancho_camino,"anio":this.anio}
             const response = await filterPresupuestoBase(data)
             this.datos = response
             console.log(this.datos)
@@ -253,9 +260,9 @@ export default {
         },
            loadData() {
             this.datos.map( i => {
-                let unidad = unidad_medida.find( u => i.partida.id == u.id )
-                unidad = JSON.parse(JSON.stringify(unidad))
-                i.partida.unidad_medida = unidad.unidad
+               
+                i.partida.unidadmedida= i.partida.unidad_medida
+                i.partida.unidad_medida = i.partida.unidad_medida.descripcion
 
                 })
             this.presupuestos.map((_presupuesto, _index) => {     
@@ -274,7 +281,7 @@ export default {
         }, 
     async initData () {
         const d = new Date();
-        let year=d.getFullYear();
+        let year=d.getFullYear()+1;
         console.log(this.anios)
         this.anios.push({"descripcion":year, 'id':year});
         for(let i=1; i<11; i++){
