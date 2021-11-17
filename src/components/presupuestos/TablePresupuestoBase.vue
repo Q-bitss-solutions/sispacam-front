@@ -3,36 +3,34 @@
 <tbody>
     <tr class="concepto">
         <!--CONCEPTOS-->
-        <td >{{ nombreConcepto }}</td>    
+        <td >{{ nombreConcepto }}</td>
         <!-- IMPORTE POR KILOMETRO (P-BASE)-->
         <td colspan="5">
 
         </td>
     </tr>
-    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id" 
+    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id"
             :class="partida.partida.subconcepto?'subconcepto':''">
-            
-        <td>{{ partida.partida.descripcion }} </td>         
-        <td>                    
+        <td>{{ partida.partida.descripcion }} </td>
+        <td>
             <input v-show="false"  v-model="inportek">
-            <vue-numeric v-bind:precision="2" separator="," 
+            <vue-numeric v-bind:precision="2" separator=","
                 v-if="!partida.partida.subconcepto"
-                class="form-control cantidad-total"   
+                class="form-control cantidad-total"
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
-
                 >
             </vue-numeric>
         </td>
         <td>{{ partida.partida.unidad_medida }} </td>
-        
         <td>
-            <vue-numeric 
-                v-bind:precision="2"  separator="," 
+            <vue-numeric
+                v-bind:precision="2"  separator=","
                 v-if="!partida.partida.subconcepto"
-                class="form-control precio-unitario" 
+                class="form-control precio-unitario"
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
+<<<<<<< HEAD
 
                 >
             </vue-numeric>
@@ -41,6 +39,21 @@
         <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span></button></td>
 
     </tr>     
+=======
+                >
+            </vue-numeric>
+        </td>
+
+        <td>
+            hola
+        </td>
+
+        <td>
+            hola
+        </td>
+
+    </tr>
+>>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
 </tbody>
 
   
@@ -67,7 +80,34 @@ export default {
         myIndex:{
             default:0,
             type: Number
+<<<<<<< HEAD
         },showAdminCatalogo:null
+=======
+        },
+        childTotalPU: {
+            default: 0,
+            type: Number,
+            required: false
+        },
+        childTotalITPL: {
+            default: 0,
+            type: Number,
+            required: false
+        },
+        totalIPL: {
+            default: 0,
+            type: Number,
+        },
+        totalPP: {
+            default: 0,
+            type: Number,
+        },
+        subTotalIPK: {
+            default: 0,
+            type: Number,
+            required: false
+        }
+>>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
     },
     data () {
         return {

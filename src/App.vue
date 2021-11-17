@@ -9,7 +9,7 @@
           class="navbar-toggle collapsed"
           data-toggle="collapse"
           data-target="#subenlaces"
-          aria-expanded="false" 
+          aria-expanded="false"
           aria-controls="navbar">
           <span class="sr-only">Interruptor de Navegación</span>
           <span class="icon-bar"></span>
@@ -29,12 +29,12 @@
               aria-expanded="false"
               >Opciones <span class="caret"></span
             ></a>
-            <ul class="dropdown-menu" role="menu">              
+            <ul class="dropdown-menu" role="menu">
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/busqueda">Búsqueda</a></li>
-              <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>   
-           
-            </ul>    
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/presupuesto/base/kilometro">Presupuesto Base por Kilómetro</a></li>
+              <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>
+            </ul>
           </li>
           <!-- SUBMENÚ Finaciero-->
           <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
@@ -46,12 +46,12 @@
               aria-expanded="false"
               >Financiero <span class="caret"></span
             ></a>
-            <ul class="dropdown-menu" role="menu">                            
-              <li ><a href="/financiero">Consulta Presupuestal</a></li>                 
-            </ul>    
+            <ul class="dropdown-menu" role="menu">
+              <li ><a href="/financiero">Consulta Presupuestal</a></li>
+            </ul>
           </li>
         </ul>
-      </div>      
+      </div>
     </div>
   </nav>
 
@@ -101,8 +101,8 @@
 
     <!-- <button @click="saludar">send peticion</button> -->
   </div>
-</div>  
-</div>  
+</div>
+</div>
 </div>
 </template>
 <script>
@@ -124,17 +124,15 @@ export default {
             return this.data
         } ,
     getUser: function () {
-      
+
       return this.$store.getters['user/StateUser']
     },
     getRol: function () {
-      
+
       return this.$store.getters['user/StateRol']
     },
     getBreadcrumb: function () {
        return this.$store.state.breadcrumb
-       
-       
     }
   },
   methods: {
@@ -145,7 +143,7 @@ export default {
     },
     logout(){
       this.setAuthenticated(false)
-      this.$router.push('/')     
+      this.$router.push('/')
     }
   },
   created(){
