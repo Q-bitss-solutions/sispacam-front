@@ -2,44 +2,46 @@
 <tbody>
     <tr class="concepto">
         <!--CONCEPTOS-->
-        <td >{{ nombreConcepto }}</td>    
+        <td >{{ nombreConcepto }}</td>
         <!-- IMPORTE POR KILOMETRO (P-BASE)-->
         <td colspan="5">
 
         </td>
     </tr>
-    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id" 
+    <tr v-for="(partida, myIndex) in presupuesto" :key="partida.partida.id"
             :class="partida.partida.subconcepto?'subconcepto':''">
-            
-        <td>{{ partida.partida.descripcion }} </td>         
-        <td>                    
+        <td>{{ partida.partida.descripcion }} </td>
+        <td>
             <input v-show="false"  v-model="inportek">
-            <vue-numeric v-bind:precision="2" separator="," 
+            <vue-numeric v-bind:precision="2" separator=","
                 v-if="!partida.partida.subconcepto"
-                class="form-control cantidad-total"   
+                class="form-control cantidad-total"
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
-                
                 >
             </vue-numeric>
         </td>
         <td>{{ partida.partida.unidad_medida }} </td>
-        
         <td>
-            <vue-numeric 
-                v-bind:precision="2"  separator="," 
+            <vue-numeric
+                v-bind:precision="2"  separator=","
                 v-if="!partida.partida.subconcepto"
-                class="form-control precio-unitario" 
+                class="form-control precio-unitario"
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-                
                 >
             </vue-numeric>
-        </td>  
+        </td>
 
+        <td>
+            hola
+        </td>
 
-        </td>                              
-    </tr>     
+        <td>
+            hola
+        </td>
+
+    </tr>
 </tbody>
 </template>
 
@@ -72,11 +74,11 @@ export default {
         },
         totalIPL: {
             default: 0,
-            type: Number,            
+            type: Number,
         },
         totalPP: {
             default: 0,
-            type: Number,            
+            type: Number,
         },
         subTotalIPK: {
             default: 0,

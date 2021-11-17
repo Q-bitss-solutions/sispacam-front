@@ -3,47 +3,47 @@
 <div class="row">
 
   <div class="col-md-12 small-bottom-buffer">
-    <p>La búsqueda puede efectuarse ingresando datos generales o por medio de Clave única de la Obra.</p>
-     
 
       <div class="row">
-        <!--Municipio-->
+
         <div class="col-md-4 form-group">
           <label class="control-label">Año fiscal del presupuesto base:</label>
-          <ejs-dropdownlist 
-                        id="ancho_camino"    
+          <ejs-dropdownlist
+                        id="ancho_camino"
                         :dataSource="anios"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el año fiscal del presupuesto base"
                         v-model="anio"
                         ref="refAncho"
                         >
-                        </ejs-dropdownlist> 
+                        </ejs-dropdownlist>
         </div>
-        <!--Localidad-->
+
         <div class="col-md-4 form-group">
           <label class="control-label">Ancho del camino​:</label>
-          <ejs-dropdownlist 
-                        id="ancho_camino"    
+          <ejs-dropdownlist
+                        id="ancho_camino"
                         :dataSource="anchoCaminoData"
                         :fields="anchoCaminoFields"
                         placeholder="Selecciona el ancho del camino"
                         v-model="ancho_camino"
                         ref="refAncho"
-                        
                         >
-                        </ejs-dropdownlist> 
+                        </ejs-dropdownlist>
         </div>
-        <!--Tipo de Obra-->
- 
+
+        <div class="col-md-4 form-group">
+            <button class="btn btn-primary" type="button" @click="fetchPresupuestoBase">
+            <span class="icon icon-search" style="margin-right: 8px;"></span>Buscar</button>
+        </div>
 
     </div>
   </div>
 </div>
     <div class="row">
     <div class="col-md-12 no-padding" v-if="isLoad">
-    <ejs-dropdownlist 
-                        id="elementos"    
+    <ejs-dropdownlist
+                        id="elementos"
                         :dataSource="presupuestos"
                         :fields="{ text: 'name', value: 'id' }"
                         placeholder="Selecciona el concepto"
@@ -51,14 +51,14 @@
                         :change="filtrar"
                         ref="refAncho"
                         >
-                        </ejs-dropdownlist> 
+                        </ejs-dropdownlist>
     </div>
     </div>
      <div class="row">
     <div class="col-md-12 no-padding" v-if="isLoad">
         <table class="table table-responsive table-bordered data">
         <thead>
-            <tr>            
+            <tr>
             <th>CONCEPTOS Y PARTIDAS</th>
             <th>CANTIDAD POR KILOMETRO</th>
             <th>UNIDAD</th>
@@ -72,7 +72,6 @@
                 v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
                  :conceptos="getPresupuestoByID(1)"
                  :key="'terra'+getPresupuestoByID(1).update"
-
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
@@ -96,14 +95,6 @@
           </table>
         </div>
     </div>
-
-<div class="row">
-  <div class="col-md-12 text-right">
-    <hr>
-    <button class="btn btn-primary" type="button" @click="fetchPresupuestoBase">
-      <span class="icon icon-search" style="margin-right: 8px;"></span>Buscar</button>
-  </div>
-</div>
 
 
 
@@ -289,7 +280,7 @@ export default {
       this.$v.$reset()
       console.log('clear----------_>')
       this.initData()
-    }   
+    }
   },
   beforeMount: function () {
     this.setBreadcrumb(this.breadcrumb)
