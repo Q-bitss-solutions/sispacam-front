@@ -34,11 +34,21 @@
         </td>
 
         <td>
-            hola
+            <button v-if="isEdit(partida.anio)" type="button" class="btn btn-primary btn-sm" v-on:click="openModal('edit',prep)">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+            <button v-else type="button" disabled class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
         </td>
 
         <td>
-            hola
+            <button v-if="isEdit(partida.anio)" type="button" class="btn btn-primary btn-sm" v-on:click="openModal('delete',prep)">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+            <button v-else type="button" disabled class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
         </td>
 
     </tr>
@@ -114,6 +124,12 @@ export default {
         aConceptos2.map(a => {
             console.table(a)
         })        
+        },
+        isEdit(year){
+            let today = new Date();
+            if ((year == today.getFullYear()) || year == (today.getFullYear()+1) )
+                return true
+            return false
         }
     },
     computed:{
