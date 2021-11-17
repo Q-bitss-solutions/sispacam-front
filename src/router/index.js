@@ -9,6 +9,7 @@ import financieros from '../components/AltaDeCaminos/DatosFinancieros.vue'
 import Login from '../views/Login.vue'
 import store from "../store/index";
 import GridResultObra from "../views/GridResultBusqueda.vue"
+import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
 Vue.use(VueRouter)
 
@@ -66,7 +67,13 @@ const routes = [
     name: 'Presupuesto',
     component: Presupuestos,
     meta: { requiresAuth: false }
-  },  
+  },
+  {
+    path: '/presupuesto/base/kilometro',
+    name: 'PresupuestoBaseKilometro',
+    component: PresupuestoBaseKilometro,
+    //meta: { requiresAuth: true }
+  },
 ]
 
 const router = new VueRouter({

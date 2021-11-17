@@ -15,6 +15,12 @@ export function getUnidadMedida(){
     })
 }
 
+export function getConceptos(){
+    return request({
+        url:'/conceptos',
+        method: 'GET',        
+    })
+}
 //edit
 export function editPartida(partida){
     return request({
