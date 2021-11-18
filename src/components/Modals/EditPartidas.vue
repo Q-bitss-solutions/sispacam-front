@@ -8,7 +8,7 @@
         >
             <form>
                 <div class="form-group">
-                    <label for="unidad">Partida:</label>
+                    <label for="unidad">Concepto:</label>
                     <select 
                         id="unidad" 
                         class="form-control" 
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="concepto">Concepto:</label>
+                    <label for="concepto">Partida:</label>
                     <textarea 
                         id="concepto" 
                         rows="6" 

@@ -83,6 +83,8 @@
                     :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE1'"
+                    :agregaprecio="agregaprecio"
+                    :agregaCantidad="agrega"
                     />
                 <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
                 <TablePresupuesto
@@ -92,6 +94,8 @@
                     :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE2'"
+                    :agregaprecio="agregaprecio"
+                    :agregaCantidad="agrega"
                     />     
                 <!-- SUPERFICIE DE RODAMIENTO --> 
                 <TablePresupuesto
@@ -101,6 +105,8 @@
                     :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE3'"
+                    :agregaprecio="agregaprecio"
+                    :agregaCantidad="agrega"
                     />      
                 <!-- SENALAMIENTO --> 
                 <TablePresupuesto
@@ -110,6 +116,8 @@
                     :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE4'"
+                    :agregaprecio="agregaprecio"
+                    :agregaCantidad="agrega"
                     />
             </table>
 
@@ -117,7 +125,7 @@
                 <div class="col-lg-12 text-right">
                     <br>
                     <a href="/presupuesto/base/kilometro" class="btn btn-default">Cancelar</a>
-                    <button class="btn btn-primary">Guardar</button>
+                    <button class="btn btn-primary" v-on:click=enviarPresupuestoBase()>Guardar</button>
                 </div>
             </div>
 
@@ -140,10 +148,11 @@
 // @ is an alias to /src
 import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
-import { filterPresupuestoBase, getAnchoCamino } from '@/api/presupuesto'
+import { filterPresupuestoBase, getAnchoCamino, ModificarmPresupuestoBase } from '@/api/presupuesto'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuestoBase';
 import EditPartidas from '@/components/Modals/EditPartidas'
 import { getUnidadMedida}  from '@/api/catalogo_pe'
+import { Loading } from 'element-ui';
 
 const validateEdo = (value, vm) => {
 
@@ -161,7 +170,7 @@ export default {
     return {
       breadcrumb: ['Presupuesto Base por Kilómetro'],
       anios: [],filtroConceptos:0,
-      unidad_medida_catalogo:null,
+      unidad_medida_catalogo:null,datos_modificados:[],
       anchos: null,anio:null,ancho_camino:null,datos:[],presupuestoBase:[],isLoad:false, presupuestos: [
                 {                    
                     id:1,
@@ -251,6 +260,45 @@ export default {
   },   
   methods: {
     ...mapMutations(['setBreadcrumb']),
+   async enviarPresupuestoBase(){
+        let loadingInstance = Loading.service({ fullscreen: true, lock: true });
+        await ModificarmPresupuestoBase(this.datos_modificados).finally(_ => {
+                            loadingInstance.close();
+                        })                        
+    },
+     agrega(value){
+           let elm =false
+           this.datos_modificados.map( (element) => {
+                if ( element.id == value.id) {
+                    element.cantidad = value.cantidad
+                    elm=true
+                    return true
+                } 
+                return false
+            })
+           
+            if(!elm){
+                this.datos_modificados.push({"id":value.id,"cantidad":value.cantidad})
+            }
+           console.log(this.datos_modificados)
+        },
+        agregaprecio(value){
+           let elm =false
+           console.log(value)
+           this.datos_modificados.map( (element) => {
+                if ( element.id == value.id) {
+                    element.precio_unitario = value.importe
+                    elm=true
+                    return true
+                } 
+                return false
+            })
+            
+            if(!elm){
+                this.datos_modificados.push({"id":value.id,"precio_unitario":value.importe})
+            }
+           
+        },
     showAdminCatalogo(id){
             this.$refs.modalAdmPartidas.editar(id)
         },
@@ -275,9 +323,12 @@ export default {
         if (this.$v.$invalid) {
                 console.log("error");
         } else {
+            let loadingInstance = Loading.service({ fullscreen: true, lock: true });
             this.isLoad = false
             let data={"ancho":this.ancho_camino,"anio":this.anio}
-            const response = await filterPresupuestoBase(data)
+            const response = await filterPresupuestoBase(data).finally(_ => {
+                            loadingInstance.close();
+                        })                        
             this.datos = response
             this.loadData()
         }
@@ -333,7 +384,9 @@ export default {
   },
   created() {
       this.initData()
+      this.datos_modificados=[]
   },
+
   computed: {
     isVisible(){
             this.datos.map( (element) => {
