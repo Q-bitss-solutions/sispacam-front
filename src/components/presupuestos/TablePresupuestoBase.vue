@@ -30,7 +30,6 @@
                 class="form-control precio-unitario"
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-<<<<<<< HEAD
 
                 >
             </vue-numeric>
@@ -39,21 +38,6 @@
         <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span></button></td>
 
     </tr>     
-=======
-                >
-            </vue-numeric>
-        </td>
-
-        <td>
-            hola
-        </td>
-
-        <td>
-            hola
-        </td>
-
-    </tr>
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
 </tbody>
 
   
@@ -80,34 +64,7 @@ export default {
         myIndex:{
             default:0,
             type: Number
-<<<<<<< HEAD
         },showAdminCatalogo:null
-=======
-        },
-        childTotalPU: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        childTotalITPL: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        totalIPL: {
-            default: 0,
-            type: Number,
-        },
-        totalPP: {
-            default: 0,
-            type: Number,
-        },
-        subTotalIPK: {
-            default: 0,
-            type: Number,
-            required: false
-        }
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
     },
     data () {
         return {

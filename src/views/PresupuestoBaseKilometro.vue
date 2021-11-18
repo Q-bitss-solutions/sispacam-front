@@ -17,6 +17,9 @@
                         ref="refAncho"
                         >
                         </ejs-dropdownlist>
+                <small v-if="!$v.anio.required" class="form-text form-text-error">
+                             Este campo es obligatorio
+                        </small>
         </div>
 
         <div class="col-md-4 form-group">
@@ -30,6 +33,9 @@
                         ref="refAncho"
                         >
                         </ejs-dropdownlist>
+            <small v-if="!$v.ancho_camino.required" class="form-text form-text-error">
+                             Este campo es obligatorio
+                        </small>
         </div>
 
         <div class="col-md-4 form-group">
@@ -70,31 +76,28 @@
         </thead>
             <!-- TERRACERIAS-->
             <TablePresupuesto
-                v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
-                 :conceptos="getPresupuestoByID(1)"
+                v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoad"
+                 :conceptos="terracerias"
                  :key="'terra'+getPresupuestoByID(1).update"
-<<<<<<< HEAD
                 :showAdminCatalogo="showAdminCatalogo"
-=======
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
                 />
             <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
             <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoaded"
+            v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoad"
                  :conceptos="getPresupuestoByID(2)"
                  :key="'obras'+getPresupuestoByID(2).update"
                  :showAdminCatalogo="showAdminCatalogo"
                 />     
             <!-- SUPERFICIE DE RODAMIENTO --> 
             <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoaded"
+            v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoad"
                  :conceptos="getPresupuestoByID(3)"
                  :key="'superficie'+getPresupuestoByID(3).update"
                  :showAdminCatalogo="showAdminCatalogo"
                 />      
             <!-- SENALAMIENTO --> 
             <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoaded"
+            v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoad"
                  :conceptos="getPresupuestoByID(4)"
                  :key="'senalamiento'+getPresupuestoByID(4).update"
                  :showAdminCatalogo="showAdminCatalogo"
@@ -103,14 +106,7 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-<div class="row">
-  <div class="col-md-12 text-right">
-    <hr>
-    <button class="btn btn-primary" type="button" @click="fetchPresupuestoBase">
-      <span class="icon icon-search" style="margin-right: 8px;"></span>Buscar</button>
-  </div>
-</div>
+
 
         <EditPartidas
             :catConceptos="presupuestos"
@@ -118,10 +114,6 @@
             ref="modalAdmPartidas"
         />
   
-=======
-
-
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
 </div>
 
 </template>
@@ -142,7 +134,7 @@ export default {
     },
   data () {
     return {
-      breadcrumb: ['Búsqueda de Obras'],
+      breadcrumb: ['Búsqueda de Obras'],terracerias:[],
       anios: [],filtroConceptos:0,
       anchos: null,anio:null,ancho_camino:null,datos:[],presupuestoBase:[],isLoad:false, presupuestos: [
                 {                    
@@ -248,9 +240,7 @@ export default {
             })
             return this.presupuestos   
         },
-    isLoaded() {
-           return this.isLoad
-        },
+  
     getPresupuestoByID(id) {
            return this.presupuestoBase.find( i => i.id === id)
         },
@@ -259,16 +249,15 @@ export default {
         if (this.$v.$invalid) {
                 console.log("error");
         } else {
+            this.isLoad = false
             let data={"ancho":this.ancho_camino,"anio":this.anio}
             const response = await filterPresupuestoBase(data)
             this.datos = response
-            console.log(this.datos)
             this.loadData()
         }
         },
            loadData() {
             this.datos.map( i => {
-               
                 i.partida.unidadmedida= i.partida.unidad_medida
                 i.partida.unidad_medida = i.partida.unidad_medida.descripcion
 
@@ -280,11 +269,14 @@ export default {
                         precio_unitario: (terra.importe || 0) / (terra.cantidad || 1),
                         importe_total: ( (terra.importe || 0) / (terra.cantidad || 1)) * ( terra.cantidad || 1 )
                     }))            
-                console.log(data)
+                
                 _presupuesto.presupuestoBack = data
                 _presupuesto.presupuestoStart = data
             })
             this.presupuestoBase =  JSON.parse(JSON.stringify(this.presupuestos))
+            
+            this.terracerias=this.getPresupuestoByID(1)
+            console.log(this.terracerias)
             this.isLoad = true
         }, 
     async initData () {
@@ -302,7 +294,6 @@ export default {
     },
     clearData () {
       this.$v.$reset()
-      console.log('clear----------_>')
       this.initData()
     }
   },
@@ -327,79 +318,5 @@ export default {
         },
   }  
 }
-const unidad_medida = [
-{
-    id:1,
-    unidad:'HA'
-},
-{
-    id:2,
-    unidad:'M3'
-},
-{
-    id:3,
-    unidad:'M3'
-},
-{
-    id:4,
-    unidad:'M3'
-},
-{
-    id:6,
-    unidad:'M3'
-},
-{
-    id:8,
-    unidad:'M3'
-},
-{
-    id:9,
-    unidad:'M3'
-},
-{
-    id:10,
-    unidad:'M3'
-},
-{
-    id:11,
-    unidad:'ML'
-},
-{
-    id:13,
-    unidad:'ML'
-},
-{
-    id:14,
-    unidad:'M3'
-},
-{
-    id:15,
-    unidad:'M3'
-},
-{
-    id:16,
-    unidad:'M3'
-},
-{
-    id:17,
-    unidad:'M3'
-},
-{
-    id:18,
-    unidad:'M3'
-},
-{
-    id:19,
-    unidad:'PZA'
-},
-{
-    id:20,
-    unidad:'PZA'
-},
-{
-    id:21,
-    unidad:'ML'
-}
 
-]
 </script>
