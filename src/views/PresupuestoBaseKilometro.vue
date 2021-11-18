@@ -61,48 +61,62 @@
                         </ejs-dropdownlist>
     </div>
     </div>
-     <div class="row">
-    <div class="col-md-12 no-padding" v-if="isLoad">
-        <table class="table table-responsive table-bordered data">
-        <thead>
-            <tr>
-            <th>CONCEPTOS Y PARTIDAS</th>
-            <th>CANTIDAD POR KILOMETRO</th>
-            <th>UNIDAD</th>
-            <th>PRECIO UNITARIO</th>
-            <th>EDITAR</th>
-            <th>ELIMINAR</th>
-            </tr>
-        </thead>
-            <!-- TERRACERIAS-->
-            <TablePresupuesto
+    
+    <div class="row">
+        <div class="col-md-12 no-padding" v-if="isLoad">
+            <table class="table table-responsive table-bordered data">
+                <thead>
+                    <tr>
+                    <th>CONCEPTOS Y PARTIDAS</th>
+                    <th>CANTIDAD POR KILOMETRO</th>
+                    <th>UNIDAD</th>
+                    <th>PRECIO UNITARIO</th>
+                    <th>EDITAR</th>
+                    <th>ELIMINAR</th>
+                    </tr>
+                </thead>
+                <!-- TERRACERIAS-->
+                 <TablePresupuesto
                 v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoad"
                  :conceptos="terracerias"
-                 :key="'terra'+getPresupuestoByID(1).update"
-                :showAdminCatalogo="showAdminCatalogo"
-                />
-            <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoad"
-                 :conceptos="getPresupuestoByID(2)"
-                 :key="'obras'+getPresupuestoByID(2).update"
-                 :showAdminCatalogo="showAdminCatalogo"
-                />     
-            <!-- SUPERFICIE DE RODAMIENTO --> 
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoad"
-                 :conceptos="getPresupuestoByID(3)"
-                 :key="'superficie'+getPresupuestoByID(3).update"
-                 :showAdminCatalogo="showAdminCatalogo"
-                />      
-            <!-- SENALAMIENTO --> 
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoad"
-                 :conceptos="getPresupuestoByID(4)"
-                 :key="'senalamiento'+getPresupuestoByID(4).update"
-                 :showAdminCatalogo="showAdminCatalogo"
-                />
-          </table>
+                    :key="'terra'+getPresupuestoByID(1).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'ModalPRE1'"
+                    />
+                <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoad"
+                    :conceptos="getPresupuestoByID(2)"
+                    :key="'obras'+getPresupuestoByID(2).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'ModalPRE2'"
+                    />     
+                <!-- SUPERFICIE DE RODAMIENTO --> 
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoad"
+                    :conceptos="getPresupuestoByID(3)"
+                    :key="'superficie'+getPresupuestoByID(3).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'ModalPRE3'"
+                    />      
+                <!-- SENALAMIENTO --> 
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoad"
+                    :conceptos="getPresupuestoByID(4)"
+                    :key="'senalamiento'+getPresupuestoByID(4).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'ModalPRE4'"
+                    />
+            </table>
+
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <br>
+                    <a href="/presupuesto/base/kilometro" class="btn btn-default">Cancelar</a>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -125,17 +139,25 @@ import { required } from 'vuelidate/lib/validators'
 import { filterPresupuestoBase, getAnchoCamino } from '@/api/presupuesto'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuestoBase';
 import EditPartidas from '@/components/Modals/EditPartidas'
+import { getUnidadMedida}  from '@/api/catalogo_pe'
+
+const validateEdo = (value, vm) => {
+
+  return value !== ''
+  //return vm.items.some(edo => edo.cve_agee != '');
+};
 
 export default {
-  name: 'BusquedaCaminos',
+  name: 'TablePresupuestoBase',
   components: {
         TablePresupuesto,EditPartidas
         
     },
   data () {
     return {
-      breadcrumb: ['Búsqueda de Obras'],terracerias:[],
+      breadcrumb: ['Presupuesto Base por Kilómetro'],
       anios: [],filtroConceptos:0,
+      unidad_medida_catalogo:null,
       anchos: null,anio:null,ancho_camino:null,datos:[],presupuestoBase:[],isLoad:false, presupuestos: [
                 {                    
                     id:1,
@@ -290,11 +312,16 @@ export default {
 
         this.anchoCaminoData=await getAnchoCamino();
         console.log(this.anchoCaminoData)
-
+        this.loadUM()
     },
     clearData () {
       this.$v.$reset()
       this.initData()
+    },
+    async loadUM() {
+        this.unidad_medida_catalogo = await getUnidadMedida()
+        console.log("Unidad Medida");
+        console.log(this.unidad_medida_catalogo);
     }
   },
   beforeMount: function () {
