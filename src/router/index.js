@@ -3,9 +3,11 @@ import VueRouter from 'vue-router'
 import BusquedaCaminos from '../views/BusquedaCaminos.vue'
 import Presupuestos from '../views/Presupuestos.vue'
 import AltaCamino from '../views/AltaCaminosWork.vue'
+import AltaAF from '../views/AltaAFWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
 import convenio from '../components/convenio.vue'
 import financieros from '../components/AltaDeCaminos/DatosFinancieros.vue'
+import avancefinancieros from '../components/AltaDeCaminos/DatosAvanceFinancieros.vue'
 import Login from '../views/Login.vue'
 import store from "../store/index";
 import GridResultObra from "../views/GridResultBusqueda.vue"
@@ -32,6 +34,12 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
+    path: '/avancefinanciero',
+    name: 'DatosAvanceFinancieros',
+    component: avancefinancieros,
+    meta: { requiresAuth: true }
+  },
+  {
     path: '/altacamino',
     name: 'AltaCamino',
     component: AltaCamino,
@@ -43,6 +51,12 @@ const routes = [
     component: AltaCamino,
     meta: { requiresAuth: true }
   },  
+  {
+    path: '/editAF/:obraId',
+    name: 'AltaAF',
+    component: AltaAF,
+    meta: { requiresAuth: true }
+  },
   {
     path: '/analisis-de-obra',
     name: 'analisisdeobra',

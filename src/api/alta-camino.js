@@ -4,7 +4,14 @@ import request from '@/utils/request'
 
 const querystring = require('querystring');
 
-
+export function guardaRodamiento(data){
+    //alert(JSON.stringify(data))
+    return request({
+        url: '/rodamientos/',
+        method: 'post',
+        data: data
+    })
+}
 export function getEdos() {
     return request({
       url: '/estado/',

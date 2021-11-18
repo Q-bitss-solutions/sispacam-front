@@ -50,6 +50,19 @@
               <li ><a href="/financiero">Consulta Presupuestal</a></li>                 
             </ul>    
           </li>
+          <li class="dropdown"  v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
+            <a
+              href="#"
+              class="dropdown-toggle"
+              data-toggle="dropdown"
+              role="button"
+              aria-expanded="false"
+              >Avances Físico <span class="caret"></span
+            ></a>
+            <ul class="dropdown-menu" role="menu">                            
+              <li ><a href="/avancefinanciero">Avances Físicos de La Obra</a></li>                 
+            </ul>    
+          </li>
         </ul>
       </div>      
     </div>
@@ -71,7 +84,7 @@
   </div>
   <div class="row">
     <div class="col-md-7" id="logotipo">
-      <img src="./assets/img/logo.jpg" alt="Secretaría de Comunicaciones y Transportes" class="img-responsive" />
+      <img src="@/assets/img/logo.jpg" alt="Secretaría de Comunicaciones y Transportes" class="img-responsive" />
     </div>
     <div class="col-md-5">
       <div v-if="isAuthenticated" class="usuario">
