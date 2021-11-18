@@ -76,6 +76,7 @@
                 class="form-control cantidad-total"
                 v-model="partida.cantidad"
                 v-on:keypress.native="checa(myIndex)"
+                v-on:change.native="agregaCantidadH(partida)"
                 >
             </vue-numeric>
         </td>
@@ -85,9 +86,9 @@
                 v-bind:precision="2"  separator=","
                 v-if="!partida.partida.subconcepto"
                 class="form-control precio-unitario"
-                v-model="partida.precio_unitario"
+                v-model="partida.importe"
                 v-on:keypress.native="checa(myIndex)"
-
+                v-on:change.native="agregaprecioH(partida)"
                 >
             </vue-numeric>
         </td> 
@@ -138,7 +139,7 @@ export default {
         myIndex:{
             default:0,
             type: Number
-        },showAdminCatalogo:null,unidad_medida_catalogo:[]
+        },showAdminCatalogo:null,unidad_medida_catalogo:[],agregaprecio:null,agregaCantidad:null
     },
     data () {
         return {
@@ -159,7 +160,8 @@ export default {
             partida_unidad_medida_id: null,
             unidad_medida_seleccionada:null,
             concepto_codigo:null,
-            concepto_descripcion:null
+            concepto_descripcion:null,
+            datos_modificados:[]
         }
     },
     methods:{
@@ -167,7 +169,13 @@ export default {
            // Do your stuff
            this.showAdminCatalogo(partida);
        },
-        
+        agregaCantidadH(value){
+           this.agregaCantidad(value)
+        },
+        agregaprecioH(value){
+           this.agregaprecio(value)
+           
+        },
         formatNum(num){
             return new Intl.NumberFormat().format(num);
         },
@@ -180,7 +188,7 @@ export default {
             })            
         const aConceptos2 = JSON.parse(JSON.stringify(this.$store.state.presupuesto.conceptos))
         aConceptos2.map(a => {
-            console.table(a)
+           
         })        
         },
         openModal(action,partida=null, concepto_codigo=null,concepto_descripcion=null){

@@ -26,6 +26,14 @@ export function filterPresupuestoBase(data){
     })
 }
 
+export function ModificarmPresupuestoBase(data){
+    return request ({
+        url:'/presupuesto/multiple/',
+        method: 'post',
+        data: {"presupuestos":[data]}
+    })
+}
+
 export function getAnchoCamino(){
     return request ({
         url:'/ancho/camino',
