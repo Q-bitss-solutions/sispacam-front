@@ -73,25 +73,32 @@
                     v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
                     :conceptos="getPresupuestoByID(1)"
                     :key="'terra'+getPresupuestoByID(1).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'1'"
                     />
                 <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
                 <TablePresupuesto
                 v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoaded"
                     :conceptos="getPresupuestoByID(2)"
                     :key="'obras'+getPresupuestoByID(2).update"
-
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'2'"
                     />     
                 <!-- SUPERFICIE DE RODAMIENTO --> 
                 <TablePresupuesto
                 v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoaded"
                     :conceptos="getPresupuestoByID(3)"
                     :key="'superficie'+getPresupuestoByID(3).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'3'"
                     />      
                 <!-- SENALAMIENTO --> 
                 <TablePresupuesto
                 v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoaded"
                     :conceptos="getPresupuestoByID(4)"
                     :key="'senalamiento'+getPresupuestoByID(4).update"
+                    :unidad_medida_catalogo="unidad_medida_catalogo"
+                    :nameModal="'4'"
                     />
             </table>
 
@@ -117,6 +124,7 @@ import { mapMutations } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { filterPresupuestoBase, getAnchoCamino } from '@/api/presupuesto'
 import TablePresupuesto from '@/components/presupuestos/TablePresupuestoBase';
+import { getUnidadMedida}  from '@/api/catalogo_pe'
 
 const validateEdo = (value, vm) => {
 
@@ -133,6 +141,7 @@ export default {
     return {
       breadcrumb: ['Presupuesto Base por Kilómetro'],
       anios: [],filtroConceptos:0,
+      unidad_medida_catalogo:null,
       anchos: null,anio:null,ancho_camino:null,datos:[],presupuestoBase:[],isLoad:false, presupuestos: [
                 {                    
                     id:1,
@@ -284,12 +293,17 @@ export default {
 
         this.anchoCaminoData=await getAnchoCamino();
         console.log(this.anchoCaminoData)
-
+        this.loadUM()
     },
     clearData () {
       this.$v.$reset()
       console.log('clear----------_>')
       this.initData()
+    },
+    async loadUM() {
+        this.unidad_medida_catalogo = await getUnidadMedida()
+        console.log("Unidad Medida");
+        console.log(this.unidad_medida_catalogo);
     }
   },
   beforeMount: function () {
