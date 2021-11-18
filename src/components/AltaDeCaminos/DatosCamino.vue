@@ -142,7 +142,7 @@
                     <div>
                         <ejs-numerictextbox  :class="{'form-control-error': $v.fLongitdTotalAPavimentar.$error}" 
                             id="longitud_pavimentar"
-                            placeholder="Longitud a pavimentar 2019-2014(km)"
+                            placeholder="Longitud a pavimentar 2019-2024(km)"
                             v-model="fLongitdTotalAPavimentar" 
                             :min="min"                             
                             :max="max"
@@ -178,8 +178,19 @@
                         </div>
                 </div>       
                 <div class="col-md-4">
-                    <label>Presupuesto Base:</label>
+                    <label>Presupuesto Base por Kilometro:</label>
                     <input id="Presup"  type="text" class="form-control"  placeholder="" value="" :disabled="isCanceled" v-model="Presup">
+                </div> 
+                <div class="col-md-4">
+                    <label>Presupuesto Base de obra total:</label>
+                    <td> 
+                    <vue-numeric
+                    v-bind:precision="2" currency="$" separator="," 
+                    class="form-control" 
+                     v-model="resul"
+                    :read-only="resul"  >
+                    </vue-numeric>
+                    </td>
                 </div> 
              </div>         
         </td>
@@ -190,11 +201,96 @@
         <td>
         <div class="form-group col-md-12">
                 <label>Datos de Georreferencia:</label>
-                <div> 
-                    <textarea maxlength="350" id="ubicacionCamino" name="ubicacionCamino" class="form-control" value=""   
-                        :disabled="isCanceled" placeholder="Ingrese los Datos de Georreferencia" rows="3"  v-model="ubicacionCamino"></textarea>
-                </div>
-            </div>
+              
+        </div>
+        <div class="form-group col-md-6"  >
+            <h6>Punto Inicial</h6>
+        </div> 
+        <div class="form-group col-md-6">
+            <h6>Punto Final</h6>
+        </div>   
+        <div class="form-group col-md-3">
+            <label>Lat:</label>
+            
+            <div> 
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.latitud.$error}"
+                            id="latitud"
+                            placeholder="Lat"
+                            v-model="latitud"
+                            format='n5'
+                            :min="min"
+                            :max="max"
+                            :disabled="isCanceled"
+                            :showSpinButton='false'>
+                        </ejs-numerictextbox>                        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.latitud.required && $v.latitud.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                      
+                    </div>      
+        </div>
+        <div class="form-group col-md-3">
+            <label>Long:</label>
+            <div> 
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.longituddg.$error}"
+                            placeholder="Long"
+                            format='n5'
+                            v-model="longituddg"
+                            :min="min"
+                            :max="max"
+                            :disabled="isCanceled"
+                            :showSpinButton='false'>
+                        </ejs-numerictextbox>                        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.longituddg.required && $v.longituddg.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                      
+                    </div>
+                    
+        </div>
+                <div class="form-group col-md-3">
+            <label>Lat:</label>
+                    <div> 
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.punto_inicial.$error}"
+                            id="punto_inicial"
+                            format='n5'
+                            placeholder="Lat"
+                            v-model="punto_inicial"
+                            :min="min"
+                            :max="max"
+                            :disabled="isCanceled"
+                            :showSpinButton='false'>
+                        </ejs-numerictextbox>                        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.punto_inicial.required && $v.punto_inicial.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                      
+                    </div>
+        </div>
+                        <div class="form-group col-md-3">
+            <label>Long:</label>
+                    <div> 
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.punto_final.$error}"
+                            id="punto_final"
+                            placeholder="Long"
+                            v-model="punto_final"
+                            format='n5'
+                            :min="min"
+                            :max="max"
+                            :disabled="isCanceled"
+                            :showSpinButton='false'>
+                        </ejs-numerictextbox>                        
+                        <div class="row col-md-10">
+                            <small v-if="!$v.punto_final.required && $v.punto_final.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                            </small>
+                        </div>                      
+                    </div>
+        </div>
+
         </td>
     </tr> 
 </table>    
@@ -242,9 +338,9 @@
                    <div class="modal-body">
                        <p>Se guardaron correctamente los datos del camino,</p>
                        <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
-                       <div class="text-right">
-                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
-                       </div>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -259,9 +355,9 @@
                    </div>
                    <div class="modal-body">
                        <p>Se actualizarón correctamente los datos del camino,</p>
-                       <div class="text-right">
-                           <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
-                       </div>
+                   </div>
+                   <div class="modal-footer">
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -346,14 +442,24 @@ import { Loading } from 'element-ui';
 import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
+import VueCurrencyFilter from 'vue-currency-filter'
 
 
 
 Vue.use(DropDownListPlugin);
 Vue.use(NumericTextBoxPlugin);
-
+Vue.use(VueCurrencyFilter, {
+  symbol: '$', // El símbolo, por ejemplo €
+  thousandsSeparator: ',', // Separador de miles
+  fractionCount: 4, // ¿Cuántos decimales mostrar?
+  fractionSeparator: '.', // Separador de decimales
+  symbolPosition: 'front', // Posición del símbolo. Puede ser al inicio ('front') o al final ('') es decir, si queremos que sea al final, en lugar de front ponemos una cadena vacía ''
+  symbolSpacing: true // Indica si debe poner un espacio entre el símbolo y la cantidad
+})
 export default {
     name: 'DatosCamino',
+    decimals: 5,
+    value: 10,
     props: {
         edo:{
             abreviaturaEdo:'',
@@ -370,6 +476,10 @@ export default {
             ipoblacion_municipio: '',
             ilocalidades_municipioo: '',
             marginacion: '',
+            resul:'',
+            latitud:'',
+            punto_inicial:'',
+            punto_final:'',
         },
         isCanceled:{
             required:true,
@@ -388,11 +498,16 @@ export default {
             caracteristicasCamino:'',
             beneficiosCamino:'',
             fLongitdTotal: '',
+            latitud:'',
+            punto_inicial:'',
+            longituddg:'',
+            punto_final:'',
             ancho_camino:'',
             fLongitdTotalAPavimentar: '',
             min: 0,
             max: 999999,   
             idcamino: '',
+            resul:'',
             btnSaveDisabled: false,
             Presup: '',
             cons:"true",
@@ -423,7 +538,18 @@ export default {
         fLongitdTotal: {
             required,
         },
-        
+         latitud: {
+            required,
+        },
+         punto_inicial: {
+            required,
+        },
+         longituddg: {
+            required,
+        },
+         punto_final: {
+            required,
+        },
     },
     methods:{ 
          async obteneranchocamino(){ 
@@ -437,7 +563,8 @@ export default {
               this.Presup = "$ 3,929,902.41"
            if(this.ancho_camino == 5)  
               this.Presup = "$ 4,300,019.57"
-
+        const  resultado =  (this.Presup.replaceAll('$','').replaceAll(',',''))   
+        this.resul = resultado * (this.fLongitdTotalAPavimentar)   
           },
 
           async CargaDatos(clave){
@@ -455,7 +582,10 @@ export default {
               this.ubicacionCamino   = response.ubicacion
               this.caracteristicasCamino = response.caracteristicas
               this.beneficiosCamino = response.beneficios 
-
+              this.latitud = response.datos_geograficos.latitud
+              this.punto_inicial = response.datos_geograficos.punto_inicial
+              this.longituddg = response.datos_geograficos.longitud
+              this.punto_final = response.datos_geograficos.punto_final
 
               this.ancho_camino = response.ancho_camino.id
 
@@ -495,6 +625,10 @@ export default {
                     tipo_camino:this.tipo_camino,
                     nombre_camino:this.nombre_camino,                                
                     longitud:this.fLongitdTotal,
+                    latitud:this.latitud,
+                    punto_inicial:this.punto_inicial,
+                    longitud:this.longitud,
+                    punto_final:this.punto_final,
                     longitud_pavimentar:this.fLongitdTotalAPavimentar,
                     ancho_camino:this.ancho_camino,
                     caracteristicas:this.caracteristicasCamino,
@@ -515,6 +649,8 @@ export default {
                     estatus:"A"
 
                 }
+                console.log(this.fLongitdTotalAPavimentar)
+                console.log(this.fLongitdTotal)
                     if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
                          $('#alertvalnum').modal('show')
                          this.btnSaveDisabled  = false
