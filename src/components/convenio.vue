@@ -30,7 +30,7 @@
     <ejs-treegrid 
       :dataSource="convenios" 
       childMapping="modificatorio" 
-      :treeColumnIndex="1"
+      :treeColumnIndex="1" 
       ref="gridConvenios"
       :allowResizing='true'
       :allowTextWrap='true'
