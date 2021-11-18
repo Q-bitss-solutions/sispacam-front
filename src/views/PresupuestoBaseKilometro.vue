@@ -76,10 +76,11 @@
                     </tr>
                 </thead>
                 <!-- TERRACERIAS-->
-                 <TablePresupuesto
+                <TablePresupuesto
                 v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoad"
-                 :conceptos="terracerias"
+                    :conceptos="terracerias"
                     :key="'terra'+getPresupuestoByID(1).update"
+                    :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE1'"
                     />
@@ -88,6 +89,7 @@
                 v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoad"
                     :conceptos="getPresupuestoByID(2)"
                     :key="'obras'+getPresupuestoByID(2).update"
+                    :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE2'"
                     />     
@@ -96,6 +98,7 @@
                 v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoad"
                     :conceptos="getPresupuestoByID(3)"
                     :key="'superficie'+getPresupuestoByID(3).update"
+                    :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE3'"
                     />      
@@ -104,6 +107,7 @@
                 v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoad"
                     :conceptos="getPresupuestoByID(4)"
                     :key="'senalamiento'+getPresupuestoByID(4).update"
+                    :showAdminCatalogo="showAdminCatalogo"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
                     :nameModal="'ModalPRE4'"
                     />

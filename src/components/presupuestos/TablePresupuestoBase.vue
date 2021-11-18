@@ -91,12 +91,11 @@
                 >
             </vue-numeric>
         </td> 
-        <td> <button v-if="isEdit(partida.anio)" type="button" @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+        <td> <button v-if="isEdit(partida.anio)" type="button" @click="someFunction(partida)" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
             <button v-else type="button" disabled class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
         </td>
-        <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span></button></td>
         <td>
             <button v-if="isEdit(partida.anio)" type="button" class="btn btn-primary btn-sm" v-on:click="openModal('delete', partida.partida)">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -105,7 +104,7 @@
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
         </td>
-    </tr>     
+    </tr>
 </tbody>
 
   
@@ -139,7 +138,7 @@ export default {
         myIndex:{
             default:0,
             type: Number
-        },showAdminCatalogo:null
+        },showAdminCatalogo:null,unidad_medida_catalogo:[]
     },
     data () {
         return {
