@@ -54,45 +54,55 @@
                         </ejs-dropdownlist>
     </div>
     </div>
-     <div class="row">
-    <div class="col-md-12 no-padding" v-if="isLoad">
-        <table class="table table-responsive table-bordered data">
-        <thead>
-            <tr>
-            <th>CONCEPTOS Y PARTIDAS</th>
-            <th>CANTIDAD POR KILOMETRO</th>
-            <th>UNIDAD</th>
-            <th>PRECIO UNITARIO</th>
-            <th>EDITAR</th>
-            <th>ELIMINAR</th>
-            </tr>
-        </thead>
-            <!-- TERRACERIAS-->
-            <TablePresupuesto
-                v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
-                 :conceptos="getPresupuestoByID(1)"
-                 :key="'terra'+getPresupuestoByID(1).update"
-                />
-            <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoaded"
-                 :conceptos="getPresupuestoByID(2)"
-                 :key="'obras'+getPresupuestoByID(2).update"
+    
+    <div class="row">
+        <div class="col-md-12 no-padding" v-if="isLoad">
+            <table class="table table-responsive table-bordered data">
+                <thead>
+                    <tr>
+                    <th>CONCEPTOS Y PARTIDAS</th>
+                    <th>CANTIDAD POR KILOMETRO</th>
+                    <th>UNIDAD</th>
+                    <th>PRECIO UNITARIO</th>
+                    <th>EDITAR</th>
+                    <th>ELIMINAR</th>
+                    </tr>
+                </thead>
+                <!-- TERRACERIAS-->
+                <TablePresupuesto
+                    v-if="(filtroConceptos==0 || filtroConceptos==1) && isLoaded"
+                    :conceptos="getPresupuestoByID(1)"
+                    :key="'terra'+getPresupuestoByID(1).update"
+                    />
+                <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==2) && isLoaded"
+                    :conceptos="getPresupuestoByID(2)"
+                    :key="'obras'+getPresupuestoByID(2).update"
 
-                />     
-            <!-- SUPERFICIE DE RODAMIENTO --> 
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoaded"
-                 :conceptos="getPresupuestoByID(3)"
-                 :key="'superficie'+getPresupuestoByID(3).update"
-                />      
-            <!-- SENALAMIENTO --> 
-            <TablePresupuesto
-            v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoaded"
-                 :conceptos="getPresupuestoByID(4)"
-                 :key="'senalamiento'+getPresupuestoByID(4).update"
-                />
-          </table>
+                    />     
+                <!-- SUPERFICIE DE RODAMIENTO --> 
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==3) && isLoaded"
+                    :conceptos="getPresupuestoByID(3)"
+                    :key="'superficie'+getPresupuestoByID(3).update"
+                    />      
+                <!-- SENALAMIENTO --> 
+                <TablePresupuesto
+                v-if="(filtroConceptos==0 || filtroConceptos==4) && isLoaded"
+                    :conceptos="getPresupuestoByID(4)"
+                    :key="'senalamiento'+getPresupuestoByID(4).update"
+                    />
+            </table>
+
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <br>
+                    <a href="/presupuesto/base/kilometro" class="btn btn-default">Cancelar</a>
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -115,13 +125,13 @@ const validateEdo = (value, vm) => {
 };
 
 export default {
-  name: 'BusquedaCaminos',
+  name: 'TablePresupuestoBase',
   components: {
         TablePresupuesto
     },
   data () {
     return {
-      breadcrumb: ['Búsqueda de Obras'],
+      breadcrumb: ['Presupuesto Base por Kilómetro'],
       anios: [],filtroConceptos:0,
       anchos: null,anio:null,ancho_camino:null,datos:[],presupuestoBase:[],isLoad:false, presupuestos: [
                 {                    
