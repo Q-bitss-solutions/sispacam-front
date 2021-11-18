@@ -91,7 +91,7 @@
                 >
             </vue-numeric>
         </td> 
-        <td> <button v-if="isEdit(partida.anio)" type="button" @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+        <td> <button v-if="isEdit(partida.anio)" type="button" @click="someFunction(partida)" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
             <button v-else type="button" disabled class="btn btn-primary btn-sm">
                 <span class="glyphicon glyphicon-pencil"></span>
             </button>
