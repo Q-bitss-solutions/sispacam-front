@@ -1,6 +1,6 @@
 <template>
 <tbody>
-        <div class="modal fade" id="ModalPRE" tabindex="-1" role="dialog" aria-labelledby="ModalPRE" aria-hidden="true" @keydown.esc="clearData()">
+        <div class="modal fade" :id="nameModal" tabindex="-1" role="dialog" aria-labelledby="ModalPRE" aria-hidden="true" @keydown.esc="clearData()">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -231,10 +231,10 @@ export default {
             console.log(this.concepto_descripcion);
             console.log("Fin modal");
 
-            $('#ModalPRE').modal('show')
+            $('#'+this.nameModal).modal('show')
         },
         closeModal(action,partida_id){
-            $('#ModalPRE').modal('hide')
+            $('#'+this.nameModal).modal('hide')
             this.clearData()
         },
         actionModal(){

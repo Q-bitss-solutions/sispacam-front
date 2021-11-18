@@ -74,7 +74,7 @@
                     :conceptos="getPresupuestoByID(1)"
                     :key="'terra'+getPresupuestoByID(1).update"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
-                    :nameModal="'1'"
+                    :nameModal="'ModalPRE1'"
                     />
                 <!-- 'OBRAS DE DRENAJE Y ESTRUCTURAS' -->
                 <TablePresupuesto
@@ -82,7 +82,7 @@
                     :conceptos="getPresupuestoByID(2)"
                     :key="'obras'+getPresupuestoByID(2).update"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
-                    :nameModal="'2'"
+                    :nameModal="'ModalPRE2'"
                     />     
                 <!-- SUPERFICIE DE RODAMIENTO --> 
                 <TablePresupuesto
@@ -90,7 +90,7 @@
                     :conceptos="getPresupuestoByID(3)"
                     :key="'superficie'+getPresupuestoByID(3).update"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
-                    :nameModal="'3'"
+                    :nameModal="'ModalPRE3'"
                     />      
                 <!-- SENALAMIENTO --> 
                 <TablePresupuesto
@@ -98,7 +98,7 @@
                     :conceptos="getPresupuestoByID(4)"
                     :key="'senalamiento'+getPresupuestoByID(4).update"
                     :unidad_medida_catalogo="unidad_medida_catalogo"
-                    :nameModal="'4'"
+                    :nameModal="'ModalPRE4'"
                     />
             </table>
 
