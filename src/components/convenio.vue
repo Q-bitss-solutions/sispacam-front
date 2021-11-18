@@ -1478,7 +1478,8 @@ function validateFile(form){
 }
 </script>
 
-<style>
+
+<style scoped>
 @import '~animate.css/animate.css';
 
 .form-control-tramo{

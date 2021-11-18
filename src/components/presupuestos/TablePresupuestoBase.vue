@@ -1,9 +1,66 @@
 <template>
 
 <tbody>
+        <div class="modal fade" :id="nameModal" tabindex="-1" role="dialog" aria-labelledby="ModalPRE" aria-hidden="true" @keydown.esc="clearData()">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5  v-if="typeModal==1" class="modal-title" id="exampleModalLongTitle">Nueva Partida</h5>
+                    <h5  v-if="typeModal==2" class="modal-title" id="exampleModalLongTitle">Modificar Partida</h5>
+                    <h5  v-if="typeModal==3" class="modal-title" id="exampleModalLongTitle">¿Seguro que quieres eliminar la partida ..?</h5>
+
+
+                    <!--button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button-->
+                </div>
+                <div class="modal-body">
+                    <div class="row" v-if="typeModal==1">
+                        <div class="col-lg-12">
+                            <p><strong>{{concepto_descripcion}}</strong></p>
+                        </div>
+                    </div>
+                    <table class="table table-responsive table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">PARTIDA</th>
+                                <th scope="col">UNIDAD DE MEDIDA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p v-if="typeModal==3">{{partida_descripcion}}</p>
+                                    <textarea v-else class="form-control" v-model="partida_descripcion"></textarea>
+                                </td>
+                                <td>
+                                    <p v-if="typeModal==3">{{partida_unidad_medida_descripcion}}</p>
+                                    <select v-model="partida_unidad_medida_id" v-else class="form-control">
+                                        <option v-for="unidad_medida in unidad_medida_catalogo" :key="unidad_medida.id" :value="unidad_medida.id">{{unidad_medida.codigo}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" v-on:click="closeModal()">Cancelar</button>
+                    <button type="button" v-if="typeModal!=3" class="btn btn-primary" v-on:click="actionModal">Guardar</button>
+                    <button type="button" v-if="typeModal==3" class="btn btn-primary" v-on:click="deletePartida">Eliminar</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
     <tr class="concepto">
         <!--CONCEPTOS-->
-        <td >{{ nombreConcepto }}</td>
+        <td >
+            <button v-on:click="openModal('new',null, codigo,nombreConcepto)" class="btn btn-primary" type="button">{{ nombreConcepto }}<span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+        </td>
         <!-- IMPORTE POR KILOMETRO (P-BASE)-->
         <td colspan="5">
 
@@ -30,30 +87,24 @@
                 class="form-control precio-unitario"
                 v-model="partida.precio_unitario"
                 v-on:keypress.native="checa(myIndex)"
-<<<<<<< HEAD
 
                 >
             </vue-numeric>
         </td> 
-        <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-        <td> <button @click="someFunction(partida)" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-trash"></span></button></td>
-
-    </tr>     
-=======
-                >
-            </vue-numeric>
+        <td> <button v-if="isEdit(partida.anio)" type="button" @click="someFunction(partida)" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button v-else type="button" disabled class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
         </td>
-
         <td>
-            hola
+            <button v-if="isEdit(partida.anio)" type="button" class="btn btn-primary btn-sm" v-on:click="openModal('delete', partida.partida)">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+            <button v-else type="button" disabled class="btn btn-primary btn-sm">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
         </td>
-
-        <td>
-            hola
-        </td>
-
     </tr>
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
 </tbody>
 
   
@@ -65,6 +116,9 @@ import Vue from 'vue'
 import VueNumeric from 'vue-numeric'
 import { mapMutations } from 'vuex'
 import editExtraordinarios from '@/components/Modals/AdminPartidas'
+import { getUnidadMedida, editPartida, createPartida, deletePartida }  from '@/api/catalogo_pe'
+
+
 
 Vue.use(VueNumeric)
 
@@ -74,40 +128,17 @@ export default {
         editExtraordinarios
     },
     props: {
+        nameModal: {
+            default: null,
+            type: String
+        },
         conceptos: {
             type: Object
         },
         myIndex:{
             default:0,
             type: Number
-<<<<<<< HEAD
-        },showAdminCatalogo:null
-=======
-        },
-        childTotalPU: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        childTotalITPL: {
-            default: 0,
-            type: Number,
-            required: false
-        },
-        totalIPL: {
-            default: 0,
-            type: Number,
-        },
-        totalPP: {
-            default: 0,
-            type: Number,
-        },
-        subTotalIPK: {
-            default: 0,
-            type: Number,
-            required: false
-        }
->>>>>>> 61bacb3f11da554a9c1b2ef02e19860ecaf48ee6
+        },showAdminCatalogo:null,unidad_medida_catalogo:[]
     },
     data () {
         return {
@@ -119,7 +150,16 @@ export default {
             totalprecioUnitario:0,
             importePorLongitud:0,
             importeTotalPorKilimetro:0,
-            codigo:''            
+            codigo:'',
+            typeModal: 0, //1=new, 2=edit, 3=delete
+            //Modelos para editar/eliminar/crear
+            partida_id: null,
+            partida_descripcion: null,
+            partida_unidad_medida_descripcion: null,
+            partida_unidad_medida_id: null,
+            unidad_medida_seleccionada:null,
+            concepto_codigo:null,
+            concepto_descripcion:null
         }
     },
     methods:{
@@ -142,6 +182,69 @@ export default {
         aConceptos2.map(a => {
             console.table(a)
         })        
+        },
+        openModal(action,partida=null, concepto_codigo=null,concepto_descripcion=null){
+            console.log("Abrir modal");
+            console.log(action);
+            console.log(partida);
+            console.log(concepto_codigo);
+            console.log(concepto_descripcion);
+            console.log("Fin modal");
+            if (action == 'new'){
+                this.typeModal=1
+                this.concepto_codigo=concepto_codigo
+                this.concepto_descripcion=concepto_descripcion
+            }if (action == 'edit'){
+                this.typeModal=2
+            }else if(action == 'delete'){
+                this.typeModal=3
+            }
+
+            if( partida != null ){
+                this.partida_id = partida.id
+                this.partida_descripcion = partida.descripcion
+                this.partida_unidad_medida_descripcion = partida.unidad_medida
+            }
+
+            console.log("Abrir modal");
+            console.log("accion:"+this.typeModal);
+            console.log(this.concepto_codigo);
+            console.log(this.concepto_descripcion);
+            console.log("Fin modal");
+
+            $('#'+this.nameModal).modal('show')
+        },
+        closeModal(action,partida_id){
+            $('#'+this.nameModal).modal('hide')
+            this.clearData()
+        },
+        actionModal(){
+            if ( this.typeModal == 1 ){
+                console.log("Es nuevo");
+            }else{
+                console.log("Es editar");
+            }
+        },
+        isEdit(year){
+            let today = new Date();
+            if( (year == today.getFullYear()) || (year == (today.getFullYear()+1) ) )
+                return true
+            return false
+        },
+        deletePartida(id){
+            console.log("Eliminar partida");
+        },
+        savePresupuestos(){
+
+        },
+        clearData(){
+            this.typeModal=0
+            this.partida_id= null
+            this.partida_descripcion= null
+            this.partida_unidad_medida_descripcion= null
+            this.partida_unidad_medida_id= null
+            this.concepto_codigo=null
+            this.concepto_descripcion=null
         }
     },
     computed:{

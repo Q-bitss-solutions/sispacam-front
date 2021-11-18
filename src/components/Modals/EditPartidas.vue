@@ -142,7 +142,7 @@ Vue.use(Vuelidate)
 
             closeModal(){
                 bodyScroll.unfreeze()
-                this.showAdminModalPartidas = false
+                this.showAdminModalEdit = false
             },
             beforeOpenNew(){
                 this.formNewPartida.unidad_medida = ''
@@ -161,7 +161,8 @@ Vue.use(Vuelidate)
                             loadingInstance.close();
                         })                        
                     }).finally(_ => {
-                        this.showAdminModalPartidas = false
+                        this.showAdminModalEdit = false
+                        this.fetchPresupuestoBase()
                     })
             },
             
