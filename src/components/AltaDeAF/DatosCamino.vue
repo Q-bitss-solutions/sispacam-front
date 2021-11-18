@@ -213,10 +213,10 @@
             <label>Lat:</label>
             
             <div> 
-                        <ejs-numerictextbox  :class="{'form-control-error': $v.latitud.$error}"
-                            id="latitud"
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.lat.$error}"
+                            id="lat"
                             placeholder="Lat"
-                            v-model="latitud"
+                            v-model="lat"
                             format='n5'
                             :min="min"
                             :max="max"
@@ -224,7 +224,7 @@
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
-                            <small v-if="!$v.latitud.required && $v.latitud.$error" class="form-text form-text-error">
+                            <small v-if="!$v.lat.required && $v.lat.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div>                      
@@ -233,17 +233,18 @@
         <div class="form-group col-md-3">
             <label>Long:</label>
             <div> 
-                        <ejs-numerictextbox  :class="{'form-control-error': $v.longituddg.$error}"
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.long.$error}"
+                            id="long"
                             placeholder="Long"
                             format='n5'
-                            v-model="longituddg"
+                            v-model="long"
                             :min="min"
                             :max="max"
                             :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
-                            <small v-if="!$v.longituddg.required && $v.longituddg.$error" class="form-text form-text-error">
+                            <small v-if="!$v.long.required && $v.long.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div>                      
@@ -253,18 +254,18 @@
                 <div class="form-group col-md-3">
             <label>Lat:</label>
                     <div> 
-                        <ejs-numerictextbox  :class="{'form-control-error': $v.punto_inicial.$error}"
-                            id="punto_inicial"
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.latf.$error}"
+                            id="latf"
                             format='n5'
                             placeholder="Lat"
-                            v-model="punto_inicial"
+                            v-model="latf"
                             :min="min"
                             :max="max"
                             :disabled="isCanceled"
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
-                            <small v-if="!$v.punto_inicial.required && $v.punto_inicial.$error" class="form-text form-text-error">
+                            <small v-if="!$v.latf.required && $v.latf.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div>                      
@@ -273,10 +274,10 @@
                         <div class="form-group col-md-3">
             <label>Long:</label>
                     <div> 
-                        <ejs-numerictextbox  :class="{'form-control-error': $v.punto_final.$error}"
-                            id="punto_final"
+                        <ejs-numerictextbox  :class="{'form-control-error': $v.longf.$error}"
+                            id="longf"
                             placeholder="Long"
-                            v-model="punto_final"
+                            v-model="longf"
                             format='n5'
                             :min="min"
                             :max="max"
@@ -284,7 +285,7 @@
                             :showSpinButton='false'>
                         </ejs-numerictextbox>                        
                         <div class="row col-md-10">
-                            <small v-if="!$v.punto_final.required && $v.punto_final.$error" class="form-text form-text-error">
+                            <small v-if="!$v.longf.required && $v.longf.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                             </small>
                         </div>                      
@@ -477,9 +478,12 @@ export default {
             ilocalidades_municipioo: '',
             marginacion: '',
             resul:'',
-            latitud:'',
-            punto_inicial:'',
-            punto_final:'',
+            pini:'',
+            pfin:'',
+            lat:'',
+            latf:'',
+            long:'',
+            longf:'',
         },
         isCanceled:{
             required:true,
@@ -498,10 +502,12 @@ export default {
             caracteristicasCamino:'',
             beneficiosCamino:'',
             fLongitdTotal: '',
-            latitud:'',
-            punto_inicial:'',
-            longituddg:'',
-            punto_final:'',
+            pini:'',
+            pfin:'',
+            lat:'',
+            latf:'',
+            long:'',
+            longf:'',
             ancho_camino:'',
             fLongitdTotalAPavimentar: '',
             min: 0,
@@ -538,16 +544,22 @@ export default {
         fLongitdTotal: {
             required,
         },
-         latitud: {
+        pini: {
             required,
         },
-         punto_inicial: {
+         pfin: {
             required,
         },
-         longituddg: {
+         lat: {
             required,
         },
-         punto_final: {
+         latf: {
+            required,
+        },
+         long: {
+            required,
+        },
+         longf: {
             required,
         },
     },
@@ -582,10 +594,12 @@ export default {
               this.ubicacionCamino   = response.ubicacion
               this.caracteristicasCamino = response.caracteristicas
               this.beneficiosCamino = response.beneficios 
-              this.latitud = response.datos_geograficos.latitud
-              this.punto_inicial = response.datos_geograficos.punto_inicial
-              this.longituddg = response.datos_geograficos.longitud
-              this.punto_final = response.datos_geograficos.punto_final
+              this.pini = response.pini
+              this.pfin = response.pfin 
+              this.lat = response.lat
+              this.latf = response.latf
+              this.long = response.long
+              this.longf = response.longf
 
               this.ancho_camino = response.ancho_camino.id
 
@@ -625,10 +639,12 @@ export default {
                     tipo_camino:this.tipo_camino,
                     nombre_camino:this.nombre_camino,                                
                     longitud:this.fLongitdTotal,
-                    latitud:this.latitud,
-                    punto_inicial:this.punto_inicial,
-                    longitud:this.longitud,
-                    punto_final:this.punto_final,
+                    pini:this.pini,
+                    pfin:this.pfin,
+                    lat:this.lat,
+                    latf:this.latf,
+                    long:this.long,
+                    longf:this.longf,
                     longitud_pavimentar:this.fLongitdTotalAPavimentar,
                     ancho_camino:this.ancho_camino,
                     caracteristicas:this.caracteristicasCamino,
@@ -649,8 +665,6 @@ export default {
                     estatus:"A"
 
                 }
-                console.log(this.fLongitdTotalAPavimentar)
-                console.log(this.fLongitdTotal)
                     if (this.fLongitdTotalAPavimentar > this.fLongitdTotal){                     
                          $('#alertvalnum').modal('show')
                          this.btnSaveDisabled  = false
