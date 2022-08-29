@@ -1,11 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios'
-import Vuelidate from "vuelidate";
+import Vuelidate from "vuelidate"
 import IdleVue from 'idle-vue'
+import router from './router'
+import store from './store'
+import "@/assets/css/SCT.css"
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css';
 
+
+Vue.use(ElementUI);
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(Vuelidate);
+Vue.prototype.$residenteGroup = 411
+Vue.prototype.$systemId = 201
 Vue.config.productionTip = false
 Vue.use(IdleVue, {
   eventEmitter: new Vue(),
@@ -14,5 +23,7 @@ Vue.use(IdleVue, {
 Vue.use(require('vue-moment'));
 
 new Vue({
-  render: h => h(App),
+  router,
+  store,
+  render: h => h(App),  
 }).$mount('#app')
