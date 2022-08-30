@@ -67,7 +67,7 @@
             <!-- Pagos a beneficiario -->
             <div class="row">
                 <div class="row">
-                    <h3>Pagos a beneficiario--</h3>
+                    <h3>Pagos a beneficiario</h3>
                     <hr class="red">
                 </div>
                 <div class="tab-pane">
