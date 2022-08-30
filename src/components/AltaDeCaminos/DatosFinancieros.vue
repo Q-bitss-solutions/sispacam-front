@@ -1,20 +1,54 @@
 <template>
 <table id="datosFinancieros" class="tableContenido" width="100%" border="0">
   <div class="row">  
+
+    <!-- Filtros de busqueda -->
     <div class="col-md-4 col-md-offset-3" >
-        <label for="start" >Fecha Consulta:</label>
-        <input title="Fecha de consulta de informacion" type="date" id="start" name="trip-start" 
-               v-model="fechac" >
-        <input type="date" id="start" name="trip-start"  v-if="tipo_camino == 'O'"
-               :disabled = "editmode" v-model="fechacE"> 
-        <input type="date" id="start-2" name="trip-start-2"  v-if="tipo_camino == 'O'"
-               :disabled = "editmode" v-model="fechacI"> 
-        
+
+        <h4>Tipo de búsqueda</h4>
+
+        <input type="radio" id="actual" value="actual" v-model="tbusqueda" />
+        <label for="actual">Consulta año actual</label>
+        </br>
+
+        <input type="radio" id="pasado" value="pasado" v-model="tbusqueda" />
+        <label for="pasado">Consulta años anteriores</label>
+
+        </br>
+        </br>
+        <div v-if="tbusqueda==='actual'">
+            <label for="start" >Fecha Consulta:</label>
+
+            <input 
+                title="Fecha de consulta de informacion" 
+                type="date" 
+                id="start" 
+                name="trip-start" 
+                v-model="fechac" 
+            >
+        </div>
+
+        <div v-if="tbusqueda==='pasado'">
+            <label for="start" >Año Consulta:</label>
+
+            <select v-model="fechac">
+                <option :value="`2019-12-30`">2019</option>
+                <option :value="`2020-12-30`">2020</option>
+                <option :value="`2021-12-30`">2021</option>
+            </select>
+
+        </div>
+   
+        </br>
+        </br>
+
+        <button class="btn btn-default btn-sm" type="button" id="buscarObras" @click="submit">Buscar</button>
+
+
+
     </div>
     
     <div class="col-md-1">
-        <button class="btn btn-default btn-sm" type="button" id="buscarObras" @click="submit">
-        <span  ></span>Buscar</button>
     </div> 
     </div>
     
@@ -103,7 +137,6 @@
      :allowSorting='true'
      :allowTextWrap='true'
      :allowFiltering='true'
-     :toolbar='toolbarOptions' 
      :allowPaging='false'
       height='450px'
      >    
@@ -153,30 +186,28 @@ export default {
             iso:''
         },
     },
-  data() {
-       var f = new Date();
-           var dt =(f.getMonth() +1)
-           var dy =(f.getDate() -1)
-           if(dt <= 9)
-           {
+    data() {
+        var f = new Date();
+        var dt =(f.getMonth() +1)
+        var dy =(f.getDate() -1)
+        if(dt <= 9){
             dt = '0' + (f.getMonth() +1)
-           }else{
-                dt=(f.getMonth() +1)
-                }
-                /**/
-                if(dy <= 9){
-                    dy = '0' + (f.getDate() -1)
-                }else{
-                dy=(f.getDate() -1)
-                }
-                var ft =f.getFullYear() + '-' + 
-                        dt + '-' + 
-                        dy 
-                var ftE = f.getFullYear()  + dt + dy    
-                var ftI = dy + "/" +  dt + "/" +  f.getFullYear()                
-return {
-  editmode: false,
-  tipo_camino: null,
+        }else{
+            dt=(f.getMonth() +1)
+        }
+            /**/
+        if(dy <= 9){
+            dy = '0' + (f.getDate() -1)
+        }else{
+            dy=(f.getDate() -1)
+        }
+        var ft =f.getFullYear() + '-' + dt + '-' + dy 
+        var ftE;
+        var ftI = dy + "/" +  dt + "/" +  f.getFullYear()  
+
+        return {
+            editmode: false,
+            tipo_camino: null,
             flag: false,
             lista:[],
             clave:[],
@@ -193,11 +224,12 @@ return {
             benef:'',
             downloadLoading: false,
             fechac :ft,
-            fechacE :ftE,
+            fechacE :"",
             fechacI : ftI,
             vname:'',
             toolbarOptions: ['ExcelExport', 'PdfExport'],
-};
+            tbusqueda:"",
+        };
   },
   methods: {
       rowSelected: function(args) {
