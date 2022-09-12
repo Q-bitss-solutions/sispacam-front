@@ -28,14 +28,10 @@
             Programación
           </a>
         </li>   
-        <!-- <li v-if="$route.params.obraId && this.$store.getters['user/StateRol']=='NORMATIVO'?true:false" role="presentation"  id="tabDatosFinancieros">
-          <a href="#datosFinancieros" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Avance Financiero
-          </a>
-        </li> -->  
 
            
     </ul>
+    
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane" :class="getActiveTab==='tabDG'?'active':''" id="datosGeograficos">
           <DatosGeograficos :isCanceled="isCanceled" @set-icveEdo="setCEdo" @show-error="showError" 
