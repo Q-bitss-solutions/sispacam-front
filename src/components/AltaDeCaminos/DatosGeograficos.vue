@@ -25,7 +25,7 @@
                             :disabled="isCanceled"> Otro
                     </label>
                     <label class="radio-inline">
-                        <input v-model="otroTipoCamino" v-if="tipo_camino == 'O'" placeholder="Especificar otro" />
+                        <input v-model="otroTipoCamino" v-if="DatosGeograficos.tipo_camino == 'O'" placeholder="Especificar otro" />
                     </label>
                 </div>
             </div>
