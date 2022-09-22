@@ -62,7 +62,7 @@
                 <ejs-combobox :class="{'form-control-error': $v.icve_municipio.$error}" id="municipio"
                     :dataSource="municipiosData" :fields="municipiosFields" placeholder="Selecciona un municipio"
                     :close="obtenerLocalidades" :enabled="municipiosHabilitado" v-model="icve_municipio"
-                    :disabled="cons" ref="refMunicipio">
+                    ref="refMunicipio">
                 </ejs-combobox>
                 <div class="row col-md-10" v-if="!$v.icve_municipio.required && $v.icve_municipio.$error">
                     <small class="form-text form-text-error">
@@ -378,7 +378,6 @@ export default {
             //this.icve_municipio = response.datos_geograficos[0].icve_municipio
             //this.ip_poblacion_total_localidades = response.datos_geograficos[0].ip_poblacion_total_localidades
             this.ipoblacion_municipio = response.datos_geograficos.ipoblacion_municipio
-            //this.ilocalidades_municipio = response.datos_geograficos[0].ilocalidades_municipio
             this.setEdoIso()
             this.recalcularPoblacionTotal()
             this.estadosHabilitado = false
@@ -430,11 +429,12 @@ export default {
         async obtenerMunicipios() {
             this.$emit("show-error", false);
             this.icve_municipio = null;
-            //this.municipiosData = new DataManager([]);
             this.municipiosHabilitado = true;
             this.clearLocalidades();
             try {
                 const { results } = await getMunicipios(this.icve_estado_inegi)
+                console.log(results);
+
                 this.municipiosData = results//new DataManager(results);
                 this.municipiosHabilitado = true;
             } catch (err) {
@@ -450,6 +450,7 @@ export default {
                 this.clearLocalidades();
                 const res = await getLocalidades(this.icve_estado_inegi,
                     this.icve_municipio)
+                    console.log(res);
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
                     return x + y.pob;
@@ -457,6 +458,7 @@ export default {
 
                 this.localidadesHabilitado = true;
                 this.localidadesData = res//new DataManager(res);
+
                 this.setEdoIso()
                 this.DatosGeograficos.localidades = this.localidades
                 this.DatosGeograficos.icveestados = this.icveestados
@@ -520,7 +522,8 @@ export default {
             }
         },
         updateLocalidades(e) {
-            this.localidades = this.$refs.localidades.ej2Instances.value
+            console.log(this.localidades);
+            //this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 
         },

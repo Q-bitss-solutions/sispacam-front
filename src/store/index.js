@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from "./modules/auth";
 import presupuesto from "./modules/presupuesto";
+import camino from './modules/camino';
 import  createPersistedState  from  'vuex-persistedstate'
 import { test } from '@/api/alta-camino'
 
@@ -9,6 +10,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        altacamino:{
+
+        },  
         camino:{
             id:null,
             ancho:null,
@@ -67,7 +71,8 @@ export default new Vuex.Store({
     }, 
     modules: {
         user: auth,
-        presupuesto:presupuesto
+        presupuesto:presupuesto,
+        camino
     },
     plugins: [createPersistedState({
         key: 'camino',
