@@ -13,6 +13,12 @@ import store from "../store/index";
 import GridResultObra from "../views/GridResultBusqueda.vue"
 import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
+
+import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue"
+
+
+import EditarCamino from '../views/EditarCamino.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,6 +28,12 @@ const routes = [
     component: Login,
     meta: { guest: true },
   }, 
+
+  {
+    path: "/sandbox",
+    name: "Sandbox Test Component",
+    component: EditarCamino,
+  },
   {
     path: '/busqueda',
     name: 'BusquedaCaminos',
@@ -46,6 +58,13 @@ const routes = [
     component: AltaCamino,
     meta: { requiresAuth: true }
   },   
+  {
+    path: '/editarcamino/',
+    name: 'EditarCAmino',
+    component: EditarCamino,
+    meta: { requiresAuth: false }
+  },
+
   {
     path: '/editcamino/:obraId',
     name: 'AltaCaminoEdit',
