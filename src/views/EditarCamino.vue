@@ -86,9 +86,21 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f2: {
-          region: "Rancho alegre",
+          region: "Detrás del cerro",
           ubicacion: "u1",
           p_indigena: "100",
           marginacion: "alta",
@@ -96,6 +108,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f3: {
           region: "Detrás del cerro",
@@ -106,6 +130,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f4: {
           region: "Detrás del cerro",
@@ -116,6 +152,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f5: {
           region: "Detrás del cerro",
@@ -126,6 +174,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f6: {
           region: "Detrás del cerro",
@@ -136,6 +196,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f7: {
           region: "Detrás del cerro",
@@ -146,6 +218,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
         f8: {
           region: "Detrás del cerro",
@@ -156,6 +240,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
+          num_localidades:"2",
+          localidades:[
+            {
+              nombre:"Localidad wiu 1",
+              poblacion:"500"
+            },
+            {
+              nombre:"Localidad wiu 2",
+              poblacion:"100"
+            },
+          ],
+          p_total_localidades:"600"          
         },
       },
     };

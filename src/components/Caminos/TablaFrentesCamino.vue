@@ -34,6 +34,25 @@
         <td><h5>Población del municipio</h5></td>
         <td v-for="frente in frentes">{{ frente.p_municipio }}</td>
       </tr>
+
+      <tr>
+        <td><h5>Número de localidades</h5></td>
+        <td v-for="frente in frentes">{{ frente.num_localidades }}</td>
+      </tr>
+
+      <tr>
+        <td><h5>Localidades</h5></td>
+        <td v-for="frente in frentes">
+          <div v-for="localidad in frente.localidades">
+          <p><b>{{localidad.nombre}}</b> : {{localidad.poblacion}}</p>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td><h5>Población total de localidades</h5></td>
+        <td v-for="frente in frentes">{{ frente.p_municipio }}</td>
+      </tr>
     </tbody>
   </table>
 </template>

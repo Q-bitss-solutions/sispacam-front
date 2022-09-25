@@ -56,7 +56,7 @@ const routes = [
     path: '/altacamino',
     name: 'AltaCamino',
     component: AltaCamino,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },   
   {
     path: '/editarcamino/',
