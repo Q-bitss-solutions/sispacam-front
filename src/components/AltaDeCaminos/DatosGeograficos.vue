@@ -79,8 +79,6 @@
                         :removed="updateLocalidades">
                     </ejs-multiselect>
                 </div>
-
-
             </div>      
         </div>
 

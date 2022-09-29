@@ -44,7 +44,6 @@ export function generarId(data){
     })  
 }
 
-
 export function getLocalidades(icveEdo, icveMun){
     return request({
         url: '/localidad/',
@@ -70,5 +69,13 @@ export function CaminoPut(data, clave){
        method: 'patch',
        data: data
 
+    })
+}
+
+export function CreateBeneficiarioCamino(idCamino, data){
+    return request({
+        url: '/beneficiarios/'+idCamino,
+        method:'post',
+        data:data
     })
 }

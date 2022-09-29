@@ -14,9 +14,6 @@ import GridResultObra from "../views/GridResultBusqueda.vue"
 import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
 
-import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue"
-
-
 import EditarCamino from '../views/EditarCamino.vue'
 
 Vue.use(VueRouter)
@@ -59,7 +56,7 @@ const routes = [
     // meta: { requiresAuth: true }
   },   
   {
-    path: '/editarcamino/',
+    path: '/editarcamino/:obraId',
     name: 'EditarCAmino',
     component: EditarCamino,
     meta: { requiresAuth: false }

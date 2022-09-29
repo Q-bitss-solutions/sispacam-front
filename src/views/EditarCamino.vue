@@ -31,29 +31,41 @@
 
     <div class="row">
       <div class="col-md-12">
-        <button class="btn btn-primary active" type="button">
-          Agregar Frente de Obra
+        <button
+          class="btn btn-primary active"
+          @click="showModal = true"
+          type="button"
+        >
+          Agregar Beneficiario de Obra
         </button>
       </div>
     </div>
 
+      <ModalSCT v-if="showModal">
+        <h3 slot="header">Agregar Beneficiario de Obra{{ cve_agee }}</h3>
+        <FormAgregarBeneficiario v-on:lololo="showModal=false" slot="body"></FormAgregarBeneficiario>
+      </ModalSCT>
+
     <hr class="red" />
+    no
 
     <div class="row">
       <tabla-frentes-camino :frentes="frentes"></tabla-frentes-camino>
-
     </div>
-    
   </div>
 </template>
 
 <script>
-import TablaFrentesCamino from '../components/Caminos/TablaFrentesCamino.vue';
+import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue";
+import ModalSCT from "../components/Modals/SCTModal.vue";
+import FormAgregarBeneficiario from "../components/Caminos/FormAgregarBeneficiario.vue";
+import { getupdate } from "../api/alta-camino";
 export default {
-  components: { TablaFrentesCamino },
+  components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario },
   name: "EditarCamino",
   data: function () {
     return {
+      showModal: false,
       cve_agee: "20",
       icve_municipio: "174",
       localidades:
@@ -77,27 +89,20 @@ export default {
       estatus: "C",
       archivo: "",
       frentes: {
-        f1: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
-            {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
-            },
-            {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
-            },
-          ],
-          p_total_localidades:"600"          
+        beneficiario: {
+          id_camino: 5, // id del camino en la db
+          clave_camino: "OAX-C-001", // clave del camino
+          clave_beneficiario: "B", // clave del beneficiario
+          region: "Detrás del cerro", // input del formulario
+          ubicacion: "u1", // input del formulario
+          p_indigena: "100", // viene de /api/v1/municipio?cve_agem=
+          marginacion: "alta", // viene de /api/v1/municipio?cve_agem=
+          total_p_indigena: "200", // viene de /api/v1/municipio?cve_agem=
+          clave_estado: "OAX", // viene de /api/v1/estado?cve_agee=
+          clave_municipio: "WIU", // viene de /api/v1/municipio?cve_agem=
+          p_municipio: "300", // viene de /api/v1/municipio?cve_agem=
+          num_localidades: "2", // suma de localidades de un minicipio
+          p_total_localidades: "600", // suma de poblacion de localidaes
         },
         f2: {
           region: "Detrás del cerro",
@@ -108,18 +113,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f3: {
           region: "Detrás del cerro",
@@ -130,18 +135,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f4: {
           region: "Detrás del cerro",
@@ -152,18 +157,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f5: {
           region: "Detrás del cerro",
@@ -174,18 +179,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f6: {
           region: "Detrás del cerro",
@@ -196,18 +201,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f7: {
           region: "Detrás del cerro",
@@ -218,18 +223,18 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
         f8: {
           region: "Detrás del cerro",
@@ -240,21 +245,35 @@ export default {
           clave_estado: "OAX",
           clave_municipio: "WIU",
           p_municipio: "300",
-          num_localidades:"2",
-          localidades:[
+          num_localidades: "2",
+          localidades: [
             {
-              nombre:"Localidad wiu 1",
-              poblacion:"500"
+              nombre: "Localidad wiu 1",
+              poblacion: "500",
             },
             {
-              nombre:"Localidad wiu 2",
-              poblacion:"100"
+              nombre: "Localidad wiu 2",
+              poblacion: "100",
             },
           ],
-          p_total_localidades:"600"          
+          p_total_localidades: "600",
         },
       },
     };
   },
+
+  methods: {
+    async GetCamino(clave) {
+      const response = await getupdate(clave);
+    },
+    closeModal() {
+      console.log("Close Modal EC");
+      this.showModal = false;
+    },
+  },
+
+  events: {},
+
+  created() {},
 };
 </script>
