@@ -79,3 +79,13 @@ export function CreateBeneficiarioCamino(idCamino, data){
         data:data
     })
 }
+
+export function listBeneficiariosCamino(idCamino){
+    return request({
+        url:'/beneficiariosCamino/',
+        method:'get',
+        params:{
+            id_camino:idCamino
+        }
+    })
+}

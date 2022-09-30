@@ -50,7 +50,7 @@
     no
 
     <div class="row">
-      <tabla-frentes-camino :frentes="frentes"></tabla-frentes-camino>
+      <tabla-frentes-camino :frentes="this.convenios"></tabla-frentes-camino>
     </div>
   </div>
 </template>
@@ -59,7 +59,7 @@
 import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue";
 import ModalSCT from "../components/Modals/SCTModal.vue";
 import FormAgregarBeneficiario from "../components/Caminos/FormAgregarBeneficiario.vue";
-import { getupdate } from "../api/alta-camino";
+import { getupdate, listBeneficiariosCamino } from "../api/alta-camino";
 export default {
   components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario },
   name: "EditarCamino",
@@ -88,177 +88,7 @@ export default {
       usuarios: null,
       estatus: "C",
       archivo: "",
-      frentes: {
-        beneficiario: {
-          id_camino: 5, // id del camino en la db
-          clave_camino: "OAX-C-001", // clave del camino
-          clave_beneficiario: "B", // clave del beneficiario
-          region: "Detrás del cerro", // input del formulario
-          ubicacion: "u1", // input del formulario
-          p_indigena: "100", // viene de /api/v1/municipio?cve_agem=
-          marginacion: "alta", // viene de /api/v1/municipio?cve_agem=
-          total_p_indigena: "200", // viene de /api/v1/municipio?cve_agem=
-          clave_estado: "OAX", // viene de /api/v1/estado?cve_agee=
-          clave_municipio: "WIU", // viene de /api/v1/municipio?cve_agem=
-          p_municipio: "300", // viene de /api/v1/municipio?cve_agem=
-          num_localidades: "2", // suma de localidades de un minicipio
-          p_total_localidades: "600", // suma de poblacion de localidaes
-        },
-        f2: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f3: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f4: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f5: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f6: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f7: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-        f8: {
-          region: "Detrás del cerro",
-          ubicacion: "u1",
-          p_indigena: "100",
-          marginacion: "alta",
-          total_p_indigena: "200",
-          clave_estado: "OAX",
-          clave_municipio: "WIU",
-          p_municipio: "300",
-          num_localidades: "2",
-          localidades: [
-            {
-              nombre: "Localidad wiu 1",
-              poblacion: "500",
-            },
-            {
-              nombre: "Localidad wiu 2",
-              poblacion: "100",
-            },
-          ],
-          p_total_localidades: "600",
-        },
-      },
+      convenios:{}
     };
   },
 
@@ -270,10 +100,21 @@ export default {
       console.log("Close Modal EC");
       this.showModal = false;
     },
+
+    async GetConvenios(){
+      console.log("GetConvenios");
+      const response = await listBeneficiariosCamino(1);
+      this.convenios = response
+      
+    }
   },
 
   events: {},
 
-  created() {},
+  created() {
+    this.GetConvenios()
+  },
+
+
 };
 </script>
