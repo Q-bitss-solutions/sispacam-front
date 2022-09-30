@@ -42,7 +42,7 @@
     </div>
 
       <ModalSCT v-if="showModal">
-        <h3 slot="header">Agregar Beneficiario de Obra{{ cve_agee }}</h3>
+        <h3 slot="header">Agregar Beneficiario de Obra</h3>
         <FormAgregarBeneficiario v-on:lololo="showModal=false" slot="body"></FormAgregarBeneficiario>
       </ModalSCT>
 
@@ -50,7 +50,7 @@
     no
 
     <div class="row">
-      <tabla-frentes-camino :frentes="this.convenios"></tabla-frentes-camino>
+      <tabla-frentes-camino @updateFrentes="GetConvenios" :frentes="this.convenios"></tabla-frentes-camino>
     </div>
   </div>
 </template>
@@ -66,10 +66,10 @@ export default {
   data: function () {
     return {
       showModal: false,
-      cve_agee: "20",
-      icve_municipio: "174",
+      cve_agee: "Oaxaca",
+      icve_municipio: "San Juan Teita",
       localidades:
-        '["[\\"0\\", \\"0\\", \\"0\\", \\"3\\"]", "[\\"0\\", \\"0\\", \\"0\\", \\"4\\"]"]',
+        'LAS PILAS, EL TERCO, EL TORITO',
       consecutivo: "2",
       tipo_camino: "A",
       nombre_camino: "CAMINOS DE OAXACA dlm",

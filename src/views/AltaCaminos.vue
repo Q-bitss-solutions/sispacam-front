@@ -46,7 +46,7 @@ export default {
     components: {
     DatosGeograficos,
     DatosCamino,
-    DatosGeograficos
+    // DatosGeograficos
 },
 
     data() {

@@ -31,11 +31,17 @@ const routes = [
     name: "Sandbox Test Component",
     component: EditarCamino,
   },
+
+  {
+    path: "/caminos",
+    name: "Caminos",
+    component: GridResultObra,
+  },
   {
     path: '/busqueda',
     name: 'BusquedaCaminos',
     component: BusquedaCaminos,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/financiero',
@@ -53,11 +59,11 @@ const routes = [
     path: '/altacamino',
     name: 'AltaCamino',
     component: AltaCamino,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },   
   {
     path: '/editarcamino/:obraId',
-    name: 'EditarCAmino',
+    name: 'EditarCamino',
     component: EditarCamino,
     meta: { requiresAuth: false }
   },
@@ -65,8 +71,8 @@ const routes = [
   {
     path: '/editcamino/:obraId',
     name: 'AltaCaminoEdit',
-    component: AltaCamino,
-    meta: { requiresAuth: true }
+    component: EditarCamino,
+    meta: { requiresAuth: false }
   },  
   {
     path: '/editAF/:obraId',
@@ -90,7 +96,7 @@ const routes = [
     path: '/obras',
     name: 'Obras',
     component: GridResultObra,
-    meta: { requiresAuth: true }
+    // meta: { requiresAuth: true }
   },
   {
     path: '/presupuesto/:obraId/:anio/:anchoId/:convenioId/:meta/',

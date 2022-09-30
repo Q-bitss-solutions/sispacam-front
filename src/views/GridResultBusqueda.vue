@@ -43,6 +43,7 @@ import { GridPlugin, Sort, Page, } from '@syncfusion/ej2-vue-grids';
 import { getObrasByUsuario, getObraByClave, getObraByParmas } from '@/api/obras'
 import ButtonGrid from '@/components/ButtonGrid'
 import CancelaObra from '@/components/CancelaObra'
+import { getAllObras } from "../api/obras";
 
 
 Vue.use(GridPlugin);
@@ -75,12 +76,18 @@ export default {
             }
         },
         async populate () {
+            this.data = await getAllObras()
+            console.log(this.data);
+
+
             try{
                 let results  = []
                 let data = null
                 if(this.flag){
                     if(this.$route.params.values.clave){
-                        data = await getObraByClave(this.$route.params.values.clave.trim())    
+                        // data = await getObraByClave(this.$route.params.values.clave.trim())    
+                        data = await getAllObras()
+
                         const aRR = []
                         aRR.push(data)
                         results = aRR    
