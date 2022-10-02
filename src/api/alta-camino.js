@@ -74,7 +74,7 @@ export function CaminoPut(data, clave){
 
 export function CreateBeneficiarioCamino(idCamino, data){
     return request({
-        url: '/beneficiarios/',
+        url: '/beneficiariosCamino/',
         method:'post',
         data:data
     })
@@ -85,5 +85,12 @@ export function listBeneficiariosCamino(idCamino){
         url:'/beneficiariosCamino/',
         method:'get',
 
+    })
+}
+
+export function deleteBeneficiariosCamino(id){
+    return request({
+        url:'/beneficiariosCamino/'+id+'/',
+        method:'delete'
     })
 }

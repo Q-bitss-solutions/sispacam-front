@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1>Editar Camino</h1>
-    <h2>{{ nombre_camino }}</h2>
-    <h2>{{ clave }}</h2>
+    <h1>Editar Camino: {{ clave }}</h1>
 
     <hr class="red" />
 
@@ -31,27 +29,37 @@
 
     <div class="row">
       <div class="col-md-12">
-        <button
-          class="btn btn-primary active"
-          @click="showModal = true"
-          type="button"
-        >
+        <button class="btn btn-primary active" @click="showModal = true" type="button">
           Agregar Beneficiario de Obra
         </button>
       </div>
     </div>
 
-      <ModalSCT v-if="showModal">
-        <h3 slot="header">Agregar Beneficiario de Obra</h3>
-        <FormAgregarBeneficiario v-on:lololo="showModal=false" slot="body"></FormAgregarBeneficiario>
-      </ModalSCT>
+    <ModalSCT v-if="showModal">
+      <h3 slot="header">Agregar Beneficiario de Obra</h3>
+      <FormAgregarBeneficiario @updateFrentes="GetConvenios" v-on:lololo="showModal=false" slot="body">
+      </FormAgregarBeneficiario>
+    </ModalSCT>
 
     <hr class="red" />
-    no
 
     <div class="row">
-      <tabla-frentes-camino @updateFrentes="GetConvenios" :frentes="this.convenios"></tabla-frentes-camino>
+      <tabla-frentes-camino @deleteBeneficiario="GetConvenios" :frentes="this.convenios"></tabla-frentes-camino>
     </div>
+
+    <hr class="red" />
+
+    <div class="row">
+      <div class="col-md-8">
+        <AgregadoFrentes 
+        :total_localidades="metrics.total_localidades"
+        :poblacion_municipios="metrics.poblacion_municipio"
+        :poblacion_localidades="metrics.poblacion_localidades"
+        :poblacion_beneficiada="metrics.poblacion_beneficiada"
+        ></AgregadoFrentes>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -60,10 +68,11 @@ import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue";
 import ModalSCT from "../components/Modals/SCTModal.vue";
 import FormAgregarBeneficiario from "../components/Caminos/FormAgregarBeneficiario.vue";
 import { getupdate, listBeneficiariosCamino } from "../api/alta-camino";
+import AgregadoFrentes from "../components/Caminos/AgregadoFrentes.vue";
 export default {
-  components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario },
+  components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario, AgregadoFrentes },
   name: "EditarCamino",
-  data: function () {
+  data() {
     return {
       showModal: false,
       cve_agee: "Oaxaca",
@@ -71,7 +80,7 @@ export default {
       localidades:
         'LAS PILAS, EL TERCO, EL TORITO',
       consecutivo: "2",
-      tipo_camino: "A",
+      tipo_camino: "C",
       nombre_camino: "CAMINOS DE OAXACA dlm",
       longitud: "2.0",
       longitud_pavimentar: "2.0",
@@ -83,12 +92,12 @@ export default {
       tren_maya: false,
       caminos_originales: false,
       fecha: "2021-09-23T01:49:49.762Z",
-      clave: "2-OAX-A",
+      clave: "OAX-C-001",
       iso: "OAX",
       usuarios: null,
       estatus: "C",
       archivo: "",
-      convenios:{}
+      convenios: {},
     };
   },
 
@@ -101,15 +110,35 @@ export default {
       this.showModal = false;
     },
 
-    async GetConvenios(){
+    async GetConvenios() {
       console.log("GetConvenios");
       const response = await listBeneficiariosCamino(1);
       this.convenios = response
-      
+
     }
   },
+  computed:{
+    metrics(){
+      const metrics = {
+        total_localidades:0,
+        poblacion_municipio:0,
+        poblacion_localidades:0,
+        poblacion_beneficiada:0
+      }
+      for(const e of this.convenios){
+        metrics.total_localidades+=(e.num_localidades*1)
+        metrics.poblacion_municipio+=(e.p_municipio*1)
+        metrics.poblacion_localidades+=(e.p_total_localidades*1)
+        if(e.clave_localidad != ''){
+          metrics.poblacion_beneficiada+=(e.p_total_localidades*1)
+        }else{
+          metrics.poblacion_beneficiada+=(e.p_municipio*1)
+        }
+      }
+      return metrics
+    }
 
-  events: {},
+  },
 
   created() {
     this.GetConvenios()

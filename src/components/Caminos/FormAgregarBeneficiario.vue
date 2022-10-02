@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { getRandomId } from "@syncfusion/ej2-base";
 import { required } from "vuelidate/lib/validators";
 import { CreateBeneficiarioCamino } from "../../api/alta-camino";
 
@@ -342,9 +343,11 @@ export default {
 
     async postBeneficiarioCamino() {
       const wiu = {
+        id:getRandomId(),
         camino_id: this.camino_id,
         clave_municipio: this.clave_municipio,
         clave_localidad: this.clave_localidad,
+        clave_beneficiario:"E",
         region: this.region,
         ubicacion: this.ubicacion,
         p_indigena: "100",
@@ -353,7 +356,9 @@ export default {
         clave_estado: "OAX",
         p_municipio: "300",
         num_localidades: "2",
-        p_total_localidades: "600"
+        p_total_localidades: "600",
+        clave_camino:'OAX-C-001'
+        
       };
       console.log(wiu);
       const response = await CreateBeneficiarioCamino(this.id_camino, wiu);
