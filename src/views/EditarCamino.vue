@@ -51,12 +51,9 @@
 
     <div class="row">
       <div class="col-md-8">
-        <AgregadoFrentes 
-        :total_localidades="metrics.total_localidades"
-        :poblacion_municipios="metrics.poblacion_municipio"
-        :poblacion_localidades="metrics.poblacion_localidades"
-        :poblacion_beneficiada="metrics.poblacion_beneficiada"
-        ></AgregadoFrentes>
+        <AgregadoFrentes :total_localidades="metrics.total_localidades"
+          :poblacion_municipios="metrics.poblacion_municipio" :poblacion_localidades="metrics.poblacion_localidades"
+          :poblacion_beneficiada="metrics.poblacion_beneficiada"></AgregadoFrentes>
       </div>
     </div>
 
@@ -117,22 +114,26 @@ export default {
 
     }
   },
-  computed:{
-    metrics(){
+  computed: {
+    metrics() {
       const metrics = {
-        total_localidades:0,
-        poblacion_municipio:0,
-        poblacion_localidades:0,
-        poblacion_beneficiada:0
+        total_localidades: 0,
+        poblacion_municipio: 0,
+        poblacion_localidades: 0,
+        poblacion_beneficiada: 0
       }
-      for(const e of this.convenios){
-        metrics.total_localidades+=(e.num_localidades*1)
-        metrics.poblacion_municipio+=(e.p_municipio*1)
-        metrics.poblacion_localidades+=(e.p_total_localidades*1)
-        if(e.clave_localidad != ''){
-          metrics.poblacion_beneficiada+=(e.p_total_localidades*1)
-        }else{
-          metrics.poblacion_beneficiada+=(e.p_municipio*1)
+      let municipios = []
+      for (const e of this.convenios) {
+        if (!municipios.includes(e.clave_municipio)) {
+          metrics.total_localidades += (e.num_localidades * 1)
+          metrics.poblacion_municipio += (e.p_municipio * 1)
+          municipios.push(e.clave_municipio)
+        }
+        metrics.poblacion_localidades += (e.p_total_localidades * 1)
+        if (e.clave_localidad != '') {
+          metrics.poblacion_beneficiada += (e.p_total_localidades * 1)
+        } else {
+          metrics.poblacion_beneficiada += (e.p_municipio * 1)
         }
       }
       return metrics
