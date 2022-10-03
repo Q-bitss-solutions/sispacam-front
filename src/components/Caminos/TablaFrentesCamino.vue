@@ -3,10 +3,32 @@
     <tbody>
       <tr>
         <td>
+          <h5>Municipio</h5>
+        </td>
+        <td v-for="frente in frentes">
+          {{frente.nombre_municipio}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h5>Localidad</h5>
+        </td>
+        <td v-for="frente in frentes">
+          {{frente.nombre_localidad}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>
           <h5>Clave Beneficiario</h5>
         </td>
-        <td v-for="frente in frentes" @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)">
-          {{frente.clave_camino}}-{{frente.clave_beneficiario}}</td>
+        <td
+          v-for="frente in frentes"
+          @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)"
+        >
+          {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
+        </td>
       </tr>
 
       <tr>
@@ -76,13 +98,13 @@
 </template>
 
 <script>
-import { deleteBeneficiariosCamino } from '../../api/alta-camino';
+import { deleteBeneficiariosCamino } from "../../api/alta-camino";
 
 export default {
   name: "TablaFrentesCamino",
   data: function () {
     return {
-      wiu: ''
+      wiu: "",
     };
   },
   props: {
@@ -90,15 +112,16 @@ export default {
   },
   methods: {
     async deleteBeneficiario(id, clave_beneficiario) {
-      if (clave_beneficiario != 'A') {
-        const response = await deleteBeneficiariosCamino(id);
-        console.log(response);
-        this.$emit('deleteBeneficiario')
-      }else{
-        alert('No se puede borrar esa columna');
+      if (clave_beneficiario != "A") {
+        if (confirm("Está seguro de borrar esta entrada?")) {
+          const response = await deleteBeneficiariosCamino(id);
+          console.log(response);
+          this.$emit("deleteBeneficiario");
+        }
+      } else {
+        alert("No se puede borrar esa columna");
       }
-
-    }
-  }
+    },
+  },
 };
 </script>
