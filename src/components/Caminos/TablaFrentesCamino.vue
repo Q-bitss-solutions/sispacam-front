@@ -89,9 +89,9 @@
 
       <tr>
         <td>
-          <h5>Población total de localidades</h5>
+          <h5>Población de localidades</h5>
         </td>
-        <td v-for="frente in frentes">{{ frente.p_municipio }}</td>
+        <td v-for="frente in frentes">{{ frente.p_total_localidades }}</td>
       </tr>
     </tbody>
   </table>

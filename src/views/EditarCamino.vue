@@ -123,17 +123,26 @@ export default {
         poblacion_beneficiada: 0
       }
       let municipios = []
+      let msl =[]
+      for (const e of this.convenios){
+        if(!msl.includes(e.clave_municipio) && e.clave_localidad==''){
+          msl.push(e.clave_municipio)
+          metrics.poblacion_beneficiada+=(e.p_municipio*1)
+        }
+      }
+      for (const e of this.convenios){
+        if(!msl.includes(e.clave_municipio)){
+          metrics.poblacion_beneficiada+=(e.p_total_localidades*1)
+        }
+      }
       for (const e of this.convenios) {
         if (!municipios.includes(e.clave_municipio)) {
           metrics.total_localidades += (e.num_localidades * 1)
           metrics.poblacion_municipio += (e.p_municipio * 1)
+          metrics.poblacion_localidades += (e.p_total_localidades * 1)
+
           municipios.push(e.clave_municipio)
-        }
-        metrics.poblacion_localidades += (e.p_total_localidades * 1)
-        if (e.clave_localidad != '') {
-          metrics.poblacion_beneficiada += (e.p_total_localidades * 1)
-        } else {
-          metrics.poblacion_beneficiada += (e.p_municipio * 1)
+          
         }
       }
       return metrics
