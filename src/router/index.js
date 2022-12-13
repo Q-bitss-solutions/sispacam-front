@@ -47,13 +47,13 @@ const routes = [
     path: '/financiero',
     name: 'DatosFinancieros',
     component: financieros,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/avancefinanciero',
     name: 'DatosAvanceFinancieros',
     component: avancefinancieros,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: false }
   },
   {
     path: '/altacamino',

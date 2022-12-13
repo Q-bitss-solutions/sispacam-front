@@ -60,7 +60,7 @@ export default {
                 if(response.perfil=="RESIDENTE"){
                     router.replace('/obras')
                 }else{
-                    router.replace("/busqueda")
+                    router.replace("/caminos")
                 }
 
             }
