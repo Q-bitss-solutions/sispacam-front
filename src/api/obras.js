@@ -54,7 +54,8 @@ export function getSpago(fecha) {
 
 export function getAllObras(){
   return request({
-    url: '/caminos/',
+    // url: '/caminos/',
+    url: '/camino/list/1/',
     method: 'get'
   })
 }

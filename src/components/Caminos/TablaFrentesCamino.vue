@@ -47,8 +47,8 @@
         <td>
           <h5>Presencia indígena</h5>
         </td>
-        <td v-for="frente in frentes">{{ frente.p_indigena }}</td>
-      </tr>
+        <td v-for="frente in frentes">{{ frente.presencia_indigena }}</td>
+      </tr> 
       <tr>
         <td>
           <h5>Grado de marginación</h5>
@@ -91,7 +91,7 @@
         <td>
           <h5>Población de localidades</h5>
         </td>
-        <td v-for="frente in frentes">{{ frente.p_total_localidades }}</td>
+        <td v-for="frente in frentes">{{ frente.p_localidades }}</td>
       </tr>
     </tbody>
   </table>

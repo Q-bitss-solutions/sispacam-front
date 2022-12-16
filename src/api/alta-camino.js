@@ -74,7 +74,8 @@ export function CaminoPut(data, clave){
 
 export function CreateBeneficiarioCamino(idCamino, data){
     return request({
-        url: '/beneficiariosCamino/',
+        // url: '/beneficiariosCamino/',
+        url:`/camino/${idCamino}/beneficiarios`,
         method:'post',
         data:data
     })
@@ -82,8 +83,10 @@ export function CreateBeneficiarioCamino(idCamino, data){
 
 export function listBeneficiariosCamino(idCamino){
     return request({
-        // url:`/camino/${idCamino}/beneficiarios`,
-        url:'/beneficiariosCamino/',
+        // Openshift
+        url:`/camino/${idCamino}/beneficiarios`,
+        // Json server mock
+        // url:'/beneficiariosCamino/',
         method:'get',
 
     })
@@ -91,7 +94,7 @@ export function listBeneficiariosCamino(idCamino){
 
 export function deleteBeneficiariosCamino(id){
     return request({
-        url:'/beneficiariosCamino/'+id+'/',
+        url:`/camino/${idCamino}/beneficiarios`,
         method:'delete'
     })
 }

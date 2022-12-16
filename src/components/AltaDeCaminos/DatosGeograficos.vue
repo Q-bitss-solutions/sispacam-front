@@ -275,7 +275,9 @@ export default {
             icve_estado_inegi: null,
             estadosHabilitado: false,
             estadosData: [],
-            estadosFields: { text: 'nombre', value: 'clave_agee' },
+            // Estaba mockeado
+            // estadosFields: { text: 'nombre', value: 'clave_agee' },
+            estadosFields: { text: 'nom_agee', value: 'cve_agee' },
             tipo_camino: null,
             otroTipoCamino: null,
             icve_municipio: null,
@@ -415,8 +417,8 @@ export default {
                 const res = await getEdos()
                 const results = res.results;
                 // this.estadosData = res.results;
-                this.estadosData = res;
-                console.log(res);
+                this.estadosData = results;
+                console.log(results);
                 this.estadosHabilitado = true;
                 this.icve_estado_inegi = null;
             } catch (error) {

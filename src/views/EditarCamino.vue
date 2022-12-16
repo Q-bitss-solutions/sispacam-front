@@ -1,10 +1,9 @@
 <template>
   <div>
-    <h1>Editar Camino: {{ clave }}</h1>
 
     <hr class="red" />
 
-    <h2>Información General</h2>
+    <h2>Edición del camino: {{clave}}</h2>
 
     <div class="row">
       <div class="row col-md-9">
@@ -37,7 +36,7 @@
 
     <ModalSCT v-if="showModal">
       <h3 slot="header">Agregar Beneficiario de Obra</h3>
-      <FormAgregarBeneficiario @updateFrentes="GetConvenios" v-on:lololo="showModal=false" slot="body">
+      <FormAgregarBeneficiario @updateFrentes="GetConvenios" v-on:closeModal="showModal=false" slot="body" :clave_estado="camino.datos_geograficos.icve_estado_inegi">
       </FormAgregarBeneficiario>
     </ModalSCT>
 
@@ -71,8 +70,9 @@ export default {
   name: "EditarCamino",
   data() {
     return {
+      camino : null,
+      // TODO: Quitar endpoint harcodeadp
       showModal: false,
-      cve_agee: "Oaxaca",
       icve_municipio: "San Juan Teita",
       localidades:
         'LAS PILAS, EL TERCO, EL TORITO',
@@ -89,7 +89,7 @@ export default {
       tren_maya: false,
       caminos_originales: false,
       fecha: "2021-09-23T01:49:49.762Z",
-      clave: "OAX-C-001",
+      clave: this.$route.params.obraId,
       iso: "OAX",
       usuarios: null,
       estatus: "C",
@@ -101,6 +101,8 @@ export default {
   methods: {
     async GetCamino(clave) {
       const response = await getupdate(clave);
+      this.camino = response;
+
     },
     closeModal() {
       console.log("Close Modal EC");
@@ -109,7 +111,7 @@ export default {
 
     async GetConvenios() {
       console.log("GetConvenios");
-      const response = await listBeneficiariosCamino(1);
+      const response = await listBeneficiariosCamino(this.clave);
       this.convenios = response
 
     }
@@ -122,7 +124,10 @@ export default {
         poblacion_localidades: 0,
         poblacion_beneficiada: 0
       }
+      console.log("CONVENIOS");
+      console.log(this.convenios);
       let municipios = []
+      // Municipio sin localidad
       let msl =[]
       for (const e of this.convenios){
         if(!msl.includes(e.clave_municipio) && e.clave_localidad==''){
@@ -152,6 +157,7 @@ export default {
 
   created() {
     this.GetConvenios()
+    this.GetCamino(this.clave)
   },
 
 
