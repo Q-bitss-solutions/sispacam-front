@@ -53,6 +53,7 @@ export default {
         return {
             isCanceled: false,
             camino_id: 0,
+            // Datos geografios
             cEstado: '',
             msgError: null,
             breadcrumb: ['Camino ' + this.$route.params.obraId],
@@ -61,6 +62,7 @@ export default {
     },
     methods: {
         setCEdo(e) {
+            // TODO:Entender porque hace esto
             const obj = JSON.parse(JSON.stringify(e))
             this.cEstado = obj.datos
         },

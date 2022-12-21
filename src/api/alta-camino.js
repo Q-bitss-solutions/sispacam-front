@@ -31,7 +31,7 @@ export function getMunicipios(cve_edo){
         url: '/municipio/',
         method: 'get',
         params: {
-            cve_agee:cve_edo
+            estado:cve_edo
         }
     })    
 }
@@ -44,13 +44,13 @@ export function generarId(data){
     })  
 }
 
-export function getLocalidades(icveEdo, icveMun){
+export function getLocalidades(clave_edo, clave_mun){
     return request({
-        url: '/localidad/',
+        url: '/localidades/',
         method: 'get',
         params: {
-            cve_agee: icveEdo,
-            cve_agem: icveMun                                    
+            clave_agee: clave_edo,
+            clave_agem: clave_mun                                    
         }
     })
 }

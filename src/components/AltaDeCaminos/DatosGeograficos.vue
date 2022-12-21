@@ -11,21 +11,22 @@
                 <label for="tipoCamino">Tipo de Camino:</label>
                 <div id="tipoCamino">
                     <label class="radio-inline">
-                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="cabecera" name="tipo_camino" value="C"
-                            :disabled="isCanceled" />
+                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="cabecera" name="tipo_camino"
+                            value="C" :disabled="isCanceled" />
                         Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="agencia" name="tipo_camino" value="A"
-                            :disabled="isCanceled" />
+                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="agencia" name="tipo_camino"
+                            value="A" :disabled="isCanceled" />
                         Agencia
                     </label>
                     <label class="radio-inline">
-                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="otro" name="tipo_camino" value="O"
-                            :disabled="isCanceled"> Otro
+                        <input v-model="DatosGeograficos.tipo_camino" type="radio" id="otro" name="tipo_camino"
+                            value="O" :disabled="isCanceled"> Otro
                     </label>
                     <label class="radio-inline">
-                        <input v-model="otroTipoCamino" v-if="DatosGeograficos.tipo_camino == 'O'" placeholder="Especificar otro" />
+                        <input v-model="otroTipoCamino" v-if="DatosGeograficos.tipo_camino == 'O'"
+                            placeholder="Especificar otro" />
                     </label>
                 </div>
             </div>
@@ -42,13 +43,13 @@
             <div class="col-md-6">
                 <!-- ESTADO -->
                 <label class="control-label" for="estado">Estado</label>
-                <ejs-combobox :class="{'form-control-error': $v.icve_estado_inegi.$error}" id="estado"
+                <ejs-combobox :class="{ 'form-control-error': $v.clave_estado_inegi.$error }" id="estado"
                     :dataSource="estadosData" :fields="estadosFields" placeholder="Selecciona un estado"
-                    :change="obtenerMunicipios" :enabled="estadosHabilitado" v-model="icve_estado_inegi"
-                    :disabled="cons" ref="refEstado" :value="valueEstado">
+                    :change="obtenerMunicipios" :enabled="estadosHabilitado"
+                    v-model="DatosGeograficos.estadoSeleccionado" ref="refEstado">
                 </ejs-combobox>
                 <div class="row col-md-10">
-                    <small v-if="!$v.icve_estado_inegi.required && $v.icve_estado_inegi.$error"
+                    <small v-if="!$v.clave_estado_inegi.required && $v.clave_estado_inegi.$error"
                         class="form-text form-text-error">
                         Este campo es obligatorio
                     </small>
@@ -59,10 +60,10 @@
 
                 <!-- MUNICIPIO -->
                 <label class="control-label" for="municipio">Municipio</label>
-                <ejs-combobox :class="{'form-control-error': $v.icve_municipio.$error}" id="municipio"
+                <ejs-combobox :class="{ 'form-control-error': $v.icve_municipio.$error }" id="municipio"
                     :dataSource="municipiosData" :fields="municipiosFields" placeholder="Selecciona un municipio"
-                    :close="obtenerLocalidades" :enabled="municipiosHabilitado" v-model="icve_municipio"
-                    ref="refMunicipio">
+                    :close="obtenerLocalidades" :enabled="municipiosHabilitado"
+                    v-model="DatosGeograficos.municipioSeleccionado" ref="refMunicipio">
                 </ejs-combobox>
                 <div class="row col-md-10" v-if="!$v.icve_municipio.required && $v.icve_municipio.$error">
                     <small class="form-text form-text-error">
@@ -71,15 +72,16 @@
                 </div>
 
                 <!-- LOCALIDAD -->
+                <!-- Checa si el tipo de camino es "Agencia" u "Otro" -->
                 <div v-if="'AO'.includes(DatosGeograficos.tipo_camino)">
                     <label class="control-label">Localidad</label>
                     <ejs-multiselect :dataSource="localidadesData" :fields="localidadesFields"
-                        placeholder="Selecciona una localidad" :enabled="localidadesHabilitado" v-model="localidades"
-                        :disabled="cons" id="localidades" ref="localidades" :close="updateLocalidades"
-                        :removed="updateLocalidades">
+                        placeholder="Selecciona una localidad" :enabled="localidadesHabilitado"
+                        v-model="DatosGeograficos.localidadesSeleccionadas" id="localidades" ref="localidades"
+                        :close="updateLocalidades" :removed="updateLocalidades">
                     </ejs-multiselect>
                 </div>
-            </div>      
+            </div>
         </div>
 
         <!-- DATOS NIVEL MUNICIPAL -->
@@ -97,24 +99,23 @@
                             <div id="datosNivelMunicipal" class="table-responsive">
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
-                                    <label>Regi&oacute;n:</label>
+                                    <label>Región:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="region" v-on:change="actualizadatos" v-model="region" :disabled="cons"
-                                        placeholder="Región" maxlength="40" class="form-control">
+                                    <input id="region" v-model="DatosGeograficos.region" placeholder="Región"
+                                        maxlength="40" class="form-control">
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
-                                    <label>Ubicaci&oacute;n:</label>
+                                    <label>Ubicación:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="ubicacion" v-on:change="actualizadatos" v-model="ubicacion"
-                                        :disabled="cons" v-on:keyup="fubicacion" placeholder="Ubicación"
+                                    <input id="ubicacion" v-model="DatosGeograficos.ubicacion" placeholder="Ubicación"
                                         class="form-control">
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
-                                    <label>Poblacion ind&iacute;gena</label>
+                                    <label>Poblacion indígena</label>
                                 </div>
                                 <div class="col-md-6">
                                     <input v-model="poblacion_indigena" class="form-control" type="text"
@@ -122,7 +123,7 @@
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
-                                    <label>Grado de marginaci&oacute;n:</label>
+                                    <label>Grado de marginación:</label>
                                 </div>
                                 <div class="col-md-6">
                                     <input type="text" v-model="marginacion" class="form-control" disabled>
@@ -140,7 +141,7 @@
                                     <label>Clave INEGI estado:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input v-model.number="icve_estado_inegi" class="form-control" type="number"
+                                    <input v-model.number="clave_estado_inegi" class="form-control" type="number"
                                         disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
@@ -157,9 +158,8 @@
                                     <label>Poblacion de municipio:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <ejs-numerictextbox format='n' :showSpinButton='false'
-                                        v-model.number="ip_poblacion_total_localidades" :disabled="cons"
-                                        :enabled='false' aria-disabled='false' value="0">
+                                    <ejs-numerictextbox format='n' :showSpinButton='false' :enabled='false'
+                                        aria-disabled='false' value="0">
                                     </ejs-numerictextbox>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
@@ -200,7 +200,7 @@
                                     <div id="datosNivelMunicipal" class="table-responsive">
                                         <div class="form-group">
                                             <div class="col-md-6">
-                                                <label>Poblaci&oacute;n Total de Localidades:</label>
+                                                <label>Población Total de Localidades:</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <ejs-numerictextbox format='n' :showSpinButton='false'
@@ -220,13 +220,14 @@
                         <div class="form-group">
                         </div>
                     </tr>
+                    <!-- Este botón no sirve -->
                     <div class="row" v-show="false">
                         <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
                             @click="$router.push('/datoscamino')">
                             Siguiente
                         </button>
                     </div>
-                    <a type="button" class="btn btn-default pull-right vertical-buffer" href="#datosCamino"
+                    <a type="button" class="btn btn-default pull-right vertical-buffer" @click="enviarDatos()" href="#datosCamino"
                         aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
                         siguiente
                     </a>
@@ -266,65 +267,79 @@ export default {
     },
     data: function () {
         return {
-            valueEstado: 0,
+            // Tipo Camino
+            tipo_camino: null,
+            otroTipoCamino: null,   //String que especifica el tipo de camino cuando se elige "Otro"
+
+            // Estados
+            estadosHabilitado: false,
+            estadosData: [],
+            estadosFields: { text: 'nombre', value: 'clave_agee' },
+
+            // Municipios
+            municipiosHabilitado: true,
+            municipiosData: [],
+            municipiosFields: { text: 'nombre', value: 'clave_agem', custom: 'clave_agee' },
+
+            // Localidades
+            localidadesHabilitado: false,
+            localidadesData: [],
+            localidadesFields: { text: 'nombre', value: 'clave_loc' },
+
+            // TODO: ver que hace esta variable
             ip_poblacion_total_localidades: 0,
             ipoblacion_municipio: 0,
             ilocalidades_municipio: 0,
-            ubicacion: '',
-            region: '',
-            icve_estado_inegi: null,
-            estadosHabilitado: false,
-            estadosData: [],
-            // Estaba mockeado
-            // estadosFields: { text: 'nombre', value: 'clave_agee' },
-            estadosFields: { text: 'nom_agee', value: 'cve_agee' },
-            tipo_camino: null,
-            otroTipoCamino: null,
-            icve_municipio: null,
-            municipiosHabilitado: false,
-            municipiosData: [],
-            municipiosFields: { text: 'nom_agem', value: 'cve_agem', custom: 'cve_agee' },
-            localidades: [],
-            localidadesHabilitado: false,
-            localidadesData: [],
-            localidadesFields: { text: 'nom_loc', value: 'cve_loc' },
+            clave_estado_inegi: null,
+
             localidadesTabla: [],
-            iTotalPoblacionIndigena: null,
+            iTotalPoblacionIndigena: 0,
             poblacion: 0,
-            marginacion: null,
+            marginacion: "",
             poblacion_indigena: null,
             isoEdo: '',
             editmode: false,
             cons: false,
 
-            DatosAlta:{
+            DatosAlta: {
 
             },
             DatosGeograficos: {
 
-                tipo_camino: '',
-                abreviaturaEdo: '',
+                // Tipo Camino
+                tipo_camino: null,
+                camino_otro: null,   //String que especifica el tipo de camino cuando se elige "Otro"
+
+                // Ubicaciones Seleccionadas
+                estadoSeleccionado: null,
+                municipioSeleccionado: null,
+                localidadesSeleccionadas: [],
+
+                // Campos Que funcionan v1
+                cve_agee: '',
+                icve_estado_inegi: '',
+                icve_municipio: '',
+                ip_poblacion_total_localidades: '',
                 iso: '',
+                marginacion: '',
+                poblacion_indigena: '',
+
+
+                abreviaturaEdo: '',
                 localidades: '',
                 icveestados: '',
                 region: '',
                 ubicacion: '',
-                poblacion_indigena: '',
                 totpoblacion: '',
-                icve_estado_inegi: '',
-                icve_municipio: '',
-                ip_poblacion_total_localidades: '',
                 ipoblacion_municipio: '',
                 ilocalidades_municipio: '',
-                marginacion: '',
-                cve_agee: '',
                 /*1*/
 
             }
         };
     },
     validations: {
-        icve_estado_inegi: {
+        clave_estado_inegi: {
             required,
 
         },
@@ -335,53 +350,29 @@ export default {
 
     methods: {
         // Guarda datos para alta de camino
-        updateCaminoData(data_camino){
+        // Al parecer no está en uso
+        updateCaminoData(data_camino) {
             this.$store.state.camino_alta.push(this.DatosAlta);
         },
 
-        //Envia datos Region
-        enviardatos_r() {
+        //Envia datos
+        enviarDatos() {
+            console.log("ENVIAR DATOS");
+            this.DatosGeograficos.cve_agee = this.DatosGeograficos.estadoSeleccionado
+            this.DatosGeograficos.icve_estado_inegi = this.DatosGeograficos.estadoSeleccionado
+            this.DatosGeograficos.icve_municipio = this.DatosGeograficos.municipioSeleccionado
+            this.DatosGeograficos.ilocalidades_municipio = this.DatosGeograficos.localidadesSeleccionadas.length
+            this.DatosGeograficos.ip_poblacion_total_localidades = 314159
+            this.DatosGeograficos.ipoblacion_municipio = 314159
+            this.DatosGeograficos.localidades = ['314']
+            this.DatosGeograficos.marginacion = '314159'
+            this.DatosGeograficos.poblacion_indigena = "314159"
+            this.DatosGeograficos.totpoblacion = 314159
+            this.DatosGeograficos.iso = "MXN"
+
             this.$emit("set-icveEdo", {
                 datos: this.DatosGeograficos
             });
-        },
-        async CargaDatos(clave) {
-            const response = await getupdate(clave)
-            this.$emit('update:camino_id', response.id)
-
-            this.$refs.refEstado.ej2Instances.value = response.cve_agee
-            const { results } = await getMunicipios(response.cve_agee)
-            this.municipiosData = results;
-            this.$refs.refMunicipio.ej2Instances.value = response.icve_municipio
-
-            const res = await getLocalidades(response.cve_agee,
-                response.icve_municipio)
-            this.ilocalidades_municipio = res.length;
-            this.ip_poblacion_total_localidades = res.reduce((x, y) => {
-                return x + y.pob;
-            }, 0)
-            this.icve_estado_inegi = response.cve_agee
-            this.localidadesHabilitado = false;
-            this.localidadesData = res;
-            this.icve_municipio = response.icve_municipio
-            this.$refs.localidades.ej2Instances.value = response.localidades
-            this.localidades = this.$refs.localidades.ej2Instances.value
-            const localidadesData = this.localidadesData;
-            this.localidadesTabla = localidadesData
-                .filter(a => this.localidades.includes(a.cve_loc));
-            this.region = response.datos_geograficos.region
-            this.ubicacion = response.datos_geograficos.ubicacion
-            this.poblacion_indigena = response.datos_geograficos.poblacion_indigena
-            this.marginacion = response.datos_geograficos.marginacion
-            this.totpoblacion = response.datos_geograficos.totpoblacion
-            //this.icve_estado_inegi = Number.parseInt(response.datos_geograficos[0].icve_estado_inegi) 
-            //this.icve_municipio = response.datos_geograficos[0].icve_municipio
-            //this.ip_poblacion_total_localidades = response.datos_geograficos[0].ip_poblacion_total_localidades
-            this.ipoblacion_municipio = response.datos_geograficos.ipoblacion_municipio
-            this.setEdoIso()
-            this.recalcularPoblacionTotal()
-            this.estadosHabilitado = false
-            this.cons = response.estatus == 'C' ? true : false
         },
         //Envia datos Ubicacion
         enviardatos_u() {
@@ -415,12 +406,11 @@ export default {
             try {
 
                 const res = await getEdos()
-                const results = res.results;
+                const results = res;
                 // this.estadosData = res.results;
                 this.estadosData = results;
-                console.log(results);
                 this.estadosHabilitado = true;
-                this.icve_estado_inegi = null;
+                this.clave_estado_inegi = null;
             } catch (error) {
                 console.log('error al obtener estados')
                 console.log(error);
@@ -430,14 +420,16 @@ export default {
         //municipios
         async obtenerMunicipios() {
             this.$emit("show-error", false);
-            this.icve_municipio = null;
+            this.DatosGeograficos.iso = this.estadosData[this.DatosGeograficos.estadoSeleccionado*1].iso
+            this.DatosGeograficos.municipioSeleccionado = null;
             this.municipiosHabilitado = true;
             this.clearLocalidades();
             try {
-                const { results } = await getMunicipios(this.icve_estado_inegi)
+                console.log(`Estado Seleccionado: ${this.estadoSeleccionado}`);
+                const results = await getMunicipios(this.estadoSeleccionado)
                 console.log(results);
 
-                this.municipiosData = results//new DataManager(results);
+                this.municipiosData = results
                 this.municipiosHabilitado = true;
             } catch (err) {
                 console.log('error al obtener municipios')
@@ -450,26 +442,25 @@ export default {
             try {
                 this.$emit("show-error", false);
                 this.clearLocalidades();
-                const res = await getLocalidades(this.icve_estado_inegi,
-                    this.icve_municipio)
-                    console.log(res);
+                const res = await getLocalidades(this.estadoSeleccionado,
+                    this.municipioSeleccionado)
+                console.log(res);
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
                     return x + y.pob;
                 }, 0)
 
                 this.localidadesHabilitado = true;
-                this.localidadesData = res//new DataManager(res);
+                this.localidadesData = res
 
                 this.setEdoIso()
-                this.DatosGeograficos.localidades = this.localidades
+                this.DatosGeograficos.localidades = this.localidadesSeleccionadas
                 this.DatosGeograficos.icveestados = this.icveestados
                 this.DatosGeograficos.region = this.region
                 this.DatosGeograficos.ubicacion = this.ubicacion
                 this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
                 this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
-                this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
-                this.DatosGeograficos.icve_municipio = this.icve_municipio
+                this.DatosGeograficos.clave_estado_inegi = this.clave_estado_inegi
                 this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
                 this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
                 this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
@@ -506,8 +497,7 @@ export default {
                 this.DatosGeograficos.ubicacion = this.ubicacion
                 this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
                 this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
-                this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
-                this.DatosGeograficos.icve_municipio = this.icve_municipio
+                this.DatosGeograficos.clave_estado_inegi = this.clave_estado_inegi
                 this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
                 this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
                 this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
@@ -523,6 +513,7 @@ export default {
                 this.ipoblacion_municipio = 0;
             }
         },
+
         updateLocalidades(e) {
             console.log(this.localidades);
             //this.localidades = this.$refs.localidades.ej2Instances.value
@@ -531,7 +522,7 @@ export default {
         },
 
         clearLocalidades() {
-            this.localidadesData = null;
+            this.localidadesData = [];
             this.localidadesHabilitado = false;
             this.localidades = [];
             this.localidadesTabla = [];
@@ -544,18 +535,12 @@ export default {
         setEdoIso() {
 
             const edoSelect = this.estadosData
-                .filter(a => a.cve_agee == this.icve_estado_inegi)
+                .filter(a => a.clave_agee == this.clave_estado_inegi)
             this.DatosGeograficos.iso = edoSelect[0].iso
-            this.DatosGeograficos.cve_agee = this.icve_estado_inegi
-            /*           this.$emit("set-icveEdo", {
-                           edo:{
-                               abreviaturaEdo:this.icve_estado_inegi,
-                               iso:edoSelect[0].iso
-                           }
-                           }); 
-            */
+            this.DatosGeograficos.clave_agee = this.clave_estado_inegi
+
             const munSelect = this.municipiosData
-                .filter(a => a.cve_agem == this.icve_municipio)
+                .filter(a => a.cve_agem == this.DatosGeograficos.municipioSeleccionado)
             this.marginacion = munSelect[0].grado_marginacion.descripcion
             this.poblacion_indigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
@@ -563,14 +548,13 @@ export default {
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
         },
         actualizadatos() {
-            this.DatosGeograficos.localidades = this.localidades
-            this.DatosGeograficos.icveestados = this.icveestados
-            this.DatosGeograficos.region = this.region
-            this.DatosGeograficos.ubicacion = this.ubicacion
+            this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas
+            this.DatosGeograficos.icveestados = this.DatosGeograficos.estadoSeleccionado
+
             this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
             this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
-            this.DatosGeograficos.icve_estado_inegi = this.icve_estado_inegi
-            this.DatosGeograficos.icve_municipio = this.icve_municipio
+            this.DatosGeograficos.clave_estado_inegi = this.clave_estado_inegi
+            this.DatosGeograficos.icve_municipio = this.DatosGeograficos.municipioSeleccionado
             this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
             this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
             this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
@@ -587,18 +571,24 @@ export default {
     },
     async created() {
         await this.initData()
-        if (this.$route.params.obraId) {
-            this.estadosHabilitado = false
-            this.CargaDatos(this.$route.params.obraId)
-            this.editmode = true
-        }
     },
     beforeMount: function () {
         this.cons = this.isCanceled
     },
     computed: {
-        getEditmode() {
-            return this.estadosHabilitado
+        poblacionTotalLocalidades() {
+            if (this.localidadesData != null) {
+                return this.localidadesData.reduce((x, y) => {
+                    return x + y.poblacion;
+                }, 0)
+            } else {
+                return 0
+            }
+        },
+
+        printData() {
+            console.log(this.DatosGeograficos);
+            return 0
         }
     }
 }
