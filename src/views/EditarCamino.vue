@@ -3,24 +3,24 @@
 
     <hr class="red" />
 
-    <h2>Edición del camino: {{clave}}</h2>
+    <h2>Edición del camino: {{ clave }}</h2>
 
     <div class="row">
       <div class="row col-md-9">
         <div class="col-md-6">Tipo de Camino</div>
-        <div class="col-md-6">{{ tipo_camino }}</div>
+        <div class="col-md-6">{{ camino.tipo_camino }}</div>
       </div>
       <div class="row col-md-9">
         <div class="col-md-6">Estado</div>
-        <div class="col-md-6">{{ cve_agee }}</div>
+        <div class="col-md-6">{{ camino.cve_agee }}</div>
       </div>
       <div class="row col-md-9">
         <div class="col-md-6">Municipio</div>
-        <div class="col-md-6">{{ icve_municipio }}</div>
+        <div class="col-md-6">{{ camino.icve_municipio }}</div>
       </div>
       <div class="row col-md-9">
         <div class="col-md-6">Localidades</div>
-        <div class="col-md-6">{{ localidades }}</div>
+        <div class="col-md-6">{{ camino.localidades }}</div>
       </div>
     </div>
 
@@ -36,17 +36,17 @@
 
     <ModalSCT v-if="showModal">
       <h3 slot="header">Agregar Beneficiario de Obra</h3>
-      <FormAgregarBeneficiario @updateFrentes="GetConvenios" v-on:closeModal="showModal=false" slot="body" :clave_estado="camino.datos_geograficos.icve_estado_inegi">
+      <FormAgregarBeneficiario @updateFrentes="GetConvenios(camino.id)" v-on:closeModal="showModal=false" slot="body" :camino="camino">
       </FormAgregarBeneficiario>
     </ModalSCT>
 
     <hr class="red" />
 
     <div class="row">
-      <tabla-frentes-camino @deleteBeneficiario="GetConvenios" :frentes="this.convenios"></tabla-frentes-camino>
+      <tabla-frentes-camino @deleteBeneficiario="GetConvenios(camino.id)" :frentes="this.convenios"></tabla-frentes-camino>
     </div>
 
-    <hr class="red" />
+    <!-- <hr class="red" />
 
     <div class="row">
       <div class="col-md-8">
@@ -54,7 +54,7 @@
           :poblacion_municipios="metrics.poblacion_municipio" :poblacion_localidades="metrics.poblacion_localidades"
           :poblacion_beneficiada="metrics.poblacion_beneficiada"></AgregadoFrentes>
       </div>
-    </div>
+    </div> -->
 
   </div>
 </template>
@@ -70,9 +70,10 @@ export default {
   name: "EditarCamino",
   data() {
     return {
-      camino : null,
-      // TODO: Quitar endpoint harcodeadp
+      camino: null,
       showModal: false,
+
+      // TODO: Quitar endpoint harcodeadp
       icve_municipio: "San Juan Teita",
       localidades:
         'LAS PILAS, EL TERCO, EL TORITO',
@@ -102,16 +103,18 @@ export default {
     async GetCamino(clave) {
       const response = await getupdate(clave);
       this.camino = response;
-
+      console.log("CAMINO");
+      console.log(this.camino);
+      this.GetConvenios(response.id)
     },
     closeModal() {
       console.log("Close Modal EC");
       this.showModal = false;
     },
 
-    async GetConvenios() {
+    async GetConvenios(id_camino) {
       console.log("GetConvenios");
-      const response = await listBeneficiariosCamino(this.clave);
+      const response = await listBeneficiariosCamino(id_camino);
       this.convenios = response
 
     }
@@ -128,16 +131,16 @@ export default {
       console.log(this.convenios);
       let municipios = []
       // Municipio sin localidad
-      let msl =[]
-      for (const e of this.convenios){
-        if(!msl.includes(e.clave_municipio) && e.clave_localidad==''){
+      let msl = []
+      for (const e of this.convenios) {
+        if (!msl.includes(e.clave_municipio) && e.clave_localidad == '') {
           msl.push(e.clave_municipio)
-          metrics.poblacion_beneficiada+=(e.p_municipio*1)
+          metrics.poblacion_beneficiada += (e.p_municipio * 1)
         }
       }
-      for (const e of this.convenios){
-        if(!msl.includes(e.clave_municipio)){
-          metrics.poblacion_beneficiada+=(e.p_total_localidades*1)
+      for (const e of this.convenios) {
+        if (!msl.includes(e.clave_municipio)) {
+          metrics.poblacion_beneficiada += (e.p_total_localidades * 1)
         }
       }
       for (const e of this.convenios) {
@@ -147,7 +150,7 @@ export default {
           metrics.poblacion_localidades += (e.p_total_localidades * 1)
 
           municipios.push(e.clave_municipio)
-          
+
         }
       }
       return metrics
@@ -156,7 +159,6 @@ export default {
   },
 
   created() {
-    this.GetConvenios()
     this.GetCamino(this.clave)
   },
 

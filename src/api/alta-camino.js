@@ -44,13 +44,12 @@ export function generarId(data){
     })  
 }
 
-export function getLocalidades(clave_edo, clave_mun){
+export function getLocalidades(id_municipio){
     return request({
         url: '/localidades/',
         method: 'get',
         params: {
-            clave_agee: clave_edo,
-            clave_agem: clave_mun                                    
+            municipio:id_municipio,                                   
         }
     })
 }

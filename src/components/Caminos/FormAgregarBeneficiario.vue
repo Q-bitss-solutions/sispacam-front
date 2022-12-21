@@ -58,23 +58,20 @@ export default {
   name: "FormAgregarBeneficiario",
   data: function () {
     return {
-      id_camino: 1,
+      calve_estado: this.camino.cve_agee,
+      id_camino: this.camino.id,
       clave_municipio: "",  // Municipio Seleccionado
       clave_localidad: "",  // Localidad Selecccionada
       region: "",
       ubicacion: "",
       municipiosData: [],
-      municipiosFields: { text: 'nom_agem', value: 'cve_agem' },
+      municipiosFields: { text: 'nombre', value: 'clave_agem' },
       localidadesData: [],
-      localidadesFields: { text: 'nom_loc', value: 'cve_loc' }
+      localidadesFields: { text: 'nombre', value: 'id' }
     };
   },
   props: {
-    clave_estado: String,
-  },
-
-  computed:{
-
+    camino: Object,
   },
 
   validations: {
@@ -87,14 +84,14 @@ export default {
       this.$emit("closeModal");
     },
 
-    // TODO: Ir por los municipios del estado
-    //municipios
+    // Obtener Municipios
     async obtenerMunicipios() {
       this.$emit("show-error", false);
       this.clave_municipio = null;
       this.clearLocalidades();
       try {
-        const { results } = await getMunicipios(this.clave_estado)
+        const results = await getMunicipios(this.clave_estado)
+        console.log(this.results);
 
         this.municipiosData = results
       } catch (err) {
@@ -105,10 +102,12 @@ export default {
     },
     //localidades
     async obtenerLocalidades() {
+      const objMunSeleccionado = this.municipiosData[(this.camino.icve_municipio*1)-1]
+
       try {
         this.$emit("show-error", false);
         this.clearLocalidades();
-        const res = await getLocalidades(this.clave_estado , this.clave_municipio)
+        const res = await getLocalidades(objMunSeleccionado.id)
         // const res = await getLocalidades(15 , 120)
         console.log(res);
 
@@ -125,21 +124,21 @@ export default {
     clearLocalidades() {
       this.localidadesData = null;
       this.localidadesHabilitado = false;
-      this.localidades = [];
-      this.localidadesTabla = [];
     },
 
     async postBeneficiarioCamino() {
       const wiu = {
-        id: getRandomId(),
-        camino_id: this.camino_id,
-        municipio: this.clave_municipio,
+        clave_camino:this.camino.clave,
+        estado: this.camino.cve_agee,
+        // municipio: this.clave_municipio,
+        municipio: this.MunicipioSeleccionado.id,
+        // localidad: this.clave_localidad,
         localidad: this.clave_localidad,
+        
+        // camino_id: this.camino_id,
         region: this.region,
         ubicacion: this.ubicacion,
-        // TODO: quitar hardcode estado
-        estado: 26,
-
+        
       };
       console.log(wiu);
       const response = await CreateBeneficiarioCamino(this.id_camino, wiu);
@@ -151,6 +150,11 @@ export default {
   created() {
     this.obtenerMunicipios()
   },
+  computed:{
+    MunicipioSeleccionado(){
+      return this.municipiosData[(this.clave_municipio*1)-1]
+    },
+  }
 };
 </script>
 

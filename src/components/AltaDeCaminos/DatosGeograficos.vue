@@ -62,8 +62,8 @@
                 <label class="control-label" for="municipio">Municipio</label>
                 <ejs-combobox :class="{ 'form-control-error': $v.icve_municipio.$error }" id="municipio"
                     :dataSource="municipiosData" :fields="municipiosFields" placeholder="Selecciona un municipio"
-                    :close="obtenerLocalidades" :enabled="municipiosHabilitado"
-                    v-model="DatosGeograficos.municipioSeleccionado" ref="refMunicipio">
+                    :change="obtenerLocalidades" :enabled="municipiosHabilitado" v-model="icve_municipio"
+                    ref="refMunicipio">
                 </ejs-combobox>
                 <div class="row col-md-10" v-if="!$v.icve_municipio.required && $v.icve_municipio.$error">
                     <small class="form-text form-text-error">
@@ -78,7 +78,7 @@
                     <ejs-multiselect :dataSource="localidadesData" :fields="localidadesFields"
                         placeholder="Selecciona una localidad" :enabled="localidadesHabilitado"
                         v-model="DatosGeograficos.localidadesSeleccionadas" id="localidades" ref="localidades"
-                        :close="updateLocalidades" :removed="updateLocalidades">
+                        :change="updateLocalidades" :removed="updateLocalidades">
                     </ejs-multiselect>
                 </div>
             </div>
@@ -227,8 +227,9 @@
                             Siguiente
                         </button>
                     </div>
-                    <a type="button" class="btn btn-default pull-right vertical-buffer" @click="enviarDatos()" href="#datosCamino"
-                        aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
+                    <a type="button" class="btn btn-default pull-right vertical-buffer" @click="enviarDatos()"
+                        href="#datosCamino" aria-controls="profile" role="tab" data-toggle="tab" id="input-1"
+                        aria-expanded="true">
                         siguiente
                     </a>
                 </tbody>
@@ -279,7 +280,8 @@ export default {
             // Municipios
             municipiosHabilitado: true,
             municipiosData: [],
-            municipiosFields: { text: 'nombre', value: 'clave_agem', custom: 'clave_agee' },
+            municipiosFields: { text: 'nombre', value: 'clave_agem' },
+            municipio_seleccionado_id: 0,
 
             // Localidades
             localidadesHabilitado: false,
@@ -291,6 +293,7 @@ export default {
             ipoblacion_municipio: 0,
             ilocalidades_municipio: 0,
             clave_estado_inegi: null,
+            icve_municipio: null,
 
             localidadesTabla: [],
             iTotalPoblacionIndigena: 0,
@@ -360,15 +363,14 @@ export default {
             console.log("ENVIAR DATOS");
             this.DatosGeograficos.cve_agee = this.DatosGeograficos.estadoSeleccionado
             this.DatosGeograficos.icve_estado_inegi = this.DatosGeograficos.estadoSeleccionado
-            this.DatosGeograficos.icve_municipio = this.DatosGeograficos.municipioSeleccionado
+            this.DatosGeograficos.icve_municipio = this.icve_municipio
+            this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas
             this.DatosGeograficos.ilocalidades_municipio = this.DatosGeograficos.localidadesSeleccionadas.length
             this.DatosGeograficos.ip_poblacion_total_localidades = 314159
-            this.DatosGeograficos.ipoblacion_municipio = 314159
-            this.DatosGeograficos.localidades = ['314']
-            this.DatosGeograficos.marginacion = '314159'
             this.DatosGeograficos.poblacion_indigena = "314159"
             this.DatosGeograficos.totpoblacion = 314159
-            this.DatosGeograficos.iso = "MXN"
+            this.DatosGeograficos.marginacion = 314159
+            console.log(this.DatosGeograficos);
 
             this.$emit("set-icveEdo", {
                 datos: this.DatosGeograficos
@@ -420,13 +422,16 @@ export default {
         //municipios
         async obtenerMunicipios() {
             this.$emit("show-error", false);
-            this.DatosGeograficos.iso = this.estadosData[this.DatosGeograficos.estadoSeleccionado*1].iso
+            console.log("WIU");
+            const objEstadoSeleccionado = this.estadosData[(this.DatosGeograficos.estadoSeleccionado * 1) - 1]
+            console.log(objEstadoSeleccionado.iso);
+            this.DatosGeograficos.iso = objEstadoSeleccionado.iso.substring(0, 3)
             this.DatosGeograficos.municipioSeleccionado = null;
             this.municipiosHabilitado = true;
             this.clearLocalidades();
             try {
-                console.log(`Estado Seleccionado: ${this.estadoSeleccionado}`);
-                const results = await getMunicipios(this.estadoSeleccionado)
+                console.log(`Estado Seleccionado: ${this.DatosGeograficos.estadoSeleccionado}`);
+                const results = await getMunicipios(this.DatosGeograficos.estadoSeleccionado)
                 console.log(results);
 
                 this.municipiosData = results
@@ -439,11 +444,12 @@ export default {
         },
         //localidades
         async obtenerLocalidades() {
+            this.clearLocalidades();
+            const objMunSeleccionado = this.municipiosData[(this.icve_municipio * 1) - 1]
+            console.log(objMunSeleccionado);
             try {
                 this.$emit("show-error", false);
-                this.clearLocalidades();
-                const res = await getLocalidades(this.estadoSeleccionado,
-                    this.municipioSeleccionado)
+                const res = await getLocalidades(objMunSeleccionado.id)
                 console.log(res);
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
@@ -491,7 +497,7 @@ export default {
                         this.localidades = [this.localidades]
                     }
                 }
-                this.DatosGeograficos.localidades = this.localidades
+                // this.DatosGeograficos.localidades = this.localidades
                 this.DatosGeograficos.icveestados = this.icveestados
                 this.DatosGeograficos.region = this.region
                 this.DatosGeograficos.ubicacion = this.ubicacion
@@ -515,8 +521,8 @@ export default {
         },
 
         updateLocalidades(e) {
+            this.localidades = this.DatosGeograficos.localidadesSeleccionadas
             console.log(this.localidades);
-            //this.localidades = this.$refs.localidades.ej2Instances.value
             this.recalcularPoblacionTotal()
 
         },
