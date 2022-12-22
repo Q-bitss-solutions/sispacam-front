@@ -65,7 +65,7 @@
         <td>
           <h5>Clave INEGI estado</h5>
         </td>
-        <td v-for="frente in frentes">{{ frente.clave_estado }}</td>
+        <td v-for="frente in frentes">{{ frente.estado }}</td>
       </tr>
       <tr>
         <td>

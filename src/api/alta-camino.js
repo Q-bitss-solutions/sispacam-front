@@ -97,3 +97,10 @@ export function deleteBeneficiariosCamino(id){
         method:'delete'
     })
 }
+
+export function listMetricasBeneficiario(idCamino){
+    return request({
+        url:`/camino/${idCamino}/metricas`,
+        method:'get'
+    })
+}

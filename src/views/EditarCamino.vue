@@ -46,15 +46,13 @@
       <tabla-frentes-camino @deleteBeneficiario="GetConvenios(camino.id)" :frentes="this.convenios"></tabla-frentes-camino>
     </div>
 
-    <!-- <hr class="red" />
+    <hr class="red" />
 
     <div class="row">
       <div class="col-md-8">
-        <AgregadoFrentes :total_localidades="metrics.total_localidades"
-          :poblacion_municipios="metrics.poblacion_municipio" :poblacion_localidades="metrics.poblacion_localidades"
-          :poblacion_beneficiada="metrics.poblacion_beneficiada"></AgregadoFrentes>
+        <AgregadoFrentes :metrics="metrics"></AgregadoFrentes>
       </div>
-    </div> -->
+    </div>
 
   </div>
 </template>
@@ -63,7 +61,7 @@
 import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue";
 import ModalSCT from "../components/Modals/SCTModal.vue";
 import FormAgregarBeneficiario from "../components/Caminos/FormAgregarBeneficiario.vue";
-import { getupdate, listBeneficiariosCamino } from "../api/alta-camino";
+import { getupdate, listBeneficiariosCamino, listMetricasBeneficiario } from "../api/alta-camino";
 import AgregadoFrentes from "../components/Caminos/AgregadoFrentes.vue";
 export default {
   components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario, AgregadoFrentes },
@@ -72,6 +70,7 @@ export default {
     return {
       camino: null,
       showModal: false,
+      metrics:[],
 
       // TODO: Quitar endpoint harcodeadp
       icve_municipio: "San Juan Teita",
@@ -106,6 +105,7 @@ export default {
       console.log("CAMINO");
       console.log(this.camino);
       this.GetConvenios(response.id)
+      this.GetMetrics(response.id)
     },
     closeModal() {
       console.log("Close Modal EC");
@@ -116,44 +116,12 @@ export default {
       console.log("GetConvenios");
       const response = await listBeneficiariosCamino(id_camino);
       this.convenios = response
-
-    }
-  },
-  computed: {
-    metrics() {
-      const metrics = {
-        total_localidades: 0,
-        poblacion_municipio: 0,
-        poblacion_localidades: 0,
-        poblacion_beneficiada: 0
-      }
-      console.log("CONVENIOS");
-      console.log(this.convenios);
-      let municipios = []
-      // Municipio sin localidad
-      let msl = []
-      for (const e of this.convenios) {
-        if (!msl.includes(e.clave_municipio) && e.clave_localidad == '') {
-          msl.push(e.clave_municipio)
-          metrics.poblacion_beneficiada += (e.p_municipio * 1)
-        }
-      }
-      for (const e of this.convenios) {
-        if (!msl.includes(e.clave_municipio)) {
-          metrics.poblacion_beneficiada += (e.p_total_localidades * 1)
-        }
-      }
-      for (const e of this.convenios) {
-        if (!municipios.includes(e.clave_municipio)) {
-          metrics.total_localidades += (e.num_localidades * 1)
-          metrics.poblacion_municipio += (e.p_municipio * 1)
-          metrics.poblacion_localidades += (e.p_total_localidades * 1)
-
-          municipios.push(e.clave_municipio)
-
-        }
-      }
-      return metrics
+    },
+    async GetMetrics(id_camino){
+      const response = await listMetricasBeneficiario(id_camino);
+      console.log("METRICS");
+      console.log(this.metrics);
+      this.metrics = response
     }
 
   },

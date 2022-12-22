@@ -58,7 +58,7 @@ export default {
   name: "FormAgregarBeneficiario",
   data: function () {
     return {
-      calve_estado: this.camino.cve_agee,
+      clave_estado: this.camino.cve_agee,
       id_camino: this.camino.id,
       clave_municipio: "",  // Municipio Seleccionado
       clave_localidad: "",  // Localidad Selecccionada
@@ -133,7 +133,7 @@ export default {
         // municipio: this.clave_municipio,
         municipio: this.MunicipioSeleccionado.id,
         // localidad: this.clave_localidad,
-        localidad: this.clave_localidad,
+        localidad: this.clave_localidad==null?"":this.clave_localidad,
         
         // camino_id: this.camino_id,
         region: this.region,
