@@ -4,7 +4,7 @@
 
       <!-- MUNICIPIO -->
       <div class="col-md-12">
-        <label class="control-label" for="municipio">Municipio</label>
+        <label class="control-label" for="municipio">*Municipio</label>
         <ejs-combobox :dataSource="municipiosData" :fields="municipiosFields"
           :class="{ 'form-control-error': $v.icve_municipio.$error }" id="municipio"
           placeholder="Selecciona un municipio" ref="refMunicipio" v-model="clave_municipio" v-on:change="obtenerLocalidades">
@@ -26,21 +26,29 @@
 
       <!-- REGION -->
       <div class="col-md-12">
-        <label class="control-label" for="region">Region</label>
+        <label class="control-label" for="region">*Region</label>
 
         <input id="region" v-model="region" placeholder="Región" maxlength="40" class="e-input" />
       </div>
 
       <!-- UBICACION -->
       <div class="col-md-12">
+        <label class="control-label" for="region">*Ubicación</label>
 
         <input id="ubicacion" v-model="ubicacion" placeholder="Ubicación" maxlength="40" class="e-input" />
       </div>
 
+
+
+      <div class="my-4"><small>*Campos obligatorios</small></div>
+
       <div class="col-md-8"></div>
       <div class="col-md-4 float-right">
         <button class="btn btn-danger" @click="closeModal">Cerrar</button>
-        <button class="btn btn-primary active" @click="postBeneficiarioCamino">
+        <button v-if="ValidForm" class="btn btn-primary active" @click="postBeneficiarioCamino">
+          Aceptar
+        </button>
+        <button v-if="!ValidForm" class="btn btn-primary disabled">
           Aceptar
         </button>
       </div>
@@ -154,6 +162,16 @@ export default {
     MunicipioSeleccionado(){
       return this.municipiosData[(this.clave_municipio*1)-1]
     },
+    ValidForm(){
+      if(this.clave_municipio != "" &&
+        this.region != "" &&
+        this.ubicacion != ""
+      ){
+        return true
+      }else{
+        return false
+      }
+    }
   }
 };
 </script>
