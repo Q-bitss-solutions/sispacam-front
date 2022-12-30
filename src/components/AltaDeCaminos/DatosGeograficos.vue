@@ -246,9 +246,7 @@
 import Vue from "vue";
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
-import { DataManager, Query } from "@syncfusion/ej2-data";
 import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
-import { getupdate } from '@/api/alta-camino';
 import { required } from 'vuelidate/lib/validators'
 
 Vue.use(NumericTextBoxPlugin);
@@ -324,8 +322,6 @@ export default {
                 iso: '',
                 marginacion: '',
                 poblacion_indigena: '',
-
-
                 abreviaturaEdo: '',
                 localidades: '',
                 icveestados: '',
@@ -335,7 +331,6 @@ export default {
                 ipoblacion_municipio: '',
                 ilocalidades_municipio: '',
                 /*1*/
-
             }
         };
     },
@@ -350,11 +345,6 @@ export default {
     },
 
     methods: {
-        // Guarda datos para alta de camino
-        // Al parecer no está en uso
-        updateCaminoData(data_camino) {
-            this.$store.state.camino_alta.push(this.DatosAlta);
-        },
 
         // Borra toda la selección
         clearSelection(){
@@ -403,23 +393,11 @@ export default {
             this.DatosGeograficos.ubicacion = this.ubicacion
             this.enviardatos_u()
         },
-
-        //NEW ORDER
-        //estados
-        async siguiente() {
-
-            this.$emit("show-error", false);
-            this.$v.$touch()
-            if (this.$v.$invalid) {
-                this.submitStatus = "Error";
-            }
-        },
         async initData() {
             try {
 
                 const res = await getEdos()
                 const results = res;
-                // this.estadosData = res.results;
                 this.estadosData = results;
                 this.estadosHabilitado = true;
             } catch (error) {
@@ -552,29 +530,8 @@ export default {
                 .filter(a => a.cve_agem == this.DatosGeograficos.municipioSeleccionado)
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
-            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
+            var str = JSON.stringify(munSelect, null, 2); // spacing level = 2
         },
-        actualizadatos() {
-            this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas
-            this.DatosGeograficos.icveestados = this.DatosGeograficos.estadoSeleccionado
-
-            this.DatosGeograficos.poblacion_indigena = this.poblacion_indigena
-            this.DatosGeograficos.totpoblacion = this.ipoblacion_municipio
-            this.DatosGeograficos.clave_estado_inegi = this.clave_estado_inegi
-            this.DatosGeograficos.icve_municipio = this.DatosGeograficos.municipioSeleccionado
-            this.DatosGeograficos.ip_poblacion_total_localidades = this.ip_poblacion_total_localidades
-            this.DatosGeograficos.ipoblacion_municipio = this.ipoblacion_municipio
-            this.DatosGeograficos.ilocalidades_municipio = this.ilocalidades_municipio
-            this.DatosGeograficos.marginacion = this.marginacion
-            /*2*/
-            this.$emit("set-icveEdo", {
-                datos: this.DatosGeograficos
-            });
-        },
-    },
-    mounted() {
-        this.$nextTick(() => {
-        })
     },
     async created() {
         await this.initData()
@@ -583,25 +540,14 @@ export default {
         this.cons = this.isCanceled
     },
     computed: {
-        poblacionTotalLocalidades() {
-            if (this.localidadesData != null) {
-                return this.localidadesData.reduce((x, y) => {
-                    return x + y.poblacion;
-                }, 0)
-            } else {
-                return 0
-            }
-        },
+        //
     }
 }
-</script> 
+</script>
 
 <style>
 @import "./../../../node_modules/@syncfusion/ej2-bootstrap-theme/styles/bootstrap.css";
 
-/*
-@import "ej2/base/bootstrap.scss";
-*/
 h2 {
     display: block;
     font-size: 1.5em;

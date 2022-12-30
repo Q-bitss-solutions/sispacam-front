@@ -35,18 +35,15 @@
 
 <script>
 import { mapMutations } from 'vuex'
-import { mapGetters } from 'vuex';
 import { getupdate } from '@/api/alta-camino';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
-// import DatosGeograficos from '../components/AltaDeCaminos/DatosGeograficos1.vue';
 
 export default {
     name: "AltaCamino",
     components: {
     DatosGeograficos,
     DatosCamino,
-    // DatosGeograficos
 },
 
     data() {
@@ -71,7 +68,6 @@ export default {
         showError(e) {
             console.log('show-error')
             this.msgError = e;
-            //setTimeout(() => this.msgError = false, 10000);
         },
         ...mapMutations(['setBreadcrumb']),
         async getStatus(clave) {
@@ -98,5 +94,4 @@ export default {
         }
     }
 }
-
 </script>
