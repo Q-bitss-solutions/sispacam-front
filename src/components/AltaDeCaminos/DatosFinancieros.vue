@@ -7,7 +7,7 @@
 
                 <h4>Tipo de búsqueda</h4>
 
-                <input type="radio" id="actual" value="actual" v-model="tbusqueda" />
+                <input type="radio" id="actual" value="actual" v-model="tbusqueda" v-on:change="wiu"/>
                 <label for="actual">Consulta año actual</label>
                 </br>
 
@@ -19,7 +19,7 @@
                 <div v-if="tbusqueda === 'actual'">
                     <label for="start">Fecha Consulta:</label>
 
-                    <input title="Fecha de consulta de informacion" type="date" id="start" name="trip-start"
+                    <input title="Fecha de consulta de informacion" type="date" id="start"
                         v-model="fechac">
                 </div>
 
@@ -215,13 +215,11 @@ export default {
     },
     methods: {
 
-        // updateSearchMethod() {
-        //     console.log("wiui");
-        //     if (this.tbusqueda == "actual"){
-        //         console.log("Wiu");
-        //         this.fechac = this.ft;
-        //     }
-        // },
+        wiu() {
+            if (this.tbusqueda == "actual"){
+                this.fechac = this.ft;
+            }
+        },
         rowSelected: function (args) {
             let selectedrowindex = this.$refs.grid.getSelectedRowIndexes();  // Get the selected row indexes.
             //alert(selectedrowindex); // To alert the selected row indexes.

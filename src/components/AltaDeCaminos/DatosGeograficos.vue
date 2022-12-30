@@ -362,11 +362,13 @@ export default {
             this.DatosGeograficos.icve_municipio = this.icve_municipio
             this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas
             this.DatosGeograficos.ilocalidades_municipio = this.DatosGeograficos.localidadesSeleccionadas.length
+
+            // TODO: checar flujo de esto
             this.DatosGeograficos.ip_poblacion_total_localidades = 314159
-            this.DatosGeograficos.poblacion_indigena = "314159"
-            this.DatosGeograficos.totpoblacion = 314159
+            this.DatosGeograficos.poblacion_indigena = "314159" //Suma de poblacion indigena a nivel localidad
+            this.DatosGeograficos.totpoblacion = 314159 // Suma de población total por localidad
             this.DatosGeograficos.marginacion = 314159
-            this.DatosGeograficos.ipoblacion_municipio = 314159
+            this.DatosGeograficos.ipoblacion_municipio = 314159 //municipio.poblacion
             console.log(this.DatosGeograficos);
 
             this.$emit("set-icveEdo", {
