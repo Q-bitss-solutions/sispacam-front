@@ -241,6 +241,7 @@
 </template>
 
 <script>
+// TODO: Todo lo que tenga el numero 314159 está harcodeado
 import Vue from "vue";
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
@@ -252,8 +253,6 @@ import { required } from 'vuelidate/lib/validators'
 Vue.use(NumericTextBoxPlugin);
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
-
-const API = process.env.VUE_APP_SCT_SVC_BACK_BASE_URL;
 
 export default {
     name: 'DatosGeograficos',
@@ -281,14 +280,13 @@ export default {
             municipiosHabilitado: true,
             municipiosData: [],
             municipiosFields: { text: 'nombre', value: 'clave_agem' },
-            municipio_seleccionado_id: 0,
 
             // Localidades
             localidadesHabilitado: false,
             localidadesData: [],
             localidadesFields: { text: 'nombre', value: 'clave_loc' },
 
-            // TODO: ver que hace esta variable
+            // TODO: ver que hace estas variables
             ip_poblacion_total_localidades: 0,
             ipoblacion_municipio: 0,
             ilocalidades_municipio: 0,
@@ -304,9 +302,7 @@ export default {
             editmode: false,
             cons: false,
 
-            DatosAlta: {
-
-            },
+            // Datos que se envían por JSON a la sección "Datos de Camimo"
             DatosGeograficos: {
 
                 // Tipo Camino
@@ -370,6 +366,7 @@ export default {
             this.DatosGeograficos.poblacion_indigena = "314159"
             this.DatosGeograficos.totpoblacion = 314159
             this.DatosGeograficos.marginacion = 314159
+            this.DatosGeograficos.ipoblacion_municipio = 314159
             console.log(this.DatosGeograficos);
 
             this.$emit("set-icveEdo", {
@@ -422,18 +419,13 @@ export default {
         //municipios
         async obtenerMunicipios() {
             this.$emit("show-error", false);
-            console.log("WIU");
             const objEstadoSeleccionado = this.estadosData[(this.DatosGeograficos.estadoSeleccionado * 1) - 1]
-            console.log(objEstadoSeleccionado.iso);
             this.DatosGeograficos.iso = objEstadoSeleccionado.iso.substring(0, 3)
             this.DatosGeograficos.municipioSeleccionado = null;
             this.municipiosHabilitado = true;
             this.clearLocalidades();
             try {
-                console.log(`Estado Seleccionado: ${this.DatosGeograficos.estadoSeleccionado}`);
                 const results = await getMunicipios(this.DatosGeograficos.estadoSeleccionado)
-                console.log(results);
-
                 this.municipiosData = results
                 this.municipiosHabilitado = true;
             } catch (err) {

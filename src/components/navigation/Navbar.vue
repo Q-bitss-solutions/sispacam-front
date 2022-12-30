@@ -29,7 +29,7 @@
             ></a>
             <ul class="dropdown-menu" role="menu">
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/busqueda">Búsqueda</a></li>
+              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/caminos">Caminos</a></li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/presupuesto/base/kilometro">Presupuesto Base por Kilómetro</a></li>
               <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>
             </ul>

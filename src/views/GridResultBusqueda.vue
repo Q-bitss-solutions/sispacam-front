@@ -1,38 +1,33 @@
+<!-- TODO: Cambiar nombre a "TablaCaminos" -->
+
 <template>
     <div>
 
         <div class="row">
             <div class="col-md-12">
-                <p class="small">Se encontraron <strong>{{ count }}</strong> resultados en la búsqueda.</p>
 
-            <div style="height:500px; overflow-y: scroll;">
-                <!-- <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='true' :allowSorting='true' -->
-                <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='false' :allowSorting='true'
-                    :pageSettings='pageSettings' :allowTextWrap='true'
-                    toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})">
-                    <e-columns>
-                        <e-column field='clave' headerText='ID de la Obra'></e-column>
-                        <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
-                        <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
-                        <e-column field='icve_municipio' headerText='Municipio'></e-column>
-                        <e-column field='marginacion' headerText='Grado de Marginación'></e-column>
-                        <e-column field='poblacion_indigena' headerText='Tipo Poblacion'></e-column>
-                        <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra' textAlign='Center'
-                            :visible='flagEdicion'></e-column>
-                        <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra'
-                            textAlign='Center' :visible='flag'></e-column>
-                    </e-columns>
-                </ejs-grid>
-            </div>
-
+                <div style="height:500px; overflow-y: scroll;">
+                    <!-- <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='true' :allowSorting='true' -->
+                    <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='false' :allowSorting='true'
+                        :pageSettings='pageSettings' :allowTextWrap='true'
+                        toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})">
+                        <e-columns>
+                            <e-column field='clave' headerText='ID de la Obra'></e-column>
+                            <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
+                            <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
+                            <e-column field='icve_municipio' headerText='Municipio'></e-column>
+                            <e-column field='marginacion' headerText='Grado de Marginación'></e-column>
+                            <e-column field='poblacion_indigena' headerText='Tipo Poblacion'></e-column>
+                            <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra'
+                                textAlign='Center' :visible='flagEdicion'></e-column>
+                            <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra'
+                                textAlign='Center' :visible='flag'></e-column>
+                        </e-columns>
+                    </ejs-grid>
+                </div>
 
 
-            </div>
-        </div>
-        <div class="row" v-if="this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false">
-            <div class="col-md-12 text-right">
-                <hr>
-                <button class="btn btn-default" type="button" @click="$router.push('/busqueda')">Regresar</button>
+
             </div>
         </div>
     </div>
@@ -55,7 +50,7 @@ export default {
         return {
             lines: 'Both',
             data: [],
-            breadcrumb: ['Resultados de Búsqueda de Obras'],
+            breadcrumb: ['Caminos'],
             pageSettings: { pageCount: 5, pageSize: 20 },
             count: 0,
             flag: this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false,
