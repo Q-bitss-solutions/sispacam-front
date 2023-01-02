@@ -12,17 +12,18 @@
                 <div id="tipoCamino">
                     <label class="radio-inline">
                         <input v-model="DatosGeograficos.tipo_camino" type="radio" id="cabecera" name="tipo_camino"
-                            value="C" :disabled="isCanceled" />
+                            value="C" :disabled="isCanceled" v-on:change="clearSelection"/>
                         Cabecera
                     </label>
                     <label class="radio-inline">
                         <input v-model="DatosGeograficos.tipo_camino" type="radio" id="agencia" name="tipo_camino"
-                            value="A" :disabled="isCanceled" />
+                            value="A" :disabled="isCanceled" 
+                            v-on:change="clearSelection"/>
                         Agencia
                     </label>
                     <label class="radio-inline">
                         <input v-model="DatosGeograficos.tipo_camino" type="radio" id="otro" name="tipo_camino"
-                            value="O" :disabled="isCanceled"> Otro
+                            value="O" :disabled="isCanceled" v-on:change="clearSelection"> Otro
                     </label>
                     <label class="radio-inline">
                         <input v-model="otroTipoCamino" v-if="DatosGeograficos.tipo_camino == 'O'"
@@ -284,13 +285,13 @@ export default {
             // Localidades
             localidadesHabilitado: false,
             localidadesData: [],
-            localidadesFields: { text: 'nombre', value: 'clave_loc' },
+            localidadesFields: { text: 'nombre', value: 'id' },
 
             // TODO: ver que hace estas variables
             ip_poblacion_total_localidades: 0,
             ipoblacion_municipio: 0,
             ilocalidades_municipio: 0,
-            clave_estado_inegi: null,
+            clave_estado_inegi: null, // Muestra la clave del estado en la tabla "Datos a nivel municipal"
             icve_municipio: null,
 
             localidadesTabla: [],
@@ -312,7 +313,8 @@ export default {
                 // Ubicaciones Seleccionadas
                 estadoSeleccionado: null,
                 municipioSeleccionado: null,
-                localidadesSeleccionadas: [],
+                localidadesSeleccionadasInt: [],
+                localidadesSeleccionadas:[],
 
                 // Campos Que funcionan v1
                 cve_agee: '',
@@ -354,13 +356,22 @@ export default {
             this.$store.state.camino_alta.push(this.DatosAlta);
         },
 
+        // Borra toda la selección
+        clearSelection(){
+            this.DatosGeograficos.estadoSeleccionado = null;
+            this.DatosGeograficos.icve_municipio = null;
+            this.icve_municipio = null;
+            this.clearLocalidades();
+
+        },
+
         //Envia datos
         enviarDatos() {
             console.log("ENVIAR DATOS");
             this.DatosGeograficos.cve_agee = this.DatosGeograficos.estadoSeleccionado
             this.DatosGeograficos.icve_estado_inegi = this.DatosGeograficos.estadoSeleccionado
             this.DatosGeograficos.icve_municipio = this.icve_municipio
-            this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas
+            this.DatosGeograficos.localidades = this.DatosGeograficos.localidadesSeleccionadas.map(String);
             this.DatosGeograficos.ilocalidades_municipio = this.DatosGeograficos.localidadesSeleccionadas.length
 
             // TODO: checar flujo de esto
@@ -411,7 +422,6 @@ export default {
                 // this.estadosData = res.results;
                 this.estadosData = results;
                 this.estadosHabilitado = true;
-                this.clave_estado_inegi = null;
             } catch (error) {
                 console.log('error al obtener estados')
                 console.log(error);
@@ -422,6 +432,8 @@ export default {
         async obtenerMunicipios() {
             this.$emit("show-error", false);
             const objEstadoSeleccionado = this.estadosData[(this.DatosGeograficos.estadoSeleccionado * 1) - 1]
+            console.log(objEstadoSeleccionado);
+            this.clave_estado_inegi = objEstadoSeleccionado.id
             this.DatosGeograficos.iso = objEstadoSeleccionado.iso.substring(0, 3)
             this.DatosGeograficos.municipioSeleccionado = null;
             this.municipiosHabilitado = true;
@@ -445,13 +457,16 @@ export default {
                 this.$emit("show-error", false);
                 const res = await getLocalidades(objMunSeleccionado.id)
                 console.log(res);
+
+                this.localidadesHabilitado = true;
+                this.localidadesData = res
+
                 this.ilocalidades_municipio = res.length;
                 this.ip_poblacion_total_localidades = res.reduce((x, y) => {
                     return x + y.pob;
                 }, 0)
 
-                this.localidadesHabilitado = true;
-                this.localidadesData = res
+
 
                 this.setEdoIso()
                 this.DatosGeograficos.localidades = this.localidadesSeleccionadas
@@ -533,16 +548,8 @@ export default {
         },
 
         setEdoIso() {
-
-            const edoSelect = this.estadosData
-                .filter(a => a.clave_agee == this.clave_estado_inegi)
-            this.DatosGeograficos.iso = edoSelect[0].iso
-            this.DatosGeograficos.clave_agee = this.clave_estado_inegi
-
             const munSelect = this.municipiosData
                 .filter(a => a.cve_agem == this.DatosGeograficos.municipioSeleccionado)
-            this.marginacion = munSelect[0].grado_marginacion.descripcion
-            this.poblacion_indigena = munSelect[0].poblacion_indigena.descripcion
             this.iTotalPoblacionIndigena = munSelect[0].total_poblacion_indigena
             this.iTotalPoblacionIndigena = this.formatNum(this.iTotalPoblacionIndigena)
             var str = JSON.stringify(munSelect, null, 2); // spacing level = 2                      
@@ -585,11 +592,6 @@ export default {
                 return 0
             }
         },
-
-        printData() {
-            console.log(this.DatosGeograficos);
-            return 0
-        }
     }
 }
 </script> 
