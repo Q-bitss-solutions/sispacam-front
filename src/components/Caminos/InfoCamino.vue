@@ -14,7 +14,7 @@
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Localidades</div>
-			<div class="col-md-6">{{ camino.localidades }}</div>
+			<div class="col-md-6">{{ camino.datos_geograficos.nombre_localidades }}</div>
 		</div>
 	</div>
 </template>
