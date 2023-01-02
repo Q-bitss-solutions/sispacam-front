@@ -3,13 +3,13 @@
         <div class="col-md-12">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active" id="tabPersonal">
+                <li role="presentation" :class="activeTab=='Geo'?'active':''" id="tabPersonal">
                     <a href="#datosGeograficos" aria-controls="profile" role="tab" data-toggle="tab" id="input-1"
                         aria-expanded="true">
                         Datos Geográficos
                     </a>
                 </li>
-                <li role="presentation" id="tabDatosCamino">
+                <li role="presentation" id="tabDatosCamino" :class="activeTab=='Camino'?'active':''">
                     <a href="#datosCamino" aria-controls="profile" role="tab" data-toggle="tab" id="input-2"
                         aria-expanded="true">
                         Datos del Camino
@@ -57,7 +57,8 @@ export default {
             cEstado: '',
             msgError: null,
             breadcrumb: ['Camino ' + this.$route.params.obraId],
-            longitud_pavimentar: ''
+            longitud_pavimentar: '',
+            activeTab:"Geo"
         }
     },
     methods: {
@@ -65,6 +66,7 @@ export default {
             // TODO:Entender porque hace esto
             const obj = JSON.parse(JSON.stringify(e))
             this.cEstado = obj.datos
+            this.activeTab="Camino"
         },
         showError(e) {
             console.log('show-error')
