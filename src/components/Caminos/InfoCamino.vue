@@ -6,11 +6,11 @@
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Estado</div>
-			<div class="col-md-6">{{ camino.cve_agee }}</div>
+			<div class="col-md-6">{{ camino.datos_geograficos.nombre_estado }}</div>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Municipio</div>
-			<div class="col-md-6">{{ camino.icve_municipio }}</div>
+			<div class="col-md-6">{{ camino.datos_geograficos.nombre_municipio }}</div>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Localidades</div>
