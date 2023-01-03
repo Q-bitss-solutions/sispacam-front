@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <!-- TIPO DE CAMINO -->
         <div class="row">
             <div class="col-md-12">
@@ -12,17 +11,17 @@
                 <div id="tipoCamino">
                     <label class="radio-inline">
                         <input v-model="typeOfRoad.tipo_camino" type="radio" id="cabecera" name="tipo_camino"
-                            value="C" :disabled="isCanceled" />
+                            value="C" :disabled="isCanceled" @change="resetValues" />
                         Cabecera
                     </label>
                     <label class="radio-inline">
                         <input v-model="typeOfRoad.tipo_camino" type="radio" id="agencia" name="tipo_camino"
-                            value="A" :disabled="isCanceled" />
+                            value="A" :disabled="isCanceled" @change="resetValues" />
                         Agencia
                     </label>
                     <label class="radio-inline">
                         <input v-model="typeOfRoad.tipo_camino" type="radio" id="otro" name="tipo_camino"
-                            value="O" :disabled="isCanceled"> Otro
+                            value="O" :disabled="isCanceled" @change="resetValues" /> Otro
                     </label>
                     <label class="radio-inline">
                         <input v-model="typeOfRoad.otroTipoCamino" v-if="typeOfRoad.tipo_camino == 'O'"
@@ -171,7 +170,6 @@
                                     <input id="icve_municipio" v-model.number="datosGeograficos.icve_municipio" class="form-control"
                                         type="number" disabled>
                                 </div>
-                                <!--<div id="datosNivelMunicipal" class="table-responsive"> -->
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
                                     <label>Poblacion de municipio:</label>
@@ -239,13 +237,6 @@
                         <div class="form-group">
                         </div>
                     </tr>
-                    <!-- Este botón no sirve -->
-                    <!-- <div class="row" v-show="false">
-                        <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-                            @click="$router.push('/datoscamino')">
-                            Siguiente
-                        </button>
-                    </div> -->
                     <a type="button" class="btn btn-default pull-right vertical-buffer" @click="enviarDatos()"
                         href="#datosCamino" aria-controls="profile" role="tab" data-toggle="tab" id="input-1"
                         aria-expanded="true">
@@ -287,10 +278,8 @@ export default {
             statesFields: { text: 'nombre', value: 'clave_agee' },
             selectedState: '',
             municipalities: [],
-            municipalitiesFields: { text: 'nombre', value: 'clave_agem' },
             selectedMunicipality: '',
             localities: [],
-            localitiesFields: { text: 'nombre', value: 'clave_loc' },
             fields: { text: 'nombre', value: 'id' },
             selectedLocalities: [],
             // Tipo Camino
@@ -329,8 +318,10 @@ export default {
         },
         async fetchMunicipalities() {
             try {
-                this.municipalities = []
-                this.municipalities = await getMunicipios(this.selectedStateObject.clave_agee)
+
+                if (!!this.selectedState) {
+                    this.municipalities = await getMunicipios(this.selectedStateObject.clave_agee)
+                }
             } catch (error) {
                 console.error(error)
                 this.$emit("show-error", error)
@@ -338,7 +329,9 @@ export default {
         },
         async obtenerLocalidades() {
             try {
-                this.localities = await getLocalidades(this.selectedMunicipalityObject.id)
+                if (!!this.selectedMunicipality) {
+                    this.localities = await getLocalidades(this.selectedMunicipalityObject.id)
+                }
             } catch (error) {
                 console.error(error)
                 this.$emit('show-error', error)
@@ -346,6 +339,11 @@ export default {
         },
         formatNum(num) {
             return new Intl.NumberFormat().format(num);
+        },
+        resetValues() {
+            this.selectedState = ''
+            this.selectedMunicipality = ''
+            this.selectedLocalities = []
         },
     },
     async created() {
@@ -408,18 +406,6 @@ export default {
     beforeMount() {
         this.typeOfRoad.tipo_camino = 'C'
     },
-    /* watch: {
-        esTipoCabeceraElCamino(newType, oldType) {
-            console.log(newType, oldType)
-            if (this.esTipoCabeceraElCamino) {
-                console.log('all');
-                this.selectedLocalities = this.localities
-            } else {
-                console.log('empty');
-                this.selectedLocalities = []
-            }
-        },
-    }, */
 }
 </script>
 
