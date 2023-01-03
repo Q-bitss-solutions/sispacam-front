@@ -321,18 +321,7 @@ export default {
     methods: {
         //Envia datos
         enviarDatos() {
-            console.log("ENVIAR DATOS");
-            this.datosGeograficos.cve_agee = this.datosGeograficos.estadoSeleccionado
-            this.datosGeograficos.icve_estado_inegi = this.datosGeograficos.estadoSeleccionado
-            this.datosGeograficos.icve_municipio = this.icve_municipio
-            this.datosGeograficos.localidades = this.datosGeograficos.localidadesSeleccionadas
-            this.datosGeograficos.ilocalidades_municipio = this.datosGeograficos.localidadesSeleccionadas.length
-            this.datosGeograficos.ip_poblacion_total_localidades = 314159
-            this.datosGeograficos.poblacion_indigena = "314159"
-            this.datosGeograficos.totpoblacion = 314159
-            this.datosGeograficos.marginacion = 314159
-            this.datosGeograficos.ipoblacion_municipio = 314159
-            console.log(this.datosGeograficos);
+            console.log("ENVIAR DATOS", this.datosGeograficos)
 
             this.$emit("set-icveEdo", {
                 datos: this.datosGeograficos
@@ -375,15 +364,17 @@ export default {
                 estadoSeleccionado: this.selectedState,
                 municipioSeleccionado: this.selectedMunicipality,
                 localidadesSeleccionadas: this.selectedLocalitiesArray,
-                cve_agee: null,
+                cve_agee: this.selectedStateObject.clave_agee,
                 icve_estado_inegi: this.selectedStateObject.clave_agee,
                 icve_municipio: this.selectedMunicipalityObject.clave_agem,
-                ip_poblacion_total_localidades: 314159,
-                iso: "",
+                ip_poblacion_total_localidades: this.selectedLocalitiesArray.reduce((a, b) => a + b.poblacion, 0),
+                iso: this.selectedStateObject.iso
+                    ? this.selectedStateObject.iso.substring(0, 3)
+                    : '',
                 marginacion: this.gradoMarginacion,
                 poblacion_indigena: this.selectedLocalitiesArray.reduce((a, b) => a + b.poblacion_indigena, 0),
                 abreviaturaEdo: "",
-                localidades: [],
+                localidades: this.selectedLocalities.map(locality => `${locality}`),
                 icveestados: "",
                 region: this.region,
                 ubicacion: this.ubicacion,
