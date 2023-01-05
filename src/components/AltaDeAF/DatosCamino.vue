@@ -341,7 +341,7 @@
                        <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
                    </div>
                    <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/caminos')">Cerrar</button>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->
@@ -358,7 +358,7 @@
                        <p>Se actualizarón correctamente los datos del camino,</p>
                    </div>
                    <div class="modal-footer">
-                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/busqueda')">Cerrar</button>
+                       <button type="button" class="btn btn-default" data-dismiss="modal" @click="$router.push('/caminos')">Cerrar</button>
                    </div>
                </div><!-- /.modal-content -->
            </div><!-- /.modal-dialog -->

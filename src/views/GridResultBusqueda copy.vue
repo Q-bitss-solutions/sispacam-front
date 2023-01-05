@@ -30,7 +30,7 @@
       <div class="row" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false">
         <div class="col-md-12 text-right">
           <hr>
-          <button class="btn btn-default" type="button" @click="$router.push('/busqueda')">Regresar</button>
+          <button class="btn btn-default" type="button" @click="$router.push('/caminos')">Regresar</button>
         </div>
       </div>        
     </div>

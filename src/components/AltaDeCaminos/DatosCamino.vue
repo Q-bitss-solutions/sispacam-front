@@ -249,7 +249,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
-                        @click="$router.push('/busqueda')">Cerrar</button>
+                        @click="$router.push('/caminos')">Cerrar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -267,7 +267,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
-                        @click="$router.push('/busqueda')">Cerrar</button>
+                        @click="$router.push('/caminos')">Cerrar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
