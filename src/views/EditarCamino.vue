@@ -7,10 +7,15 @@
 
     <hr class="red" />
 
-    <div class="row">
-      <div class="col-md-12">
+    <div class="row justify-content-around">
+      <div class="col-md-6">
         <button class="btn btn-primary active" @click="showModal = true" type="button">
           Agregar Beneficiario de Obra
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-primary active" @click="goToPage" type="button">
+          Editar Obra
         </button>
       </div>
     </div>
@@ -41,6 +46,7 @@
       </FormAgregarBeneficiario>
     </ModalSCT>
 
+
   </div>
 </template>
 
@@ -65,6 +71,9 @@ export default {
   },
 
   methods: {
+    goToPage(){
+      this.$router.push('/editobra/'+this.clave)
+    },
     async GetCamino(clave) {
       const response = await getupdate(clave);
       this.camino = response;

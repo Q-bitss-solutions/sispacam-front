@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import BusquedaCaminos from '../views/BusquedaCaminos.vue'
 import Presupuestos from '../views/Presupuestos.vue'
 import AltaCamino from '../views/AltaCaminos.vue'
+import AltaCaminosWork from '../views/AltaCaminosWork.vue'
 import AltaAF from '../views/AltaAFWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
 import convenio from '../components/convenio.vue'
@@ -62,18 +63,18 @@ const routes = [
     // meta: { requiresAuth: true }
   },   
   {
-    path: '/editarcamino/:obraId',
+    path: '/editcamino/:obraId',
     name: 'EditarCamino',
     component: EditarCamino,
     meta: { requiresAuth: false }
   },
-
   {
-    path: '/editcamino/:obraId',
-    name: 'AltaCaminoEdit',
-    component: EditarCamino,
+    path: '/editobra/:obraId',
+    name: 'AltaCaminosWork',
+    component: AltaCaminosWork,
     meta: { requiresAuth: false }
-  },  
+  },
+
   {
     path: '/editAF/:obraId',
     name: 'AltaAF',

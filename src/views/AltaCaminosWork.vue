@@ -3,12 +3,7 @@
   <div class="col-md-12">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" :class="getActiveTab==='tabDG'?'active':''" id="tabPersonal">
-          <a href="#datosGeograficos" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
-            Datos Geográficos
-          </a>
-        </li>
-        <li role="presentation"  id="tabDatosCamino">
+        <li role="presentation"  id="tabDatosCamino" :class="getActiveTab==='tabDG'?'active':''">
           <a href="#datosCamino" aria-controls="profile" role="tab" data-toggle="tab" id="input-1" aria-expanded="true">
             Datos del Camino
           </a>
@@ -33,11 +28,7 @@
     </ul>
     
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane" :class="getActiveTab==='tabDG'?'active':''" id="datosGeograficos">
-          <DatosGeograficos :isCanceled="isCanceled" @set-icveEdo="setCEdo" @show-error="showError" 
-            :camino_id.sync="camino_id"/>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="datosCamino">
+        <div role="tabpanel" class="tab-pane"  :class="getActiveTab==='tabDG'?'active':''" id="datosCamino" >
           <DatosCamino :isCanceled="isCanceled" :edo='cEstado' @show-error="showError"> </DatosCamino>
         </div>
         <div role="tabpanel" class="tab-pane" id="datosBeneficiario">
@@ -70,7 +61,7 @@ import { getupdate } from '@/api/alta-camino';
 import AsignarResidente from '@/components/AsignarResidente';
 import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
 import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
-import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
+import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos1';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 
 
