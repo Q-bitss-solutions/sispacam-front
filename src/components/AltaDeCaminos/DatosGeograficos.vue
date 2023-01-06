@@ -30,8 +30,8 @@
                 </div>
             </div>
         </div>
-
         <!-- ESTADO, LOCALIDAD, MUNICIPIO -->
+        <!-- <div class="row" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?false:true"> -->
         <div class="row">
 
             <div class="col-md-12">
