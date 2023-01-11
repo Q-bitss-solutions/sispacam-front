@@ -8,7 +8,7 @@ import store from './store'
 import "@/assets/css/SCT.css"
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
-
+import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 
 Vue.use(ElementUI);
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
@@ -21,6 +21,9 @@ Vue.use(IdleVue, {
   idleTime: (20 * 60000)
 });
 Vue.use(require('vue-moment'));
+
+Vue.use(ComboBoxPlugin);
+Vue.use(MultiSelectPlugin);
 
 new Vue({
   router,

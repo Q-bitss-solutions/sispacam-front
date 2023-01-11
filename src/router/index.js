@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import BusquedaCaminos from '../views/BusquedaCaminos.vue'
+
+// Módulo Caminos
+import AltaCamino from '@/views/Caminos/AltaCaminos.vue'
+import Caminos from "@/views/Caminos/Caminos.vue"
+import AltaCaminosWork from '@/views/Caminos/AltaCaminosWork.vue' // TODO: Cambiar nombre al componente
+import EditarCamino from '@/views/Caminos/EditarCamino.vue'
+
+
+
+import BusquedaCaminos from '../views/BusquedaCaminos.vue' // TODO: Borrar BusquedaCaminos
 import Presupuestos from '../views/Presupuestos.vue'
-import AltaCamino from '../views/AltaCaminos.vue'
-import AltaCaminosWork from '../views/AltaCaminosWork.vue'
 import AltaAF from '../views/AltaAFWork.vue'
 import AnalysisWork from '../components/AnalysisWork.vue'
 import convenio from '../components/convenio.vue'
@@ -11,11 +18,9 @@ import financieros from '../components/AltaDeCaminos/DatosFinancieros.vue'
 import avancefinancieros from '../components/AltaDeCaminos/DatosAvanceFinancieros.vue'
 import Login from '../views/Login.vue'
 import store from "../store/index";
-import GridResultObra from "../views/GridResultBusqueda.vue"
 import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
 
-import EditarCamino from '../views/EditarCamino.vue'
 
 Vue.use(VueRouter)
 
@@ -32,11 +37,12 @@ const routes = [
     name: "Sandbox Test Component",
     component: EditarCamino,
   },
-
+  // Página Principal
   {
     path: "/caminos",
     name: "Caminos",
-    component: GridResultObra,
+    component: Caminos,
+    meta: { requiresAuth: true }
   },
   {
     path: '/busqueda',
@@ -96,7 +102,7 @@ const routes = [
   {
     path: '/obras',
     name: 'Obras',
-    component: GridResultObra,
+    component: Caminos,
     // meta: { requiresAuth: true }
   },
   {

@@ -51,12 +51,12 @@
 </template>
 
 <script>
-import TablaFrentesCamino from "../components/Caminos/TablaFrentesCamino.vue";
-import ModalSCT from "../components/Modals/SCTModal.vue";
-import FormAgregarBeneficiario from "../components/Caminos/FormAgregarBeneficiario.vue";
-import { getupdate, listBeneficiariosCamino, listMetricasBeneficiario } from "../api/alta-camino";
-import AgregadoFrentes from "../components/Caminos/AgregadoFrentes.vue";
-import InfoCamino from '../components/Caminos/InfoCamino.vue';
+import TablaFrentesCamino from "@/components/Caminos/TablaFrentesCamino.vue";
+import ModalSCT from "@/components/Modals/SCTModal.vue";
+import FormAgregarBeneficiario from "@/components/Caminos/FormAgregarBeneficiario.vue";
+import { getupdate, listBeneficiariosCamino, listMetricasBeneficiario } from "@/api/alta-camino";
+import AgregadoFrentes from "@/components/Caminos/AgregadoFrentes.vue";
+import InfoCamino from '@/components/Caminos/InfoCamino.vue';
 export default {
   components: { TablaFrentesCamino, ModalSCT, FormAgregarBeneficiario, AgregadoFrentes, InfoCamino },
   name: "EditarCamino",

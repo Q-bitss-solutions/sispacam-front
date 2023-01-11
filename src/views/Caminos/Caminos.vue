@@ -2,6 +2,22 @@
 
 <template>
     <div>
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" v-model="params.clave_camino" placeholder="ID de la obra" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" v-model="params.nombre_camino" placeholder="Nombre de la obra" />
+            </div>
+            <div class="col-md-3">
+                <input type="text" v-model="params.nombre_municipio" placeholder="Municipio" />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary active" @click="searchCaminos" type="button">
+                    Buscar
+                </button>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
@@ -27,7 +43,6 @@
                 </div>
 
 
-
             </div>
         </div>
     </div>
@@ -37,10 +52,13 @@
 import Vue from "vue";
 import { mapMutations } from 'vuex'
 import { GridPlugin, Sort, Page, } from '@syncfusion/ej2-vue-grids';
+// TODO: Borrar api/obras
 import { getObrasByUsuario, getObraByClave, getObraByParmas } from '@/api/obras'
+import { getListaCaminos } from "@/api/caminos";
 import ButtonGrid from '@/components/ButtonGrid'
 import CancelaObra from '@/components/CancelaObra'
-import { getAllObras } from "../api/obras";
+import { getAllObras } from "@/api/obras";
+
 
 
 Vue.use(GridPlugin);
@@ -55,13 +73,34 @@ export default {
             count: 0,
             flag: this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false,
             isCanceled: false,
-            flagEdicion: true
+            flagEdicion: true,
+            wiu: null,
+            params: {
+                nombre_municipio: null,
+                nombre_camino: null,
+                clave_camino: null
+            }
         }
     },
     provide: {
         grid: [Sort, Page]
     },
     methods: {
+        async searchCaminos() {
+            try{
+                await getListaCaminos(this.params)
+
+            }catch (e) {
+                console.log('error-->')
+                console.log(e)
+            }
+            // Reinicia los parametros despues de cada búsqueda
+            this.params= {
+                nombre_municipio: null,
+                nombre_camino: null,
+                clave_camino: null
+            } 
+        },
         editTemplate() {
             return {
                 template: ButtonGrid
@@ -73,54 +112,38 @@ export default {
             }
         },
         async populate() {
-            this.data = await getAllObras()
-            console.log(this.data);
-
-
             try {
-                let results = []
-                let data = null
-                if (this.flag) {
-                    if (this.$route.params.values.clave) {
-                        // data = await getObraByClave(this.$route.params.values.clave.trim())    
-                        data = await getAllObras()
-
-                        const aRR = []
-                        aRR.push(data)
-                        results = aRR
-                    } else {
-                        results = await getObraByParmas(this.$route.params.values)
-                    }
-                } else {
-                    results = await getObrasByUsuario(this.$store.state.user.userId)
-                }
-
-
-                if (results) {
-                    results.map((obj) => {
-                        switch (obj.tipo_camino) {
-                            case 'A':
-                                obj.tipo_camino = 'Agencia'
-                                break;
-                            case 'C':
-                                obj.tipo_camino = 'Cabecera'
-                                break;
-                            case 'O':
-                                obj.tipo_camino = 'Otro'
-                                break;
-                        }
-                        obj.icve_municipio
-                        obj.isCanceled = obj.estatus == 'A' ? false : true
-                        return obj
-                    })
-                    this.count = results.length
-                    this.data = results
-                }
-
+                // TODO: Cambiar endpoint cuando esté terminado
+                this.data = await getAllObras()
+                // this.data = await getListCaminos()
             } catch (e) {
                 console.log('error-->')
                 console.log(e)
             }
+            if (this.data) {
+                let results = this.data
+                // Muestra el tipo de camino human-readable
+                results.map((obj) => {
+                    switch (obj.tipo_camino) {
+                        case 'A':
+                            obj.tipo_camino = 'Agencia'
+                            break;
+                        case 'C':
+                            obj.tipo_camino = 'Cabecera'
+                            break;
+                        case 'O':
+                            obj.tipo_camino = 'Otro'
+                            break;
+                    }
+                    obj.isCanceled = obj.estatus == 'A' ? false : true
+                    return obj
+                })
+                this.count = results.length
+                this.data = results
+            }
+
+
+
         },
         ...mapMutations(['setBreadcrumb']),
         dataBound: function () {
@@ -134,11 +157,6 @@ export default {
 
 
         }
-    },
-    mounted() {
-        this.populate()
-        this.$refs.grid.ej2Instances.defaultLocale.EmptyRecord = "No hay registros";
-        this.$refs.grid.ej2Instances.gridPager.ej2_instances[0].defaultConstants.currentPageInfo = '{0} de {1} Paginas'
     },
     created() {
         this.setBreadcrumb(this.breadcrumb)
