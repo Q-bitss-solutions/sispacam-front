@@ -44,6 +44,14 @@ export function generarId(data){
     })  
 }
 
+export function altaCamino(data){
+    return request({
+        url:'/caminos/',
+        method:'post',
+        data:data
+    })
+}
+
 export function getLocalidades(id_municipio){
     return request({
         url: '/localidades/',

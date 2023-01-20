@@ -2,26 +2,23 @@
     <div>
         <!-- TIPO DE CAMINO -->
         <div class="row">
-            <div class="col-md-12">
-                <h2>Tipo de Camino</h2>
-                <hr class="red">
-            </div>
+            <TituloSeccion title="Tipo de Camino"/>
             <div class="col-md-12">
                 <label for="tipoCamino">Tipo de Camino:</label>
                 <div id="tipoCamino">
                     <label class="radio-inline">
-                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="cabecera" name="tipo_camino"
-                            value="C" :disabled="isCanceled" @change="resetValues" />
+                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="cabecera" name="tipo_camino" value="C"
+                            :disabled="isCanceled" @change="resetValues" />
                         Cabecera
                     </label>
                     <label class="radio-inline">
-                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="agencia" name="tipo_camino"
-                            value="A" :disabled="isCanceled" @change="resetValues" />
+                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="agencia" name="tipo_camino" value="A"
+                            :disabled="isCanceled" @change="resetValues" />
                         Agencia
                     </label>
                     <label class="radio-inline">
-                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="otro" name="tipo_camino"
-                            value="O" :disabled="isCanceled" @change="resetValues" /> Otro
+                        <input v-model="typeOfRoad.tipo_camino" type="radio" id="otro" name="tipo_camino" value="O"
+                            :disabled="isCanceled" @change="resetValues" /> Otro
                     </label>
                     <label class="radio-inline">
                         <input v-model="typeOfRoad.otroTipoCamino" v-if="typeOfRoad.tipo_camino == 'O'"
@@ -31,28 +28,16 @@
             </div>
         </div>
         <!-- ESTADO, LOCALIDAD, MUNICIPIO -->
-        <!-- <div class="row" v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?false:true"> -->
         <div class="row">
 
-            <div class="col-md-12">
-                <h2>Estado, Localidad y Municipio</h2>
-                <hr class="red">
-            </div>
+            <TituloSeccion title="Estado, Municipio y Localidad" />
 
             <div class="col-md-6">
                 <!-- ESTADO -->
                 <label class="control-label" for="estado">Estado</label>
-                <ejs-combobox
-                    id="estado"
-                    :class="{ 'form-control-error': $v.selectedState.$error }"
-                    :dataSource="states"
-                    :fields="fields"
-                    placeholder="Selecciona un estado"
-                    :change="fetchMunicipalities"
-                    :enabled="!!states.length"
-                    v-model="selectedState"
-                    ref="refEstado"
-                >
+                <ejs-combobox id="estado" :class="{ 'form-control-error': $v.selectedState.$error }"
+                    :dataSource="states" :fields="fields" placeholder="Selecciona un estado"
+                    :change="fetchMunicipalities" :enabled="!!states.length" v-model="selectedState" ref="refEstado">
                 </ejs-combobox>
                 <div class="row col-md-10">
                     <small v-if="!$v.selectedState.required && $v.selectedState.$error"
@@ -66,17 +51,10 @@
 
                 <!-- MUNICIPIO -->
                 <label class="control-label" for="municipio">Municipio</label>
-                <ejs-combobox
-                    id="municipio"
-                    :class="{ 'form-control-error': $v.selectedMunicipality.$error }"
-                    :dataSource="municipalities"
-                    :fields="fields"
-                    placeholder="Selecciona un municipio"
-                    :change="obtenerLocalidades"
-                    :enabled="!!municipalities.length"
-                    v-model="selectedMunicipality"
-                    ref="refMunicipio"
-                >
+                <ejs-combobox id="municipio" :class="{ 'form-control-error': $v.selectedMunicipality.$error }"
+                    :dataSource="municipalities" :fields="fields" placeholder="Selecciona un municipio"
+                    :change="obtenerLocalidades" :enabled="!!municipalities.length" v-model="selectedMunicipality"
+                    ref="refMunicipio">
                 </ejs-combobox>
                 <div class="row col-md-10" v-if="!$v.selectedMunicipality.required && $v.selectedMunicipality.$error">
                     <small class="form-text form-text-error">
@@ -88,15 +66,9 @@
                 <!-- Checa si el tipo de camino es "Agencia" u "Otro" -->
                 <div v-if="'AO'.includes(typeOfRoad.tipo_camino)">
                     <label class="control-label">Localidad</label>
-                    <ejs-multiselect
-                        id="localidades"
-                        :dataSource="localities"
-                        :fields="fields"
-                        placeholder="Selecciona una localidad"
-                        :enabled="!!localities.length"
-                        v-model="selectedLocalities"
-                        ref="localidades"
-                    >
+                    <ejs-multiselect id="localidades" :dataSource="localities" :fields="fields"
+                        placeholder="Selecciona una localidad" :enabled="!!localities.length"
+                        v-model="selectedLocalities" ref="localidades">
                     </ejs-multiselect>
                 </div>
             </div>
@@ -104,10 +76,9 @@
 
         <!-- DATOS NIVEL MUNICIPAL -->
         <div class="row">
-            <div class="col-md-12">
-                <h2>Datos a nivel municipal</h2>
-                <hr class="red">
-            </div>
+
+            <TituloSeccion title="Datos a nivel municipal" />
+
             <!-- TODO: arreglar tabla -->
             <table ref="datosPersonales" id="datosPersonales" class="tableContenido" width="100%" border="0">
                 <tbody>
@@ -120,7 +91,7 @@
                                     <label>Región:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="region" v-model="datosGeograficos.region" placeholder="Región"
+                                    <input id="region" v-model="region" placeholder="Región"
                                         maxlength="40" class="form-control">
                                 </div>
                                 <div class="col-md-12 help-block"></div>
@@ -128,7 +99,7 @@
                                     <label>Ubicación:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="ubicacion" v-model="datosGeograficos.ubicacion" placeholder="Ubicación"
+                                    <input id="ubicacion" v-model="ubicacion" placeholder="Ubicación"
                                         class="form-control">
                                 </div>
                                 <div class="col-md-12 help-block"></div>
@@ -136,39 +107,40 @@
                                     <label>Poblacion indígena</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input v-model="datosGeograficos.poblacion_indigena" class="form-control" type="text"
-                                        placeholder="Población indígena" id="poblacion_indigena" disabled>
+                                    <input v-model="datosGeograficos.poblacion_indigena" class="form-control"
+                                        type="text" placeholder="Población indígena" id="poblacion_indigena" disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
                                     <label>Grado de marginación:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="text" v-model="datosGeograficos.marginacion" class="form-control" disabled>
+                                    <input type="text" v-model="datosGeograficos.marginacion" class="form-control"
+                                        disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
                                     <label>Total de población indígena:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input :value="datosGeograficos.poblacion_indigena" placeholder="Total de población indígena"
-                                        class="form-control" disabled>
+                                    <input :value="datosGeograficos.poblacion_indigena"
+                                        placeholder="Total de población indígena" class="form-control" disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
                                     <label>Clave INEGI estado:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input v-model.number="datosGeograficos.icve_estado_inegi" class="form-control" type="number"
-                                        disabled>
+                                    <input v-model.number="datosGeograficos.icve_estado_inegi" class="form-control"
+                                        type="number" disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
                                     <label>Clave INEGI municipio:</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="icve_municipio" v-model.number="datosGeograficos.icve_municipio" class="form-control"
-                                        type="number" disabled>
+                                    <input id="icve_municipio" v-model.number="datosGeograficos.icve_municipio"
+                                        class="form-control" type="number" disabled>
                                 </div>
                                 <div class="col-md-12 help-block"></div>
                                 <div class="col-md-6">
@@ -196,7 +168,8 @@
                                                     <label>Numero de Localidades: </label>
                                                 </th>
                                                 <th class="col-md-6">
-                                                    <input id="noLocalidadesMun" v-model.number="datosGeograficos.ilocalidades_municipio"
+                                                    <input id="noLocalidadesMun"
+                                                        v-model.number="datosGeograficos.ilocalidades_municipio"
                                                         class="form-control" type="number" disabled>
                                                 </th>
                                             </tr>
@@ -221,7 +194,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <ejs-numerictextbox format='n' :showSpinButton='false'
-                                                    v-model.number="datosGeograficos.ipoblacion_municipio" :enabled='false' value="0">
+                                                    v-model.number="datosGeograficos.ipoblacion_municipio"
+                                                    :enabled='false' value="0">
                                                 </ejs-numerictextbox>
                                             </div>
                                             <div class="col-md-12 help-block"></div>
@@ -256,12 +230,14 @@ import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
 import { required } from 'vuelidate/lib/validators'
+import TituloSeccion from '@/components/Shared/TituloSeccion.vue';
 
 Vue.use(NumericTextBoxPlugin);
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
 
 export default {
+    components:{ TituloSeccion },
     name: 'datosGeograficos',
     props: {
         camino_id: {
@@ -310,10 +286,10 @@ export default {
     methods: {
         //Envia datos
         enviarDatos() {
-            console.log("ENVIAR DATOS", this.datosGeograficos)
+            console.log("ENVIAR DATOS", this.payload)
 
             this.$emit("set-icveEdo", {
-                datos: this.datosGeograficos
+                datos: this.payload
             });
         },
         async fetchMunicipalities() {
@@ -357,29 +333,36 @@ export default {
     computed: {
         datosGeograficos() {
             return {
-                tipo_camino: this.typeOfRoad.tipo_camino,
-                camino_otro: this.typeOfRoad.otroTipoCamino,
-                estadoSeleccionado: this.selectedState,
-                municipioSeleccionado: this.selectedMunicipality,
-                localidadesSeleccionadas: this.selectedLocalitiesArray,
-                cve_agee: this.selectedStateObject.clave_agee,
+                clave_estado: this.selectedState,  
+                clave_mun: this.selectedMunicipality,
                 icve_estado_inegi: this.selectedStateObject.clave_agee,
                 icve_municipio: this.selectedMunicipalityObject.clave_agem,
-                ip_poblacion_total_localidades: this.selectedLocalitiesArray.reduce((a, b) => a + b.poblacion, 0),
-                iso: this.selectedStateObject.iso
-                    ? this.selectedStateObject.iso.substring(0, 3)
-                    : '',
                 marginacion: this.gradoMarginacion,
                 poblacion_indigena: this.selectedLocalitiesArray.reduce((a, b) => a + b.poblacion_indigena, 0),
-                abreviaturaEdo: "",
-                localidades: this.selectedLocalities.map(locality => `${locality}`),
-                icveestados: "",
-                region: this.region,
-                ubicacion: this.ubicacion,
-                totpoblacion: this.selectedMunicipalityObject.poblacion,
                 ipoblacion_municipio: this.selectedLocalitiesArray.reduce((a, b) => a + b.poblacion, 0),
                 ilocalidades_municipio: this.selectedLocalitiesArray.length,
             }
+        },
+        payload() {
+            /* 
+                REQUIRED
+                "tipo_camino",
+                "clave_estado",
+                "clave_mun",
+                "localidades",
+                "region",
+                "ubicacion",
+            */
+           return{
+                tipo_camino: this.typeOfRoad.tipo_camino,
+                camino_otro: this.typeOfRoad.otroTipoCamino,// TODO: Agregar campo en los contratos
+                clave_estado: this.selectedState,   
+                clave_mun: this.selectedMunicipality,
+                localidades: this.selectedLocalities.map(locality => `${locality}`),
+                region: this.region,
+                ubicacion: this.ubicacion,
+
+           }
         },
         selectedStateObject() {
             return this.states.find(state => state.id === this.selectedState) || {}
