@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
 export function getListaCaminos (params) {
-
   return request({
     url: '/caminos/',
     method: 'get',
@@ -9,10 +8,10 @@ export function getListaCaminos (params) {
   })
 }
 
-export function getObraByClave(clave) {
+export function getDetalleCamino(clave) {
   return request({
-    url: `/camino/${clave}/`,
-    method: 'get'
+    url: '/caminos/' + clave ,
+    method: 'get',
   })
 }
 

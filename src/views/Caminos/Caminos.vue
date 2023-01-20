@@ -29,11 +29,11 @@
                         toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})">
                         <e-columns>
                             <e-column field='clave' headerText='ID de la Obra'></e-column>
-                            <e-column field='nombre_camino' headerText='Nombre de la obra'></e-column>
+                            <e-column field='nombre' headerText='Nombre de la obra'></e-column>
                             <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
-                            <e-column field='icve_municipio' headerText='Municipio'></e-column>
-                            <e-column field='marginacion' headerText='Grado de Marginación'></e-column>
-                            <e-column field='poblacion_indigena' headerText='Tipo Poblacion'></e-column>
+                            <e-column field='nombre_municipio' headerText='Municipio'></e-column>
+                            <e-column field='grado_marginacion' headerText='Grado de Marginación'></e-column>
+                            <e-column field='estrategia' headerText='Estrategia'></e-column>
                             <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra'
                                 textAlign='Center' :visible='flagEdicion'></e-column>
                             <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra'
@@ -52,14 +52,9 @@
 import Vue from "vue";
 import { mapMutations } from 'vuex'
 import { GridPlugin, Sort, Page, } from '@syncfusion/ej2-vue-grids';
-// TODO: Borrar api/obras
-import { getObrasByUsuario, getObraByClave, getObraByParmas } from '@/api/obras'
 import { getListaCaminos } from "@/api/caminos";
 import ButtonGrid from '@/components/ButtonGrid'
 import CancelaObra from '@/components/CancelaObra'
-import { getAllObras } from "@/api/obras";
-
-
 
 Vue.use(GridPlugin);
 export default {
@@ -87,19 +82,20 @@ export default {
     },
     methods: {
         async searchCaminos() {
-            try{
-                await getListaCaminos(this.params)
+            try {
+                this.data = await getListaCaminos(this.params)
 
-            }catch (e) {
+            } catch (e) {
                 console.log('error-->')
                 console.log(e)
+                alert(e)
             }
             // Reinicia los parametros despues de cada búsqueda
-            this.params= {
+            this.params = {
                 nombre_municipio: null,
                 nombre_camino: null,
                 clave_camino: null
-            } 
+            }
         },
         editTemplate() {
             return {
@@ -113,12 +109,13 @@ export default {
         },
         async populate() {
             try {
-                // TODO: Cambiar endpoint cuando esté terminado
-                this.data = await getAllObras()
-                // this.data = await getListCaminos()
+                this.data = await getListaCaminos()
+                console.log("DATA");
+                console.log(this.data);
             } catch (e) {
                 console.log('error-->')
                 console.log(e)
+                alert(e)
             }
             if (this.data) {
                 let results = this.data
@@ -141,22 +138,8 @@ export default {
                 this.count = results.length
                 this.data = results
             }
-
-
-
         },
         ...mapMutations(['setBreadcrumb']),
-        dataBound: function () {
-        },
-        isActive(data) {
-            if (data.estatus === 'A') {
-                return true
-            } else {
-                return false
-            }
-
-
-        }
     },
     created() {
         this.setBreadcrumb(this.breadcrumb)

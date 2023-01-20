@@ -3,7 +3,7 @@
 
     <h2>Edición del camino: {{ clave }}</h2>
 
-    <InfoCamino :camino="camino"></InfoCamino>
+    <!-- <InfoCamino :camino="camino"></InfoCamino> -->
 
     <hr class="red" />
 
@@ -54,7 +54,9 @@
 import TablaFrentesCamino from "@/components/Caminos/TablaFrentesCamino.vue";
 import ModalSCT from "@/components/Modals/SCTModal.vue";
 import FormAgregarBeneficiario from "@/components/Caminos/FormAgregarBeneficiario.vue";
-import { getupdate, listBeneficiariosCamino, listMetricasBeneficiario } from "@/api/alta-camino";
+import { listBeneficiariosCamino, listMetricasBeneficiario } from "@/api/alta-camino";
+
+import { getDetalleCamino } from "@/api/caminos";
 import AgregadoFrentes from "@/components/Caminos/AgregadoFrentes.vue";
 import InfoCamino from '@/components/Caminos/InfoCamino.vue';
 export default {
@@ -75,10 +77,12 @@ export default {
       this.$router.push('/editobra/'+this.clave)
     },
     async GetCamino(clave) {
-      const response = await getupdate(clave);
+      const response = await getDetalleCamino(clave);
+      console.log("DETALLE CAMINO");
+      console.log(response);
       this.camino = response;
-      this.GetConvenios(response.id)
-      this.GetMetrics(response.id)
+      // this.GetConvenios(response.id)
+      // this.GetMetrics(response.id)
     },
     closeModal() {
       console.log("Close Modal EC");
