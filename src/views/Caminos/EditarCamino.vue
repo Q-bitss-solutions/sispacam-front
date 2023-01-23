@@ -3,7 +3,7 @@
 
     <h2>Edición del camino: {{ clave }}</h2>
 
-    <!-- <InfoCamino :camino="camino"></InfoCamino> -->
+    <InfoCamino :camino="camino"></InfoCamino>
 
     <hr class="red" />
 

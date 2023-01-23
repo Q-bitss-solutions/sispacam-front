@@ -46,7 +46,7 @@ export default {
             this.$store.commit('setStatusCamino', this.data.isCanceled) 
             this.$router.push({
                 path:'/editcamino/'+this.data.clave,
-                name:'AltaCaminoEdit',
+                name:'EditarCamino',
                 params: { isCanceled:true, obraId:this.data.clave }
                 })
             },

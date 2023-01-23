@@ -6,15 +6,15 @@
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Estado</div>
-			<div class="col-md-6">{{ camino.datos_geograficos.nombre_estado }}</div>
+			<div class="col-md-6">{{ camino.nombre_estado }}</div>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Municipio</div>
-			<div class="col-md-6">{{ camino.datos_geograficos.nombre_municipio }}</div>
+			<div class="col-md-6">{{ camino.nombre_mun }}</div>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Localidades</div>
-			<div class="col-md-6">{{ camino.datos_geograficos.nombre_localidades }}</div>
+			<div class="col-md-6">{{ localidades }}</div>
 		</div>
 	</div>
 </template>
@@ -24,6 +24,11 @@ export default {
 	name: "InfoCamino",
 	props: {
 		camino: Object
+	},
+	computed:{
+		localidades(){
+			return this.camino.nombres_localidades.join(",")
+		}
 	}
 
 }
