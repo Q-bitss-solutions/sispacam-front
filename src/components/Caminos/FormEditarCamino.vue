@@ -1,11 +1,14 @@
 <template>
 
     <div>
-        <div class="row">
-            <TituloSeccion title="Datos del Camino" />
-        </div>
-
         <table id="datosCamino" class="tableContenido" width="100%" border="0">
+            <tr>
+                <td>
+                    <h2>Datos del Camino</h2>
+                    <h2>{{idcamino}}</h2>
+                    <hr class="red">
+                </td>
+            </tr>
             <tr>
                 <td>
                     <div class="form-group col-md-12">
@@ -39,7 +42,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="nombrecamino">Nombre del Camino:</label>
-                            <input v-model="nombre_camino" :class="{ 'form-control-error': $v.nombre_camino.$error }"
+                            <input v-model="nombre_camino" :class="{'form-control-error': $v.nombre_camino.$error}"
                                 id="nombre_camino" name="nombre_camino" v-model.trim="$v.nombre_camino.$model"
                                 class="form-control" type="text" placeholder="Nombre del Camino" :disabled="isCanceled"
                                 value="" />
@@ -58,7 +61,7 @@
                         <div class="col-md-4">
                             <label>Longitud total(km):</label>
                             <div>
-                                <ejs-numerictextbox :class="{ 'form-control-error': $v.longitud_camino.$error }"
+                                <ejs-numerictextbox :class="{'form-control-error': $v.longitud_camino.$error}"
                                     id="longitud" placeholder="Longitud total(km)" v-model="longitud_camino" :min="min"
                                     :max="max" :disabled="isCanceled" :showSpinButton='false'>
                                 </ejs-numerictextbox>
@@ -73,13 +76,14 @@
                         <div class="col-md-6">
                             <label>Longitud a pavimentar 2019-2024(km):</label>
                             <div>
-                                <ejs-numerictextbox :class="{ 'form-control-error': $v.longitud_pavimentar.$error }"
+                                <ejs-numerictextbox :class="{'form-control-error': $v.longitud_pavimentar.$error}"
                                     id="longitud_pavimentar" placeholder="Longitud a pavimentar 2019-2024(km)"
                                     v-model="longitud_pavimentar" :min="min" :max="max" :disabled="isCanceled"
                                     :showSpinButton='false'>
                                 </ejs-numerictextbox>
                                 <div class="row col-md-10">
-                                    <small v-if="!$v.longitud_pavimentar.required && $v.longitud_pavimentar.$error"
+                                    <small
+                                        v-if="!$v.longitud_pavimentar.required && $v.longitud_pavimentar.$error"
                                         class="form-text form-text-error">
                                         Este campo es obligatorio
                                     </small>
@@ -89,11 +93,10 @@
 
                         <div class="col-md-4">
                             <label>Ancho del Camino:</label>
-                            <ejs-dropdownlist :class="{ 'form-control-error': $v.ancho_camino.$error }"
-                                id="ancho_camino" :dataSource="anchoCaminoData" :change="obteneranchocamino"
-                                :fields="anchoCaminoFields" placeholder="Selecciona el ancho del camino"
-                                v-model="ancho_camino" v-model.trim="$v.ancho_camino.$model" ref="refAncho"
-                                :enabled="!isCanceled">
+                            <ejs-dropdownlist :class="{'form-control-error': $v.ancho_camino.$error}" id="ancho_camino"
+                                :dataSource="anchoCaminoData" :change="obteneranchocamino" :fields="anchoCaminoFields"
+                                placeholder="Selecciona el ancho del camino" v-model="ancho_camino"
+                                v-model.trim="$v.ancho_camino.$model" ref="refAncho" :enabled="!isCanceled">
                             </ejs-dropdownlist>
                             <div class="row col-md-10">
                                 <small v-if="!$v.ancho_camino.required && $v.ancho_camino.$error"
@@ -210,7 +213,7 @@
                             <textarea rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino"
-                                v-model="caracteristicasCamino">
+                                v-model="caracteristicas">
                     </textarea>
                         </div>
                     </div>
@@ -229,7 +232,7 @@
                         <div>
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
-                                placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
+                                placeholder="Ingrese los beneficios del camino" v-model="beneficios">
                         </textarea>
                         </div>
                     </div>
@@ -237,18 +240,6 @@
             </td>
         </tr>
     </table>
-
-    <div class="form-group">
-        <div class="row" v-if="!isCanceled">
-            <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
-                v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
-                Guardar Datos
-            </button>
-        </div>
-    </div>
-
-    <!-- MODAL CONFIRMACIÓN -->
-    <!-- TODO: Utilizar $swal para este aviso -->
     <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -257,7 +248,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Se guardaron correctamente los datos del camino,</p>
-                    <p>El identificador del camino es:<strong class="alert">{{ idcamino }}</strong></p>
+                    <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
@@ -266,10 +257,71 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
-
-    <!-- MODAL "Longitudes incorrectas" -->
-    <!-- TODO: Utilizar $swal para este aviso -->
+    <!--Actualizar -->
+    <div class="modal fade" id="UpdateCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Aviso del Sistema</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Se actualizarón correctamente los datos del camino,</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        @click="$router.push('/caminos')">Cerrar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <div class="form-group">
+        <div class="row" v-if="!isCanceled">
+            <button type="button" class="btn btn-default pull-right vertical-buffer" data-toggle="modal"
+                v-on:click="GuardaDatos" :disabled="btnSaveDisabled">
+                Guardar Datos
+            </button>
+        </div>
+    </div>
+    <div id="alertModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <div class="">Ocurrio un error</div>
+                </div>
+                <div class="modal-body">
+                    <p>El camino no pudo ser guardado favor de intentarlo mas tarde o contactar al
+                        area de sistemas</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">
+                        Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alertlong" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content ">
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <div class="">Ocurrio un error</div>
+                </div>
+                <div class="modal-body">
+                    <p>La obra que estás intentando registrar es de tipo Agencia Municipal,
+                        y por lo tanto solo debe tener una sola localidad, favor de corregir y reintentar
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">
+                        Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="alertvalnum" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content ">
@@ -289,19 +341,21 @@
             </div>
         </div>
     </div>
-
     </div>
 </template>
 
 <script>
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { DropDownListPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import { DataManager } from "@syncfusion/ej2-data";
 import { Loading } from 'element-ui';
-import { altaCamino } from '@/api/alta-camino';
+import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
+import { editarCamino, getDetalleCamino } from '@/api/caminos';
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
 import VueCurrencyFilter from 'vue-currency-filter'
 import TituloSeccion from '@/components/Shared/TituloSeccion.vue';
+
 
 
 Vue.use(DropDownListPlugin);
@@ -315,20 +369,10 @@ Vue.use(VueCurrencyFilter, {
     symbolSpacing: true // Indica si debe poner un espacio entre el símbolo y la cantidad
 })
 export default {
-    components: { TituloSeccion },
-    name: 'DatosCamino',
+    name: 'FormEditarCamino',
     decimals: 5,
     value: 10,
     props: {
-        edo: {
-            tipo_camino: '',
-            otro_tipo_camino: "",
-            clave_estado: "",
-            clave_mun: "",
-            localidades: '',
-            region: '',
-            ubicacion: '',
-        },
         isCanceled: {
             required: true,
             default: false
@@ -336,14 +380,15 @@ export default {
     },
     data() {
         return {
+            clave_camino:"",
             ciit: '',
             tren_maya: '',
             caminosOriginales: '',
             nombre_camino: '',
             longitud_camino: "",
             longitud_pavimentar: "",
-            caracteristicasCamino: '',
-            beneficiosCamino: '',
+            caracteristicas: '',
+            beneficios: '',
             lat_inicial: "",
             lon_inicial: "",
             lat_final: "",
@@ -368,9 +413,11 @@ export default {
     validations: {
         nombre_camino: {
             required,
+
         },
         ancho_camino: {
             required,
+
         },
         longitud_pavimentar: {
             required,
@@ -381,10 +428,10 @@ export default {
         lat_inicial: {
             required,
         },
-        lon_inicial: {
+        lat_final: {
             required,
         },
-        lat_final: {
+        lon_inicial: {
             required,
         },
         lon_final: {
@@ -404,8 +451,57 @@ export default {
             if (this.ancho_camino == 5)
                 this.Presup = "$ 4,300,019.57"
             const resultado = (this.Presup.replaceAll('$', '').replaceAll(',', ''))
-            this.resul = resultado * (this.longitud_pavimentar)
+            this.resul = resultado * (this.fLongitdTotalAPavimentar)
         },
+
+        async CargaDatos(clave) {
+            const response = await getDetalleCamino(clave)
+
+            this.idcamino = response.clave_camino
+            this.nombre_camino = response.nombre_camino
+			this.longitud_camino = response.longitud_camino
+            this.longitud_pavimentar = response.longitud_pavimentar
+            this.caracteristicas = response.caracteristicas
+            this.beneficios = response.beneficios
+            this.ciit = response.ciit
+            this.tren_maya = response.tren_maya
+            this.caminosOriginales = response.caminos_originales
+            this.ancho_camino = response.id_ancho_camino
+            this.lat_inicial = response.lat_inicial
+            this.lon_inicial = response.lon_inicial
+            this.lat_final = response.lat_final
+            this.lon_final = response.lon_final
+
+            // this.fLongitdTotal = response.longitud
+            // this.fLongitdTotalAPavimentar = response.longitud_pavimentar
+            // //this.anchoCaminoData = response.ancho_camino
+            // this.anchoCaminoFields = response.ancho_camino
+            // this.ubicacionCamino = response.ubicacion
+            // this.caracteristicasCamino = response.caracteristicas
+            // this.beneficiosCamino = response.beneficios
+            // this.latitud = response.datos_geograficos.latitud
+            // this.punto_inicial = response.datos_geograficos.punto_inicial
+            // this.longituddg = response.datos_geograficos.longitud
+            // this.punto_final = response.datos_geograficos.punto_final
+
+
+            this.$store.commit('setAnchoCamino', this.ancho_camino)
+            this.$refs.refAncho.ej2Instances.value = response.ancho_camino
+
+
+            if (response.ancho_camino == 1) this.ancho_camino = 1
+            if (response.ancho_camino == 2) this.ancho_camino = 2
+            if (response.ancho_camino == 3) this.ancho_camino = 3
+            if (response.ancho_camino == 4) this.ancho_camino = 4
+            if (response.ancho_camino == 5) this.ancho_camino = 5
+
+            if (this.ancho_camino == 1) this.Presup = "$ 2,700,104.59"
+            if (this.ancho_camino == 2) this.Presup = "$ 3,100,198.29"
+            if (this.ancho_camino == 3) this.Presup = "$ 3,507,565.95"
+            if (this.ancho_camino == 4) this.Presup = "$ 3,929,902.41"
+            if (this.ancho_camino == 5) this.Presup = "$ 4,300,019.57"
+        },
+
 
         async GuardaDatos() {
             this.$emit("show-error", false);
@@ -416,21 +512,12 @@ export default {
                 this.btnSaveDisabled = true
                 try {
                     const data = {
-                        // Datos Geograficos
-                        tipo_camino: this.edo.tipo_camino,
-                        camino_otro: this.edo.otro_tipo_camino,
-                        clave_estado: this.edo.clave_estado,
-                        clave_mun: this.edo.clave_mun,
-                        localidades: this.edo.localidades,
-                        region: this.edo.region,
-                        ubicacion: this.edo.ubicacion,
-
                         // Datos Camino
                         nombre_camino: this.nombre_camino,
                         longitud_camino: this.longitud_camino,
                         longitud_pavimentar: this.longitud_pavimentar,
-                        caracteristicas: this.caracteristicasCamino,
-                        beneficios: this.beneficiosCamino,
+                        caracteristicas: this.caracteristicas,
+                        beneficios: this.beneficios,
                         ciit: this.ciit == "" ? false : true,
                         tren_maya: this.tren_maya == "" ? false : true,
                         caminos_originales: this.caminosOriginales == "" ? false : true,
@@ -439,7 +526,6 @@ export default {
                         lon_inicial: this.lon_inicial,
                         lat_final: this.lat_final,
                         lon_final: this.lon_final,
-                        usuarios: 1
 
                     }
                     if (this.longitud_pavimentar > this.longitud_camino) {
@@ -452,11 +538,9 @@ export default {
                         lock: true,
                     });
                     // NUEVO ENDPOINT
-                    console.log("EDO");
-                    console.log(this.edo);
                     console.log("DATA");
                     console.log(data);
-                    const response = await altaCamino(data).finally(() => {
+                    const response = await editarCamino(this.clave_camino,data).finally(() => {
                         loadingInstance.close()
                     })
                     this.idcamino = response.clave
@@ -473,7 +557,16 @@ export default {
             }
         }
     },
-    beforeMount() {
+    created() {
+        this.clave_camino = this.$route.params.obraId
+        this.CargaDatos(this.$route.params.obraId)
+
+        if (this.$route.params.obraId) {
+            this.editmode = true
+        }
+    },
+
+    beforeMount: function () {
         this.cons = this.isCanceled
     },
 }

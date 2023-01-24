@@ -72,7 +72,7 @@ import { mapMutations } from 'vuex'
 import convenio from '@/components/convenio';
 import { getupdate } from '@/api/alta-camino';
 import AsignarResidente from '@/components/AsignarResidente';
-import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
+import DatosCamino from '@/components/Caminos/DatosCamino';
 import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
 import DatosGeograficos from '@/components/AltaDeAF/DatosAF';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';

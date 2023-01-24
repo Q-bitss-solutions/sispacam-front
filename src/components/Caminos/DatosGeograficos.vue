@@ -228,7 +228,7 @@
 import Vue from "vue";
 import { NumericTextBoxPlugin } from "@syncfusion/ej2-vue-inputs";
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
-import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
+import { getEdos, getMunicipios, getLocalidades } from '@/api/inegi'
 import { required } from 'vuelidate/lib/validators'
 import TituloSeccion from '@/components/Shared/TituloSeccion.vue';
 

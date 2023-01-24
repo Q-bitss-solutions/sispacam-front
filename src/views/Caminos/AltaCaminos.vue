@@ -36,8 +36,8 @@
 <script>
 import { mapMutations } from 'vuex'
 import { getupdate } from '@/api/alta-camino';
-import DatosCamino from '@/components/AltaDeCaminos/DatosCamino';
-import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos';
+import DatosCamino from '@/components/Caminos/DatosCamino';
+import DatosGeograficos from '@/components/Caminos/DatosGeograficos';
 
 export default {
     name: "AltaCamino",
