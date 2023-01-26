@@ -54,7 +54,7 @@
 import TablaFrentesCamino from "@/components/Caminos/TablaFrentesCamino.vue";
 import ModalSCT from "@/components/Modals/SCTModal.vue";
 import FormAgregarBeneficiario from "@/components/Caminos/FormAgregarBeneficiario.vue";
-import { listBeneficiariosCamino, listMetricasBeneficiario } from "@/api/alta-camino";
+import { listBeneficiariosCamino, listMetricasBeneficiario } from "@/api/beneficiarios";
 
 import { getDetalleCamino } from "@/api/caminos";
 import AgregadoFrentes from "@/components/Caminos/AgregadoFrentes.vue";
@@ -81,8 +81,8 @@ export default {
       console.log("DETALLE CAMINO");
       console.log(response);
       this.camino = response;
-      // this.GetConvenios(response.id)
-      // this.GetMetrics(response.id)
+      this.GetConvenios(response.id)
+      this.GetMetrics(response.id)
     },
     closeModal() {
       console.log("Close Modal EC");

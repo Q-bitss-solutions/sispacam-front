@@ -6,7 +6,7 @@
           <h5>Municipio</h5>
         </td>
         <td v-for="frente in frentes">
-          {{frente.nombre_municipio}}
+          {{ frente.nombre_municipio }}
         </td>
       </tr>
 
@@ -15,7 +15,7 @@
           <h5>Localidad</h5>
         </td>
         <td v-for="frente in frentes">
-          {{frente.nombre_localidad}}
+          {{ frente.nombre_localidad }}
         </td>
       </tr>
 
@@ -23,10 +23,7 @@
         <td>
           <h5>Clave Beneficiario</h5>
         </td>
-        <td
-          v-for="frente in frentes"
-          @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)"
-        >
+        <td v-for="frente in frentes" @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)">
           {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
         </td>
       </tr>
@@ -48,7 +45,7 @@
           <h5>Presencia indígena</h5>
         </td>
         <td v-for="frente in frentes">{{ frente.presencia_indigena }}</td>
-      </tr> 
+      </tr>
       <tr>
         <td>
           <h5>Grado de marginación</h5>
@@ -98,7 +95,7 @@
 </template>
 
 <script>
-import { deleteBeneficiariosCamino } from "../../api/alta-camino";
+import { deleteBeneficiariosCamino } from "@/api/beneficiarios";
 
 export default {
   name: "TablaFrentesCamino",

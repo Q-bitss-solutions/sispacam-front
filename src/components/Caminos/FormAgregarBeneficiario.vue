@@ -6,10 +6,10 @@
       <div class="col-md-12">
         <label class="control-label" for="municipio">*Municipio</label>
         <ejs-combobox :dataSource="municipiosData" :fields="municipiosFields"
-          :class="{ 'form-control-error': $v.icve_municipio.$error }" id="municipio"
+          :class="{ 'form-control-error': $v.clave_municipio.$error }" id="municipio"
           placeholder="Selecciona un municipio" ref="refMunicipio" v-model="clave_municipio" v-on:change="obtenerLocalidades">
         </ejs-combobox>
-        <div class="row col-md-12" v-if="!$v.icve_municipio.required && $v.icve_municipio.$error">
+        <div class="row col-md-12" v-if="!$v.clave_municipio.required && $v.clave_municipio.$error">
           <small class="form-text form-text-error">
             Este campo es obligatorio
           </small>
@@ -59,14 +59,14 @@
 <script>
 import { getRandomId } from "@syncfusion/ej2-base";
 import { required } from "vuelidate/lib/validators";
-import { getMunicipios, CreateBeneficiarioCamino, getLocalidades } from '@/api/alta-camino'
-
+import { getMunicipios, getLocalidades } from "@/api/inegi";
+import { createBeneficiarioCamino } from '@/api/beneficiarios';
 
 export default {
   name: "FormAgregarBeneficiario",
   data: function () {
     return {
-      clave_estado: this.camino.cve_agee,
+      clave_estado: this.camino.clave_estado,
       id_camino: this.camino.id,
       clave_municipio: "",  // Municipio Seleccionado
       clave_localidad: "",  // Localidad Selecccionada
@@ -83,7 +83,7 @@ export default {
   },
 
   validations: {
-    icve_municipio: {
+    clave_municipio: {
       required,
     },
   },
@@ -110,7 +110,8 @@ export default {
     },
     //localidades
     async obtenerLocalidades() {
-      const objMunSeleccionado = this.municipiosData[(this.camino.icve_municipio*1)-1]
+      const objMunSeleccionado = this.municipiosData[(this.clave_municipio*1)-1]
+      console.log(objMunSeleccionado)
 
       try {
         this.$emit("show-error", false);
@@ -135,21 +136,21 @@ export default {
     },
 
     async postBeneficiarioCamino() {
-      const wiu = {
-        clave_camino:this.camino.clave,
-        estado: this.camino.cve_agee,
-        // municipio: this.clave_municipio,
-        municipio: this.MunicipioSeleccionado.id,
-        // localidad: this.clave_localidad,
-        localidad: this.clave_localidad==null?"":this.clave_localidad,
+      // const wiu = {
+      //   clave_camino:this.camino.clave,
+      //   estado: this.camino.cve_agee,
+      //   // municipio: this.clave_municipio,
+      //   municipio: this.MunicipioSeleccionado.id,
+      //   // localidad: this.clave_localidad,
+      //   localidad: this.clave_localidad==null?"":this.clave_localidad,
         
-        // camino_id: this.camino_id,
-        region: this.region,
-        ubicacion: this.ubicacion,
+      //   // camino_id: this.camino_id,
+      //   region: this.region,
+      //   ubicacion: this.ubicacion,
         
-      };
-      console.log(wiu);
-      const response = await CreateBeneficiarioCamino(this.id_camino, wiu);
+      // };
+      console.log(this.payload);
+      const response = await createBeneficiarioCamino(this.id_camino, this.payload);
       this.closeModal();
       alert("Beneficiario de obra guardado satisfactoriamente");
       this.$emit("updateFrentes")
@@ -157,6 +158,7 @@ export default {
   },
   created() {
     this.obtenerMunicipios()
+    console.log(this.camino);
   },
   computed:{
     MunicipioSeleccionado(){
@@ -170,6 +172,21 @@ export default {
         return true
       }else{
         return false
+      }
+    },
+    payload(){
+      return{
+        clave_camino:this.camino.clave_camino,
+        estado: this.camino.clave_estado,
+        // municipio: this.clave_municipio,
+        municipio: this.MunicipioSeleccionado.id,
+        // localidad: this.clave_localidad,
+        localidad: this.clave_localidad==null?null:this.clave_localidad,
+        
+        // camino_id: this.camino_id,
+        region: this.region,
+        ubicacion: this.ubicacion,
+        
       }
     }
   }
