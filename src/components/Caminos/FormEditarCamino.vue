@@ -378,8 +378,12 @@ export default {
             default: false
         }
     },
+    components:{
+        TituloSeccion
+    },
     data() {
         return {
+            idcamino:"",
             clave_camino:"",
             ciit: '',
             tren_maya: '',

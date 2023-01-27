@@ -105,7 +105,7 @@ export default {
     };
   },
   props: {
-    frentes: Object,
+    frentes: Array,
   },
   methods: {
     async deleteBeneficiario(id, clave_beneficiario) {

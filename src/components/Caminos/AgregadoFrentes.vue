@@ -31,10 +31,9 @@
 </template>
 
 <script>
-import { numeric } from 'vuelidate/lib/validators';
 
 export default {
-	name: 'AgregadoFuentes',
+	name: 'AgregadoFrentes',
 	props: {
 		metrics:Object
 	}
