@@ -38,10 +38,11 @@
           <DatosBeneficiario :isCanceled="isCanceled"> </DatosBeneficiario>
         </div>
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
-          <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente>
+          <!-- <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente> -->
+          <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p>
         </div>
         <div role="tabpanel" class="tab-pane" :class="getActiveTab === 'tabConv' ? 'active' : ''" id="convenio">
-          <convenio :camino_id="getCaminoId" :isObraCanceled="isCanceled" :longitud_pavimentar="longitud_pavimentar"
+          <convenio :camino_id="camino.id" :isObraCanceled="isCanceled" :longitud_pavimentar="camino.longitud_pavimentar"
             @show-error="showError">
           </convenio>
         </div>
@@ -57,6 +58,7 @@
 import { mapMutations } from 'vuex'
 import convenio from '@/components/convenio';
 import { getupdate } from '@/api/alta-camino';
+import { getDetalleCamino } from '@/api/caminos';
 import AsignarResidente from '@/components/AsignarResidente';
 import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos1';
@@ -91,7 +93,8 @@ export default {
       cEstado: '',
       msgError: null,
       breadcrumb: ['Camino ' + this.$route.params.obraId],
-      longitud_pavimentar: ''
+      longitud_pavimentar: '',
+      camino:{}
     }
   },
   methods: {
@@ -106,15 +109,21 @@ export default {
     },
     ...mapMutations(['setBreadcrumb']),
     async getStatus(clave) {
-      const response = await getupdate(clave)
-      this.isCanceled = response.estatus == 'C' ? true : false
-      this.longitud_pavimentar = response.longitud_pavimentar
+
+      // TODO:Agregar try catch cuando se preube que es la solución
+      this.camino = await getDetalleCamino(clave)
+      console.log("Camino");
+      console.log(this.camino);
+      console.log("Longitud Pavimentar");
+      console.log(this.camino.longitud_pavimentar);
+
+      // const response = await getupdate(clave)
+      // this.isCanceled = response.estatus == 'C' ? true : false
+      // this.longitud_pavimentar = response.longitud_pavimentar
     },
   },
   computed: {
-    getCaminoId() {
-      return this.camino_id
-    },
+
     getActiveTab() {
       console.log('this.tabConv')
       console.log(this.tabConv)
@@ -122,8 +131,9 @@ export default {
       return !this.$route.params.tabConv ? 'tabDG' : 'tabConv'
     }
   },
-  beforeMount: function () {
+  created() {
     if (this.$route.params.obraId) {
+      console.log("CREATED");
       this.setBreadcrumb(this.breadcrumb)
       this.getStatus(this.$route.params.obraId)
     }

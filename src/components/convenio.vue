@@ -15,10 +15,17 @@
           Nuevo Convenio
         </button>
       </div>
+      <div>
+      </div>
       <div class="col-md-12">
         <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
       </div>
     </div>
+
+    <div>
+      <p v-for="convenio in convenios" :key="convenio.id">{{ convenio.tramo }}</p>
+    </div>
+
     <div class="row">
       <div class="col-md-12 table-responsive">
         <ejs-treegrid :dataSource="convenios" childMapping="modificatorio" :treeColumnIndex="1" ref="gridConvenios"
@@ -330,12 +337,8 @@ import { GridPlugin } from '@syncfusion/ej2-vue-grids';
 import { CustomSummaryType } from '@syncfusion/ej2-grids';
 import { required, maxValue, } from 'vuelidate/lib/validators'
 import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
-import { updateEstatus, getConvenios, getCatMeses } from '@/api/convenio';
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
-import {
-  generarConvenio, updateConvenio,
-  createModificatorio, bajaConvenio, getAvanceConvenio
-} from '@/api/convenio';
+import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio, getAvanceConvenio, getConveniosGet, getCatMeses } from '@/api/convenio';
 import VueNumeric from 'vue-numeric'
 
 Vue.use(VueNumeric)
@@ -355,6 +358,7 @@ export default {
       default: false
     },
     longitud_pavimentar: {
+      type: Number,
       required: true,
     }
   },
@@ -400,7 +404,38 @@ export default {
       sumMesAvance: 0,
       dataAvance: [],
       mesesMetas: [],
-      convenios: [],
+      convenios: [
+        {
+          "id": 6,
+          "anio": 2024,
+          "tramo": "Tramo 1",
+          "monto": "20",
+          "origen": "PEF",
+          "meta": "10.000",
+          "estatus": "A",
+          "modificatorio": null,
+          "padre": 0,
+          "beneficiario_id": 0,
+          "nobre_presidente_municipal": null,
+          "primera_presidente_municipal": null,
+          "segundoa_presidente_municipal": null
+        },
+        {
+          "id": 7,
+          "anio": 2024,
+          "tramo": "Tramo 1",
+          "monto": "1",
+          "origen": "PEF",
+          "meta": "1.000",
+          "estatus": "A",
+          "modificatorio": null,
+          "padre": 0,
+          "beneficiario_id": 0,
+          "nobre_presidente_municipal": null,
+          "primera_presidente_municipal": null,
+          "segundoa_presidente_municipal": null
+        }
+      ],
       longitudP: '',
       aniosEdit: [],
       convenioErrors: [],
@@ -415,6 +450,8 @@ export default {
       showAdminModalConvenioMod: false,
       convenioModificatrioErrors: [],
       pageSettings: { pageCount: 6, pageSize: 20 },
+
+      // Parece que manda llamar un modal para editar el convenio
       editTemplate: function () {
         return {
           template: Vue.component("editTemplate", {
@@ -447,7 +484,9 @@ export default {
                 this.$parent.$parent.form.meta = this.data.meta
                 this.$parent.$parent.form.archivo = this.data.archivo
                 this.$parent.$parent.form.es_modificatorio = this.data.es_modificatorio
-                this.$parent.$parent.form.modificatorio = (this.data.hasOwnProperty('modificatorio') ? this.data.modificatorio.length : 0)
+                // TODO: investigar que hace el modificatorio
+                // this.$parent.$parent.form.modificatorio = (this.data.hasOwnProperty('modificatorio') ? this.data.modificatorio.length : 0)
+                this.$parent.$parent.form.modificatorio = 0
                 if (this.data.estatus === 'M' || this.data.archivo) {
                   this.$parent.$parent.isDisabled = true
                   this.$parent.$parent.btnIsDisabled = true
@@ -798,7 +837,13 @@ export default {
       this.formMoficatorio.archivo = event.target.files[0];
     },
     async listaconvenio() {
-      this.convenios = await getConvenios(this.camino_id)
+      console.log("CAMINO ID");
+      console.log(this.camino_id);
+      // this.convenios = await getConveniosGet(this.camino_id)
+      this.convenios = await getConveniosGet(7)
+      this.$refs.gridConvenios.refresh()
+      console.log("tis convenios get");
+      console.log(this.convenios);
     },
     deleteConvenio() {
       this.$confirm('¿Desea eliminar el presente convenio?', 'Warning', {
@@ -809,7 +854,7 @@ export default {
         let loadingInstance = Loading.service({ fullscreen: true, lock: true });
         await bajaConvenio(this.form.id).then(async () => {
           await this.listaconvenio()
-          this.$refs.gridConvenios.refresh()
+          // this.$refs.gridConvenios.refresh()
           this.$alert(`El convenio ha sido cancelado`, 'INFORMACIÓN', {
             confirmButtonText: 'Cerrar',
             customClass: 'box-msg-login',
@@ -888,7 +933,7 @@ export default {
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
       await generarConvenio(formData, this.camino_id).then(async () => {
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -965,9 +1010,9 @@ export default {
         formData.append("archivo", this.formMoficatorio.archivo);
       }
       await createModificatorio(formData).then(async () => {
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -1014,7 +1059,7 @@ export default {
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
       await updateConvenio(formData, this.form.id).then(async () => {
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El Convenio ha sido actualizado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -1178,6 +1223,7 @@ export default {
       return this.$store.state.cancelConvenio.id
     },
     getCurrentLongitud() {
+      return 314156 // TODO: BOrrar despues del debugging
       let subTotalLong = 0
       subTotalLong = this.convenios.reduce((total, convenio) => {
         const activeConvenio = getActiveConvenio(convenio)
@@ -1207,9 +1253,10 @@ export default {
 
   },
 
-  created: function () {
-    console.log("CREATED Convenio");
+  created() {
     this.listaconvenio()
+    console.log("Longitud Pavimentar");
+    console.log(this.longitud_pavimentar);
     this.longitudP = this.longitud_pavimentar
     EventBus.$on('deleteConvenio', (obj) => {
       const { el, parent } = obj;
@@ -1224,7 +1271,7 @@ export default {
       this.form.archivo = el.archivo
       this.mode = 'delete'
       this.modalTitle = 'Eliminar Datos del Convenio'
-      this.isDisabled = false
+      this.isDisabled = true
       this.btnIsDisabled = false
       this.showAdminModalConvenio = true
     });
@@ -1259,11 +1306,13 @@ export default {
     ]
   },
   mounted() {
-    this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
+    // this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
     bodyScroll.init()
   }
 }
 
+// TODO: Investigar que hace esta función
+// TODO: Investigar que es un modificatorio
 function getActiveConvenio(convenio) {
   let _convenio
   if (hasChildren(convenio) && convenio.estatus === 'M') {
