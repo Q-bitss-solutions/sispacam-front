@@ -1235,7 +1235,12 @@ export default {
       return this.mode === 'new' ? Number(subTotalLong) + Number(this.form.meta) : Number(subTotalLong)
     },
     getSumMeta() {
-      return this.longitudP - this.getCurrentLongitud
+      const longitudTotal = this.longitudP
+      // Quiza no estemos considerando alguna regla de negocio
+      // solo calcular los convenios activos
+      const sumaConvenios = this.convenios.reduce((a, b) => Number(a.meta || 0) + Number(b.meta || 0));
+      const longitudParcial = sumaConvenios + Number(this.form.meta);
+      return longitudTotal - longitudParcial;
     },
     getTotalAvanceMeta: {
       get: function () {
@@ -1257,7 +1262,7 @@ export default {
     this.listaconvenio()
     console.log("Longitud Pavimentar");
     console.log(this.longitud_pavimentar);
-    this.longitudP = this.longitud_pavimentar
+    this.longitudP = Number(this.longitud_pavimentar)
     EventBus.$on('deleteConvenio', (obj) => {
       const { el, parent } = obj;
       this.loadAnios()
