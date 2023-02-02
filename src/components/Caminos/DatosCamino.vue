@@ -453,7 +453,7 @@ export default {
                     const response = await altaCamino(data).finally(() => {
                         loadingInstance.close()
                     })
-                    this.idcamino = response.clave
+                    this.idcamino = response
                     $('#addCamino').modal('show')
                     this.btnSaveDisabled = false
 
