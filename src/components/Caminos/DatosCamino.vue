@@ -30,13 +30,6 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-4" v-show="false">
-                            <div>
-                                <label for="camino">ID Camino:</label>
-                                <input id="camino" name="LADA3" class="form-control" placeholder="Id Camino" value=""
-                                    :disabled="isCanceled" v-model="idcamino">
-                            </div>
-                        </div>
                         <div class="col-md-12">
                             <label for="nombrecamino">Nombre del Camino:</label>
                             <input v-model="nombre_camino" :class="{ 'form-control-error': $v.nombre_camino.$error }"
@@ -111,7 +104,7 @@
                             <label>Presupuesto Base de obra total:</label>
                 <td>
                     <vue-numeric v-bind:precision="2" currency="$" separator="," class="form-control" v-model="resul"
-                        :read-only="resul">
+                        :read-only="true">
                     </vue-numeric>
                 </td>
     </div>
@@ -336,6 +329,7 @@ export default {
     },
     data() {
         return {
+            idcamino:'',
             ciit: '',
             tren_maya: '',
             caminosOriginales: '',
