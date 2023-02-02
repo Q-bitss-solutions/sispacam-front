@@ -22,10 +22,6 @@
       </div>
     </div>
 
-    <div>
-      <p v-for="convenio in convenios" :key="convenio.id">{{ convenio.tramo }}</p>
-    </div>
-
     <div class="row">
       <div class="col-md-12 table-responsive">
         <ejs-treegrid :dataSource="convenios" childMapping="modificatorio" :treeColumnIndex="1" ref="gridConvenios"

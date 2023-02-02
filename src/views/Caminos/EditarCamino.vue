@@ -26,8 +26,8 @@
     <!-- Tabla Frentes de camino -->
     <!-- TODO: Rebuild - Cambiar nombre del componente -->
     <div class="row">
-      <tabla-frentes-camino @deleteBeneficiario="GetConvenios(camino.id)"
-        :frentes="this.convenios"></tabla-frentes-camino>
+      <TablaFrentesCamino @deleteBeneficiario="GetConvenios(camino.id)"
+        :frentes="this.convenios"></TablaFrentesCamino>
     </div>
 
     <hr class="red" />

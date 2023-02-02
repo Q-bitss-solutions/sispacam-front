@@ -2,7 +2,7 @@
 	<div class="row">
 		<div class="row col-md-9">
 			<div class="col-md-6">Tipo de Camino</div>
-			<div class="col-md-6">{{ camino.tipo_camino }}</div>
+			<div class="col-md-6">{{ camino.tipo_camino || '' }}</div>
 		</div>
 		<div class="row col-md-9">
 			<div class="col-md-6">Estado</div>
@@ -23,7 +23,10 @@
 export default {
 	name: "InfoCamino",
 	props: {
-		camino: Object
+		camino: {
+			type:Object,
+			default: ()=> ({})
+		}
 	},
 	computed:{
 		localidades(){
