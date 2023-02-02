@@ -1234,7 +1234,7 @@ export default {
       const longitudTotal = this.longitudP
       // Quiza no estemos considerando alguna regla de negocio
       // solo calcular los convenios activos
-      const sumaConvenios = this.convenios.reduce((a, b) => Number(a.meta || 0) + Number(b.meta || 0));
+      const sumaConvenios = this.convenios.reduce((a, b) => (Number(a.meta || 0) + Number(b.meta || 0)), 0);
       const longitudParcial = sumaConvenios + Number(this.form.meta);
       return longitudTotal - longitudParcial;
     },
