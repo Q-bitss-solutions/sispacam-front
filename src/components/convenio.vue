@@ -432,7 +432,6 @@ export default {
           "segundoa_presidente_municipal": null
         }
       ],
-      longitudP: '',
       aniosEdit: [],
       convenioErrors: [],
       isDisabled: false,
@@ -877,6 +876,12 @@ export default {
 
     },
     async saveEditConvenio(isNew) {
+      if (this.getSumMeta < 0) {
+        return this.$alert(`El campo "Meta" no debe ser mayor a la longitud total a pavimentar`, 'INFORMACIÓN', {
+          confirmButtonText: 'Aceptar',
+          customClass: 'box-msg-login',
+        })
+      }
       const { isValido, errors } = this.getErrors('form')
       if (!isValido) {
         this.convenioErrors = errors
@@ -1238,6 +1243,9 @@ export default {
       const longitudParcial = sumaConvenios + Number(this.form.meta);
       return longitudTotal - longitudParcial;
     },
+    longitudP() {
+      return Number(this.longitud_pavimentar)
+    },
     getTotalAvanceMeta: {
       get: function () {
         console.log('getTotalAvanceMeta')
@@ -1256,9 +1264,7 @@ export default {
 
   created() {
     this.listaconvenio()
-    console.log("Longitud Pavimentar");
-    console.log(this.longitud_pavimentar);
-    this.longitudP = Number(this.longitud_pavimentar)
+
     EventBus.$on('deleteConvenio', (obj) => {
       const { el, parent } = obj;
       this.loadAnios()
