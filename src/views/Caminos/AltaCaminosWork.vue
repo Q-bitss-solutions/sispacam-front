@@ -38,8 +38,8 @@
           <DatosBeneficiario :isCanceled="isCanceled"> </DatosBeneficiario>
         </div>
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
-          <!-- <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente> -->
-          <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p>
+          <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente>
+          <!-- <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p> -->
         </div>
         <div role="tabpanel" class="tab-pane" :class="getActiveTab === 'tabConv' ? 'active' : ''" id="convenio">
           <convenio :camino_id="camino.id" :isObraCanceled="isCanceled" :longitud_pavimentar="camino.longitud_pavimentar"

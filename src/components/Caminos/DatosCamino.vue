@@ -446,10 +446,6 @@ export default {
                         lock: true,
                     });
                     // NUEVO ENDPOINT
-                    console.log("EDO");
-                    console.log(this.edo);
-                    console.log("DATA");
-                    console.log(data);
                     const response = await altaCamino(data).finally(() => {
                         loadingInstance.close()
                     })

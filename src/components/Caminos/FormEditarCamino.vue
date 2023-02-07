@@ -114,7 +114,7 @@
                             <label>Presupuesto Base de obra total:</label>
                 <td>
                     <vue-numeric v-bind:precision="2" currency="$" separator="," class="form-control" v-model="resul"
-                        :read-only="resul">
+                        :read-only="true">
                     </vue-numeric>
                 </td>
     </div>

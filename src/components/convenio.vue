@@ -835,7 +835,7 @@ export default {
       console.log("CAMINO ID");
       console.log(this.camino_id);
       // this.convenios = await getConveniosGet(this.camino_id)
-      this.convenios = await getConveniosGet(7)
+      this.convenios = await getConveniosGet(this.camino_id)
       this.$refs.gridConvenios.refresh()
       console.log("tis convenios get");
       console.log(this.convenios);
@@ -1313,7 +1313,7 @@ export default {
     ]
   },
   mounted() {
-    // this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
+    this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
     bodyScroll.init()
   }
 }

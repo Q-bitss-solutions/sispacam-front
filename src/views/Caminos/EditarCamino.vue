@@ -3,7 +3,7 @@
 
     <h2>Edición del camino: {{ clave }}</h2>
 
-    <InfoCamino :camino="camino"></InfoCamino>
+    <InfoCamino :datosCamino="camino"></InfoCamino>
 
     <hr class="red" />
 
@@ -64,10 +64,10 @@ export default {
   name: "EditarCamino",
   data() {
     return {
-      camino: null,
+      camino: {},
       showModal: false,
-      metrics: [],
-      convenios: {},
+      metrics: {},
+      convenios: [],
       clave: this.$route.params.obraId,
     };
   },
