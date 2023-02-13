@@ -38,11 +38,12 @@
           <DatosBeneficiario :isCanceled="isCanceled"> </DatosBeneficiario>
         </div>
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
-          <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente>
-          <!-- <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p> -->
+          <!-- <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente> -->
+          <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p>
+
         </div>
         <div role="tabpanel" class="tab-pane" :class="getActiveTab === 'tabConv' ? 'active' : ''" id="convenio">
-          <convenio :camino_id="camino.id" :isObraCanceled="isCanceled" :longitud_pavimentar="camino.longitud_pavimentar"
+          <convenio v-if="camino.id != undefined" :camino_id="camino.id" :isObraCanceled="isCanceled" :longitud_pavimentar="camino.longitud_pavimentar"
             @show-error="showError">
           </convenio>
         </div>
@@ -94,7 +95,7 @@ export default {
       msgError: null,
       breadcrumb: ['Camino ' + this.$route.params.obraId],
       longitud_pavimentar: '',
-      camino:{}
+      camino:{},
     }
   },
   methods: {
@@ -116,6 +117,8 @@ export default {
       console.log(this.camino);
       console.log("Longitud Pavimentar");
       console.log(this.camino.longitud_pavimentar);
+      console.log("Camino ID");
+      console.log(this.camino.id);
 
       // const response = await getupdate(clave)
       // this.isCanceled = response.estatus == 'C' ? true : false

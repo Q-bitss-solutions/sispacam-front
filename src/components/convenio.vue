@@ -22,6 +22,10 @@
       </div>
     </div>
 
+    <div>
+      <p>{{ getCaminoID }}</p>
+    </div>
+
     <div class="row">
       <div class="col-md-12 table-responsive">
         <ejs-treegrid :dataSource="convenios" childMapping="modificatorio" :treeColumnIndex="1" ref="gridConvenios"
@@ -400,38 +404,7 @@ export default {
       sumMesAvance: 0,
       dataAvance: [],
       mesesMetas: [],
-      convenios: [
-        {
-          "id": 6,
-          "anio": 2024,
-          "tramo": "Tramo 1",
-          "monto": "20",
-          "origen": "PEF",
-          "meta": "10.000",
-          "estatus": "A",
-          "modificatorio": null,
-          "padre": 0,
-          "beneficiario_id": 0,
-          "nobre_presidente_municipal": null,
-          "primera_presidente_municipal": null,
-          "segundoa_presidente_municipal": null
-        },
-        {
-          "id": 7,
-          "anio": 2024,
-          "tramo": "Tramo 1",
-          "monto": "1",
-          "origen": "PEF",
-          "meta": "1.000",
-          "estatus": "A",
-          "modificatorio": null,
-          "padre": 0,
-          "beneficiario_id": 0,
-          "nobre_presidente_municipal": null,
-          "primera_presidente_municipal": null,
-          "segundoa_presidente_municipal": null
-        }
-      ],
+      convenios: [],
       aniosEdit: [],
       convenioErrors: [],
       isDisabled: false,
@@ -833,9 +806,8 @@ export default {
     },
     async listaconvenio() {
       console.log("CAMINO ID");
-      console.log(this.camino_id);
-      // this.convenios = await getConveniosGet(this.camino_id)
-      this.convenios = await getConveniosGet(this.camino_id)
+      console.log(this.getCaminoID);
+      this.convenios = await getConveniosGet(this.getCaminoID)
       this.$refs.gridConvenios.refresh()
       console.log("tis convenios get");
       console.log(this.convenios);
@@ -1217,6 +1189,12 @@ export default {
     }
   },
   computed: {
+
+    getCaminoID(){
+      console.log("getCaminoID"+this.camino_id);
+      return this.camino_id
+    },
+
     isCanceled: function () {
       if (this.$store.state.cancelConvenio.id) {
         this.openmodal()
@@ -1263,7 +1241,7 @@ export default {
   },
 
   created() {
-    this.listaconvenio()
+    // this.listaconvenio()
 
     EventBus.$on('deleteConvenio', (obj) => {
       const { el, parent } = obj;
@@ -1291,7 +1269,8 @@ export default {
     })
     this.setCatMeses()
   },
-  beforeMount: function () {
+  beforeMount() {
+    this.listaconvenio()
     this.isNormativo = (this.$store.getters['user/StateRol'] == 'NORMATIVO')
     this.cons = this.isObraCanceled
     this.flagEdicion = !this.cons
@@ -1313,6 +1292,7 @@ export default {
     ]
   },
   mounted() {
+
     this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
     bodyScroll.init()
   }
