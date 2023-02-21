@@ -4,18 +4,18 @@
     <div>
         <div class="row">
             <div class="col-md-3">
-                <input type="text" v-model="params.clave_camino" placeholder="ID de la obra" />
+                <input @keyup="searchCaminos" type="text" v-model="params.clave_camino" placeholder="ID de la obra" />
             </div>
             <div class="col-md-3">
-                <input type="text" v-model="params.nombre_camino" placeholder="Nombre de la obra" />
+                <input @keyup="searchCaminos" type="text" v-model="params.nombre_camino" placeholder="Nombre de la obra" />
             </div>
             <div class="col-md-3">
-                <input type="text" v-model="params.nombre_municipio" placeholder="Municipio" />
+                <input @keyup="searchCaminos" type="text" v-model="params.nombre_municipio" placeholder="Municipio" />
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary active" @click="searchCaminos" type="button">
+                <!-- <button class="btn btn-primary active" @click="searchCaminos" type="button">
                     Buscar
-                </button>
+                </button> -->
             </div>
         </div>
 
@@ -91,11 +91,11 @@ export default {
                 alert(e)
             }
             // Reinicia los parametros despues de cada búsqueda
-            this.params = {
+            /* this.params = {
                 nombre_municipio: null,
                 nombre_camino: null,
                 clave_camino: null
-            }
+            } */
         },
         editTemplate() {
             return {

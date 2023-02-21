@@ -41,7 +41,7 @@
     <!-- Modal: Formulario Agregar Beneficiarios -->
     <ModalSCT v-if="showModal">
       <h3 slot="header">Agregar Beneficiario de Obra</h3>
-      <FormAgregarBeneficiario @updateFrentes="GetConvenios(camino.id)" v-on:closeModal="showModal=false" slot="body"
+      <FormAgregarBeneficiario @updateFrentes="GetConvenios(camino.id),GetMetrics(camino.id)" v-on:closeModal="showModal=false" slot="body"
         :camino="camino">
       </FormAgregarBeneficiario>
     </ModalSCT>
