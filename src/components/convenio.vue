@@ -85,6 +85,17 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
+            <label for="tramo">Beneficiario:</label>
+            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled" v-model="form.beneficiario_id">
+              <option value="" disabled>Seleccionar...</option>
+              <option v-for="(beneficiario, index) in beneficiarios" :key="index" :value="beneficiario.id">
+                {{ beneficiario.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
             <label for="monto">Monto(mdp):</label>
             <input id="monto" autocomplete="off" v-model="form.monto" type="number" :disabled="isDisabled"
               placeholder="Ingresar el monto(mdp)" class="form-control "
@@ -113,11 +124,11 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-6">
             <label class="control-label">Longitud a Pavimentar</label>
             <input type="number" :value="longitudP" class="form-control" disabled id="inpt-longitud">
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-6">
             <label class="control-label">Longitud por programar</label>
             <input v-model="getSumMeta" type="number" class="form-control" disabled>
           </div>
@@ -129,8 +140,8 @@
             </small>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-5">
+        <div class="form-row col-md-12">
+          <div class="form-group col-md-6">
             <button class="btn btn-default btn-sm active" type="button" id="btn-mdl-beneficiario"
               @click="openModalBeneficiario()" :disabled="(mode === 'delete')">
               Datos del Beneficiario
@@ -340,6 +351,7 @@ import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
 import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio, getAvanceConvenio, getConveniosGet, getCatMeses } from '@/api/convenio';
 import VueNumeric from 'vue-numeric'
+import { getBeneficiariosDropdown } from '@/api/beneficiarios'
 
 Vue.use(VueNumeric)
 Vue.use(Vuelidate)
@@ -368,6 +380,7 @@ export default {
   },
   data() {
     return {
+      beneficiarios: [],
       form: {
         id: -1,
         anio: '',
@@ -379,6 +392,7 @@ export default {
         modificatorio: 0,
         padre: null,
         es_modificatorio: false,
+        beneficiario_id: '',
       },
       formMoficatorio: {
         anio: '',
@@ -1240,7 +1254,7 @@ export default {
 
   },
 
-  created() {
+  async created() {
     // this.listaconvenio()
 
     EventBus.$on('deleteConvenio', (obj) => {
@@ -1268,6 +1282,18 @@ export default {
       EventBus.$emit("setPerfil", this.isNormativo)
     })
     this.setCatMeses()
+
+    const { data } =  await getBeneficiariosDropdown(this.$route.params.obraId)
+    this.beneficiarios = data.beneficiarios.map(tramo => ({
+      id: tramo.id,
+      value: tramo.clave_beneficiario +
+        (tramo.nombre_municipio
+        ? `-${tramo.nombre_municipio}`
+        : '')
+        + (tramo.nombre_localidad
+        ? `-${tramo.nombre_localidad}`
+        : ''),
+    }))
   },
   beforeMount() {
     this.listaconvenio()
