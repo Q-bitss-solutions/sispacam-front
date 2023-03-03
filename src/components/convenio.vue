@@ -1283,17 +1283,20 @@ export default {
     })
     this.setCatMeses()
 
-    const { data } =  await getBeneficiariosDropdown(this.$route.params.obraId)
-    this.beneficiarios = data.beneficiarios.map(tramo => ({
-      id: tramo.id,
-      value: tramo.clave_beneficiario +
-        (tramo.nombre_municipio
-        ? `-${tramo.nombre_municipio}`
+    const { data } =  await getBeneficiariosDropdown(this.$route.params.obraId).then((r)=>{
+      console.log(r);
+      this.beneficiarios = r.map(tramo => ({
+      id: tramo.id_beneficiario,
+      value: tramo.clave_camino + tramo.clave_beneficiario +
+        (tramo.municipio
+        ? `: ${tramo.municipio}`
         : '')
-        + (tramo.nombre_localidad
-        ? `-${tramo.nombre_localidad}`
-        : ''),
+        // + (tramo.localidad
+        // ? `-${tramo.localidad}`
+        // : ''),
     }))
+    })
+
   },
   beforeMount() {
     this.listaconvenio()

@@ -38,7 +38,7 @@ export function listMetricasBeneficiario(idCamino){
 
 export function getBeneficiariosDropdown(idCamino){
     return request({
-        url:`${ENDPOINT_CAMINO}${idCamino}/beneficiarios/localidades`,
+        url:`${ENDPOINT_CAMINO}${idCamino}/beneficiarios/dropdown`,
         method:'get'
     })
 }
