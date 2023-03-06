@@ -562,6 +562,8 @@ export default {
                         lon_inicial: this.lon_inicial,
                         lat_final: this.lat_final,
                         lon_final: this.lon_final,
+                        municipio: this.municipioData,
+                        localidad: this.localidadesData.data
 
                     }
                     if (this.longitud_pavimentar > this.longitud_camino) {

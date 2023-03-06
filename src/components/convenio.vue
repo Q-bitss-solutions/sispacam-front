@@ -37,8 +37,7 @@
               width=140></e-column>
             <e-column field='anio' headerText='Año <br> del Convenio' :disableHtmlEncode='false' textAlign='Center'
               width=160></e-column>
-            <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center'
-              width='90'></e-column>
+            <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
             <e-column :template="montoTemplate" field='monto' headerText='Monto(mdp)' textAlign='right'
               width=90></e-column>
             <e-column :template="origenTemplate" field='origen' headerText='Origen  <br> del recurso'
@@ -86,7 +85,8 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="tramo">Beneficiario:</label>
-            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled" v-model="form.beneficiario_id">
+            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled"
+              v-model="form.beneficiario_id">
               <option value="" disabled>Seleccionar...</option>
               <option v-for="(beneficiario, index) in beneficiarios" :key="index" :value="beneficiario.id">
                 {{ beneficiario.value }}
@@ -128,9 +128,29 @@
             <label class="control-label">Longitud a Pavimentar</label>
             <input type="number" :value="longitudP" class="form-control" disabled id="inpt-longitud">
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-12">
             <label class="control-label">Longitud por programar</label>
             <input v-model="getSumMeta" type="number" class="form-control" disabled>
+          </div>
+        </div>
+        <div class="form-row">
+          <p>Punto Inicial</p>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lon</label>
+            <input type="number" class="form-control" id="inpt-longitud">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lat</label>
+            <input type="number" class="form-control">
+          </div>
+          <p>Punto Final</p>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lon</label>
+            <input type="number" class="form-control" id="inpt-longitud">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lat</label>
+            <input type="number" class="form-control">
           </div>
         </div>
         <div>
@@ -156,9 +176,9 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-12" v-if="mode == 'edit'
-          && !form.es_modificatorio
-          && form.modificatorio == 0
-          && isNormativo">
+            && !form.es_modificatorio
+            && form.modificatorio == 0
+            && isNormativo">
             <button class="btn btn-default btn-sm" type="button" id="btn-modificatorio" @click="openModalModificatorio">
               Agregar convenio modificatorio
             </button>
@@ -1204,8 +1224,8 @@ export default {
   },
   computed: {
 
-    getCaminoID(){
-      console.log("getCaminoID"+this.camino_id);
+    getCaminoID() {
+      console.log("getCaminoID" + this.camino_id);
       return this.camino_id
     },
 
@@ -1283,16 +1303,16 @@ export default {
     })
     this.setCatMeses()
 
-    const { data } =  await getBeneficiariosDropdown(this.$route.params.obraId)
+    const { data } = await getBeneficiariosDropdown(this.$route.params.obraId)
     this.beneficiarios = data.beneficiarios.map(tramo => ({
       id: tramo.id,
       value: tramo.clave_beneficiario +
         (tramo.nombre_municipio
-        ? `-${tramo.nombre_municipio}`
-        : '')
+          ? `-${tramo.nombre_municipio}`
+          : '')
         + (tramo.nombre_localidad
-        ? `-${tramo.nombre_localidad}`
-        : ''),
+          ? `-${tramo.nombre_localidad}`
+          : ''),
     }))
   },
   beforeMount() {
