@@ -15,17 +15,15 @@
                             <!-- MUNICIPIO -->
                             <label class="control-label" for="municipio">Municipio</label>
                             <ejs-combobox id="municipioData" :dataSource="municipioDataList" :fields="municipioDataFields"
-                                placeholder="Agregar Municipio" v-model="municipioData" @change="LocalidadesMunicipio()">
+                                placeholder="Agregar Municipio" v-model="municipioData" @change="LocalidadesMunicipio">
                             </ejs-combobox>
                         </div>
                         <div class="col-md-6">
                             <!-- LOCALIDADES -->
                             <label class="control-label">Localidad</label>
                             <ejs-multiselect :dataSource="localidadesDataList" :fields="localidadesDataFields"
-                                placeholder="Agregar Localidad" v-model="localidadesData"  id="localidades"
-                                ref="localidades">
+                                placeholder="Agregar Localidad" v-model="localidadesData">
                             </ejs-multiselect>
-                            {{ localidadesData }}
                         </div>
                     </div>
                     <div class="form-group col-md-12">
@@ -439,7 +437,7 @@ export default {
                 value: 'id',
                 text: 'nombre'
             },
-            localidadesData: [],
+            localidadesData: '',
             localidadesDataAux: []
         }
     },
@@ -509,12 +507,18 @@ export default {
             this.lon_final = response.lon_final
             this.municipioData = Number(response.clave_mun)
             this.municipioDataList = municipiosEstados
-            for (let index = 0; index < response.localidades.length; index++) {
+
+            const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
+            this.localidadesDataList = localidadesMunicipioEstado
+            console.log(' this.localidadesDataList:', this.localidadesDataList)
+            /* for (let index = 0; index < response.localidades.length; index++) {
                 this.localidadesData[index] = Number(response.localidades[index]);
-            }
+            } */
+            this.localidadesData = response.localidades;
+            /* this.localidadesData = response.localidades; */
 
             console.log('this.localidadesData', this.localidadesData)
-            console.log('response.nombres_localidades', response.nombres_localidades)
+
             // this.fLongitdTotal = response.longitud
             // this.fLongitdTotalAPavimentar = response.longitud_pavimentar
             // //this.anchoCaminoData = response.ancho_camino
@@ -602,21 +606,20 @@ export default {
         },
 
         async LocalidadesMunicipio() {
-            /* if (this.municipioData === null) {
+            if (this.municipioData === null) {
                 this.localidadesDataList = []
                 this.localidadesData = []
-            } else { */
+            } else {
             const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
             this.localidadesDataList = localidadesMunicipioEstado
             console.log(' this.localidadesDataList:', this.localidadesDataList)
-            /* } */
+            }
 
         }
     },
     created() {
         this.clave_camino = this.$route.params.obraId
         this.CargaDatos(this.$route.params.obraId)
-
         if (this.$route.params.obraId) {
             this.editmode = true
         }
