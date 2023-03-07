@@ -14,18 +14,18 @@
                         <div class="col-md-6">
                             <!-- MUNICIPIO -->
                             <label class="control-label" for="municipio">Municipio</label>
-                            <ejs-combobox id="municipio" :dataSource="municipioDataList" :fields="municipioDataFields"
-                                placeholder="Selecciona un municipio" v-model="municipioData" ref="refMunicipio"
-                                @change="LocalidadesMunicipio()">
+                            <ejs-combobox id="municipioData" :dataSource="municipioDataList" :fields="municipioDataFields"
+                                placeholder="Agregar Municipio" v-model="municipioData" @change="LocalidadesMunicipio()">
                             </ejs-combobox>
                         </div>
                         <div class="col-md-6">
                             <!-- LOCALIDADES -->
                             <label class="control-label">Localidad</label>
-                            <ejs-multiselect :dataSource="localidadesData.list" :fields="localidadesData.fields"
-                                placeholder="Selecciona una localidad" v-model="localidadesData.data" id="localidades"
+                            <ejs-multiselect :dataSource="localidadesDataList" :fields="localidadesDataFields"
+                                placeholder="Agregar Localidad" v-model="localidadesData"  id="localidades"
                                 ref="localidades">
                             </ejs-multiselect>
+                            {{ localidadesData }}
                         </div>
                     </div>
                     <div class="form-group col-md-12">
@@ -227,7 +227,7 @@
                             <textarea rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino" v-model="caracteristicas">
-                                        </textarea>
+                                                        </textarea>
                         </div>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficios">
-                                            </textarea>
+                                                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -369,6 +369,7 @@ import { required } from 'vuelidate/lib/validators'
 import VueCurrencyFilter from 'vue-currency-filter'
 import TituloSeccion from '@/components/Shared/TituloSeccion.vue';
 import { async } from "q";
+import { fdatasync } from "fs";
 
 
 
@@ -427,20 +428,19 @@ export default {
                 { id: 4, name: '5.5' },
                 { id: 5, name: '6.0' },
             ],
+            municipioDataList: [],
             municipioDataFields: {
                 value: 'id',
                 text: 'nombre'
             },
-            municipioDataList: [],
             municipioData: '',
-            localidadesData: {
-                list: [],
-                fields: {
-                    value: 'id',
-                    text: 'nombre'
-                },
-                data: ''
+            localidadesDataList: [],
+            localidadesDataFields: {
+                value: 'id',
+                text: 'nombre'
             },
+            localidadesData: [],
+            localidadesDataAux: []
         }
     },
     validations: {
@@ -507,8 +507,14 @@ export default {
             this.lon_inicial = response.lon_inicial
             this.lat_final = response.lat_final
             this.lon_final = response.lon_final
-
+            this.municipioData = Number(response.clave_mun)
             this.municipioDataList = municipiosEstados
+            for (let index = 0; index < response.localidades.length; index++) {
+                this.localidadesData[index] = Number(response.localidades[index]);
+            }
+
+            console.log('this.localidadesData', this.localidadesData)
+            console.log('response.nombres_localidades', response.nombres_localidades)
             // this.fLongitdTotal = response.longitud
             // this.fLongitdTotalAPavimentar = response.longitud_pavimentar
             // //this.anchoCaminoData = response.ancho_camino
@@ -563,7 +569,7 @@ export default {
                         lat_final: this.lat_final,
                         lon_final: this.lon_final,
                         municipio: this.municipioData,
-                        localidad: this.localidadesData.data
+                        localidad: this.localidadesData
 
                     }
                     if (this.longitud_pavimentar > this.longitud_camino) {
@@ -596,13 +602,14 @@ export default {
         },
 
         async LocalidadesMunicipio() {
-            if (this.municipioData === null) {
-                this.localidadesData.list = []
-                this.localidadesData.data = ''
-            } else {
-                const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
-                this.localidadesData.list = localidadesMunicipioEstado
-            }
+            /* if (this.municipioData === null) {
+                this.localidadesDataList = []
+                this.localidadesData = []
+            } else { */
+            const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
+            this.localidadesDataList = localidadesMunicipioEstado
+            console.log(' this.localidadesDataList:', this.localidadesDataList)
+            /* } */
 
         }
     },
