@@ -2,7 +2,7 @@
 
 <template>
     <div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 15px;">
             <div class="col-md-3">
                 <input @keyup="searchCaminos" type="text" v-model="params.clave_camino" placeholder="ID de la obra" />
             </div>
@@ -21,23 +21,32 @@
 
         <div class="row">
             <div class="col-md-12">
-
                 <div style="height:500px; overflow-y: scroll;">
                     <!-- <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='true' :allowSorting='true' -->
                     <ejs-grid ref="grid" :dataSource="data" :gridLines='lines' :allowPaging='false' :allowSorting='true'
                         :pageSettings='pageSettings' :allowTextWrap='true'
                         toolbar="@( new List<object>() {'Add','Edit','Delete','Update','Cancel'})">
                         <e-columns>
-                            <e-column field='clave' headerText='ID de la Obra'></e-column>
-                            <e-column field='nombre' headerText='Nombre de la obra'></e-column>
-                            <e-column field='tipo_camino' headerText='Tipo de Obra'></e-column>
-                            <e-column field='nombre_municipio' headerText='Municipio'></e-column>
-                            <e-column field='grado_marginacion' headerText='Grado de Marginación'></e-column>
-                            <e-column field='estrategia' headerText='Estrategia'></e-column>
-                            <e-column field="clave" :template='editTemplate' headerText='Ver/Editar Obra'
-                                textAlign='Center' :visible='flagEdicion'></e-column>
-                            <e-column field="clave" :template='cancelTemplate' headerText='Cancelar/Reactivar Obra'
-                                textAlign='Center' :visible='flag'></e-column>
+                            <e-column field='clave' headerText='ID de la obra' />
+                            <e-column field='nombre' headerText='Nombre de la obra' />
+                            <e-column field='nombre_municipio' headerText='Municipio' />
+                            <e-column field='tipo_camino' headerText='Tipo de obra' />
+                            <e-column field='grado_marginacion' headerText='Grado de parginación' />
+                            <e-column field='tipo_poblacion' headerText='Tipo de población' />
+                            <e-column
+                                field="clave"
+                                :template='editTemplate'
+                                headerText='Ver/Editar Obra'
+                                textAlign='Center'
+                                :visible='flagEdicion'
+                            />
+                            <e-column
+                                field="clave"
+                                :template='cancelTemplate'
+                                headerText='Cancelar/Reactivar Obra'
+                                textAlign='Center'
+                                :visible='flag'
+                            />
                         </e-columns>
                     </ejs-grid>
                 </div>
