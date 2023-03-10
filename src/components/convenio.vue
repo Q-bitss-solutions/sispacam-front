@@ -64,12 +64,12 @@
     </div>
 
     <!--Convenio Nuevo & Edit--->
-    <Modal :title="modalTitle" modal-class="modal2" wrapper-class="modal-wrapper" v-model="showAdminModalConvenio"
-      @before-open="beforeOpen" @before-close="beforeClose">
+    <Modal :title="modalTitle" modal-class="modal2" v-model="showAdminModalConvenio" @before-open="beforeOpen"
+      @before-close="beforeClose">
       <form class="scrollable-content">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="anio">Año del Convenio:</label>
+            <label for="anio">Año del Convenio: </label>
             <select :disabled="isDisabled" v-model="form.anio" id="anio" class="form-control"
               :class="!$v.form.anio.required ? 'form-control-error' : ''">
               <option value="">Seleccionar...</option>
@@ -137,20 +137,25 @@
           <p>Punto Inicial</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
-            <input type="number" class="form-control" id="inpt-longitud">
+            <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_inicial"
+              :class="!$v.form.lon_inicial.decimales ? 'form-control-error' : ''">
+
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
-            <input type="number" class="form-control">
+            <input type="number" class="form-control" v-model="form.lat_inicial"
+            :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
           </div>
           <p>Punto Final</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
-            <input type="number" class="form-control" id="inpt-longitud">
+            <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_final"
+            :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
-            <input type="number" class="form-control">
+            <input type="number" class="form-control" v-model="form.lat_final"
+            :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
           </div>
         </div>
         <div>
@@ -413,6 +418,10 @@ export default {
         padre: null,
         es_modificatorio: false,
         beneficiario_id: '',
+        lon_inicial: 0,
+        lat_inicial: 0,
+        lon_final: 0,
+        lat_final: 0
       },
       formMoficatorio: {
         anio: '',
@@ -768,6 +777,46 @@ export default {
       },
       meta: {
         required,
+      },
+      lon_inicial: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lat_inicial: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lon_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lat_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
       }
     },
     formMoficatorio: {
@@ -911,6 +960,10 @@ export default {
       formData.append("monto", this.form.monto);
       formData.append("origen", this.form.origen);
       formData.append("meta", this.form.meta);
+      formData.append("lon_inicial", this.form.lon_inicial);
+      formData.append("lat_inicial", this.form.lat_inicial);
+      formData.append("lon_final", this.form.lon_final);
+      formData.append("lat_final", this.form.lat_final);
       formData.append("estatus", "A");
       formData.append("beneficiario_id", this.beneficiario_id);
       let avanceMes = []
@@ -1303,18 +1356,18 @@ export default {
     })
     this.setCatMeses()
 
-    const { data } =  await getBeneficiariosDropdown(this.$route.params.obraId).then((r)=>{
+    const { data } = await getBeneficiariosDropdown(this.$route.params.obraId).then((r) => {
       console.log(r);
       this.beneficiarios = r.map(tramo => ({
-      id: tramo.id_beneficiario,
-      value: tramo.clave_camino + tramo.clave_beneficiario +
-        (tramo.municipio
-        ? `: ${tramo.municipio}`
-        : '')
+        id: tramo.id_beneficiario,
+        value: tramo.clave_camino + tramo.clave_beneficiario +
+          (tramo.municipio
+            ? `: ${tramo.municipio}`
+            : '')
         // + (tramo.localidad
         // ? `-${tramo.localidad}`
         // : ''),
-    }))
+      }))
     })
 
   },
