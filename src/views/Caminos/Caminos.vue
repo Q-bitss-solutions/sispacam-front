@@ -93,7 +93,7 @@ import { mapMutations } from "vuex";
 import { GridPlugin, Sort, Page } from "@syncfusion/ej2-vue-grids";
 import { getListaCaminos } from "@/api/caminos";
 import ButtonGrid from "@/components/ButtonGrid";
-import CancelaObra from "@/components/CancelaObra";
+import MenuStatusCamino from "@/components/MenuStatusCamino";
 import { fetchRoadStatus } from "@/api/caminos";
 
 Vue.use(GridPlugin);
@@ -166,7 +166,7 @@ export default {
     },
     cancelTemplate() {
       return {
-        template: CancelaObra,
+        template: MenuStatusCamino,
       };
     },
     async getRoads() {
