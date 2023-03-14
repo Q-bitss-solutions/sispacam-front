@@ -73,3 +73,10 @@ export function getSpago(fecha) {
       method: 'get'
     })
   }
+
+export function fetchRoadStatus() {
+  return request({
+    url: '/caminos/estatus/',
+    method: 'GET',
+  })
+}

@@ -15,10 +15,17 @@
           Nuevo Convenio
         </button>
       </div>
+      <div>
+      </div>
       <div class="col-md-12">
         <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
       </div>
     </div>
+
+    <div>
+      <p>{{ getCaminoID }}</p>
+    </div>
+
     <div class="row">
       <div class="col-md-12 table-responsive">
         <ejs-treegrid :dataSource="convenios" childMapping="modificatorio" :treeColumnIndex="1" ref="gridConvenios"
@@ -30,8 +37,7 @@
               width=140></e-column>
             <e-column field='anio' headerText='Año <br> del Convenio' :disableHtmlEncode='false' textAlign='Center'
               width=160></e-column>
-            <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center'
-              width='90'></e-column>
+            <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
             <e-column :template="montoTemplate" field='monto' headerText='Monto(mdp)' textAlign='right'
               width=90></e-column>
             <e-column :template="origenTemplate" field='origen' headerText='Origen  <br> del recurso'
@@ -58,12 +64,12 @@
     </div>
 
     <!--Convenio Nuevo & Edit--->
-    <Modal :title="modalTitle" modal-class="modal2" wrapper-class="modal-wrapper" v-model="showAdminModalConvenio"
-      @before-open="beforeOpen" @before-close="beforeClose">
+    <Modal :title="modalTitle" modal-class="modal2" v-model="showAdminModalConvenio" @before-open="beforeOpen"
+      @before-close="beforeClose">
       <form class="scrollable-content">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="anio">Año del Convenio:</label>
+            <label for="anio">Año del Convenio: </label>
             <select :disabled="isDisabled" v-model="form.anio" id="anio" class="form-control"
               :class="!$v.form.anio.required ? 'form-control-error' : ''">
               <option value="">Seleccionar...</option>
@@ -74,6 +80,18 @@
             <label for="tramo">Tramo:</label>
             <input autocomplete="off" id="tramo" :disabled="isDisabled" v-model="form.tramo" type="text"
               placeholder="Ingresar el tramo" class="form-control" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="tramo">Beneficiario:</label>
+            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled"
+              v-model="form.beneficiario_id">
+              <option value="" disabled>Seleccionar...</option>
+              <option v-for="(beneficiario, index) in beneficiarios" :key="index" :value="beneficiario.id">
+                {{ beneficiario.value }}
+              </option>
+            </select>
           </div>
         </div>
         <div class="form-row">
@@ -106,13 +124,38 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-6">
             <label class="control-label">Longitud a Pavimentar</label>
             <input type="number" :value="longitudP" class="form-control" disabled id="inpt-longitud">
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-12">
             <label class="control-label">Longitud por programar</label>
             <input v-model="getSumMeta" type="number" class="form-control" disabled>
+          </div>
+        </div>
+        <div class="form-row">
+          <p>Punto Inicial</p>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lon</label>
+            <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_inicial"
+              :class="!$v.form.lon_inicial.decimales ? 'form-control-error' : ''">
+
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lat</label>
+            <input type="number" class="form-control" v-model="form.lat_inicial"
+            :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
+          </div>
+          <p>Punto Final</p>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lon</label>
+            <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_final"
+            :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
+          </div>
+          <div class="form-group col-md-6">
+            <label class="control-label">Lat</label>
+            <input type="number" class="form-control" v-model="form.lat_final"
+            :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
           </div>
         </div>
         <div>
@@ -122,8 +165,8 @@
             </small>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-5">
+        <div class="form-row col-md-12">
+          <div class="form-group col-md-6">
             <button class="btn btn-default btn-sm active" type="button" id="btn-mdl-beneficiario"
               @click="openModalBeneficiario()" :disabled="(mode === 'delete')">
               Datos del Beneficiario
@@ -138,9 +181,9 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-12" v-if="mode == 'edit'
-          && !form.es_modificatorio
-          && form.modificatorio == 0
-          && isNormativo">
+            && !form.es_modificatorio
+            && form.modificatorio == 0
+            && isNormativo">
             <button class="btn btn-default btn-sm" type="button" id="btn-modificatorio" @click="openModalModificatorio">
               Agregar convenio modificatorio
             </button>
@@ -330,13 +373,10 @@ import { GridPlugin } from '@syncfusion/ej2-vue-grids';
 import { CustomSummaryType } from '@syncfusion/ej2-grids';
 import { required, maxValue, } from 'vuelidate/lib/validators'
 import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
-import { updateEstatus, getConvenios, getCatMeses } from '@/api/convenio';
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
-import {
-  generarConvenio, updateConvenio,
-  createModificatorio, bajaConvenio, getAvanceConvenio
-} from '@/api/convenio';
+import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio, getAvanceConvenio, getConveniosGet, getCatMeses } from '@/api/convenio';
 import VueNumeric from 'vue-numeric'
+import { getBeneficiariosDropdown } from '@/api/beneficiarios'
 
 Vue.use(VueNumeric)
 Vue.use(Vuelidate)
@@ -355,6 +395,7 @@ export default {
       default: false
     },
     longitud_pavimentar: {
+      type: Number,
       required: true,
     }
   },
@@ -364,6 +405,7 @@ export default {
   },
   data() {
     return {
+      beneficiarios: [],
       form: {
         id: -1,
         anio: '',
@@ -375,6 +417,11 @@ export default {
         modificatorio: 0,
         padre: null,
         es_modificatorio: false,
+        beneficiario_id: '',
+        lon_inicial: 0,
+        lat_inicial: 0,
+        lon_final: 0,
+        lat_final: 0
       },
       formMoficatorio: {
         anio: '',
@@ -401,7 +448,6 @@ export default {
       dataAvance: [],
       mesesMetas: [],
       convenios: [],
-      longitudP: '',
       aniosEdit: [],
       convenioErrors: [],
       isDisabled: false,
@@ -415,6 +461,8 @@ export default {
       showAdminModalConvenioMod: false,
       convenioModificatrioErrors: [],
       pageSettings: { pageCount: 6, pageSize: 20 },
+
+      // Parece que manda llamar un modal para editar el convenio
       editTemplate: function () {
         return {
           template: Vue.component("editTemplate", {
@@ -447,7 +495,9 @@ export default {
                 this.$parent.$parent.form.meta = this.data.meta
                 this.$parent.$parent.form.archivo = this.data.archivo
                 this.$parent.$parent.form.es_modificatorio = this.data.es_modificatorio
-                this.$parent.$parent.form.modificatorio = (this.data.hasOwnProperty('modificatorio') ? this.data.modificatorio.length : 0)
+                // TODO: investigar que hace el modificatorio
+                // this.$parent.$parent.form.modificatorio = (this.data.hasOwnProperty('modificatorio') ? this.data.modificatorio.length : 0)
+                this.$parent.$parent.form.modificatorio = 0
                 if (this.data.estatus === 'M' || this.data.archivo) {
                   this.$parent.$parent.isDisabled = true
                   this.$parent.$parent.btnIsDisabled = true
@@ -727,6 +777,46 @@ export default {
       },
       meta: {
         required,
+      },
+      lon_inicial: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lat_inicial: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lon_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lat_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor)) {
+            return true;
+          } else {
+            return false;
+          }
+        }
       }
     },
     formMoficatorio: {
@@ -798,7 +888,12 @@ export default {
       this.formMoficatorio.archivo = event.target.files[0];
     },
     async listaconvenio() {
-      this.convenios = await getConvenios(this.camino_id)
+      console.log("CAMINO ID");
+      console.log(this.getCaminoID);
+      this.convenios = await getConveniosGet(this.getCaminoID)
+      this.$refs.gridConvenios.refresh()
+      console.log("tis convenios get");
+      console.log(this.convenios);
     },
     deleteConvenio() {
       this.$confirm('¿Desea eliminar el presente convenio?', 'Warning', {
@@ -809,7 +904,7 @@ export default {
         let loadingInstance = Loading.service({ fullscreen: true, lock: true });
         await bajaConvenio(this.form.id).then(async () => {
           await this.listaconvenio()
-          this.$refs.gridConvenios.refresh()
+          // this.$refs.gridConvenios.refresh()
           this.$alert(`El convenio ha sido cancelado`, 'INFORMACIÓN', {
             confirmButtonText: 'Cerrar',
             customClass: 'box-msg-login',
@@ -836,6 +931,12 @@ export default {
 
     },
     async saveEditConvenio(isNew) {
+      if (this.getSumMeta < 0) {
+        return this.$alert(`El campo "Meta" no debe ser mayor a la longitud total a pavimentar`, 'INFORMACIÓN', {
+          confirmButtonText: 'Aceptar',
+          customClass: 'box-msg-login',
+        })
+      }
       const { isValido, errors } = this.getErrors('form')
       if (!isValido) {
         this.convenioErrors = errors
@@ -859,6 +960,10 @@ export default {
       formData.append("monto", this.form.monto);
       formData.append("origen", this.form.origen);
       formData.append("meta", this.form.meta);
+      formData.append("lon_inicial", this.form.lon_inicial);
+      formData.append("lat_inicial", this.form.lat_inicial);
+      formData.append("lon_final", this.form.lon_final);
+      formData.append("lat_final", this.form.lat_final);
       formData.append("estatus", "A");
       formData.append("beneficiario_id", this.beneficiario_id);
       let avanceMes = []
@@ -888,7 +993,7 @@ export default {
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
       await generarConvenio(formData, this.camino_id).then(async () => {
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -965,9 +1070,9 @@ export default {
         formData.append("archivo", this.formMoficatorio.archivo);
       }
       await createModificatorio(formData).then(async () => {
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -1014,7 +1119,7 @@ export default {
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
       await updateConvenio(formData, this.form.id).then(async () => {
         await this.listaconvenio()
-        this.$refs.gridConvenios.refresh()
+        // this.$refs.gridConvenios.refresh()
         this.$alert(`El Convenio ha sido actualizado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
@@ -1171,6 +1276,12 @@ export default {
     }
   },
   computed: {
+
+    getCaminoID() {
+      console.log("getCaminoID" + this.camino_id);
+      return this.camino_id
+    },
+
     isCanceled: function () {
       if (this.$store.state.cancelConvenio.id) {
         this.openmodal()
@@ -1178,6 +1289,7 @@ export default {
       return this.$store.state.cancelConvenio.id
     },
     getCurrentLongitud() {
+      return 314156 // TODO: BOrrar despues del debugging
       let subTotalLong = 0
       subTotalLong = this.convenios.reduce((total, convenio) => {
         const activeConvenio = getActiveConvenio(convenio)
@@ -1189,7 +1301,15 @@ export default {
       return this.mode === 'new' ? Number(subTotalLong) + Number(this.form.meta) : Number(subTotalLong)
     },
     getSumMeta() {
-      return this.longitudP - this.getCurrentLongitud
+      const longitudTotal = this.longitudP
+      // Quiza no estemos considerando alguna regla de negocio
+      // solo calcular los convenios activos
+      const sumaConvenios = this.convenios.reduce((a, b) => (Number(a.meta || 0) + Number(b.meta || 0)), 0);
+      const longitudParcial = sumaConvenios + Number(this.form.meta);
+      return longitudTotal - longitudParcial;
+    },
+    longitudP() {
+      return Number(this.longitud_pavimentar)
     },
     getTotalAvanceMeta: {
       get: function () {
@@ -1207,10 +1327,9 @@ export default {
 
   },
 
-  created: function () {
-    console.log("CREATED Convenio");
-    this.listaconvenio()
-    this.longitudP = this.longitud_pavimentar
+  async created() {
+    // this.listaconvenio()
+
     EventBus.$on('deleteConvenio', (obj) => {
       const { el, parent } = obj;
       this.loadAnios()
@@ -1224,7 +1343,7 @@ export default {
       this.form.archivo = el.archivo
       this.mode = 'delete'
       this.modalTitle = 'Eliminar Datos del Convenio'
-      this.isDisabled = false
+      this.isDisabled = true
       this.btnIsDisabled = false
       this.showAdminModalConvenio = true
     });
@@ -1236,8 +1355,24 @@ export default {
       EventBus.$emit("setPerfil", this.isNormativo)
     })
     this.setCatMeses()
+
+    const { data } = await getBeneficiariosDropdown(this.$route.params.obraId).then((r) => {
+      console.log(r);
+      this.beneficiarios = r.map(tramo => ({
+        id: tramo.id_beneficiario,
+        value: tramo.clave_camino + tramo.clave_beneficiario +
+          (tramo.municipio
+            ? `: ${tramo.municipio}`
+            : '')
+        // + (tramo.localidad
+        // ? `-${tramo.localidad}`
+        // : ''),
+      }))
+    })
+
   },
-  beforeMount: function () {
+  beforeMount() {
+    this.listaconvenio()
     this.isNormativo = (this.$store.getters['user/StateRol'] == 'NORMATIVO')
     this.cons = this.isObraCanceled
     this.flagEdicion = !this.cons
@@ -1259,11 +1394,14 @@ export default {
     ]
   },
   mounted() {
+
     this.$refs.gridConvenios.ej2Instances.grid.defaultLocale.EmptyRecord = "No hay convenios";
     bodyScroll.init()
   }
 }
 
+// TODO: Investigar que hace esta función
+// TODO: Investigar que es un modificatorio
 function getActiveConvenio(convenio) {
   let _convenio
   if (hasChildren(convenio) && convenio.estatus === 'M') {

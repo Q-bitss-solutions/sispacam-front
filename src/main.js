@@ -9,8 +9,14 @@ import "@/assets/css/SCT.css"
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
+import { ContextMenuPlugin } from "@syncfusion/ej2-vue-navigations";
+import { enableRipple } from '@syncfusion/ej2-base';
+import { ButtonPlugin } from "@syncfusion/ej2-vue-buttons";
 
 Vue.use(ElementUI);
+Vue.use(ContextMenuPlugin);
+Vue.use(ButtonPlugin);
+enableRipple(true);
 axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 Vue.use(Vuelidate);
 Vue.prototype.$residenteGroup = 411

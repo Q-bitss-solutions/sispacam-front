@@ -3,7 +3,7 @@
 
     <h2>Edición del camino: {{ clave }}</h2>
 
-    <InfoCamino :camino="camino"></InfoCamino>
+    <InfoCamino :datosCamino="camino"></InfoCamino>
 
     <hr class="red" />
 
@@ -26,8 +26,8 @@
     <!-- Tabla Frentes de camino -->
     <!-- TODO: Rebuild - Cambiar nombre del componente -->
     <div class="row">
-      <tabla-frentes-camino @deleteBeneficiario="GetConvenios(camino.id)"
-        :frentes="this.convenios"></tabla-frentes-camino>
+      <TablaFrentesCamino @deleteBeneficiario="GetConvenios(camino.id)"
+        :frentes="this.convenios"></TablaFrentesCamino>
     </div>
 
     <hr class="red" />
@@ -41,7 +41,7 @@
     <!-- Modal: Formulario Agregar Beneficiarios -->
     <ModalSCT v-if="showModal">
       <h3 slot="header">Agregar Beneficiario de Obra</h3>
-      <FormAgregarBeneficiario @updateFrentes="GetConvenios(camino.id)" v-on:closeModal="showModal=false" slot="body"
+      <FormAgregarBeneficiario @updateFrentes="GetConvenios(camino.id),GetMetrics(camino.id)" v-on:closeModal="showModal=false" slot="body"
         :camino="camino">
       </FormAgregarBeneficiario>
     </ModalSCT>
@@ -64,10 +64,10 @@ export default {
   name: "EditarCamino",
   data() {
     return {
-      camino: null,
+      camino: {},
       showModal: false,
-      metrics: [],
-      convenios: {},
+      metrics: {},
+      convenios: [],
       clave: this.$route.params.obraId,
     };
   },

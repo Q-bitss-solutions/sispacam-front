@@ -53,6 +53,13 @@ export function getConvenios(id_camino){
   })  
 }
 
+export function getConveniosGet(id_camino){
+  return request({
+      url:  `/convenio/${id_camino}/list/`,
+      method: 'get',
+  })
+}
+
 export function createModificatorio(data){
   return request({
       url:  `/modificatorio/crear`,

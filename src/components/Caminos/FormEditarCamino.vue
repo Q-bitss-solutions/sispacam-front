@@ -1,16 +1,31 @@
 <template>
-
     <div>
         <table id="datosCamino" class="tableContenido" width="100%" border="0">
             <tr>
                 <td>
                     <h2>Datos del Camino</h2>
-                    <h2>{{idcamino}}</h2>
+                    <h2>{{ idcamino }}</h2>
                     <hr class="red">
                 </td>
             </tr>
             <tr>
                 <td>
+                    <div v-if="this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false" class="form-group">
+                        <div class="col-md-6">
+                            <!-- MUNICIPIO -->
+                            <label class="control-label" for="municipio">Municipio</label>
+                            <ejs-combobox id="municipioData" :dataSource="municipioDataList" :fields="municipioDataFields"
+                                placeholder="Agregar Municipio" v-model="municipioData" @change="LocalidadesMunicipio">
+                            </ejs-combobox>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- LOCALIDADES -->
+                            <label class="control-label">Localidad</label>
+                            <ejs-multiselect :dataSource="localidadesDataList" :fields="localidadesDataFields"
+                                placeholder="Agregar Localidad" v-model="localidadesData">
+                            </ejs-multiselect>
+                        </div>
+                    </div>
                     <div class="form-group col-md-12">
                         <label>Estrategia Gobierno Federal:</label>
                         <div>
@@ -20,8 +35,8 @@
                                 CIIT
                             </label>
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya"
-                                    v-model="tren_maya" :disabled="isCanceled">
+                                <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" v-model="tren_maya"
+                                    :disabled="isCanceled">
                                 Tren Maya
                             </label>
                             <label class="checkbox-inline">
@@ -42,7 +57,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="nombrecamino">Nombre del Camino:</label>
-                            <input v-model="nombre_camino" :class="{'form-control-error': $v.nombre_camino.$error}"
+                            <input v-model="nombre_camino" :class="{ 'form-control-error': $v.nombre_camino.$error }"
                                 id="nombre_camino" name="nombre_camino" v-model.trim="$v.nombre_camino.$model"
                                 class="form-control" type="text" placeholder="Nombre del Camino" :disabled="isCanceled"
                                 value="" />
@@ -61,7 +76,7 @@
                         <div class="col-md-4">
                             <label>Longitud total(km):</label>
                             <div>
-                                <ejs-numerictextbox :class="{'form-control-error': $v.longitud_camino.$error}"
+                                <ejs-numerictextbox :class="{ 'form-control-error': $v.longitud_camino.$error }"
                                     id="longitud" placeholder="Longitud total(km)" v-model="longitud_camino" :min="min"
                                     :max="max" :disabled="isCanceled" :showSpinButton='false'>
                                 </ejs-numerictextbox>
@@ -76,14 +91,13 @@
                         <div class="col-md-6">
                             <label>Longitud a pavimentar 2019-2024(km):</label>
                             <div>
-                                <ejs-numerictextbox :class="{'form-control-error': $v.longitud_pavimentar.$error}"
+                                <ejs-numerictextbox :class="{ 'form-control-error': $v.longitud_pavimentar.$error }"
                                     id="longitud_pavimentar" placeholder="Longitud a pavimentar 2019-2024(km)"
                                     v-model="longitud_pavimentar" :min="min" :max="max" :disabled="isCanceled"
                                     :showSpinButton='false'>
                                 </ejs-numerictextbox>
                                 <div class="row col-md-10">
-                                    <small
-                                        v-if="!$v.longitud_pavimentar.required && $v.longitud_pavimentar.$error"
+                                    <small v-if="!$v.longitud_pavimentar.required && $v.longitud_pavimentar.$error"
                                         class="form-text form-text-error">
                                         Este campo es obligatorio
                                     </small>
@@ -93,7 +107,7 @@
 
                         <div class="col-md-4">
                             <label>Ancho del Camino:</label>
-                            <ejs-dropdownlist :class="{'form-control-error': $v.ancho_camino.$error}" id="ancho_camino"
+                            <ejs-dropdownlist :class="{ 'form-control-error': $v.ancho_camino.$error }" id="ancho_camino"
                                 :dataSource="anchoCaminoData" :change="obteneranchocamino" :fields="anchoCaminoFields"
                                 placeholder="Selecciona el ancho del camino" v-model="ancho_camino"
                                 v-model.trim="$v.ancho_camino.$model" ref="refAncho" :enabled="!isCanceled">
@@ -114,7 +128,7 @@
                             <label>Presupuesto Base de obra total:</label>
                 <td>
                     <vue-numeric v-bind:precision="2" currency="$" separator="," class="form-control" v-model="resul"
-                        :read-only="resul">
+                        :read-only="true">
                     </vue-numeric>
                 </td>
     </div>
@@ -140,8 +154,7 @@
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
                     <div class="row col-md-10">
-                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error"
-                            class="form-text form-text-error">
+                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                         </small>
                     </div>
@@ -155,8 +168,7 @@
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
                     <div class="row col-md-10">
-                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error"
-                            class="form-text form-text-error">
+                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                         </small>
                     </div>
@@ -212,9 +224,8 @@
                         <div>
                             <textarea rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino"
                                 class="form-control" value="" :disabled="isCanceled"
-                                placeholder="Ingrese las características actuales del camino"
-                                v-model="caracteristicas">
-                    </textarea>
+                                placeholder="Ingrese las características actuales del camino" v-model="caracteristicas">
+                                                        </textarea>
                         </div>
                     </div>
                 </div>
@@ -233,7 +244,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficios">
-                        </textarea>
+                                                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -248,7 +259,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Se guardaron correctamente los datos del camino,</p>
-                    <p>El identificador del camino es:<strong class="alert">{{idcamino}}</strong></p>
+                    <p>El identificador del camino es:<strong class="alert">{{ idcamino }}</strong></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"
@@ -258,8 +269,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--Actualizar -->
-    <div class="modal fade" id="UpdateCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept"
-        aria-hidden="true">
+    <div class="modal fade" id="UpdateCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -351,10 +361,13 @@ import { DataManager } from "@syncfusion/ej2-data";
 import { Loading } from 'element-ui';
 import { generarId, getupdate, CaminoPut } from '@/api/alta-camino';
 import { editarCamino, getDetalleCamino } from '@/api/caminos';
+import { getEdos, getMunicipios, getLocalidades } from '@/api/alta-camino'
 import Vue from "vue";
 import { required } from 'vuelidate/lib/validators'
 import VueCurrencyFilter from 'vue-currency-filter'
 import TituloSeccion from '@/components/Shared/TituloSeccion.vue';
+import { async } from "q";
+import { fdatasync } from "fs";
 
 
 
@@ -378,13 +391,14 @@ export default {
             default: false
         }
     },
-    components:{
+    components: {
         TituloSeccion
     },
     data() {
         return {
-            idcamino:"",
-            clave_camino:"",
+            idcamino: "",
+            clave_camino: "",
+            clave_estado: "",
             ciit: '',
             tren_maya: '',
             caminosOriginales: '',
@@ -412,6 +426,19 @@ export default {
                 { id: 4, name: '5.5' },
                 { id: 5, name: '6.0' },
             ],
+            municipioDataList: [],
+            municipioDataFields: {
+                value: 'id',
+                text: 'nombre'
+            },
+            municipioData: '',
+            localidadesDataList: [],
+            localidadesDataFields: {
+                value: 'id',
+                text: 'nombre'
+            },
+            localidadesData: '',
+            localidadesDataAux: []
         }
     },
     validations: {
@@ -460,10 +487,13 @@ export default {
 
         async CargaDatos(clave) {
             const response = await getDetalleCamino(clave)
+            const municipiosEstados = await getMunicipios(response.clave_estado)
+            console.log('response', response)
 
             this.idcamino = response.clave_camino
             this.nombre_camino = response.nombre_camino
-			this.longitud_camino = response.longitud_camino
+            this.clave_estado = response.clave_estado
+            this.longitud_camino = response.longitud_camino
             this.longitud_pavimentar = response.longitud_pavimentar
             this.caracteristicas = response.caracteristicas
             this.beneficios = response.beneficios
@@ -475,6 +505,19 @@ export default {
             this.lon_inicial = response.lon_inicial
             this.lat_final = response.lat_final
             this.lon_final = response.lon_final
+            this.municipioData = Number(response.clave_mun)
+            this.municipioDataList = municipiosEstados
+
+            const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
+            this.localidadesDataList = localidadesMunicipioEstado
+            console.log(' this.localidadesDataList:', this.localidadesDataList)
+            /* for (let index = 0; index < response.localidades.length; index++) {
+                this.localidadesData[index] = Number(response.localidades[index]);
+            } */
+            this.localidadesData = response.localidades;
+            /* this.localidadesData = response.localidades; */
+
+            console.log('this.localidadesData', this.localidadesData)
 
             // this.fLongitdTotal = response.longitud
             // this.fLongitdTotalAPavimentar = response.longitud_pavimentar
@@ -506,7 +549,6 @@ export default {
             if (this.ancho_camino == 5) this.Presup = "$ 4,300,019.57"
         },
 
-
         async GuardaDatos() {
             this.$emit("show-error", false);
             this.$v.$touch()
@@ -530,6 +572,8 @@ export default {
                         lon_inicial: this.lon_inicial,
                         lat_final: this.lat_final,
                         lon_final: this.lon_final,
+                        municipio: this.municipioData,
+                        localidad: this.localidadesData
 
                     }
                     if (this.longitud_pavimentar > this.longitud_camino) {
@@ -544,7 +588,7 @@ export default {
                     // NUEVO ENDPOINT
                     console.log("DATA");
                     console.log(data);
-                    const response = await editarCamino(this.clave_camino,data).finally(() => {
+                    const response = await editarCamino(this.clave_camino, data).finally(() => {
                         loadingInstance.close()
                     })
                     this.idcamino = response.clave
@@ -559,12 +603,23 @@ export default {
                     this.$emit("show-error", 'Error al guardar camino por');
                 }
             }
+        },
+
+        async LocalidadesMunicipio() {
+            if (this.municipioData === null) {
+                this.localidadesDataList = []
+                this.localidadesData = []
+            } else {
+            const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
+            this.localidadesDataList = localidadesMunicipioEstado
+            console.log(' this.localidadesDataList:', this.localidadesDataList)
+            }
+
         }
     },
     created() {
         this.clave_camino = this.$route.params.obraId
         this.CargaDatos(this.$route.params.obraId)
-
         if (this.$route.params.obraId) {
             this.editmode = true
         }
