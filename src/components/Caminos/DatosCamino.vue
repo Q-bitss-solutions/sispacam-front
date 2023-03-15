@@ -1,5 +1,4 @@
 <template>
-
     <div>
         <div class="row">
             <TituloSeccion title="Datos del Camino" />
@@ -17,8 +16,8 @@
                                 CIIT
                             </label>
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya"
-                                    v-model="tren_maya" :disabled="isCanceled">
+                                <input type="checkbox" id="trenMaya" value="trenMaya" name="trenMaya" v-model="tren_maya"
+                                    :disabled="isCanceled">
                                 Tren Maya
                             </label>
                             <label class="checkbox-inline">
@@ -82,11 +81,10 @@
 
                         <div class="col-md-4">
                             <label>Ancho del Camino:</label>
-                            <ejs-dropdownlist :class="{ 'form-control-error': $v.ancho_camino.$error }"
-                                id="ancho_camino" :dataSource="anchoCaminoData" :change="obteneranchocamino"
-                                :fields="anchoCaminoFields" placeholder="Selecciona el ancho del camino"
-                                v-model="ancho_camino" v-model.trim="$v.ancho_camino.$model" ref="refAncho"
-                                :enabled="!isCanceled">
+                            <ejs-dropdownlist :class="{ 'form-control-error': $v.ancho_camino.$error }" id="ancho_camino"
+                                :dataSource="anchoCaminoData" :change="obteneranchocamino" :fields="anchoCaminoFields"
+                                placeholder="Selecciona el ancho del camino" v-model="ancho_camino"
+                                v-model.trim="$v.ancho_camino.$model" ref="refAncho" :enabled="!isCanceled">
                             </ejs-dropdownlist>
                             <div class="row col-md-10">
                                 <small v-if="!$v.ancho_camino.required && $v.ancho_camino.$error"
@@ -123,30 +121,42 @@
                 <h4>Punto Inicial</h4>
             </div>
             <div class="form-group col-md-6 pt-4">
-                <label>Lat:</label>
                 <div class="mt-2">
-                    <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_inicial.$error }" id="latitud"
+                    <!-- <ejs-numerictextbox :class="!$v.lat_inicial.decimales ? 'form-control-error' : ''" id="latitud"
                         placeholder="Lat" v-model="lat_inicial" format='n5' :min="min" :max="max" :disabled="isCanceled"
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
                     <div class="row col-md-10">
-                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error"
-                            class="form-text form-text-error">
+                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                        </small>
+                    </div> -->
+                    <label class="control-label">Lat</label>
+                    <input type="number" class="form-control" v-model="lat_inicial"
+                        :class="!$v.lat_inicial.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                         </small>
                     </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label>Long:</label>
                 <div>
-                    <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_inicial.$error }" placeholder="Long"
+                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_inicial.$error }" placeholder="Long"
                         format='n5' v-model="lon_inicial" :min="min" :max="max" :disabled="isCanceled"
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
                     <div class="row col-md-10">
-                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error"
-                            class="form-text form-text-error">
+                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                        </small>
+                    </div> -->
+                    <label class="control-label">Lon</label>
+                    <input type="number" class="form-control" id="inpt-longitud" v-model="lon_inicial"
+                        :class="!$v.lon_inicial.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error" class="form-text form-text-error">
                             Este campo es obligatorio
                         </small>
                     </div>
@@ -161,12 +171,19 @@
                 <h4>Punto Final</h4>
             </div>
             <div class="form-group col-md-6 pt-4">
-                <label>Lat:</label>
                 <div class="mt-2">
-                    <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_final.$error }" id="latitud"
+                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_final.$error }" id="latitud"
                         placeholder="Lat" v-model="lat_final" format='n5' :min="min" :max="max" :disabled="isCanceled"
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lat_final.required && $v.lat_final.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                        </small>
+                    </div> -->
+                    <label class="control-label">Lat</label>
+                    <input type="number" class="form-control" v-model="lat_final"
+                        :class="!$v.lat_final.decimales ? 'form-control-error' : ''">
                     <div class="row col-md-10">
                         <small v-if="!$v.lat_final.required && $v.lat_final.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -175,12 +192,19 @@
                 </div>
             </div>
             <div class="form-group col-md-6">
-                <label>Long:</label>
                 <div>
-                    <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_final.$error }" placeholder="Long"
+                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_final.$error }" placeholder="Long"
                         format='n5' v-model="lon_final" :min="min" :max="max" :disabled="isCanceled"
                         :showSpinButton='false'>
                     </ejs-numerictextbox>
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lon_final.required && $v.lon_final.$error" class="form-text form-text-error">
+                            Este campo es obligatorio
+                        </small>
+                    </div> -->
+                    <label class="control-label">Lon</label>
+                    <input type="number" class="form-control" id="inpt-longitud" v-model="lon_final"
+                        :class="!$v.lon_final.decimales ? 'form-control-error' : ''">
                     <div class="row col-md-10">
                         <small v-if="!$v.lon_final.required && $v.lon_final.$error" class="form-text form-text-error">
                             Este campo es obligatorio
@@ -204,7 +228,7 @@
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino"
                                 v-model="caracteristicasCamino">
-                    </textarea>
+                                                                </textarea>
                         </div>
                     </div>
                 </div>
@@ -223,7 +247,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
-                        </textarea>
+                                                                    </textarea>
                         </div>
                     </div>
                 </div>
@@ -329,7 +353,7 @@ export default {
     },
     data() {
         return {
-            idcamino:'',
+            idcamino: '',
             ciit: '',
             tren_maya: '',
             caminosOriginales: '',
@@ -374,15 +398,47 @@ export default {
         },
         lat_inicial: {
             required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         lon_inicial: {
             required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         lat_final: {
             required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         lon_final: {
             required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
     },
     methods: {
