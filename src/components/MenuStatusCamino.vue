@@ -9,13 +9,26 @@
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
-                            <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
+                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
                                 data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
                                 {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 1" type="" text="plain" size="small"
+                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                {{ item.text }}
                             </el-button>
-                            <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
+                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
                                 data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
                                 {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 2" type="" text="plain" size="small"
+                                @click="setId(data.clave), cancelarModal = true">
+                                {{ item.text }}
+                            </el-button>
+                        </li>
+                        <li :style="styledoc">
+                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                                Historico
                             </el-button>
                         </li>
                     </div>
@@ -29,13 +42,22 @@
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsCancelado" :key="item.id" :style="styledoc">
-                            <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
+                            <el-button v-if="item.value === 1" type="" text="plain" size="small"
+                                @click="setIdReactivacion(data.id), suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
-                            <el-button v-if="item.value === 4" type="" text="plain" size="small" aria-label="Editar datos"
+                            <!-- <el-button v-if="item.value === 3" type="" text="plain" size="small" aria-label="Editar datos"
                                 data-toggle="modal" data-target="#mdlReactivarObra" @click="setId(data.clave)">
                                 {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 3" type="" text="plain" size="small"
+                                @click="setId(data.clave), reactivarModal = true">
+                                {{ item.text }}
+                            </el-button>
+                        </li>
+                        <li :style="styledoc">
+                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                                Historico
                             </el-button>
                         </li>
                     </div>
@@ -49,13 +71,89 @@
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsSuspendido" :key="item.id" :style="styledoc">
-                            <el-button v-if="item.value === 5" type="" text="plain" size="small" aria-label="Editar datos"
+                            <!-- <el-button v-if="item.value === 5" type="" text="plain" size="small" aria-label="Editar datos"
                                 data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
                                 {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 4" type="" text="plain" size="small"
+                                @click="setId(data.clave), reanudarModal = true">
+                                {{ item.text }}
                             </el-button>
-                            <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
+                            <el-button v-if="item.value === 2" type="" text="plain" size="small"
+                                @click="setId(data.clave), cancelarModal = true">
+                                {{ item.text }}
+                            </el-button>
+                        </li>
+                        <li :style="styledoc">
+                            <el-button type="" text="plain" size="small" aria-label="Menu" data-toggle="modal"
+                                data-target="#mdlHistorico">
+                                Historico
+                            </el-button>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+            <div class="menuDesplegable" v-if="data.estatus.id === 4">
+                <ul><a>
+                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                            <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
+                        </button>
+                    </a>
+                    <div class="itemList">
+                        <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
+                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
+                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
+                                {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 1" type="" text="plain" size="small"
+                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                {{ item.text }}
+                            </el-button>
+                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
                                 data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
                                 {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 2" type="" text="plain" size="small"
+                                @click="setId(data.clave), cancelarModal = true">
+                                {{ item.text }}
+                            </el-button>
+                        </li>
+                        <li :style="styledoc">
+                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                                Historico
+                            </el-button>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+            <div class="menuDesplegable" v-if="data.estatus.id === 5">
+                <ul><a>
+                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                            <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
+                        </button>
+                    </a>
+                    <div class="itemList">
+                        <li v-for="item in optionsReactivado" :key="item.id" :style="styledoc">
+                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
+                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
+                                {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 1" type="" text="plain" size="small"
+                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                {{ item.text }}
+                            </el-button>
+                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
+                                data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
+                                {{ item.text }}
+                            </el-button> -->
+                            <el-button v-if="item.value === 2" type="" text="plain" size="small"
+                                @click="setId(data.clave), cancelarModal = true">
+                                {{ item.text }}
+                            </el-button>
+                        </li>
+                        <li :style="styledoc">
+                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                                Historico
                             </el-button>
                         </li>
                     </div>
@@ -64,7 +162,7 @@
         </div>
 
         <!--CANCELAR-->
-        <div class="modal fade" ref="mdlCancelarObra" id="mdlCancelarObra" tabindex="-1" role="dialog"
+        <!-- <div class="modal fade" ref="mdlCancelarObra" id="mdlCancelarObra" tabindex="-1" role="dialog"
             aria-labelledby="mdlCancelarObra" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -89,10 +187,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!--SUSPENDER-->
-        <div class="modal fade" ref="mdlSuspenderObra" id="mdlSuspenderObra" tabindex="-1" role="dialog"
+        <!-- <div class="modal fade" ref="mdlSuspenderObra" id="mdlSuspenderObra" tabindex="-1" role="dialog"
             aria-labelledby="mdlSuspenderObra" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -122,10 +220,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!--REACTIVAR-->
-        <div class="modal fade" ref="mdlReactivarObra" id="mdlReactivarObra" tabindex="-1" role="dialog"
+        <!-- <div class="modal fade" ref="mdlReactivarObra" id="mdlReactivarObra" tabindex="-1" role="dialog"
             aria-labelledby="mdlReactivarObra" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -155,31 +253,150 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+
+        <ModalSCT v-if="cancelarModal">
+            <h3 slot="header">Cancelación de Obra {{ data.clave }}</h3>
+            <div slot="body">
+                <p>Escriba el motivo de cancelación</p>
+                <div class="form-group">
+                    <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
+                        placeholder="Ingrese el motivo de la cancelación" v-model="motivoCancelacion"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="file-01">Cargar archivo:</label>
+                    <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
+                </div>
+            </div>
+            <div slot="footer">
+                <button class="btn btn-danger" @click="cancelarModal = false">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary active" @click="cancelarModal = false, CancelarObra(data.clave)">
+                    Aceptar
+                </button>
+            </div>
+        </ModalSCT>
+
+        <ModalSCT v-if="suspenderModal">
+            <h3 slot="header">Suspender Obra {{ data.clave }}</h3>
+            <div slot="body">
+                <div class="modal-body text-left">
+                    <p>Escriba la justificación de suspencion:</p>
+                    <div class="form-group">
+                        <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
+                            placeholder="Justificación de suspencion" v-model="formSuspencion.motivoSuspencion"></textarea>
+                        <small v-if="!$v.formSuspencion.motivoSuspencion.required" class="form-text form-text-error">
+                            Este campo es obligatorio
+                        </small>
+                    </div>
+                    <div class="form-group text-left">
+                        <label class="control-label" for="reactivacion">Cargar archivo:</label>
+                        <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
+                    </div>
+                </div>
+            </div>
+            <div slot="footer">
+                <button class="btn btn-danger" @click="suspenderModal = false">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary active" @click="suspenderModal = false">
+                    Aceptar
+                </button>
+            </div>
+        </ModalSCT>
+
+        <ModalSCT v-if="reactivarModal">
+            <h3 slot="header">Reactivar Obra {{ data.clave }}</h3>
+            <div slot="body">
+                <div class="form-group">
+                    <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
+                        placeholder="Justificación de reactivación" v-model="formReactivar.motivoReactivacion"></textarea>
+                    <small v-if="!$v.formReactivar.motivoReactivacion.required" class="form-text form-text-error">
+                        Este campo es obligatorio
+                    </small>
+                </div>
+                <div class="form-group text-left">
+                    <label class="control-label" for="reactivacion">Cargar archivo:</label>
+                    <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
+                </div>
+            </div>
+            <div slot="footer">
+                <button class="btn btn-danger" @click="reactivarModal = false">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary active" @click="reactivarModal = false, reactivar(data)">
+                    Aceptar
+                </button>
+            </div>
+        </ModalSCT>
+
+        <ModalSCT v-if="reanudarModal">
+            <h3 slot="header">Reanudar de Obra {{ data.clave }}</h3>
+            <div slot="body">
+                <p>Escriba el motivo de reanudacion</p>
+                <div class="form-group">
+                    <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
+                        placeholder="Ingrese el motivo de la cancelación" v-model="motivoReanudacion"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="file-01">Cargar archivo:</label>
+                    <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
+                </div>
+            </div>
+            <div slot="footer">
+                <button class="btn btn-danger" @click="reanudarModal = false">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary active" @click="reanudarModal = false">
+                    Aceptar
+                </button>
+            </div>
+        </ModalSCT>
+
+        <ModalSCT v-if="historicoModal">
+            <h3 slot="header">Historico</h3>
+            <span slot="body"> {{ data }} </span>
+            <div slot="footer">
+                <button class="btn btn-danger" @click="historicoModal = false">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary active" @click="historicoModal = false">
+                    Aceptar
+                </button>
+            </div>
+        </ModalSCT>
+
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
-import { ref } from 'vue'
 import { Loading } from 'element-ui';
 import { required } from 'vuelidate/lib/validators'
 import { cancelarObra, reactivarObra } from '@/api/obras'
+import ModalSCT from "@/components/Modals/SCTModal.vue";
 
 Vue.use(Vuelidate)
 
 export default {
+    components: { ModalSCT },
     name: 'CancelaObra',
     data() {
         return {
             valueItem: '',
             idReactivacion: null,
             motivoCancelacion: '',
+            motivoReanudacion: '',
             id: null,
             actionButonMenu: false,
+            historicoModal: false,
+            cancelarModal: false,
+            suspenderModal: false,
+            reactivarModal: false,
+            reanudarModal: false,
             styledoc: '',
-            activeIndex: ref('1'),
             data: {
                 data: {
                 }
@@ -206,10 +423,10 @@ export default {
             ],
             optionsCancelado: [
                 { value: 1, text: 'Suspender' },
-                { value: 4, text: 'Reactivar' }
+                { value: 3, text: 'Reactivar' }
             ],
             optionsSuspendido: [
-                { value: 5, text: 'Reanudar' },
+                { value: 4, text: 'Reanudar' },
                 { value: 2, text: 'Cancelar' }
             ]
         };
