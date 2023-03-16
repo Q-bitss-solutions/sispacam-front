@@ -144,18 +144,18 @@
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_inicial"
-            :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
           </div>
           <p>Punto Final</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
             <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_final"
-            :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_final"
-            :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
           </div>
         </div>
         <div>
@@ -778,30 +778,20 @@ export default {
       meta: {
         required,
       },
-      lon_inicial: {
-        decimales: function validateDecimal(valor) {
-          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor)) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      },
       lat_inicial: {
         decimales: function validateDecimal(valor) {
           var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor)) {
+          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
             return true;
           } else {
             return false;
           }
         }
       },
-      lon_final: {
+      lon_inicial: {
         decimales: function validateDecimal(valor) {
           var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor)) {
+          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
             return true;
           } else {
             return false;
@@ -811,13 +801,23 @@ export default {
       lat_final: {
         decimales: function validateDecimal(valor) {
           var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor)) {
+          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
             return true;
           } else {
             return false;
           }
         }
-      }
+      },
+      lon_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
     },
     formMoficatorio: {
       anio: {

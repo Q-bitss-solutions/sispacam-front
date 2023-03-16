@@ -134,11 +134,6 @@
                     <label class="control-label">Lat</label>
                     <input type="number" class="form-control" v-model="lat_inicial"
                         :class="!$v.lat_inicial.decimales ? 'form-control-error' : ''">
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lat_inicial.required && $v.lat_inicial.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -155,11 +150,6 @@
                     <label class="control-label">Lon</label>
                     <input type="number" class="form-control" id="inpt-longitud" v-model="lon_inicial"
                         :class="!$v.lon_inicial.decimales ? 'form-control-error' : ''">
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div>
                 </div>
 
             </div>
@@ -184,11 +174,6 @@
                     <label class="control-label">Lat</label>
                     <input type="number" class="form-control" v-model="lat_final"
                         :class="!$v.lat_final.decimales ? 'form-control-error' : ''">
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lat_final.required && $v.lat_final.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
@@ -205,11 +190,6 @@
                     <label class="control-label">Lon</label>
                     <input type="number" class="form-control" id="inpt-longitud" v-model="lon_final"
                         :class="!$v.lon_final.decimales ? 'form-control-error' : ''">
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lon_final.required && $v.lon_final.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div>
                 </div>
 
             </div>
@@ -228,7 +208,7 @@
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino"
                                 v-model="caracteristicasCamino">
-                                                                </textarea>
+                                                                        </textarea>
                         </div>
                     </div>
                 </div>
@@ -247,7 +227,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
-                                                                    </textarea>
+                                                                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -397,10 +377,9 @@ export default {
             required,
         },
         lat_inicial: {
-            required,
             decimales: function validateDecimal(valor) {
                 var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor)) {
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
                     return true;
                 } else {
                     return false;
@@ -408,10 +387,9 @@ export default {
             }
         },
         lon_inicial: {
-            required,
             decimales: function validateDecimal(valor) {
                 var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor)) {
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
                     return true;
                 } else {
                     return false;
@@ -419,10 +397,9 @@ export default {
             }
         },
         lat_final: {
-            required,
             decimales: function validateDecimal(valor) {
                 var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor)) {
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
                     return true;
                 } else {
                     return false;
@@ -430,10 +407,9 @@ export default {
             }
         },
         lon_final: {
-            required,
             decimales: function validateDecimal(valor) {
                 var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor)) {
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
                     return true;
                 } else {
                     return false;
