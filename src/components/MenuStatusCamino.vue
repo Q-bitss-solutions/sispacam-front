@@ -3,9 +3,9 @@
         <div>
             <div class="menuDesplegable" v-if="data.estatus.id === 1">
                 <ul><a>
-                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" type="success"  @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </button>
+                        </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
@@ -27,7 +27,7 @@
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                            <el-button type="" text="plain" size="small" @click="historicoModal = true" >
                                 Historico
                             </el-button>
                         </li>
@@ -36,9 +36,9 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 2">
                 <ul><a>
-                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" type="danger" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </button>
+                        </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsCancelado" :key="item.id" :style="styledoc">
@@ -65,9 +65,9 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 3">
                 <ul><a>
-                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" type="warning" class="btn btn-sm" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </button>
+                        </el-button >
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsSuspendido" :key="item.id" :style="styledoc">
@@ -95,9 +95,9 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 4">
                 <ul><a>
-                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </button>
+                        </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
@@ -128,9 +128,9 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 5">
                 <ul><a>
-                        <button type="text" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </button>
+                        </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsReactivado" :key="item.id" :style="styledoc">
@@ -356,7 +356,15 @@
 
         <ModalSCT v-if="historicoModal">
             <h3 slot="header">Historico</h3>
-            <span slot="body"> {{ data }} </span>
+            <span slot="body">
+                <div>
+                    <el-table :data="tableData" style="width: 100%;">
+                        <el-table-column prop="date" label="Fecha" width="180" />
+                        <el-table-column prop="name" label="Estatus" width="180" />
+                        <el-table-column prop="address" label="Motivo"  />
+                    </el-table>
+                </div>
+            </span>
             <div slot="footer">
                 <button class="btn btn-danger" @click="historicoModal = false">
                     Cerrar
@@ -428,6 +436,28 @@ export default {
             optionsSuspendido: [
                 { value: 4, text: 'Reanudar' },
                 { value: 2, text: 'Cancelar' }
+            ],
+            tableData: [
+                {
+                    date: '2016-05-03',
+                    name: 'Cancelado',
+                    address: 'Razon o motivo 1',
+                },
+                {
+                    date: '2016-05-02',
+                    name: 'Reactivado',
+                    address: 'Razon o motivo 1',
+                },
+                {
+                    date: '2016-05-04',
+                    name: 'Suspendido',
+                    address: 'Razon o motivo 1',
+                },
+                {
+                    date: '2016-05-01',
+                    name: 'Reactivado',
+                    address: 'Razon o motivo 1',
+                },
             ]
         };
     },
