@@ -147,7 +147,7 @@
                 <h4>Punto Inicial</h4>
             </div>
             <div class="form-group col-md-6 pt-4">
-                <label>Lat:</label>
+                <!-- <label>Lat:</label>
                 <div class="mt-2">
                     <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_inicial.$error }" id="latitud"
                         placeholder="Lat" v-model="lat_inicial" format='n5' :min="min" :max="max" :disabled="isCanceled"
@@ -158,10 +158,13 @@
                             Este campo es obligatorio
                         </small>
                     </div>
-                </div>
+                </div> -->
+                <label class="control-label">Lat</label>
+                <input type="number" class="form-control" v-model="lat_inicial"
+                    :class="!$v.lat_inicial.decimales ? 'form-control-error' : ''">
             </div>
             <div class="form-group col-md-6">
-                <label>Long:</label>
+                <!-- <label>Long:</label>
                 <div>
                     <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_inicial.$error }" placeholder="Long"
                         format='n5' v-model="lon_inicial" :min="min" :max="max" :disabled="isCanceled"
@@ -172,8 +175,10 @@
                             Este campo es obligatorio
                         </small>
                     </div>
-                </div>
-
+                </div> -->
+                <label class="control-label">Lon</label>
+                <input type="number" class="form-control" id="inpt-longitud" v-model="lon_inicial"
+                    :class="!$v.lon_inicial.decimales ? 'form-control-error' : ''">
             </div>
         </div>
 
@@ -183,7 +188,7 @@
                 <h4>Punto Final</h4>
             </div>
             <div class="form-group col-md-6 pt-4">
-                <label>Lat:</label>
+                <!-- <label>Lat:</label>
                 <div class="mt-2">
                     <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_final.$error }" id="latitud"
                         placeholder="Lat" v-model="lat_final" format='n5' :min="min" :max="max" :disabled="isCanceled"
@@ -194,10 +199,13 @@
                             Este campo es obligatorio
                         </small>
                     </div>
-                </div>
+                </div> -->
+                <label class="control-label">Lat</label>
+                <input type="number" class="form-control" v-model="lat_final"
+                    :class="!$v.lat_final.decimales ? 'form-control-error' : ''">
             </div>
             <div class="form-group col-md-6">
-                <label>Long:</label>
+                <!-- <label>Long:</label>
                 <div>
                     <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_final.$error }" placeholder="Long"
                         format='n5' v-model="lon_final" :min="min" :max="max" :disabled="isCanceled"
@@ -208,8 +216,10 @@
                             Este campo es obligatorio
                         </small>
                     </div>
-                </div>
-
+                </div> -->
+                <label class="control-label">Lon</label>
+                <input type="number" class="form-control" id="inpt-longitud" v-model="lon_final"
+                    :class="!$v.lon_final.decimales ? 'form-control-error' : ''">
             </div>
         </div>
 
@@ -225,7 +235,7 @@
                             <textarea rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino" v-model="caracteristicas">
-                                                        </textarea>
+                                                                                    </textarea>
                         </div>
                     </div>
                 </div>
@@ -244,7 +254,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficios">
-                                                            </textarea>
+                                                                                        </textarea>
                         </div>
                     </div>
                 </div>
@@ -457,16 +467,44 @@ export default {
             required,
         },
         lat_inicial: {
-            required,
-        },
-        lat_final: {
-            required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         lon_inicial: {
-            required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        lat_final: {
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
         lon_final: {
-            required,
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         },
     },
     methods: {
@@ -610,9 +648,9 @@ export default {
                 this.localidadesDataList = []
                 this.localidadesData = []
             } else {
-            const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
-            this.localidadesDataList = localidadesMunicipioEstado
-            console.log(' this.localidadesDataList:', this.localidadesDataList)
+                const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
+                this.localidadesDataList = localidadesMunicipioEstado
+                console.log(' this.localidadesDataList:', this.localidadesDataList)
             }
 
         }
