@@ -15,7 +15,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<label >Residente:</label>
-				<select name="residentes" id="residente_dropdown" class="form-control" v-model="selected_residente" @change="elegirResidente(selected_residente)">
+				<select name="residentes" id="residente_dropdown" class="form-control" v-model="selected_residente" v-on:focusout="elegirResidente(selected_residente)">
 					<option value="" disabled>Seleccionar...</option>
 					<option v-for="(residente, index) in residentes" :key="index" :value="residente.id">
 						{{ residente.id_residente.a_paterno }}
@@ -35,10 +35,12 @@
 			<div class="col-md-6">
 				<label >Fecha de Fin:</label>
 				<div class="col-md_12">
-					<input class="form-control" type="date"  v-model="residente.fecha_fin" />
+					<input class="form-control" type="date"  v-model="residente.fecha_fin" @change="updateRes()" />
 				</div>
 			</div>
 		</div>
+
+		{{ residente }}
 
 		<div class="row">
 			<div class="col-md-1">
@@ -121,13 +123,20 @@ export default {
 				this.residente.estatus = res.estatus
 			},
 
+			updateRes(){
+				
+			},
 
 			async updateResidente() {
-				const response = await updateAsignacionById(this.id_convenio_selected, this.selected_residente,  this.payload)
-					.then(
-						// alert("Se editó correctamente la asignación")
-						this.closeModal()
-					)
+				console.log(this.residente);
+				try{
+					await updateAsignacionById(this.id_convenio_selected, this.selected_residente,  this.residente)
+					this.closeModal()
+					this.$swal('','La asignación fue guardada satisfactoriamente','success')
+				}catch(err){
+					this.$swal("ERROR",JSON.stringify(err),'error')
+				}
+
 			}
 		},
 
