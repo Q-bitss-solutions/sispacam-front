@@ -3,31 +3,24 @@
         <div>
             <div class="menuDesplegable" v-if="data.estatus.id === 1">
                 <ul><a>
-                        <el-button size="small" type="success"  @click="classMenuDespegable()">
+                        <el-button size="small" type="success" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
-                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
                                 @click="setIdReactivacion(data.id), suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
-                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
                                 @click="setId(data.clave), cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" @click="historicoModal = true" >
+                            <el-button type="" text="plain" size="small"
+                                @click="historicoModal = true, historicoEstatus(data.clave)">
                                 Historico
                             </el-button>
                         </li>
@@ -46,17 +39,14 @@
                                 @click="setIdReactivacion(data.id), suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
-                            <!-- <el-button v-if="item.value === 3" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlReactivarObra" @click="setId(data.clave)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 3" type="" text="plain" size="small"
                                 @click="setId(data.clave), reactivarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                            <el-button type="" text="plain" size="small"
+                                @click="historicoModal = true, historicoEstatus(data.clave)">
                                 Historico
                             </el-button>
                         </li>
@@ -67,14 +57,10 @@
                 <ul><a>
                         <el-button size="small" type="warning" class="btn btn-sm" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
-                        </el-button >
+                        </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsSuspendido" :key="item.id" :style="styledoc">
-                            <!-- <el-button v-if="item.value === 5" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 4" type="" text="plain" size="small"
                                 @click="setId(data.clave), reanudarModal = true">
                                 {{ item.text }}
@@ -85,8 +71,8 @@
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" aria-label="Menu" data-toggle="modal"
-                                data-target="#mdlHistorico">
+                            <el-button type="" text="plain" size="small"
+                                @click="historicoModal = true, historicoEstatus(data.clave)">
                                 Historico
                             </el-button>
                         </li>
@@ -95,31 +81,26 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 4">
                 <ul><a>
-                        <el-button size="small" style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);" @click="classMenuDespegable()">
+                        <el-button size="small"
+                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);"
+                            @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
-                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
                                 @click="setIdReactivacion(data.id), suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
-                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
                                 @click="setId(data.clave), cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                            <el-button type="" text="plain" size="small"
+                                @click="historicoModal = true, historicoEstatus(data.clave)">
                                 Historico
                             </el-button>
                         </li>
@@ -128,31 +109,26 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 5">
                 <ul><a>
-                        <el-button size="small" style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);" @click="classMenuDespegable()">
+                        <el-button size="small"
+                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);"
+                            @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
                     </a>
                     <div class="itemList">
                         <li v-for="item in optionsReactivado" :key="item.id" :style="styledoc">
-                            <!-- <el-button v-if="item.value === 1" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlSuspenderObra" @click="setIdReactivacion(data.id)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
                                 @click="setIdReactivacion(data.id), suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
-                            <!--  <el-button v-if="item.value === 2" type="" text="plain" size="small" aria-label="Editar datos"
-                                data-toggle="modal" data-target="#mdlCancelarObra" @click="setId(data.clave)">
-                                {{ item.text }}
-                            </el-button> -->
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
                                 @click="setId(data.clave), cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
                         <li :style="styledoc">
-                            <el-button type="" text="plain" size="small" @click="historicoModal = true">
+                            <el-button type="" text="plain" size="small"
+                                @click="historicoModal = true, historicoEstatus(data.clave)">
                                 Historico
                             </el-button>
                         </li>
@@ -160,119 +136,25 @@
                 </ul>
             </div>
         </div>
-
-        <!--CANCELAR-->
-        <!-- <div class="modal fade" ref="mdlCancelarObra" id="mdlCancelarObra" tabindex="-1" role="dialog"
-            aria-labelledby="mdlCancelarObra" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Cancelación de Obra</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Escriba el motivo de cancelación</p>
-                        <div class="form-group">
-                            <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
-                                placeholder="Ingrese el motivo de la cancelación" v-model="motivoCancelacion"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="file-01">Cargar archivo:</label>
-                            <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="cerrarCnclObra" class="btn btn-default"
-                            data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" @click="CancelarObra(data.clave)">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!--SUSPENDER-->
-        <!-- <div class="modal fade" ref="mdlSuspenderObra" id="mdlSuspenderObra" tabindex="-1" role="dialog"
-            aria-labelledby="mdlSuspenderObra" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Suspender Obra</h4>
-                    </div>
-                    <div class="modal-body text-left">
-                        <p>Escriba la justificación de suspencion:</p>
-                        <div class="form-group">
-                            <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
-                                placeholder="Justificación de suspencion"
-                                v-model="formSuspencion.motivoSuspencion"></textarea>
-                            <small v-if="!$v.formSuspencion.motivoSuspencion.required" class="form-text form-text-error">
-                                Este campo es obligatorio
-                            </small>
-                        </div>
-                        <div class="form-group text-left">
-                            <label class="control-label" for="reactivacion">Cargar archivo:</label>
-                            <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="cerrarCnclObra" class="btn btn-default"
-                            data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" @click="reactivar(data)"
-                            id="btn-sbmt-reactivar">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!--REACTIVAR-->
-        <!-- <div class="modal fade" ref="mdlReactivarObra" id="mdlReactivarObra" tabindex="-1" role="dialog"
-            aria-labelledby="mdlReactivarObra" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Reactivar Obra</h4>
-                    </div>
-                    <div class="modal-body text-left">
-                        <p>Escriba la justificación de reactivación:</p>
-                        <div class="form-group">
-                            <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
-                                placeholder="Justificación de reactivación"
-                                v-model="formReactivar.motivoReactivacion"></textarea>
-                            <small v-if="!$v.formReactivar.motivoReactivacion.required" class="form-text form-text-error">
-                                Este campo es obligatorio
-                            </small>
-                        </div>
-                        <div class="form-group text-left">
-                            <label class="control-label" for="reactivacion">Cargar archivo:</label>
-                            <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="cerrarCnclObra" class="btn btn-default"
-                            data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" @click="reactivar(data)"
-                            id="btn-sbmt-reactivar">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <ModalSCT v-if="cancelarModal">
             <h3 slot="header">Cancelación de Obra {{ data.clave }}</h3>
             <div slot="body">
                 <p>Escriba el motivo de cancelación</p>
                 <div class="form-group">
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
-                        placeholder="Ingrese el motivo de la cancelación" v-model="motivoCancelacion"></textarea>
+                        placeholder="Ingrese el motivo de la cancelación"
+                        v-model="formCancelacion.motivoCancelacion"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="file-01">Cargar archivo:</label>
-                    <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
+                    <input id="file-motivo" type="file" @change="onFileCancelar" accept=".pdf">
                 </div>
             </div>
             <div slot="footer">
                 <button class="btn btn-danger" @click="cancelarModal = false">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="cancelarModal = false, CancelarObra(data.clave)">
+                <button class="btn btn-primary active" @click="cancelarModal = false, cancelarCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -292,7 +174,7 @@
                     </div>
                     <div class="form-group text-left">
                         <label class="control-label" for="reactivacion">Cargar archivo:</label>
-                        <input id="reactivacion" type="file" @change="onFileReactivacion" accept=".pdf">
+                        <input id="reactivacion" type="file" @change="onFileSuspender" accept=".pdf">
                     </div>
                 </div>
             </div>
@@ -300,7 +182,7 @@
                 <button class="btn btn-danger" @click="suspenderModal = false">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="suspenderModal = false">
+                <button class="btn btn-primary active" @click="suspenderModal = false, suspenderCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -325,7 +207,7 @@
                 <button class="btn btn-danger" @click="reactivarModal = false">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="reactivarModal = false, reactivar(data)">
+                <button class="btn btn-primary active" @click="reactivarModal = false, reactivarCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -337,31 +219,32 @@
                 <p>Escriba el motivo de reanudacion</p>
                 <div class="form-group">
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
-                        placeholder="Ingrese el motivo de la cancelación" v-model="motivoReanudacion"></textarea>
+                        placeholder="Ingrese el motivo de la cancelación"
+                        v-model="formReanudar.motivoReanudacion"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="file-01">Cargar archivo:</label>
-                    <input id="file-motivo" type="file" @change="onFileSelected" accept=".pdf">
+                    <input id="file-motivo" type="file" @change="onFileReanudar" accept=".pdf">
                 </div>
             </div>
             <div slot="footer">
                 <button class="btn btn-danger" @click="reanudarModal = false">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="reanudarModal = false">
+                <button class="btn btn-primary active" @click="reanudarModal = false, reanudarCamino(data)">
                     Aceptar
                 </button>
             </div>
         </ModalSCT>
 
         <ModalSCT v-if="historicoModal">
-            <h3 slot="header">Historico</h3>
+            <h3 slot="header">Historico de {{ data.clave }} </h3>
             <span slot="body">
                 <div>
                     <el-table :data="tableData" style="width: 100%;">
-                        <el-table-column prop="date" label="Fecha" width="180" />
-                        <el-table-column prop="name" label="Estatus" width="180" />
-                        <el-table-column prop="address" label="Motivo"  />
+                        <el-table-column prop="timestamp" label="Fecha" width="180" />
+                        <el-table-column prop="estatus_descripcion" label="Estatus" width="180" />
+                        <el-table-column prop="justificacion" label="Motivo" />
                     </el-table>
                 </div>
             </span>
@@ -383,7 +266,7 @@ import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import { Loading } from 'element-ui';
 import { required } from 'vuelidate/lib/validators'
-import { cancelarObra, reactivarObra } from '@/api/obras'
+import { getHistorialEstatus, cambioEstatus } from '@/api/obras'
 import ModalSCT from "@/components/Modals/SCTModal.vue";
 
 Vue.use(Vuelidate)
@@ -413,8 +296,16 @@ export default {
                 motivoReactivacion: null,
                 file: null
             },
+            formReanudar: {
+                motivoReanudacion: null,
+                file: null
+            },
             formSuspencion: {
                 motivoSuspencion: null,
+                file: null
+            },
+            formCancelacion: {
+                motivoCancelacion: null,
                 file: null
             },
             optionsActivo: [
@@ -437,28 +328,7 @@ export default {
                 { value: 4, text: 'Reanudar' },
                 { value: 2, text: 'Cancelar' }
             ],
-            tableData: [
-                {
-                    date: '2016-05-03',
-                    name: 'Cancelado',
-                    address: 'Razon o motivo 1',
-                },
-                {
-                    date: '2016-05-02',
-                    name: 'Reactivado',
-                    address: 'Razon o motivo 1',
-                },
-                {
-                    date: '2016-05-04',
-                    name: 'Suspendido',
-                    address: 'Razon o motivo 1',
-                },
-                {
-                    date: '2016-05-01',
-                    name: 'Reactivado',
-                    address: 'Razon o motivo 1',
-                },
-            ]
+            tableData: []
         };
     },
     validations: {
@@ -485,47 +355,46 @@ export default {
                 this.actionButonMenu = false
             }
         },
-        async CancelarObra(myId) {
-            $(this.$refs['mdlCancelarObra']).modal('hide')
+        async suspenderCamino(data) {
             let formData = new FormData();
-            formData.append("motivoCancelacion", this.motivoCancelacion);
-            if (this.file) {
-                formData.append("archivo", this.file);
-            }
-            await cancelarObra(this.$store.state.cancel.id, formData).then(_ => {
-                this.$parent.$parent.populate()
-                this.$alert('La Obra se ha Cancelado', '', {
-                    confirmButtonText: 'Cerrar',
-                    callback: action => {
-                    }
-                });
-            })
-
-
+            formData.append("id_camino", data.id);
+            formData.append("id_estatus", 3);
+            formData.append("justificacion", this.formSuspencion.motivoSuspencion);
+            formData.append("archivo", this.formSuspencion.file);
+            console.log('dataEndpoint suspender: ', data.clave, formData)
+            await cambioEstatus(data.clave, formData)
         },
-        async reactivar(data) {
-            if (!this.$v.formReactivar.$invalid) {
-                let loadingInstance = Loading.service({ fullscreen: true, lock: true });
-                let formData = new FormData();
-                formData.append("justificacion", this.formReactivar.motivoReactivacion);
-                formData.append("direccion", 'reactivar');
-                formData.append("obra", this.$store.state.reactivar.id);
-                if (this.formReactivar.file) {
-                    formData.append("archivo", this.formReactivar.file);
-                }
-                await reactivarObra(formData)
-                    .then(_ => {
-                        $(this.$refs['mdlSuspenderObra']).modal('hide')
-                        this.$parent.$parent.populate()
-                        this.$alert('La Obra se ha Reactivado', '', {
-                            confirmButtonText: 'Cerrar',
-                            callback: action => {
-                            }
-                        });
-                    }).finally(_ => {
-                        loadingInstance.close();
-                    })
-            }
+        async cancelarCamino(data) {
+            let formData = new FormData();
+            formData.append("id_camino", data.id);
+            formData.append("id_estatus", 2);
+            formData.append("justificacion", this.formCancelacion.motivoCancelacion);
+            formData.append("archivo", this.formCancelacion.file);
+            console.log('dataEndpoint suspender: ', data.clave, formData)
+            await cambioEstatus(data.clave, formData)
+        },
+        async reactivarCamino(data) {
+            let formData = new FormData();
+            formData.append("id_camino", data.id);
+            formData.append("id_estatus", 5);
+            formData.append("justificacion", this.formReactivar.motivoReactivacion);
+            formData.append("archivo", this.formReactivar.file);
+            console.log('dataEndpoint suspender: ', data.clave, formData)
+            await cambioEstatus(data.clave, formData)
+        },
+        async historicoEstatus(data) {
+            console.log('data:', data)
+            this.tableData = await getHistorialEstatus(data)
+            console.log('tableData: ', this.tableData)
+        },
+        async reanudarCamino(data) {
+            let formData = new FormData();
+            formData.append("id_camino", data.id);
+            formData.append("id_estatus", 4);
+            formData.append("justificacion", this.formReanudar.motivoReanudacion);
+            formData.append("archivo", this.formReanudar.file);
+            console.log('dataEndpoint suspender: ', data.clave, formData)
+            await cambioEstatus(data.clave, formData)
         },
         setId(clave) {
             this.$store.commit('setIdCancelacion', clave)
@@ -535,11 +404,17 @@ export default {
                 this.formReactivar.file = null
             this.$store.commit('setIdReactivacion', clave)
         },
-        onFileSelected(event) {
-            this.file = event.target.files[0];
+        onFileCancelar(event) {
+            this.formCancelacion.file = event.target.files[0];
         },
         onFileReactivacion(event) {
             this.formReactivar.file = event.target.files[0];
+        },
+        onFileSuspender(event) {
+            this.formSuspencion.file = event.target.files[0];
+        },
+        onFileReanudar(event) {
+            this.formReanudar.file = event.target.files[0];
         },
     },
 
@@ -590,5 +465,4 @@ ol {
 .menuDesplegable>li {
     float: left;
 
-}
-</style>
+}</style>
