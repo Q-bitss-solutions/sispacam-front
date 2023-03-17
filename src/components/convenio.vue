@@ -1013,10 +1013,18 @@ export default {
       formData.append("monto", this.form.monto);
       formData.append("origen", this.form.origen);
       formData.append("meta", this.form.meta);
-      formData.append("lon_inicial", this.form.lon_inicial);
-      formData.append("lat_inicial", this.form.lat_inicial);
-      formData.append("lon_final", this.form.lon_final);
-      formData.append("lat_final", this.form.lat_final);
+      if (this.form.lat_inicial!= ''){
+        formData.append("lat_inicial", this.form.lat_inicial);
+      }
+      if (this.form.lon_inicial!= ''){
+        formData.append("lon_inicial", this.form.lon_inicial);
+      }
+      if (this.form.lat_final!= ''){
+        formData.append("lat_final", this.form.lat_final);
+      }
+      if (this.form.lon_final!= ''){
+        formData.append("lon_final", this.form.lon_final);
+      }
       formData.append("estatus", "A");
       formData.append("beneficiario_id", this.beneficiario_id);
       let avanceMes = []
