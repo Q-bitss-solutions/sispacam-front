@@ -820,45 +820,57 @@ export default {
         required,
       },
       lat_inicial: {
-        decimales: function validateDecimal(valor) {
-          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      },
-      lon_inicial: {
-        decimales: function validateDecimal(valor) {
-          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      },
-      lat_final: {
-        decimales: function validateDecimal(valor) {
-          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      },
-      lon_final: {
-        decimales: function validateDecimal(valor) {
-          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
-            return true;
-          } else {
-            return false;
-          }
-        }
-      },
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+                    return true;
+                } else if (valor === '') {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
+        lon_inicial: {
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+                    return true;
+                } else if (valor === '') {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
+        lat_final: {
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+                    return true;
+                }
+                else if (valor === '') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        },
+        lon_final: {
+            decimales: function validateDecimal(valor) {
+                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+                    return true;
+                } else if (valor === '') {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        },
     },
     formMoficatorio: {
       anio: {
