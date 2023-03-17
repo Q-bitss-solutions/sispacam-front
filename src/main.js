@@ -13,6 +13,10 @@ import { ContextMenuPlugin } from "@syncfusion/ej2-vue-navigations";
 import { enableRipple } from '@syncfusion/ej2-base';
 import { ButtonPlugin } from "@syncfusion/ej2-vue-buttons";
 
+// SweetAlert2
+import VueSweetalert2 from "vue-sweetalert2";
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 Vue.use(ElementUI);
 Vue.use(ContextMenuPlugin);
 Vue.use(ButtonPlugin);
@@ -30,6 +34,7 @@ Vue.use(require('vue-moment'));
 
 Vue.use(ComboBoxPlugin);
 Vue.use(MultiSelectPlugin);
+Vue.use(VueSweetalert2);
 
 new Vue({
   router,
