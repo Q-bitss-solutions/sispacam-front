@@ -618,14 +618,23 @@ export default {
                         tren_maya: this.tren_maya == "" ? false : true,
                         caminos_originales: this.caminosOriginales == "" ? false : true,
                         id_ancho_camino: this.ancho_camino,
-                        lat_inicial: this.lat_inicial,
-                        lon_inicial: this.lon_inicial,
-                        lat_final: this.lat_final,
-                        lon_final: this.lon_final,
                         municipio: this.municipioData,
-                        localidad: this.localidadesData
+                        localidades: this.localidadesData.map(x => x.toString())
 
                     }
+                    if (this.lat_inicial){
+                        data.lat_inicial= this.lat_inicial
+                    }
+                    if (this.lat_final){
+                        data.lat_final= this.lat_final
+                    }
+                    if (this.lon_inicial){
+                        data.lon_inicial= this.lon_inicial
+                    }
+                    if (this.lon_final){
+                        data.lon_final= this.lon_final
+                    }
+
                     if (this.longitud_pavimentar > this.longitud_camino) {
                         $('#alertvalnum').modal('show')
                         this.btnSaveDisabled = false
