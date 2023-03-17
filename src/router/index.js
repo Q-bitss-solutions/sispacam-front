@@ -7,6 +7,11 @@ import Caminos from "@/views/Caminos/Caminos.vue"
 import AltaCaminosWork from '@/views/Caminos/AltaCaminosWork.vue' // TODO: Cambiar nombre al componente
 import EditarCamino from '@/views/Caminos/EditarCamino.vue'
 
+// Residente de Camino
+import TablaResidentes from '@/components/Residentes/TablaResidentes'
+import AsignarResidente from '@/components/Residentes/AsignarResidente'
+import EditarAsignacionResidente from '@/components/Residentes/EditarAsignacionResidente'
+
 
 
 import BusquedaCaminos from '../views/BusquedaCaminos.vue' // TODO: Borrar BusquedaCaminos
@@ -35,7 +40,7 @@ const routes = [
   {
     path: "/sandbox",
     name: "Sandbox Test Component",
-    component: EditarCamino,
+    component: AsignarResidente,
   },
   // Página Principal
   {

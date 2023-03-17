@@ -1,5 +1,27 @@
 <template>
   <div>
+
+    <ModalSCT v-if="modalAsignarResidente && getCaminoID">
+      <h3 slot="header">Asignar Residente</h3>
+      <div slot="body">
+        <asignar-residente :id_camino="getCaminoID" v-on:closeModal="modalAsignarResidente = false"></asignar-residente>
+      </div>
+      <div slot="footer">
+      </div>
+    </ModalSCT>
+
+    <ModalSCT v-if="modalEditarResidente && getCaminoID">
+      <h3 slot="header">Editar Asignación</h3>
+      <div slot="body">
+        <EditarAsignacionResidente :id_camino="getCaminoID"
+          v-on:closeModal="modalEditarResidente = false"></EditarAsignacionResidente>
+      </div>
+      <div slot="footer">
+      </div>
+    </ModalSCT>
+
+
+
     <div class="col-md-12 mx-auto">
       <div class="row">
         <h3>Programación de Obra </h3>
@@ -14,16 +36,21 @@
           class="btn btn-default pull-right" data-toggle="modal">
           Nuevo Convenio
         </button>
+        <span v-if="this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false">
+          <button class="btn btn-primary active" @click="modalAsignarResidente = true">
+            Asignar Residente
+          </button>
+          <button class="btn btn-primary active" @click="modalEditarResidente = true">
+            Editar Asignacion
+          </button>
+        </span>
+
       </div>
       <div>
       </div>
       <div class="col-md-12">
         <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
       </div>
-    </div>
-
-    <div>
-      <p>{{ getCaminoID }}</p>
     </div>
 
     <div class="row">
@@ -62,6 +89,8 @@
         </ejs-treegrid>
       </div>
     </div>
+
+
 
     <!--Convenio Nuevo & Edit--->
     <Modal :title="modalTitle" modal-class="modal2" v-model="showAdminModalConvenio" @before-open="beforeOpen"
@@ -144,18 +173,18 @@
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_inicial"
-            :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
           </div>
           <p>Punto Final</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
             <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_final"
-            :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_final"
-            :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
+              :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
           </div>
         </div>
         <div>
@@ -365,6 +394,8 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate'
 import { Loading } from 'element-ui';
 import VueModal from '@kouts/vue-modal'
+// import { ModalSCT } from '@/components/Modals/SCTModal.vue'
+import ModalSCT from './Modals/SCTModal.vue'
 import '@kouts/vue-modal/dist/vue-modal.css'
 import ModalBeneficiario from './Modals/Beneficiario.vue'
 import EventBus from '../utils/EventBus.js';
@@ -377,6 +408,9 @@ import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-tre
 import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio, getAvanceConvenio, getConveniosGet, getCatMeses } from '@/api/convenio';
 import VueNumeric from 'vue-numeric'
 import { getBeneficiariosDropdown } from '@/api/beneficiarios'
+import PlaceholderComponent from './PlaceholderComponent.vue';
+import AsignarResidente from '@/components/Residentes/AsignarResidente.vue';
+import EditarAsignacionResidente from './Residentes/EditarAsignacionResidente.vue';
 
 Vue.use(VueNumeric)
 Vue.use(Vuelidate)
@@ -401,10 +435,17 @@ export default {
   },
   components: {
     'Modal': VueModal,
-    ModalBeneficiario
+    ModalBeneficiario,
+    PlaceholderComponent,
+    AsignarResidente,
+    ModalSCT,
+    EditarAsignacionResidente
   },
   data() {
     return {
+      modalAsignarResidente: false,
+      modalEditarResidente: false,
+
       beneficiarios: [],
       form: {
         id: -1,

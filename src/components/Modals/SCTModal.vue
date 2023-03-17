@@ -13,12 +13,12 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <button class="btn btn-danger" @click="$emit('CloseModal')">
+              <!-- <button class="btn btn-danger" @click="$emit('CloseModal')">
                 Cerrar
               </button>
               <button class="btn btn-primary active" @click="$emit('CloseModal')">
                 Aceptar
-              </button>
+              </button> -->
             </slot>
           </div>
         </div>
