@@ -88,42 +88,46 @@ export default {
 				return false
 			}
 		},
-		payload(){
+		payload() {
 			let p = {
-				'id_residente':this.form.id_residente,
-				'fecha_inicio':this.form.fecha_inicio,
+				'id_residente': this.form.id_residente,
+				'fecha_inicio': this.form.fecha_inicio,
 			}
-			if (this.form.fecha_fin){
+			if (this.form.fecha_fin) {
 				p.fecha_fin = this.form.fecha_fin
-			} 
+			}
 			return p
 		}
 	},
 
-		methods: {
+	methods: {
 
-			closeModal() {
-				this.$emit("closeModal");
-			},
-
-			async postResidente() {
-				const response = await agregaAsignacionAConvenio(this.form.id_convenio, this.payload)
-				console.log(response).then(
-					this.closeModal()
-				)
-			}
+		closeModal() {
+			this.$emit("closeModal");
 		},
 
-		async created() {
-
-
+		async postResidente() {
 			try {
-				this.residentes = await getDropdownResidentes()
-				this.convenios = await getConveniosGet(this.id_camino)
-			} catch (error) {
-				console.log(error);
+				const response = await agregaAsignacionAConvenio(this.form.id_convenio, this.payload)
+				this.closeModal()
+				this.$swal("", "La asignación se creó con éxito", 'success')
+			} catch (err) {
+				this.closeModal()
+				this.$swal('ERROR', JSON.stringify(err), "error")
 			}
-		},
+		}
+	},
+
+	async created() {
+
+
+		try {
+			this.residentes = await getDropdownResidentes()
+			this.convenios = await getConveniosGet(this.id_camino)
+		} catch (error) {
+			console.log(error);
+		}
+	},
 
 
 
@@ -131,7 +135,7 @@ export default {
 
 
 
-	}
+}
 </script>
 
 <style></style>

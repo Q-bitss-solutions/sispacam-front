@@ -123,11 +123,14 @@ export default {
 
 
 			async updateResidente() {
-				const response = await updateAsignacionById(this.id_convenio_selected, this.selected_residente,  this.payload)
-					.then(
-						// alert("Se editó correctamente la asignación")
-						this.closeModal()
-					)
+
+				try{
+					const response = await updateAsignacionById(this.id_convenio_selected, this.selected_residente,  this.residente)
+					this.$swal("","La asignación se editó con éxito", 'success')
+					this.closeModal();
+				}catch(err){
+					this.$swal('ERROR',JSON.stringify(err), "error")
+				}
 			}
 		},
 

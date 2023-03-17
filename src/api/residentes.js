@@ -37,6 +37,6 @@ export function updateAsignacionById(id_convenio, id_asignacion, data){
 	return request({
 		url:ENDPOINT_ASIGNACION+id_convenio+ENDPOINT_RESIDENTE+id_asignacion,
 		method:'patch',
-		
+		data:data
 	})
 }
