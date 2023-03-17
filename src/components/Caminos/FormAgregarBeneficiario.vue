@@ -136,19 +136,6 @@ export default {
     },
 
     async postBeneficiarioCamino() {
-      // const wiu = {
-      //   clave_camino:this.camino.clave,
-      //   estado: this.camino.cve_agee,
-      //   // municipio: this.clave_municipio,
-      //   municipio: this.MunicipioSeleccionado.id,
-      //   // localidad: this.clave_localidad,
-      //   localidad: this.clave_localidad==null?"":this.clave_localidad,
-        
-      //   // camino_id: this.camino_id,
-      //   region: this.region,
-      //   ubicacion: this.ubicacion,
-        
-      // };
       console.log(this.payload);
       const response = await createBeneficiarioCamino(this.id_camino, this.payload);
       this.closeModal();
