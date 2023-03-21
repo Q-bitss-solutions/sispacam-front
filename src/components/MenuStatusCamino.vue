@@ -55,7 +55,8 @@
             </div>
             <div class="menuDesplegable" v-if="data.estatus.id === 3">
                 <ul><a>
-                        <el-button size="small" type="warning" class="btn btn-sm" @click="classMenuDespegable()">
+                        <el-button size="small" style="background: #FFFF33" class="btn btn-sm"
+                            @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
                     </a>
@@ -144,6 +145,9 @@
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
                         placeholder="Ingrese el motivo de la cancelación"
                         v-model="formCancelacion.motivoCancelacion"></textarea>
+                    <small v-if="!$v.formCancelacion.motivoCancelacion.required" class="form-text form-text-error">
+                        Este campo es obligatorio
+                    </small>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="file-01">Cargar archivo:</label>
@@ -221,6 +225,9 @@
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
                         placeholder="Ingrese el motivo de la cancelación"
                         v-model="formReanudar.motivoReanudacion"></textarea>
+                    <small v-if="!$v.formReanudar.motivoReanudacion.required" class="form-text form-text-error">
+                        Este campo es obligatorio
+                    </small>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="file-01">Cargar archivo:</label>
@@ -336,13 +343,21 @@ export default {
             motivoReactivacion: {
                 required
             }
-
+        },
+        formCancelacion: {
+            motivoCancelacion: {
+                required
+            }
+        },
+        formReanudar: {
+            motivoReanudar: {
+                required
+            }
         },
         formSuspencion: {
             motivoSuspencion: {
                 required
             }
-
         }
     },
     methods: {
@@ -465,4 +480,5 @@ ol {
 .menuDesplegable>li {
     float: left;
 
-}</style>
+}
+</style>
