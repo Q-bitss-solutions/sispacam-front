@@ -134,24 +134,24 @@
                     <label class="control-label">Lat</label>
                     <input type="number" class="form-control" v-model="lat_inicial"
                         :class="!$v.lat_inicial.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lat_inicial.decimales" class="form-text form-text-error">
+                            Introduce una latitud dentro de México
+                        </small>
+                    </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div>
-                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_inicial.$error }" placeholder="Long"
-                        format='n5' v-model="lon_inicial" :min="min" :max="max" :disabled="isCanceled"
-                        :showSpinButton='false'>
-                    </ejs-numerictextbox>
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lon_inicial.required && $v.lon_inicial.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div> -->
                     <label class="control-label">Lon</label>
                     <input type="number" class="form-control" id="inpt-longitud" v-model="lon_inicial"
                         :class="!$v.lon_inicial.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lon_inicial.decimales" class="form-text form-text-error">
+                            Introduce una longitud dentro de México
+                        </small>
+                    </div>
                 </div>
-
             </div>
         </div>
 
@@ -162,39 +162,29 @@
             </div>
             <div class="form-group col-md-6 pt-4">
                 <div class="mt-2">
-                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lat_final.$error }" id="latitud"
-                        placeholder="Lat" v-model="lat_final" format='n5' :min="min" :max="max" :disabled="isCanceled"
-                        :showSpinButton='false'>
-                    </ejs-numerictextbox>
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lat_final.required && $v.lat_final.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div> -->
                     <label class="control-label">Lat</label>
                     <input type="number" class="form-control" v-model="lat_final"
                         :class="!$v.lat_final.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lat_final.decimales" class="form-text form-text-error">
+                            Introduce una latitud dentro de México
+                        </small>
+                    </div>
                 </div>
             </div>
             <div class="form-group col-md-6">
                 <div>
-                    <!-- <ejs-numerictextbox :class="{ 'form-control-error': $v.lon_final.$error }" placeholder="Long"
-                        format='n5' v-model="lon_final" :min="min" :max="max" :disabled="isCanceled"
-                        :showSpinButton='false'>
-                    </ejs-numerictextbox>
-                    <div class="row col-md-10">
-                        <small v-if="!$v.lon_final.required && $v.lon_final.$error" class="form-text form-text-error">
-                            Este campo es obligatorio
-                        </small>
-                    </div> -->
                     <label class="control-label">Lon</label>
                     <input type="number" class="form-control" id="inpt-longitud" v-model="lon_final"
                         :class="!$v.lon_final.decimales ? 'form-control-error' : ''">
+                    <div class="row col-md-10">
+                        <small v-if="!$v.lon_final.decimales" class="form-text form-text-error">
+                            Introduce una longitud dentro de México
+                        </small>
+                    </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 
     <table width="100%" border="0">
@@ -208,7 +198,7 @@
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino"
                                 v-model="caracteristicasCamino">
-                                                                            </textarea>
+                                                                                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -227,7 +217,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
-                                                                                </textarea>
+                                                                                                </textarea>
                         </div>
                     </div>
                 </div>
@@ -246,7 +236,7 @@
 
     <!-- MODAL CONFIRMACIÓN -->
     <!-- TODO: Utilizar $swal para este aviso -->
-    <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
+ <!--    <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -260,9 +250,9 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal"
                         @click="$router.push('/caminos')">Cerrar</button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div> -->
 
 
     <!-- MODAL "Longitudes incorrectas" -->
@@ -454,7 +444,7 @@ export default {
                 this.btnSaveDisabled = true
                 try {
 
-                    
+
                     const data = {
                         // Datos Geograficos
                         tipo_camino: this.edo.tipo_camino,
@@ -479,17 +469,17 @@ export default {
                         usuarios: 1
 
                     }
-                    if (this.lat_inicial){
-                        data.lat_inicial= this.lat_inicial
+                    if (this.lat_inicial) {
+                        data.lat_inicial = this.lat_inicial
                     }
-                    if (this.lat_final){
-                        data.lat_final= this.lat_final
+                    if (this.lat_final) {
+                        data.lat_final = this.lat_final
                     }
-                    if (this.lon_inicial){
-                        data.lon_inicial= this.lon_inicial
+                    if (this.lon_inicial) {
+                        data.lon_inicial = this.lon_inicial
                     }
-                    if (this.lon_final){
-                        data.lon_final= this.lon_final
+                    if (this.lon_final) {
+                        data.lon_final = this.lon_final
                     }
 
                     if (this.longitud_pavimentar > this.longitud_camino) {
@@ -506,15 +496,17 @@ export default {
                         loadingInstance.close()
                     })
                     this.idcamino = response
-                    $('#addCamino').modal('show')
+                    /* $('#addCamino').modal('show') */
+                    this.$swal('EXITO', `Se guardaron correctamente los datos del camino ${this.idcamino}`, "success")
                     this.btnSaveDisabled = false
-
+                    this.$router.push('/caminos')
                 }
                 catch (err) {
                     this.btnSaveDisabled = false
                     console.log('error al obtener el Id-Camino')
                     console.log(err)
-                    this.$emit("show-error", 'Error al guardar camino por');
+                    this.$swal('ERROR', 'Error al guardar camino por', "error")
+                    /* this.$emit("show-error", 'Error al guardar camino por'); */
                 }
             }
         }

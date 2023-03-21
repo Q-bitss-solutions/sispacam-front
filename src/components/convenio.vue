@@ -13,8 +13,8 @@
     <ModalSCT v-if="modalEditarResidente && getCaminoID">
       <h3 slot="header">Editar Asignación</h3>
       <div slot="body">
-        <EditarAsignacionResidente :id_camino="getCaminoID"
-          v-on:closeModal="modalEditarResidente = false"></EditarAsignacionResidente>
+        <EditarAsignacionResidente :id_camino="getCaminoID" v-on:closeModal="modalEditarResidente = false">
+        </EditarAsignacionResidente>
       </div>
       <div slot="footer">
       </div>
@@ -168,23 +168,42 @@
             <label class="control-label">Lon</label>
             <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_inicial"
               :class="!$v.form.lon_inicial.decimales ? 'form-control-error' : ''">
-
+            <div class="row col-md-10">
+              <small v-if="!$v.form.lon_inicial.decimales" class="form-text form-text-error">
+                Introduce una longitud dentro de México
+              </small>
+            </div>
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_inicial"
               :class="!$v.form.lat_inicial.decimales ? 'form-control-error' : ''">
+            <div class="row col-md-10">
+              <small v-if="!$v.form.lat_inicial.decimales" class="form-text form-text-error">
+                Introduce una latitud dentro de México
+              </small>
+            </div>
           </div>
           <p>Punto Final</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
             <input type="number" class="form-control" id="inpt-longitud" v-model="form.lon_final"
               :class="!$v.form.lon_final.decimales ? 'form-control-error' : ''">
+            <div class="row col-md-10">
+              <small v-if="!$v.form.lon_final.decimales" class="form-text form-text-error">
+                Introduce una longitud dentro de México
+              </small>
+            </div>
           </div>
           <div class="form-group col-md-6">
             <label class="control-label">Lat</label>
             <input type="number" class="form-control" v-model="form.lat_final"
               :class="!$v.form.lat_final.decimales ? 'form-control-error' : ''">
+            <div class="row col-md-10">
+              <small v-if="!$v.form.lat_final.decimales" class="form-text form-text-error">
+                Introduce una latitud dentro de México
+              </small>
+            </div>
           </div>
         </div>
         <div>
@@ -820,57 +839,55 @@ export default {
         required,
       },
       lat_inicial: {
-            decimales: function validateDecimal(valor) {
-                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
-                    return true;
-                } else if (valor === '') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        },
-        lon_inicial: {
-            decimales: function validateDecimal(valor) {
-                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
-                    return true;
-                } else if (valor === '') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        },
-        lat_final: {
-            decimales: function validateDecimal(valor) {
-                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
-                    return true;
-                }
-                else if (valor === '') {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        },
-        lon_final: {
-            decimales: function validateDecimal(valor) {
-                var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
-                if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
-                    return true;
-                } else if (valor === '') {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        },
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+            return true;
+          } else if (valor === '') {
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+      },
+      lon_inicial: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+            return true;
+          } else if (valor === '') {
+            return true;
+          }
+          else {
+            return false;
+          }
+        }
+      },
+      lat_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor) && valor <= 32.754000 && valor >= 14.517000) {
+            return true;
+          } else if (valor === '') {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
+      lon_final: {
+        decimales: function validateDecimal(valor) {
+          var RE = /^[\-\+]?(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,7})?|180\.0{1,10})$/ /* /^\d*(\.\d{1})?\d{0,6}$/; */
+          if (RE.test(valor) && valor <= - 86.363800 && valor >= -117.080000) {
+            return true;
+          } else if (valor === '') {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      },
     },
     formMoficatorio: {
       anio: {
@@ -968,9 +985,11 @@ export default {
           const timer = setInterval(() => {
             second--;
             if (second) {
-              this.$emit("show-error", 'Error al eliminar el Convenio');
+              /* this.$emit("show-error", 'Error al eliminar el Convenio'); */
+              this.$swal('ERROR', 'Error al eliminar el Convenio', "error")
             } else {
-              this.$emit("show-error", false);
+              /* this.$emit("show-error", false); */
+              this.$swal('EXITO', 'Se elimino el Convenio', "success")
               clearInterval(timer);
             }
           }, 1000);
@@ -1013,16 +1032,16 @@ export default {
       formData.append("monto", this.form.monto);
       formData.append("origen", this.form.origen);
       formData.append("meta", this.form.meta);
-      if (this.form.lat_inicial!= ''){
+      if (this.form.lat_inicial != '') {
         formData.append("lat_inicial", this.form.lat_inicial);
       }
-      if (this.form.lon_inicial!= ''){
+      if (this.form.lon_inicial != '') {
         formData.append("lon_inicial", this.form.lon_inicial);
       }
-      if (this.form.lat_final!= ''){
+      if (this.form.lat_final != '') {
         formData.append("lat_final", this.form.lat_final);
       }
-      if (this.form.lon_final!= ''){
+      if (this.form.lon_final != '') {
         formData.append("lon_final", this.form.lon_final);
       }
       formData.append("estatus", "A");
@@ -1055,19 +1074,22 @@ export default {
       await generarConvenio(formData, this.camino_id).then(async () => {
         await this.listaconvenio()
         // this.$refs.gridConvenios.refresh()
-        this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
+        /* this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
-        })
+        }) */
+        this.$swal('EXITO', 'El convenio ha sido creado', "success")
       }).catch((e) => {
         console.log(e)
         let second = 10;
         const timer = setInterval(() => {
           second--;
           if (second) {
-            this.$emit("show-error", 'Error al crear el Convenio los datos ');
+            /* this.$emit("show-error", 'Error al crear el Convenio los datos '); */
+            this.$swal('ERROR', 'Error al crear el Convenio los datos', "error")
           } else {
-            this.$emit("show-error", false);
+           /*  this.$emit("show-error", false); */
+           this.$swal('EXITO', 'Se creo los datos el Convenio', "success")
             clearInterval(timer);
           }
         }, 1000);
@@ -1103,10 +1125,11 @@ export default {
             this.convenioModificatrioErrors = []
           }
         }, 1000);
-        this.$alert(`Verifica los campos faltantes o con información errónea`, 'INFORMACIÓN', {
+        /* this.$alert(`Verifica los campos faltantes o con información errónea`, 'INFORMACIÓN', {
           confirmButtonText: 'Aceptar',
           customClass: 'box-msg-login',
-        })
+        }) */
+        this.$swal('WARNING', 'Verifica los campos faltantes o con información errónea', "warning")
         return;
       }
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
@@ -1134,10 +1157,11 @@ export default {
         // this.$refs.gridConvenios.refresh()
         await this.listaconvenio()
         // this.$refs.gridConvenios.refresh()
-        this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
+        /* this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
-        })
+        }) */
+        
       }).catch(e => {
         console.log(e)
         let second = 10;

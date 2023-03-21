@@ -94,18 +94,20 @@ export default {
 
     // Obtener Municipios
     async obtenerMunicipios() {
-      this.$emit("show-error", false);
+      /* this.$emit("show-error", false); */
       this.clave_municipio = null;
       this.clearLocalidades();
       try {
         const results = await getMunicipios(this.clave_estado)
         console.log(this.results);
+        this.$swal('EXITO', 'Se obtuvieron los municipios', "success")
 
         this.municipiosData = results
       } catch (err) {
         console.log('error al obtener municipios')
         console.log(err)
-        this.$emit("show-error", err);
+        /* this.$emit("show-error", err); */
+        this.$swal('Error', 'Error al obtener municipios', "error")
       }
     },
     //localidades
@@ -114,7 +116,8 @@ export default {
       console.log(objMunSeleccionado)
 
       try {
-        this.$emit("show-error", false);
+        /* this.$emit("show-error", false); */
+        this.$swal('EXITO', 'Se obtuvieron las localidades', "success")
         this.clearLocalidades();
         const res = await getLocalidades(objMunSeleccionado.id)
         // const res = await getLocalidades(15 , 120)
@@ -126,7 +129,8 @@ export default {
       } catch (error) {
         console.log('error al obtener localidades')
         console.log(error);
-        this.$emit("show-error", error);
+       /*  this.$emit("show-error", error); */
+       this.$swal('Error', 'Error al obtener localidades', "error")
       }
     },
 
@@ -136,11 +140,18 @@ export default {
     },
 
     async postBeneficiarioCamino() {
-      console.log(this.payload);
-      const response = await createBeneficiarioCamino(this.id_camino, this.payload);
-      this.closeModal();
-      alert("Beneficiario de obra guardado satisfactoriamente");
-      this.$emit("updateFrentes")
+      try {
+        console.log(this.payload);
+        const response = await createBeneficiarioCamino(this.id_camino, this.payload);
+        this.closeModal();
+        /*  alert("Beneficiario de obra guardado satisfactoriamente"); */
+        this.$swal('EXITO', 'Beneficiario de obra guardado satisfactoriamente', "success")
+        this.$emit("updateFrentes")
+      } catch (error) {
+        this.closeModal();
+        console.log('error: ',error)
+        this.$swal('ERROR', 'El camino ya tiene 8 localidades asignadas', "error")
+      }
     },
   },
   created() {
