@@ -39,7 +39,8 @@
         </div>
         <div role="tabpanel" class="tab-pane" id="asignarresidente">
           <!-- <AsignarResidente :isCanceled="isCanceled"> </AsignarResidente> -->
-          <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p>
+          <ListaResidentes :camino_id="camino.id"></ListaResidentes>
+          <!-- <p>AQUI VA COMPONENTE "ASIGNAR RESIDENTE"</p> -->
 
         </div>
         <div role="tabpanel" class="tab-pane" :class="getActiveTab === 'tabConv' ? 'active' : ''" id="convenio">
@@ -65,7 +66,7 @@ import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
 import DatosGeograficos from '@/components/AltaDeCaminos/DatosGeograficos1';
 import DatosBeneficiario from '@/components/AltaDeCaminos/DatosBeneficiario';
 import FormEditarCamino from '../../components/Caminos/FormEditarCamino.vue';
-
+import ListaResidentes from '@/views/Residente/ListaResidentes.vue';
 
 export default {
   name: 'AltaCamino',
@@ -75,7 +76,8 @@ export default {
     AsignarResidente,
     convenio,
     DatosFinancieros,
-    FormEditarCamino
+    FormEditarCamino,
+    ListaResidentes
   },
   props: {
     tabDG: {

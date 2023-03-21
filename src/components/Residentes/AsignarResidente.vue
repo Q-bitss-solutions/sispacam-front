@@ -17,7 +17,7 @@
 				<select name="residentes" id="residente_dropdown" class="form-control" v-model="form.id_residente">
 					<option value="" disabled>Seleccionar...</option>
 					<option v-for="(residente, index) in residentes" :key="index" :value="residente.id">
-						{{ residente.nombre }}
+						{{ residente.nombre }} {{ residente.a_paterno }} {{ residente.a_materno }} | {{ residente.centro_sict }}
 					</option>
 				</select>
 			</div>
@@ -88,6 +88,7 @@ export default {
 				return false
 			}
 		},
+
 		payload() {
 			let p = {
 				'id_residente': this.form.id_residente,
@@ -113,7 +114,7 @@ export default {
 				this.$swal("", "La asignación se creó con éxito", 'success')
 			} catch (err) {
 				this.closeModal()
-				this.$swal('ERROR', JSON.stringify(err), "error")
+				this.$swal('ERROR', JSON.stringify(err), "warning")
 			}
 		}
 	},
