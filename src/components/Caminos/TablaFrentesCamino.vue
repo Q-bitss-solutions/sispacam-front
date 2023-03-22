@@ -23,8 +23,22 @@
         <td>
           <h5>Clave Beneficiario</h5>
         </td>
-        <td v-for="frente in frentes" @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)">
-          {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
+        <td v-for="(frente, index) in frentes" :key="index">
+          <div>
+            <p
+              :style="{ color: !frente.estatus ? '#b7b7b7' : '' }"
+            >
+            {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
+          </p>
+            <button
+              class="btn btn-primary active"
+              :disabled="!frente.estatus"
+              @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)"
+              type="button"
+            >
+              Eliminar
+            </button>
+          </div>
         </td>
       </tr>
 
