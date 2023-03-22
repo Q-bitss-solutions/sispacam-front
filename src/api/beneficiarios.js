@@ -42,3 +42,26 @@ export function getBeneficiariosDropdown(idCamino){
         method:'get'
     })
 }
+
+export function getRepresentatives(convenioId = null){
+    return request({
+        url:`representantes/?convenio_id=${convenioId}`,
+        method:'get'
+    })
+}
+
+export function updateRepresentative(representative){
+    return request({
+        url:`representantes/${representative.id}`,
+        method:'PATCH',
+        data: representative,
+    })
+}
+
+export function storeRepresentative(representative){
+    return request({
+        url:`representantes/`,
+        method:'POST',
+        data: representative,
+    })
+}
