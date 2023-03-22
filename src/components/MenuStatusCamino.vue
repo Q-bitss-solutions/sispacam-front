@@ -155,7 +155,7 @@
                 </div>
             </div>
             <div slot="footer">
-                <button class="btn btn-danger" @click="cancelarModal = false">
+                <button class="btn btn-danger" @click="cancelarModal = false, formCancelacion.motivoCancelacion = ''">
                     Cerrar
                 </button>
                 <button class="btn btn-primary active" @click="cancelarModal = false, cancelarCamino(data)">
@@ -183,7 +183,7 @@
                 </div>
             </div>
             <div slot="footer">
-                <button class="btn btn-danger" @click="suspenderModal = false">
+                <button class="btn btn-danger" @click="suspenderModal = false, formSuspencion.motivoSuspencion = ''">
                     Cerrar
                 </button>
                 <button class="btn btn-primary active" @click="suspenderModal = false, suspenderCamino(data)">
@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div slot="footer">
-                <button class="btn btn-danger" @click="reactivarModal = false">
+                <button class="btn btn-danger" @click="reactivarModal = false, formReactivar.motivoReactivacion = ''">
                     Cerrar
                 </button>
                 <button class="btn btn-primary active" @click="reactivarModal = false, reactivarCamino(data)">
@@ -224,8 +224,8 @@
                 <div class="form-group">
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
                         placeholder="Ingrese el motivo de la cancelación"
-                        v-model="formReanudar.motivoReanudacion"></textarea>
-                    <small v-if="!$v.formReanudar.motivoReanudacion.required" class="form-text form-text-error">
+                        v-model="formReanudar.motivoReanudar"></textarea>
+                    <small v-if="!$v.formReanudar.motivoReanudar.required" class="form-text form-text-error">
                         Este campo es obligatorio
                     </small>
                 </div>
@@ -235,7 +235,7 @@
                 </div>
             </div>
             <div slot="footer">
-                <button class="btn btn-danger" @click="reanudarModal = false">
+                <button class="btn btn-danger" @click="reanudarModal = false, formReanudar.motivoReanudar = ''">
                     Cerrar
                 </button>
                 <button class="btn btn-primary active" @click="reanudarModal = false, reanudarCamino(data)">
@@ -286,7 +286,6 @@ export default {
             valueItem: '',
             idReactivacion: null,
             motivoCancelacion: '',
-            motivoReanudacion: '',
             id: null,
             actionButonMenu: false,
             historicoModal: false,
@@ -304,7 +303,7 @@ export default {
                 file: null
             },
             formReanudar: {
-                motivoReanudacion: null,
+                motivoReanudar: null,
                 file: null
             },
             formSuspencion: {
@@ -378,6 +377,8 @@ export default {
             formData.append("archivo", this.formSuspencion.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
+            this.formSuspencion.motivoSuspencion = ''
+            this.$router.go(0)
         },
         async cancelarCamino(data) {
             let formData = new FormData();
@@ -387,6 +388,8 @@ export default {
             formData.append("archivo", this.formCancelacion.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
+            this.formCancelacion.motivoCancelacion = ''
+            this.$router.go(0)
         },
         async reactivarCamino(data) {
             let formData = new FormData();
@@ -396,6 +399,8 @@ export default {
             formData.append("archivo", this.formReactivar.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
+            this.formReactivar.motivoReactivacion = ''
+            this.$router.go(0)
         },
         async historicoEstatus(data) {
             console.log('data:', data)
@@ -406,10 +411,12 @@ export default {
             let formData = new FormData();
             formData.append("id_camino", data.id);
             formData.append("id_estatus", 4);
-            formData.append("justificacion", this.formReanudar.motivoReanudacion);
+            formData.append("justificacion", this.formReanudar.motivoReanudar);
             formData.append("archivo", this.formReanudar.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
+            this.formReanudar.motivoReanudar = ''
+            this.$router.go(0)
         },
         setId(clave) {
             this.$store.commit('setIdCancelacion', clave)

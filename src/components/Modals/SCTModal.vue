@@ -70,6 +70,8 @@ export default {
 
 .modal-body {
   margin: 20px 0;
+  height: 420px;
+  overflow: scroll;
 }
 
 .modal-default-button {
