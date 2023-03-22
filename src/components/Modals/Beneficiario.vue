@@ -363,10 +363,10 @@ const isValidCurp = () => curpValida(value)
                         colonia: this.formBeneficiario.colonia,
                         cp: this.formBeneficiario.cp,
                     })
-                    alert('Sucess')
                     this.showAdminModalBeneficiario = false
+                    this.$swal('Representante registrado', 'Representante registrado con satisfactoriamente.', 'success')
                 } catch (error) {
-                    alert(error.detail ? error.detail : error)
+                    this.$swal('Validacion de campos', error.detail ? error.detail : JSON.stringify(error), 'error')
                 }
                 loading.close()
             },
