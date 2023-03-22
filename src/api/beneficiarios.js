@@ -22,9 +22,9 @@ export function listBeneficiariosCamino(idCamino){
     })
 }
 
-export function deleteBeneficiariosCamino(id){
+export function deleteBeneficiariosCamino(id_beneficiario){
     return request({
-        url:`${ENDPOINT_CAMINO}${idCamino}/beneficiarios`,
+        url:`${ENDPOINT_CAMINO}beneficiarios/${id_beneficiario}/`,
         method:'delete'
     })
 }
