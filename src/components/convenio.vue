@@ -67,13 +67,12 @@
             <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
             <e-column :template="montoTemplate" field='monto' headerText='Monto(mdp)' textAlign='right'
               width=90></e-column>
-            <e-column :template="origenTemplate" field='origen' headerText='Origen  <br> del recurso'
-              :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
             <e-column field='meta' headerText='Meta(km)' textAlign='right' width=80></e-column>
             <e-column :template="modificatorioTemplate" headerText='Tiene Convenio <br> Modificatorio'
               :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
             <e-column :template="fileTemplate" headerText='Archivo' textAlign='Center' width=100></e-column>
             <e-column :template="budgetTemplate" headerText='Presupuesto' width=130> </e-column>
+            <e-column :template="IconTemplate" headerText='Representantes' width=130> </e-column>
           </e-columns>
           <e-aggregates>
             <e-aggregate :showChildSummary='false'>
@@ -98,6 +97,18 @@
       <form class="scrollable-content">
         <div class="form-row">
           <div class="form-group col-md-6">
+            <label for="tramo">Beneficiario:</label>
+            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled"
+              v-model="form.beneficiario_id">
+              <option value="" disabled>Seleccionar...</option>
+              <option v-for="(beneficiario, index) in beneficiarios" :key="index" :value="beneficiario.id">
+                {{ beneficiario.value }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
             <label for="anio">Año del Convenio: </label>
             <select :disabled="isDisabled" v-model="form.anio" id="anio" class="form-control"
               :class="!$v.form.anio.required ? 'form-control-error' : ''">
@@ -109,18 +120,6 @@
             <label for="tramo">Tramo:</label>
             <input autocomplete="off" id="tramo" :disabled="isDisabled" v-model="form.tramo" type="text"
               placeholder="Ingresar el tramo" class="form-control" />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="tramo">Beneficiario:</label>
-            <select name="beneficiario" id="beneficiario" class="form-control" :disabled="isDisabled"
-              v-model="form.beneficiario_id">
-              <option value="" disabled>Seleccionar...</option>
-              <option v-for="(beneficiario, index) in beneficiarios" :key="index" :value="beneficiario.id">
-                {{ beneficiario.value }}
-              </option>
-            </select>
           </div>
         </div>
         <div class="form-row">
@@ -214,12 +213,6 @@
           </div>
         </div>
         <div class="form-row col-md-12">
-          <div class="form-group col-md-6">
-            <button class="btn btn-default btn-sm active" type="button" id="btn-mdl-beneficiario"
-              @click="openModalBeneficiario()" :disabled="(mode === 'delete')">
-              Datos del Beneficiario
-            </button>
-          </div>
           <div class="form-group col-md-6">
             <button class="btn btn-default btn-sm active" type="button" id="btn-open-calendario"
               @click="openModalCalendarioObra()" :disabled="((mode === 'delete'))">
@@ -361,7 +354,7 @@
       </form>
     </Modal>
     <!--Modal Beneficiario-->
-    <ModalBeneficiario ref="modalBeneficiario" :isReadOnly="btnIsDisabled" :beneficiario_id="beneficiario_id" />
+    <ModalBeneficiario ref="modalBeneficiario" :isReadOnly="btnIsDisabled" :beneficiario_id="beneficiario_id" :convenio-id="currentAgreementIdSelected" />
     <!--Modal Calendario de Obra-->
     <Modal title="Calendario de Obra" modal-class="scrollable-modal" wrapper-class="animate__animated"
       v-model="showModalCalendarioObra" in-class="animate__backInDown" bg-in-class="animate__fadeInUp">
@@ -405,6 +398,65 @@
         </div>
       </div>
     </Modal>
+    <modal
+      title="Representantes"
+      modal-class="scrollable-modal"
+      wrapper-class="animate__animated"
+      v-model="modalRepresentatives"
+      in-class="animate__backInDown"
+      bg-in-class="animate__fadeInUp"
+    >
+    <button
+      class="btn btn-default"
+      style="margin-bottom: 15px; margin-right: 0px; margin-left: auto; display: block;"
+      type="button"
+      @click="openModalBeneficiario()"
+    >
+      Agregar representante
+    </button>
+      <ejs-grid
+        ref="grid"
+        :dataSource="representativesList"
+        gridLines="Both"
+        :allowPaging="false"
+        :allowSorting="true"
+        :pageSettings="{
+          pageCount: 5,
+          pageSize: 20,
+        }"
+        :allowTextWrap="true"
+      >
+        <e-columns>
+          <e-column
+            v-for="(column, key) in [
+              {
+                field: 'curp',
+                headerText: 'CURP',
+              },
+              {
+                field: 'rfc',
+                headerText: 'RFC',
+              },
+            ]"
+            :key="key"
+            :field="column.field"
+            :headerText="column.headerText"
+          />
+          <e-column
+            field="clave"
+            :template="IconTemplate2"
+            headerText="Desactivar"
+            textAlign="Center"
+          />
+          <e-column
+            field="clave"
+            :template="IconTemplateEdit"
+            headerText="Editar"
+            textAlign="Center"
+          />
+        </e-columns>
+      </ejs-grid>
+    </modal>
   </div>
 </template>
   
@@ -413,14 +465,12 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate'
 import { Loading } from 'element-ui';
 import VueModal from '@kouts/vue-modal'
-// import { ModalSCT } from '@/components/Modals/SCTModal.vue'
 import ModalSCT from './Modals/SCTModal.vue'
 import '@kouts/vue-modal/dist/vue-modal.css'
 import ModalBeneficiario from './Modals/Beneficiario.vue'
 import EventBus from '../utils/EventBus.js';
 import bodyScroll from 'body-scroll-freezer'
 import { GridPlugin } from '@syncfusion/ej2-vue-grids';
-import { CustomSummaryType } from '@syncfusion/ej2-grids';
 import { required, maxValue, } from 'vuelidate/lib/validators'
 import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
 import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
@@ -430,6 +480,8 @@ import { getBeneficiariosDropdown } from '@/api/beneficiarios'
 import PlaceholderComponent from './PlaceholderComponent.vue';
 import AsignarResidente from '@/components/Residentes/AsignarResidente.vue';
 import EditarAsignacionResidente from './Residentes/EditarAsignacionResidente.vue';
+import { getRepresentatives } from '@/api/beneficiarios'
+import { updateRepresentative } from '@/api/beneficiarios'
 
 Vue.use(VueNumeric)
 Vue.use(Vuelidate)
@@ -464,7 +516,9 @@ export default {
     return {
       modalAsignarResidente: false,
       modalEditarResidente: false,
-
+      currentAgreementIdSelected: null,
+      modalRepresentatives: false,
+      representativesList: [],
       beneficiarios: [],
       form: {
         id: -1,
@@ -710,6 +764,87 @@ export default {
           })
         };
       },
+      IconTemplate: function () {
+        return {
+          template: Vue.component('IconTemplate', {
+            template: `
+                <div class="text-center">
+                  <button
+                    @click="handleClick"
+                    class="btn btn-primary btn-sm"
+                    type="button"
+                  >
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true" />
+                  </button>
+                </div>
+              `,
+            data: function () {
+              return {
+                data: {}
+              };
+            },
+            methods: {
+              handleClick() {
+                EventBus.$emit("handleClick", this.data)
+              }
+            }
+          })
+        };
+      },
+      IconTemplate2: function () {
+        return {
+          template: Vue.component('IconTemplate', {
+            template: `
+                <div class="text-center">
+                  <button
+                    @click="handleClick"
+                    class="btn btn-primary btn-sm"
+                    type="button"
+                  >
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" />
+                  </button>
+                </div>
+              `,
+            data: function () {
+              return {
+                data: {}
+              };
+            },
+            methods: {
+              handleClick() {
+                EventBus.$emit("handleClick2", this.data)
+              }
+            }
+          })
+        };
+      },
+      IconTemplateEdit: function () {
+        return {
+          template: Vue.component('IconTemplateEdit', {
+            template: `
+                <div class="text-center">
+                  <button
+                    @click="handleClick"
+                    class="btn btn-primary btn-sm"
+                    type="button"
+                  >
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" />
+                  </button>
+                </div>
+              `,
+            data: function () {
+              return {
+                data: {}
+              };
+            },
+            methods: {
+              handleClick() {
+                EventBus.$emit("handleClickEdit", this.data)
+              }
+            }
+          })
+        };
+      },
       modificatorioTemplate: function () {
         return {
           template: Vue.component("modificatorioTemplate", {
@@ -902,6 +1037,9 @@ export default {
     }
   },
   methods: {
+    async getRepresentativesByAgreement(agreementId) {
+      this.representativesList = await getRepresentatives(agreementId)
+    },
     openModalAddConvenio() {
       this.clearForm()
       this.loadAnios()
@@ -1438,6 +1576,35 @@ export default {
     })
     EventBus.$on("getPerfil", (el) => {
       EventBus.$emit("setPerfil", this.isNormativo)
+    })
+    EventBus.$on('handleClick', async (convenio) => {
+      this.getRepresentativesByAgreement(convenio.id)
+      this.currentAgreementIdSelected = convenio.id
+      this.modalRepresentatives = true
+
+    })
+    EventBus.$on('handleClick2', async (representante) => {
+      console.log('clickIcon2');
+      console.log(representante);
+      /* Desactivar representante del convenio */
+      const currentDate = new Date()
+      const day = currentDate.getDate()
+      const month = currentDate.getMonth() + 1
+      const year = currentDate.getFullYear()
+
+      const formattedDate = `${day}-${month < 10 ? '0' + month : month}-${year}`
+
+      await updateRepresentative({ id: representante.id, fecha_fin: formattedDate })
+      await getRepresentativesByAgreement(representante.id_convenio)
+      alert('Representante desactivado')
+
+    })
+    EventBus.$on('handleClickEdit', async (representante) => {
+      console.log('handleClickEdit');
+      console.log(representante);
+      this.currentAgreementIdSelected = representante.id_convenio
+      openModalBeneficiario()
+
     })
     this.setCatMeses()
 

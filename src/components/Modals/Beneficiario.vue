@@ -8,66 +8,22 @@
         @before-close="beforeClose"    
     >     
         <form class="form-group scrollable-content">
-             <div class="form-row row">                 
-                <div class="col-sm-12">
-                    <label class="control-label" for="razonSocial">Búsqueda del Beneficiario</label>
-                        <ejs-autocomplete
-                            :readonly="isReadOnly"
-                            autofill="true"
-                            id="inpt-bsqd-beneficiario"
-                            :value="formBeneficiario.findRazonSocial"
-                            v-model="formBeneficiario.findRazonSocial"
-                            v-on:filtering="getBeneficiarios($event)"                            
-                            :fields="dataFields"
-                            :highlight="true"
-                            :ignoreAccent="true"
-                            :select="setValues"
-                            :itemTemplate="iTemplate"
-                            v-on:change="onChange($event.value)"
-                            :suggestionCount='suggestionCount'
-                            placeholder="Buscar al Beneficiario"
-                            :noRecordsTemplate="'No se encontraron coincidencias'"
-                        ></ejs-autocomplete>                                     
-                </div> 
-             </div>             
             <div class="form-row row">
-                <div class="form-group col-md-12">
-                    <label class="control-label" >
-                        Nombre del Beneficiario
-                    </label>
-                    <input 
-                        class="form-control" 
-                        id="nombre" 
-                        placeholder="Nombre del Beneficiario" 
-                        type="text" 
-                        disabled="true"
-                        v-model="formBeneficiario.razonSocial" 
-                        :class="{'form-control-error': $v.formBeneficiario.razonSocial.$error}"
-                    >
-                    <small v-if="!$v.formBeneficiario.razonSocial.required" class="form-text form-text-error">
-                        Este campo es obligatorio
-                    </small>                    
-                </div>                
-                              
-            </div>    
-            <div class="form-row row"> 
                 <div class="form-group col-md-5">
                     <label class="control-label" for="cuenta">Clabe Interbancaria</label>
                     <input class="form-control" 
                         id="clabe" 
                         placeholder="Clabe Interbancaria" 
-                        type="number"  
-                        disabled="true"
+                        type="number"
                         v-model="formBeneficiario.cveInterbancaria" 
                         :class="{'form-control-error': $v.formBeneficiario.cveInterbancaria.$error}"
-                    >                   
-                </div>   
+                    >
+                </div>
                 <div class="form-group col-md-5">
                     <label class="control-label" for="rfc">RFC</label>
                     <input 
                         class="form-control" 
                         id="rfc" 
-                        disabled="true"
                         placeholder="RFC" 
                         type="text" 
                         v-model="formBeneficiario.rfc" 
@@ -122,7 +78,7 @@
                 </div>                                               
             </div>
             <div class="form-row row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label class="control-label" for="cuenta">CURP</label>
                     <input 
                         autocomplete="off"
@@ -137,13 +93,12 @@
                         Formato no valido
                     </small>                    
                 </div>      
-                <div class="form-group col-md-2">
-                    <label class="control-label" for="cuenta">Edad</label>
+                <div class="form-group col-md-3">
+                    <label class="control-label" for="cuenta">Cumpleaños</label>
                     <input class="form-control" 
-                        id="edad" 
-                        disabled="true"
+                        id="edad"
                         placeholder="Edad" 
-                        type="number" 
+                        type="date"
                         v-model="formBeneficiario.edad" 
                         :class="{'form-control-error': $v.formBeneficiario.edad.$error}"
                     >                 
@@ -152,7 +107,6 @@
                     <label class="control-label" for="cuenta">Género</label>
                     <input class="form-control" 
                         id="genero" 
-                        disabled="true"
                         placeholder="Género" 
                         v-model="formBeneficiario.genero" 
                         :class="{'form-control-error': $v.formBeneficiario.genero.$error}"
@@ -231,7 +185,7 @@
                         class="btn btn-default" 
                         type="button" 
                         :disabled="isReadOnly"
-                        @click="updateBeneficiario()"
+                        @click="saveBeneficiario()"
                     >
                         Aceptar
                     </button>
@@ -252,6 +206,7 @@ import { FilteringEventArgs } from "@syncfusion/ej2-dropdowns";
 import { AutoCompleteComponent, AutoCompletePlugin } from '@syncfusion/ej2-vue-dropdowns';
 import { searchBeneficiario, updateBebeniciarioSia, 
         getEdadAndGenero, getBeneficiario } from '@/api/convenio'; 
+import { storeRepresentative } from '@/api/beneficiarios'
 
 
 Vue.use(Vuelidate)
@@ -279,7 +234,11 @@ const isValidCurp = () => curpValida(value)
                 type:Number,
                 default:0,
                 required:true
-            }
+            },
+            convenioId: {
+                type: Number,
+                default: 0,
+            },
         },
         components:{
         'Modal': VueModal,
@@ -381,24 +340,35 @@ const isValidCurp = () => curpValida(value)
                 this.formBeneficiario.papellido = ''                
                 this.formBeneficiario.sapellido = ''                
             },
-            async updateBeneficiario(){
-                let loadingInstance = Loading.service({ 
-                    fullscreen: false, 
+            async saveBeneficiario(){
+                const loading = Loading.service({
+                    fullscreen: false,
                     lock: true,
-                 });                
-                await updateBebeniciarioSia(this.formBeneficiario)
-                    .then(() => {
-                        this.$parent.beneficiario_id = this.formBeneficiario.id
-                        this.showAdminModalBeneficiario = false
+                })
+                try {
+                    await storeRepresentative({
+                        id_convenio: this.convenioId,
+                        nombre_representante: this.formBeneficiario.nombre,
+                        primer_a_representante: this.formBeneficiario.papellido,
+                        segundo_a_representante: this.formBeneficiario.sapellido,
+                        fecha_nacimiento: this.formBeneficiario.edad,
+                        fecha_inicio: null,
+                        fecha_fin: null,
+                        curp: this.formBeneficiario.curp,
+                        rfc: this.formBeneficiario.rfc,
+                        clabe: this.formBeneficiario.cveInterbancaria,
+                        genero: this.formBeneficiario.genero,
+                        calle: this.formBeneficiario.calle,
+                        num_ext: this.formBeneficiario.next,
+                        colonia: this.formBeneficiario.colonia,
+                        cp: this.formBeneficiario.cp,
                     })
-                    .catch((error) => {
-                        console.log('error')
-                        console.log(error)
-                    })
-                    .finally(() => {
-                        loadingInstance.close();
-                    })
-
+                    alert('Sucess')
+                    this.showAdminModalBeneficiario = false
+                } catch (error) {
+                    alert(error.detail ? error.detail : error)
+                }
+                loading.close()
             },
             async loadbeneficiario(idbenef){
                 console.log('idbenef')
