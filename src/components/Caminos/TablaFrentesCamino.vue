@@ -25,17 +25,11 @@
         </td>
         <td v-for="(frente, index) in frentes" :key="index">
           <div>
-            <p
-              :style="{ color: !frente.estatus ? '#b7b7b7' : '' }"
-            >
-            {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
-          </p>
-            <button
-              class="btn btn-primary active"
-              :disabled="!frente.estatus"
-              @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)"
-              type="button"
-            >
+            <p :style="{ color: !frente.estatus ? '#b7b7b7' : '' }">
+              {{ frente.clave_camino }}-{{ frente.clave_beneficiario }}
+            </p>
+            <button class="btn btn-primary active" :disabled="!frente.estatus"
+              @click="deleteBeneficiario(frente.id, frente.clave_beneficiario)" type="button">
               Eliminar
             </button>
           </div>
@@ -109,7 +103,7 @@
 </template>
 
 <script>
-import { deleteBeneficiariosCamino } from "@/api/beneficiarios";
+import { deleteBeneficiariosCamino, deleteBeneficiariosCaminoLogico } from "@/api/beneficiarios";
 
 export default {
   name: "TablaFrentesCamino",
@@ -124,15 +118,33 @@ export default {
   methods: {
     async deleteBeneficiario(id, clave_beneficiario) {
       if (clave_beneficiario != "A") {
-        if (confirm("Está seguro de borrar esta entrada?")) {
+        /* if (confirm("Está seguro de borrar esta entrada?")) {
           const response = await deleteBeneficiariosCamino(id);
           console.log(response);
           this.$emit("deleteBeneficiario");
-        }
-      } else {
-        alert("No se puede borrar esa columna");
+        } */
+         await this.$swal.fire({
+          title: 'Eliminar esta entrada?',
+          text: "Se eliminara esta entrada del registro",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Eliminar'
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const  response = await deleteBeneficiariosCaminoLogico(id);
+            console.log('response: ',response)
+            this.$swal.fire(
+              'Borrado!',
+              'La entrada fue eliminada',
+              'success'
+            )
+          }
+          this.$emit("deleteBeneficiario");
+        })
       }
     },
-  },
+  }
 };
 </script>

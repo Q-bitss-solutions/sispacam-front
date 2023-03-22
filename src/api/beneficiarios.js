@@ -65,3 +65,10 @@ export function storeRepresentative(representative){
         data: representative,
     })
 }
+
+export function deleteBeneficiariosCaminoLogico(id_beneficiario){
+    return request({
+        url:`${ENDPOINT_CAMINO}beneficiarios/${id_beneficiario}/`,
+        method:'delete'
+    })
+}

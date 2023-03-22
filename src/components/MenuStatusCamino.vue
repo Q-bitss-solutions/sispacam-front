@@ -378,7 +378,7 @@ export default {
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
             this.formSuspencion.motivoSuspencion = ''
-            this.$router.go(0)
+            this.$parent.$parent.getRoads()
         },
         async cancelarCamino(data) {
             let formData = new FormData();
@@ -389,7 +389,7 @@ export default {
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
             this.formCancelacion.motivoCancelacion = ''
-            this.$router.go(0)
+            this.$parent.$parent.getRoads()
         },
         async reactivarCamino(data) {
             let formData = new FormData();
@@ -400,7 +400,7 @@ export default {
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
             this.formReactivar.motivoReactivacion = ''
-            this.$router.go(0)
+            this.$parent.$parent.getRoads()
         },
         async historicoEstatus(data) {
             console.log('data:', data)
@@ -416,7 +416,7 @@ export default {
             console.log('dataEndpoint suspender: ', data.clave, formData)
             await cambioEstatus(data.clave, formData)
             this.formReanudar.motivoReanudar = ''
-            this.$router.go(0)
+            this.$parent.$parent.getRoads()
         },
         setId(clave) {
             this.$store.commit('setIdCancelacion', clave)

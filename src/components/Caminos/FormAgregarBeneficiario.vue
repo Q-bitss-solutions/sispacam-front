@@ -94,13 +94,13 @@ export default {
 
     // Obtener Municipios
     async obtenerMunicipios() {
-      /* this.$emit("show-error", false); */
+      this.$emit("show-error", false);
       this.clave_municipio = null;
       this.clearLocalidades();
       try {
         const results = await getMunicipios(this.clave_estado)
         console.log(this.results);
-        this.$swal('EXITO', 'Se obtuvieron los municipios', "success")
+        /* this.$swal('EXITO', 'Se obtuvieron los municipios', "success") */
 
         this.municipiosData = results
       } catch (err) {
@@ -116,8 +116,8 @@ export default {
       console.log(objMunSeleccionado)
 
       try {
-        /* this.$emit("show-error", false); */
-        this.$swal('EXITO', 'Se obtuvieron las localidades', "success")
+        this.$emit("show-error", false);
+       /*  this.$swal('EXITO', 'Se obtuvieron las localidades', "success") */
         this.clearLocalidades();
         const res = await getLocalidades(objMunSeleccionado.id)
         // const res = await getLocalidades(15 , 120)
