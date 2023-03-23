@@ -10,11 +10,11 @@
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
-                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                @click="suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
-                                @click="setId(data.clave), cancelarModal = true">
+                                @click="cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
@@ -36,11 +36,11 @@
                     <div class="itemList">
                         <li v-for="item in optionsCancelado" :key="item.id" :style="styledoc">
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
-                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                @click="suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
                             <el-button v-if="item.value === 3" type="" text="plain" size="small"
-                                @click="setId(data.clave), reactivarModal = true">
+                                @click="reactivarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
@@ -63,11 +63,11 @@
                     <div class="itemList">
                         <li v-for="item in optionsSuspendido" :key="item.id" :style="styledoc">
                             <el-button v-if="item.value === 4" type="" text="plain" size="small"
-                                @click="setId(data.clave), reanudarModal = true">
+                                @click="reanudarModal = true">
                                 {{ item.text }}
                             </el-button>
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
-                                @click="setId(data.clave), cancelarModal = true">
+                                @click="cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
@@ -83,7 +83,7 @@
             <div class="menuDesplegable" v-if="data.estatus.id === 4">
                 <ul><a>
                         <el-button size="small"
-                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);"
+                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);"
                             @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
@@ -91,11 +91,11 @@
                     <div class="itemList">
                         <li v-for="item in optionsActivo" :key="item.id" :style="styledoc">
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
-                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                @click="suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
-                                @click="setId(data.clave), cancelarModal = true">
+                                @click="cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
@@ -111,7 +111,7 @@
             <div class="menuDesplegable" v-if="data.estatus.id === 5">
                 <ul><a>
                         <el-button size="small"
-                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);"
+                            style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);"
                             @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
                         </el-button>
@@ -119,11 +119,11 @@
                     <div class="itemList">
                         <li v-for="item in optionsReactivado" :key="item.id" :style="styledoc">
                             <el-button v-if="item.value === 1" type="" text="plain" size="small"
-                                @click="setIdReactivacion(data.id), suspenderModal = true">
+                                @click="suspenderModal = true">
                                 {{ item.text }}
                             </el-button>
                             <el-button v-if="item.value === 2" type="" text="plain" size="small"
-                                @click="setId(data.clave), cancelarModal = true">
+                                @click="cancelarModal = true">
                                 {{ item.text }}
                             </el-button>
                         </li>
@@ -223,8 +223,7 @@
                 <p>Escriba el motivo de reanudacion</p>
                 <div class="form-group">
                     <textarea rows="3" maxlength="350" id="motivoCancelacion" class="form-control" value=""
-                        placeholder="Ingrese el motivo de la cancelación"
-                        v-model="formReanudar.motivoReanudar"></textarea>
+                        placeholder="Ingrese el motivo de la cancelación" v-model="formReanudar.motivoReanudar"></textarea>
                     <small v-if="!$v.formReanudar.motivoReanudar.required" class="form-text form-text-error">
                         Este campo es obligatorio
                     </small>
@@ -417,14 +416,6 @@ export default {
             await cambioEstatus(data.clave, formData)
             this.formReanudar.motivoReanudar = ''
             this.$parent.$parent.getRoads()
-        },
-        setId(clave) {
-            this.$store.commit('setIdCancelacion', clave)
-        },
-        setIdReactivacion(clave) {
-            this.formReactivar.motivoReactivacion = null,
-                this.formReactivar.file = null
-            this.$store.commit('setIdReactivacion', clave)
         },
         onFileCancelar(event) {
             this.formCancelacion.file = event.target.files[0];
