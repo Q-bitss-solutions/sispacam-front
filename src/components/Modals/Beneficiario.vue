@@ -363,16 +363,15 @@ const isValidCurp = () => curpValida(value)
                         colonia: this.formBeneficiario.colonia,
                         cp: this.formBeneficiario.cp,
                     })
+                    await this.$parent.getRepresentativesByAgreement(this.convenioId)
                     this.showAdminModalBeneficiario = false
-                    this.$swal('Representante registrado', 'Representante registrado con satisfactoriamente.', 'success')
+                    this.$swal('Representante registrado', 'Representante registrado satisfactoriamente.', 'success')
                 } catch (error) {
                     this.$swal('Validacion de campos', error.detail ? error.detail : JSON.stringify(error), 'error')
                 }
                 loading.close()
             },
             async loadbeneficiario(idbenef){
-                console.log('idbenef')
-                console.log(idbenef)
                 if(idbenef!= 0){
                     let loadingInstance = Loading.service({ fullscreen: true, lock: true });
                     const resp = await getBeneficiario(idbenef)              
@@ -414,10 +413,7 @@ const isValidCurp = () => curpValida(value)
                 const resp = await getEdadAndGenero(this.formBeneficiario.curp).finally(() => {
                     loadingInstance.close();
                 })
-                console.log('edad')
-                console.log(resp)
                 if(resp.length > 0){
-                    console.log('g===', resp[0].gender )
                     this.formBeneficiario.edad = resp[0].age
                     this.formBeneficiario.genero = resp[0].gender
                 }
