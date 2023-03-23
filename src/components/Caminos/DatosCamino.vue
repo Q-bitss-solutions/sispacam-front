@@ -114,7 +114,21 @@
     <!-- Datos Georeferenciales -->
     <div class="row">
         <TituloSeccion title="Datos Georeferenciales" />
-
+        <div class="col-md-10" style="font-size: x-small;">
+            <small class="form-text" style="font-size: 10px">
+                Valores aceptados
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+                Lat: 14.517000 a 32.754000
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+                Lon: -117.080000 a -86.363800
+            </small>
+            <br />
+            <br />
+        </div>
         <!-- Punto Inicial -->
         <div class="col-md-6">
             <div class="col-md-12">
@@ -198,7 +212,7 @@
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino"
                                 v-model="caracteristicasCamino">
-                                                                                            </textarea>
+                                                                                                </textarea>
                         </div>
                     </div>
                 </div>
@@ -217,7 +231,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficiosCamino">
-                                                                                                </textarea>
+                                                                                                    </textarea>
                         </div>
                     </div>
                 </div>
@@ -236,7 +250,7 @@
 
     <!-- MODAL CONFIRMACIÓN -->
     <!-- TODO: Utilizar $swal para este aviso -->
- <!--    <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
+    <!--    <div class="modal fade" id="addCamino" tabindex="-1" role="dialog" aria-labelledby="addConcept" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

@@ -140,6 +140,21 @@
     <!-- Datos Georeferenciales -->
     <div class="row">
         <TituloSeccion title="Datos Georeferenciales" />
+        <div class="col-md-10" style="font-size: x-small;">
+            <small class="form-text" style="font-size: 10px">
+                Valores aceptados
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+                Lat: 14.517000 a 32.754000
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+                Lon: -117.080000 a -86.363800
+            </small>
+            <br />
+            <br />
+        </div>
 
         <!-- Punto Inicial -->
         <div class="col-md-6">
@@ -219,7 +234,7 @@
                             <textarea rows="3" maxlength="350" id="caracteristicasCamino" name="caracteristicasCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese las características actuales del camino" v-model="caracteristicas">
-                                                                                                        </textarea>
+                                                                                                                                    </textarea>
                         </div>
                     </div>
                 </div>
@@ -238,7 +253,7 @@
                             <textarea rows="3" maxlength="350" id="beneficiosCamino" name="beneficiosCamino"
                                 class="form-control" value="" :disabled="isCanceled"
                                 placeholder="Ingrese los beneficios del camino" v-model="beneficios">
-                                                                                                            </textarea>
+                                                                                                                                        </textarea>
                         </div>
                     </div>
                 </div>
@@ -535,12 +550,37 @@ export default {
             this.tren_maya = response.tren_maya
             this.caminosOriginales = response.caminos_originales
             this.ancho_camino = response.id_ancho_camino
-            this.lat_inicial = response.lat_inicial
-            this.lon_inicial = response.lon_inicial
-            this.lat_final = response.lat_final
-            this.lon_final = response.lon_final
             this.municipioData = Number(response.clave_mun)
             this.municipioDataList = municipiosEstados
+            console.log('municipiosEstados: ',municipiosEstados)
+
+            if (response.lat_inicial === null) {
+
+                this.lat_inicial = ''
+            } else {
+                this.lat_inicial = response.lat_inicial
+            }
+
+            if (response.lat_final === null) {
+
+                this.lat_final = ''
+            } else {
+                this.lat_final = response.lat_final
+            }
+
+            if (response.lon_inicial === null) {
+
+                this.lon_inicial = ''
+            } else {
+                this.lon_inicial = response.lon_inicial
+            }
+
+            if (response.lon_final === null) {
+
+                this.lon_final = ''
+            } else {
+                this.lon_final = response.lon_final
+            }
 
             const localidadesMunicipioEstado = await getLocalidades(this.municipioData)
             this.localidadesDataList = localidadesMunicipioEstado
@@ -637,7 +677,7 @@ export default {
                     this.idcamino = response.clave
                     /* $('#addCamino').modal('show') */
                     this.btnSaveDisabled = false
-                    this.$swal('EXITO', `Se guardaron correctamente los datos del camino ${this.idcamino}`, "success")
+                    this.$swal('EXITO', `Se guardaron correctamente los datos del camino`, "success")
                     this.$router.push('/caminos')
 
                 }

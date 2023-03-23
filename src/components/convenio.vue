@@ -162,6 +162,21 @@
           </div>
         </div>
         <div class="form-row">
+          <div class="col-md-10" style="font-size: x-small;">
+            <small class="form-text" style="font-size: 10px">
+              Valores aceptados
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+              Lat: 14.517000 a 32.754000
+            </small>
+            <br />
+            <small class="form-text" style="font-size: 10px">
+              Lon: -117.080000 a -86.363800
+            </small>
+            <br />
+            <br />
+          </div>
           <p>Punto Inicial</p>
           <div class="form-group col-md-6">
             <label class="control-label">Lon</label>
@@ -354,7 +369,8 @@
       </form>
     </Modal>
     <!--Modal Beneficiario-->
-    <ModalBeneficiario ref="modalBeneficiario" :isReadOnly="btnIsDisabled" :beneficiario_id="beneficiario_id" :convenio-id="currentAgreementIdSelected" />
+    <ModalBeneficiario ref="modalBeneficiario" :isReadOnly="btnIsDisabled" :beneficiario_id="beneficiario_id"
+      :convenio-id="currentAgreementIdSelected" />
     <!--Modal Calendario de Obra-->
     <Modal title="Calendario de Obra" modal-class="scrollable-modal" wrapper-class="animate__animated"
       v-model="showModalCalendarioObra" in-class="animate__backInDown" bg-in-class="animate__fadeInUp">
@@ -398,62 +414,30 @@
         </div>
       </div>
     </Modal>
-    <modal
-      title="Representantes"
-      modal-class="scrollable-modal"
-      wrapper-class="animate__animated"
-      v-model="modalRepresentatives"
-      in-class="animate__backInDown"
-      bg-in-class="animate__fadeInUp"
-    >
-    <button
-      class="btn btn-default"
-      style="margin-bottom: 15px; margin-right: 0px; margin-left: auto; display: block;"
-      type="button"
-      @click="openModalBeneficiario()"
-    >
-      Agregar representante
-    </button>
-      <ejs-grid
-        ref="grid"
-        :dataSource="representativesList"
-        gridLines="Both"
-        :allowPaging="false"
-        :allowSorting="true"
+    <modal title="Representantes" modal-class="scrollable-modal" wrapper-class="animate__animated"
+      v-model="modalRepresentatives" in-class="animate__backInDown" bg-in-class="animate__fadeInUp">
+      <button class="btn btn-default" style="margin-bottom: 15px; margin-right: 0px; margin-left: auto; display: block;"
+        type="button" @click="openModalBeneficiario()">
+        Agregar representante
+      </button>
+      <ejs-grid ref="grid" :dataSource="representativesList" gridLines="Both" :allowPaging="false" :allowSorting="true"
         :pageSettings="{
           pageCount: 5,
           pageSize: 20,
-        }"
-        :allowTextWrap="true"
-      >
+        }" :allowTextWrap="true">
         <e-columns>
-          <e-column
-            v-for="(column, key) in [
-              {
-                field: 'curp',
-                headerText: 'CURP',
-              },
-              {
-                field: 'rfc',
-                headerText: 'RFC',
-              },
-            ]"
-            :key="key"
-            :field="column.field"
-            :headerText="column.headerText"
-          />
-          <e-column
-            field="clave"
-            :template="IconTemplate2"
-            headerText="Desactivar"
-            textAlign="Center"
-          />
-          <e-column
-            field="clave"
-            :template="IconTemplateEdit"
-            headerText="Editar"
-            textAlign="Center"
-          />
+          <e-column v-for="(column, key) in [
+            {
+              field: 'curp',
+              headerText: 'CURP',
+            },
+            {
+              field: 'rfc',
+              headerText: 'RFC',
+            },
+          ]" :key="key" :field="column.field" :headerText="column.headerText" />
+          <e-column field="clave" :template="IconTemplate2" headerText="Desactivar" textAlign="Center" />
+          <e-column field="clave" :template="IconTemplateEdit" headerText="Editar" textAlign="Center" />
         </e-columns>
       </ejs-grid>
     </modal>
@@ -1226,8 +1210,8 @@ export default {
             /* this.$emit("show-error", 'Error al crear el Convenio los datos '); */
             this.$swal('ERROR', 'Error al crear el Convenio los datos', "error")
           } else {
-           /*  this.$emit("show-error", false); */
-           this.$swal('EXITO', 'Se creo los datos el Convenio', "success")
+            /*  this.$emit("show-error", false); */
+            this.$swal('EXITO', 'Se creo los datos el Convenio', "success")
             clearInterval(timer);
           }
         }, 1000);
@@ -1299,7 +1283,7 @@ export default {
           confirmButtonText: 'Cerrar',
           customClass: 'box-msg-login',
         }) */
-        
+
       }).catch(e => {
         console.log(e)
         let second = 10;
