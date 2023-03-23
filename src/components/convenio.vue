@@ -432,18 +432,27 @@
           pageSize: 20,
         }" :allowTextWrap="true">
         <e-columns>
-          <e-column v-for="(column, key) in [
-            {
-              field: 'curp',
-              headerText: 'CURP',
-            },
-            {
-              field: 'rfc',
-              headerText: 'RFC',
-            },
-          ]" :key="key" :field="column.field" :headerText="column.headerText" />
-          <e-column field="clave" :template="IconTemplate2" headerText="Desactivar" textAlign="Center" />
-          <e-column field="clave" :template="IconTemplateEdit" headerText="Editar" textAlign="Center" />
+          <e-column
+            v-for="(column, key) in [
+              {
+                field: 'fullName',
+                headerText: 'Nombre completo',
+              },
+              {
+                field: 'rfc',
+                headerText: 'RFC',
+              },
+            ]"
+            :key="key"
+            :field="column.field"
+            :headerText="column.headerText"
+          />
+          <e-column
+            field="clave"
+            :template="IconTemplate2"
+            headerText="Desactivar"
+            textAlign="Center"
+          />
         </e-columns>
       </ejs-grid>
     </modal>
@@ -1029,6 +1038,10 @@ export default {
   methods: {
     async getRepresentativesByAgreement(agreementId) {
       this.representativesList = await getRepresentatives(agreementId)
+        .map(representante => ({
+          ...representante,
+          fullName: `${representante.nombre_representante} ${representante.primer_a_representante} ${representante.segundo_a_representante}`
+        }))
     },
     openModalAddConvenio() {
       this.clearForm()
