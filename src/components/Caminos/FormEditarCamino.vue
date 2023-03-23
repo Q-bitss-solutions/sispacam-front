@@ -139,7 +139,7 @@
 
     <!-- Datos Georeferenciales -->
     <div class="row">
-        <TituloSeccion title="Datos Georeferenciales" />
+        <TituloSeccion title="Datos Georreferenciales" />
         <div class="col-md-10" style="font-size: x-small;">
             <small class="form-text" style="font-size: 10px">
                 Valores aceptados
@@ -550,9 +550,8 @@ export default {
             this.tren_maya = response.tren_maya
             this.caminosOriginales = response.caminos_originales
             this.ancho_camino = response.id_ancho_camino
-            this.municipioData = Number(response.clave_mun)
+            this.municipioData = Number(response.id_municipio)
             this.municipioDataList = municipiosEstados
-            console.log('municipiosEstados: ',municipiosEstados)
 
             if (response.lat_inicial === null) {
 
