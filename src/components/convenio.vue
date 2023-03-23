@@ -125,15 +125,21 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="monto">Monto(mdp):</label>
-            <input id="monto" autocomplete="off" v-model="form.monto" type="number" :disabled="isDisabled"
-              placeholder="Ingresar el monto(mdp)" class="form-control "
-              :class="!$v.form.monto.maxValue ? 'form-control-error' : ''" />
+            <vue-numeric
+              :precision="2"
+              separator=","
+              class="form-control avance-mes"
+              v-model="form.monto"
+            />
           </div>
           <div class="form-group col-md-6">
             <label for="meta">Meta:</label>
-            <input autocomplete="off" class="form-control convenio" v-model="form.meta" id="meta" type="number"
-              :disabled="isDisabled" placeholder="Ingrese la Meta(km)"
-              :class="!$v.form.meta.required ? 'form-control-error' : ''" />
+            <vue-numeric
+              :precision="2"
+              separator=","
+              class="form-control avance-mes"
+              v-model="form.meta"
+            />
           </div>
         </div>
         <div class="form-row">
