@@ -136,7 +136,7 @@ export default {
         },
         {
           field: "grado_marginacion",
-          headerText: "Grado de parginación",
+          headerText: "Grado de marginación",
         },
         {
           field: "tipo_poblacion",

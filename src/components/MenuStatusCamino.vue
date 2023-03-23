@@ -158,7 +158,7 @@
                 <button class="btn btn-danger" @click="cancelarModal = false, formCancelacion.motivoCancelacion = ''">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="cancelarModal = false, cancelarCamino(data)">
+                <button :disabled="!$v.formCancelacion.motivoCancelacion.required" class="btn btn-primary active" @click="cancelarModal = false, cancelarCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -186,7 +186,7 @@
                 <button class="btn btn-danger" @click="suspenderModal = false, formSuspencion.motivoSuspencion = ''">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="suspenderModal = false, suspenderCamino(data)">
+                <button class="btn btn-primary active" :disabled="!$v.formSuspencion.motivoSuspencion.required" @click="suspenderModal = false, suspenderCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -211,7 +211,7 @@
                 <button class="btn btn-danger" @click="reactivarModal = false, formReactivar.motivoReactivacion = ''">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="reactivarModal = false, reactivarCamino(data)">
+                <button class="btn btn-primary active" :disabled="!$v.formReactivar.motivoReactivacion.required" @click="reactivarModal = false, reactivarCamino(data)">
                     Aceptar
                 </button>
             </div>
@@ -237,7 +237,7 @@
                 <button class="btn btn-danger" @click="reanudarModal = false, formReanudar.motivoReanudar = ''">
                     Cerrar
                 </button>
-                <button class="btn btn-primary active" @click="reanudarModal = false, reanudarCamino(data)">
+                <button class="btn btn-primary active" :disabled="!$v.formReanudar.motivoReanudar.required" @click="reanudarModal = false, reanudarCamino(data)">
                     Aceptar
                 </button>
             </div>

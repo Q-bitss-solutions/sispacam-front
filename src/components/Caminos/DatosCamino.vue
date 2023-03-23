@@ -113,7 +113,7 @@
 
     <!-- Datos Georeferenciales -->
     <div class="row">
-        <TituloSeccion title="Datos Georeferenciales" />
+        <TituloSeccion title="Datos Georreferenciales" />
         <div class="col-md-10" style="font-size: x-small;">
             <small class="form-text" style="font-size: 10px">
                 Valores aceptados
