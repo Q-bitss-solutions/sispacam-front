@@ -67,7 +67,7 @@ export default {
           field: 'endDate',
         },
         {
-          label: 'Fecha ultimo avance',
+          label: 'Fecha último avance',
           field: 'lastDateRoad',
         },
         {

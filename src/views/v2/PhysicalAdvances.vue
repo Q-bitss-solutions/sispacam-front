@@ -60,11 +60,15 @@ export default {
       ],
       featureOptions: [
         {
-          label: 'example1',
+          label: 'Editar',
           action: (context) => console.log(context),
         },
         {
-          label: 'example2',
+          label: 'Rechazar',
+          action: (context) => console.log(context),
+        },
+        {
+          label: 'Aprobar',
           action: (context) => console.log(context),
         },
       ],
@@ -78,7 +82,7 @@ export default {
     ...mapMutations(["setBreadcrumb"]),
   },
   created() {
-    this.setBreadcrumb(['Avances fisicos'])
+    this.setBreadcrumb(['Avances físicos'])
     this.getPhysicalAdvances()
   },
 }
