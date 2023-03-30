@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     async getPhysicalAdvances() {
-      const data = await fetchPhysicalAdvancesByRoad('Ags.-C-001')
+      const data = await fetchPhysicalAdvancesByRoad(this.$route.params.roadKey)
       this.physicalAdvances = mapPhysicalAdvancesTable(data)
     },
     ...mapMutations(["setBreadcrumb"]),
