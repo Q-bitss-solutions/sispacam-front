@@ -25,11 +25,30 @@ import Login from '../views/Login.vue'
 import store from "../store/index";
 import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
+//
+import Assignments from '@/views/v2/Assignments.vue'
+import PhysicalAdvances from '@/views/v2/PhysicalAdvances.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/asignaciones',
+    name: 'Assignments',
+    component: Assignments,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/caminos/:roadKey/avances-fisicos',
+    name: 'PhysicalAdvances',
+    component: PhysicalAdvances,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   {
     path: "/",
     name: "Login",
