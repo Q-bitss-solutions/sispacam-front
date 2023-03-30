@@ -80,3 +80,10 @@ export function fetchRoadStatus() {
     method: 'GET',
   })
 }
+
+export function fetchPhysicalAdvancesByRoad(keyRoad) {
+  return request({
+    url: `caminos/${keyRoad}/avance-fisico/`,
+    method: 'GET',
+  })
+}

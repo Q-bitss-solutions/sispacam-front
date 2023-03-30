@@ -40,3 +40,11 @@ export function updateAsignacionById(id_convenio, id_asignacion, data){
 		data:data
 	})
 }
+
+export function fetchAssignments(params) {
+	return request({
+    url: `residentes/asignaciones/`,
+    method: 'get',
+		params,
+  })
+}

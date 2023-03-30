@@ -30,6 +30,11 @@
               >Opciones <span class="caret"></span
             ></a>
             <ul class="dropdown-menu" role="menu">
+              <li>
+                <router-link to="/asignaciones">
+                  Asignaciones
+                </router-link>
+              </li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/caminos">Caminos</a></li>
               <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/presupuesto/base/kilometro">Presupuesto Base por Kilómetro</a></li>
