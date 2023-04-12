@@ -1,3 +1,4 @@
+<!-- Revisarlo por que quite validaciones que venian de una libreria vieja -->
 <template>
     <div class="row">
     <div class="col-md-12 no-padding">
@@ -243,17 +244,17 @@
 
 import Vue from 'vue';
 import { Loading } from 'element-ui';
-import VeeValidate from 'vee-validate';
+//import VeeValidate from 'vee-validate';
 import { mapMutations, mapGetters } from 'vuex'
 import { getConvenioById } from '@/api/convenio'; 
 import TablePresupuesto from '@/components/presupuestos/TablePresupuesto';
 import modalExtraordinarios from '@/components/presupuestos/ModalExtraordinarios'
 import { getExtraordinariosByIdConvenio, deleteExtraordinario } from '@/api/extraordinarios'
 import { getPresupuestoBaseByAncho, getPresupuestoRealByIdConvenio } from '@/api/presupuesto'
-Vue.use(VeeValidate, {
+/* Vue.use(VeeValidate, {
   inject: true,
   fieldsBagName: 'veeFields'
-});
+}); */
 
 
 export default {
