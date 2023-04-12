@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 import "@/assets/css/SCT.css"
 import ElementUI from 'element-ui'
+import locale from 'element-ui/lib/locale/lang/es'
 import 'element-ui/lib/theme-chalk/index.css';
 import { ComboBoxPlugin, MultiSelectPlugin } from "@syncfusion/ej2-vue-dropdowns";
 import { ContextMenuPlugin } from "@syncfusion/ej2-vue-navigations";
@@ -19,7 +20,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 Vue.use(VueSweetalert2);
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale });
 Vue.use(ContextMenuPlugin);
 Vue.use(ButtonPlugin);
 enableRipple(true);
