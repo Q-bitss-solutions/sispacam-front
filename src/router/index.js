@@ -28,11 +28,29 @@ import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 //
 import Assignments from '@/views/v2/Assignments.vue'
 import PhysicalAdvances from '@/views/v2/PhysicalAdvances.vue'
+import Representatives from '@/views/v2/Representatives/Index.vue'
+import NewRepresentative from '@/views/v2/Representatives/New.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/convenios/:agreementId/representantes',
+    name: 'Representatives',
+    component: Representatives,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/convenios/:agreementId/representantes/nuevo',
+    name: 'NewRepresentative',
+    component: NewRepresentative,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   {
     path: '/asignaciones',
     name: 'Assignments',
