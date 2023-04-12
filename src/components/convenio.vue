@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <ModalSCT v-if="modalAsignarResidente && getCaminoID">
       <h3 slot="header">Asignar Residente</h3>
       <div slot="body">
@@ -20,76 +19,26 @@
       </div>
     </ModalSCT>
 
-
-
     <div class="col-md-12 mx-auto">
       <div class="row">
         <h3>Programación de Obra </h3>
         <hr class="red">
-        <form role="form">
-        </form>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 text-left to-left">
-        <button :disabled="cons" type="button" id="bt-nvo-convenio" v-on:click="openModalAddConvenio"
-          class="btn btn-default pull-right" data-toggle="modal">
-          Nuevo Convenio
-        </button>
-        <span v-if="this.$store.getters['user/StateRol'] == 'NORMATIVO' ? true : false">
-          <button class="btn btn-primary active" @click="modalAsignarResidente = true">
-            Asignar Residente
-          </button>
-          <button class="btn btn-primary active" @click="modalEditarResidente = true">
-            Editar Asignacion
-          </button>
-        </span>
-
-      </div>
-      <div>
-      </div>
-      <div class="col-md-12">
-        <h5 class="small-top-buffer small-bottom-buffer">Programación de Obras agregadas</h5>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12 table-responsive">
-        <ejs-treegrid :dataSource="convenios" childMapping="modificatorio" :treeColumnIndex="1" ref="gridConvenios"
-          :allowResizing='true' :allowTextWrap='true'>
-          <e-columns>
-            <e-column field='id' headerText='id' :visible='false' textAlign='Center'></e-column>
-            <e-column :template="editTemplate" headerText='Editar' width=110></e-column>
-            <e-column :template="deleteTemplate" headerText='Eliminar <br> Tramo' :disableHtmlEncode='false'
-              width=140></e-column>
-            <e-column field='anio' headerText='Año <br> del Convenio' :disableHtmlEncode='false' textAlign='Center'
-              width=160></e-column>
-            <e-column :template="tramoTemplate" field='tramo' headerText='Tramo' textAlign='Center' width='90'></e-column>
-            <e-column :template="montoTemplate" field='monto' headerText='Monto(mdp)' textAlign='right'
-              width=90></e-column>
-            <e-column field='meta' headerText='Meta(km)' textAlign='right' width=80></e-column>
-            <e-column :template="modificatorioTemplate" headerText='Tiene Convenio <br> Modificatorio'
-              :disableHtmlEncode='false' textAlign='Center' width=160></e-column>
-            <e-column :template="fileTemplate" headerText='Archivo' textAlign='Center' width=100></e-column>
-            <e-column :template="budgetTemplate" headerText='Presupuesto' width=130> </e-column>
-            <e-column :template="IconTemplate" headerText='Representantes' width=130> </e-column>
-          </e-columns>
-          <e-aggregates>
-            <e-aggregate :showChildSummary='false'>
-              <e-columns>
-                <e-column type="Sum" field="anio" :footerTemplate='footerTotal'></e-column>
-                <e-column type="Custom" columnName="monto" :customAggregate="customAggregateMontoFn"
-                  :footerTemplate='footerMonto'></e-column>
-                <e-column type="Custom" :customAggregate="customAggregateMetaFn" field="meta"
-                  :footerTemplate='footerMeta'></e-column>
-              </e-columns>
-            </e-aggregate>
-          </e-aggregates>
-        </ejs-treegrid>
-      </div>
-    </div>
-
-
+    <button
+      :disabled="cons"
+      type="button"
+      @click="openModalAddConvenio"
+      class="btn btn-primary"
+      style="margin-bottom: 15px;"
+    >
+      Nuevo Convenio
+    </button>
+    <table-base
+      :options="featureOptions"
+      :headers="headers"
+      :data="convenios"
+    />
 
     <!--Convenio Nuevo & Edit--->
     <Modal :title="modalTitle" modal-class="modal2" v-model="showAdminModalConvenio" @before-open="beforeOpen"
@@ -469,24 +418,18 @@ import '@kouts/vue-modal/dist/vue-modal.css'
 import ModalBeneficiario from './Modals/Beneficiario.vue'
 import EventBus from '../utils/EventBus.js';
 import bodyScroll from 'body-scroll-freezer'
-import { GridPlugin } from '@syncfusion/ej2-vue-grids';
 import { required, maxValue, } from 'vuelidate/lib/validators'
-import { NumericTextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
-import { TreeGridPlugin, Page, Aggregate, Resize } from '@syncfusion/ej2-vue-treegrid';
 import { generarConvenio, updateConvenio, createModificatorio, bajaConvenio, getAvanceConvenio, getConveniosGet, getCatMeses } from '@/api/convenio';
 import VueNumeric from 'vue-numeric'
 import { getBeneficiariosDropdown } from '@/api/beneficiarios'
 import PlaceholderComponent from './PlaceholderComponent.vue';
 import AsignarResidente from '@/components/Residentes/AsignarResidente.vue';
 import EditarAsignacionResidente from './Residentes/EditarAsignacionResidente.vue';
-import { getRepresentatives } from '@/api/beneficiarios'
 import { updateRepresentative } from '@/api/beneficiarios'
+import TableBase from '@/components/v2/TableBase'
 
 Vue.use(VueNumeric)
 Vue.use(Vuelidate)
-Vue.use(GridPlugin);
-Vue.use(TreeGridPlugin);
-Vue.use(NumericTextBoxPlugin);
 
 export default {
   name: 'DatosConvenio',
@@ -509,10 +452,74 @@ export default {
     PlaceholderComponent,
     AsignarResidente,
     ModalSCT,
-    EditarAsignacionResidente
+    EditarAsignacionResidente,
+    TableBase,
   },
   data() {
     return {
+      headers: [
+        {
+          label: 'Año del Convenio',
+          field: 'anio',
+        },
+        {
+          label: 'Tramo',
+          field: 'tramo',
+        },
+        {
+          label: 'Monto(mdp)',
+          field: 'monto',
+        },
+        {
+          label: 'Meta(km)',
+          field: 'meta',
+        },
+        {
+          label: 'Tiene Convenio Modificatorio',
+          field: 'initDate',
+        },
+        {
+          label: 'Archivo',
+          field: 'endDate',
+        },
+      ],
+      featureOptions: [
+        {
+          label: 'Editar convenio',
+          action: (ctx) => this.toEdit(ctx),
+          isVisible: () => false // isNormativo,
+        },
+        {
+          label: 'Eliminar tramo',
+          action: (ctx) => this.deleteConvenio(ctx),
+        },
+        {
+          label: 'Presupuesto',
+          action: (ctx) => {
+            this.$store.commit('setIdConcevenio', ctx.id)
+            this.$router.push(`/presupuesto/${this.$route.params.obraId}/${ctx.anio}/${this.$store.state.camino.ancho}/${ctx.id}/${ctx.meta}/`)
+          },
+        },
+        {
+          label: 'Representantes',
+          action: (agreement) => this.$router.push({
+            name: 'Representatives',
+            params: {
+              agreementId: agreement.id,
+            }
+          })
+        },
+        {
+          label: 'Editar asignacion',
+          action: () => (this.modalEditarResidente = true),
+          isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
+        },
+        {
+          label: 'Asignar residente',
+          action: () => (this.modalAsignarResidente = true),
+          isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
+        },
+      ],
       modalAsignarResidente: false,
       modalEditarResidente: false,
       currentAgreementIdSelected: null,
@@ -574,222 +581,6 @@ export default {
       showAdminModalConvenioMod: false,
       convenioModificatrioErrors: [],
       pageSettings: { pageCount: 6, pageSize: 20 },
-
-      // Parece que manda llamar un modal para editar el convenio
-      editTemplate: function () {
-        return {
-          template: Vue.component("editTemplate", {
-            template: `
-                  <button
-                    @click="toEdit"
-                    class="btn btn-primary btn-sm edit-convenio"  
-                    type="button" 
-                    >
-                    <span v-if="!getDisabled()" class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                    <span v-if="getDisabled()" class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>                    
-                  </button> 
-              `,
-            data: function () {
-              return {
-                isNormativo: false,
-                data: {
-                }
-              };
-            },
-            methods: {
-              toEdit() {
-                this.$parent.$parent.modalTitle = 'Actualizar Datos del Convenio'
-                this.$parent.$parent.mode = 'edit'
-                this.$parent.$parent.form.id = this.data.id
-                this.$parent.$parent.form.anio = this.data.anio
-                this.$parent.$parent.form.tramo = this.data.tramo
-                this.$parent.$parent.form.monto = this.data.monto
-                this.$parent.$parent.form.origen = this.data.origen
-                this.$parent.$parent.form.meta = this.data.meta
-                this.$parent.$parent.form.archivo = this.data.archivo
-                this.$parent.$parent.form.es_modificatorio = this.data.es_modificatorio
-                // TODO: investigar que hace el modificatorio
-                // this.$parent.$parent.form.modificatorio = (this.data.hasOwnProperty('modificatorio') ? this.data.modificatorio.length : 0)
-                this.$parent.$parent.form.modificatorio = 0
-                if (this.data.estatus === 'M' || this.data.archivo) {
-                  this.$parent.$parent.isDisabled = true
-                  this.$parent.$parent.btnIsDisabled = true
-
-                }
-                this.$parent.$parent.beneficiario_id = this.data.beneficiario_id
-                this.$parent.$parent.loadMesAvence(false)
-                this.$parent.$parent.showAdminModalConvenio = true
-              },
-              getDisabled() {
-                if (this.isNormativo) {
-                  if (this.data.hasOwnProperty('hasChildRecords')
-                    && this.data.childRecords.length > 0) {
-                    return true
-                  }
-                  return false
-                } else {
-                  return true
-                }
-              }
-            },
-            created() {
-              this.isNormativo = this.$parent.$parent.isNormativo
-            },
-            computed: {
-            }
-          })
-        };
-      },
-      deleteTemplate: function () {
-        return {
-          template: Vue.component("deleteTemplate", {
-            template: `
-              <div class="text-center">
-                  <button
-                    :disabled="getDisabled()"
-                    @click="toDelete"
-                    class="btn btn-primary btn-sm"  
-                    type="button" 
-                    >
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                  </button> 
-                </div>
-              `,
-            data: function () {
-              return {
-                isNormativo: false,
-                data: {}
-              };
-            },
-            methods: {
-              toDelete() {
-                let id = null
-                if (this.data.hasOwnProperty('parentItem')) {
-                  id = this.data.parentItem.id
-                }
-                EventBus.$emit("deleteConvenio", {
-                  el: this.data,
-                  parent: id
-                })
-              },
-              getDisabled() {
-                if (this.isNormativo) {
-                  if (this.data.hasOwnProperty('hasChildRecords')
-                    && this.data.childRecords.length > 0) {
-                    return true
-                  }
-                  if (this.data.archivo) {
-                    return true
-                  }
-                  return false
-                } else {
-                  return true
-                }
-              }
-            },
-            created() {
-              EventBus.$on("setPerfil", (el) => {
-                this.isNormativo = el
-              })
-              EventBus.$emit("getPerfil", this.data)
-            }
-          })
-        };
-      },
-      fileTemplate: function () {
-        return {
-          template: Vue.component("fileTemplate", {
-            template: `
-                <div class="text-center" v-if="data.archivo">
-                  <button
-                    @click="toFile"
-                    class="btn btn-primary btn-sm"  
-                    type="button" 
-                    >
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-                  </button> 
-                </div>
-              `,
-            data: function () {
-              return {
-                data: {}
-              };
-            },
-            methods: {
-              toFile() {
-                var blob = base64toBlob(this.data.archivo);
-                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                  var win = window.navigator.msSaveOrOpenBlob(blob, "pdfBase64.pdf");
-                } else {
-                  const blobUrl = URL.createObjectURL(blob);
-                  var win = window.open(blobUrl);
-                }
-                if (win) {
-                  //Browser has allowed it to be opened
-                  win.focus();
-                } else {
-                  //Browser has blocked it
-                  alert('Por favor permitir los popups para este sitio');
-                }
-              }
-            }
-          })
-        };
-      },
-      budgetTemplate: function () {
-        return {
-          template: Vue.component("BudgetTemplate", {
-            template: `
-                <div class="text-center">
-                  <button
-                    @click="toBudget"
-                    class="btn btn-primary btn-sm"  
-                    type="button" 
-                    >
-                    <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-                  </button> 
-                </div>
-              `,
-            data: function () {
-              return {
-                data: {}
-              };
-            },
-            methods: {
-              toBudget() {
-                EventBus.$emit("toBudget", this.data)
-              }
-            }
-          })
-        };
-      },
-      IconTemplate: function () {
-        return {
-          template: Vue.component('IconTemplate', {
-            template: `
-                <div class="text-center">
-                  <button
-                    @click="handleClick"
-                    class="btn btn-primary btn-sm"
-                    type="button"
-                  >
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true" />
-                  </button>
-                </div>
-              `,
-            data: function () {
-              return {
-                data: {}
-              };
-            },
-            methods: {
-              handleClick() {
-                EventBus.$emit("handleClick", this.data)
-              }
-            }
-          })
-        };
-      },
       IconTemplate2: function () {
         return {
           template: Vue.component('IconTemplate', {
@@ -844,122 +635,7 @@ export default {
           })
         };
       },
-      modificatorioTemplate: function () {
-        return {
-          template: Vue.component("modificatorioTemplate", {
-            template: `<div v-if="data.hasOwnProperty('modificatorio') && data.modificatorio.length > 0" class="text-center">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
-                </div>`,
-            data: function () {
-              return {
-                data: {}
-              };
-            },
-          })
-        };
-      },
-      montoTemplate: function () {
-        return {
-          template: Vue.component("montoTemplate", {
-            template: `<div class="text-center">
-              {{ getData() }}                 
-                </div>`,
-            data: function () {
-              return {
-                data: {}
-              }
-            },
-            methods: {
-              getData() {
-                if (this.data.monto == 'null') {
-                  return '-'
-                } else {
-                  return this.data.monto
-                }
-              }
-            }
-          })
-        }
-      },
-      tramoTemplate: function () {
-        return {
-          template: Vue.component("tramoTemplate", {
-            template: `<div class="text-center">
-              {{ getData() }}                 
-                </div>`,
-            data: function () {
-              return {
-                data: {}
-              }
-            },
-            methods: {
-              getData() {
-                if (this.data.tramo == 'null') {
-                  return '-'
-                } else {
-                  return this.data.tramo
-                }
-              }
-            }
-          })
-        }
-      },
-      origenTemplate: function () {
-        return {
-          template: Vue.component("origenTemplate", {
-            template: `<div class="text-center">
-              {{ getData() }}                 
-                </div>`,
-            data: function () {
-              return {
-                data: {}
-              }
-            },
-            methods: {
-              getData() {
-                if (this.data.origen == 'null') {
-                  return '-'
-                } else {
-                  return this.data.origen
-                }
-              }
-            }
-          })
-        }
-      },
-      footerTotal: function () {
-        return {
-          template: Vue.component('maxTemplate', {
-            template: `<span><strong>Total:</strong></span>`,
-            data() { return { data: {} }; }
-          })
-        }
-      },
-      footerMonto: function () {
-        return {
-          template: Vue.component('footerMonto', {
-            template: `<span>{{data.Custom}}</span>`,
-            data() {
-              return {
-                data: {
-                }
-              }
-            },
-          })
-        }
-      },
-      footerMeta: function () {
-        return {
-          template: Vue.component('minTemplate', {
-            template: `<span>{{ data.Custom }}</span>`,
-            data() { return { data: {} }; }
-          })
-        }
-      },
     }
-  },
-  provide: {
-    treegrid: [Page, Aggregate, Resize]
   },
   validations: {
     form: {
@@ -1036,12 +712,43 @@ export default {
     }
   },
   methods: {
-    async getRepresentativesByAgreement(agreementId) {
-      this.representativesList = await getRepresentatives(agreementId)
-        .map(representante => ({
-          ...representante,
-          fullName: `${representante.nombre_representante} ${representante.primer_a_representante} ${representante.segundo_a_representante}`
-        }))
+    // funcion llamada en la columna archivo template
+    toFile() {
+      var blob = base64toBlob(this.data.archivo);
+      if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        var win = window.navigator.msSaveOrOpenBlob(blob, "pdfBase64.pdf");
+      } else {
+        const blobUrl = URL.createObjectURL(blob);
+        var win = window.open(blobUrl);
+      }
+      if (win) {
+        //Browser has allowed it to be opened
+        win.focus();
+      } else {
+        //Browser has blocked it
+        alert('Por favor permitir los popups para este sitio');
+      }
+    },
+    toEdit(ctx) {
+      this.modalTitle = 'Actualizar Datos del Convenio'
+      this.mode = 'edit'
+      this.form.id = ctx.id
+      this.form.anio = ctx.anio
+      this.form.tramo = ctx.tramo
+      this.form.monto = ctx.monto
+      this.form.origen = ctx.origen
+      this.form.meta = ctx.meta
+      this.form.archivo = ctx.archivo
+      this.form.es_modificatorio = ctx.es_modificatorio
+      this.form.modificatorio = 0
+      if (ctx.estatus === 'M' || ctx.archivo) {
+        this.isDisabled = true
+        this.btnIsDisabled = true
+
+      }
+      this.beneficiario_id = ctx.beneficiario_id
+      this.loadMesAvence(false)
+      this.showAdminModalConvenio = true
     },
     openModalAddConvenio() {
       this.clearForm()
@@ -1099,49 +806,26 @@ export default {
       this.formMoficatorio.archivo = event.target.files[0];
     },
     async listaconvenio() {
-      console.log("CAMINO ID");
-      console.log(this.getCaminoID);
       this.convenios = await getConveniosGet(this.getCaminoID)
-      this.$refs.gridConvenios.refresh()
-      console.log("tis convenios get");
-      console.log(this.convenios);
     },
-    deleteConvenio() {
-      this.$confirm('¿Desea eliminar el presente convenio?', 'Warning', {
+    deleteConvenio(ctx) {
+      this.$confirm('¿Desea eliminar el convenio?', 'Warning', {
         confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
         type: 'warning'
-      }).then(async () => {
-        let loadingInstance = Loading.service({ fullscreen: true, lock: true });
-        await bajaConvenio(this.form.id).then(async () => {
+      })
+      .then(async () => {
+        const loading = Loading.service({ fullscreen: true, lock: true })
+        try {
+          await bajaConvenio(ctx.id)
           await this.listaconvenio()
-          // this.$refs.gridConvenios.refresh()
-          this.$alert(`El convenio ha sido cancelado`, 'INFORMACIÓN', {
-            confirmButtonText: 'Cerrar',
-            customClass: 'box-msg-login',
-          })
-        }).catch(async (e) => {
-          console.log(e)
-          let second = 10;
-          const timer = setInterval(() => {
-            second--;
-            if (second) {
-              /* this.$emit("show-error", 'Error al eliminar el Convenio'); */
-              this.$swal('ERROR', 'Error al eliminar el Convenio', "error")
-            } else {
-              /* this.$emit("show-error", false); */
-              this.$swal('EXITO', 'Se elimino el Convenio', "success")
-              clearInterval(timer);
-            }
-          }, 1000);
-        }).finally(() => {
-          this.showAdminModalConvenio = false
-          loadingInstance.close();
-        })
-      }).catch((e) => {
-        console.log(e)
-      });
-
+          this.$swal('EXITO', 'Se elimino el Convenio', "success")
+        } catch (error) {
+          console.error(error)
+          this.$swal('ERROR', 'Error al eliminar el Convenio', "error")
+        }
+        loading.close();
+      })
     },
     async saveEditConvenio(isNew) {
       if (this.getSumMeta < 0) {
@@ -1214,11 +898,6 @@ export default {
       let loadingInstance = Loading.service({ fullscreen: true, lock: true });
       await generarConvenio(formData, this.camino_id).then(async () => {
         await this.listaconvenio()
-        // this.$refs.gridConvenios.refresh()
-        /* this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
-          confirmButtonText: 'Cerrar',
-          customClass: 'box-msg-login',
-        }) */
         this.$swal('EXITO', 'El convenio ha sido creado', "success")
       }).catch((e) => {
         console.log(e)
@@ -1266,10 +945,6 @@ export default {
             this.convenioModificatrioErrors = []
           }
         }, 1000);
-        /* this.$alert(`Verifica los campos faltantes o con información errónea`, 'INFORMACIÓN', {
-          confirmButtonText: 'Aceptar',
-          customClass: 'box-msg-login',
-        }) */
         this.$swal('WARNING', 'Verifica los campos faltantes o con información errónea', "warning")
         return;
       }
@@ -1295,13 +970,7 @@ export default {
         formData.append("archivo", this.formMoficatorio.archivo);
       }
       await createModificatorio(formData).then(async () => {
-        // this.$refs.gridConvenios.refresh()
         await this.listaconvenio()
-        // this.$refs.gridConvenios.refresh()
-        /* this.$alert(`El convenio ha sido creado`, 'INFORMACIÓN', {
-          confirmButtonText: 'Cerrar',
-          customClass: 'box-msg-login',
-        }) */
 
       }).catch(e => {
         console.log(e)
@@ -1573,18 +1242,8 @@ export default {
       this.btnIsDisabled = false
       this.showAdminModalConvenio = true
     });
-    EventBus.$on('toBudget', (el) => {
-      this.$store.commit('setIdConcevenio', el.id)
-      this.$router.push(`/presupuesto/${this.$route.params.obraId}/${el.anio}/${this.$store.state.camino.ancho}/${el.id}/${el.meta}/`).catch((e) => { console.log('') });
-    })
     EventBus.$on("getPerfil", (el) => {
       EventBus.$emit("setPerfil", this.isNormativo)
-    })
-    EventBus.$on('handleClick', async (convenio) => {
-      this.getRepresentativesByAgreement(convenio.id)
-      this.currentAgreementIdSelected = convenio.id
-      this.modalRepresentatives = true
-
     })
     EventBus.$on('handleClick2', async (representante) => {
       console.log('clickIcon2');
@@ -1615,13 +1274,11 @@ export default {
       console.log(r);
       this.beneficiarios = r.map(tramo => ({
         id: tramo.id_beneficiario,
-        value: tramo.clave_camino + tramo.clave_beneficiario +
-          (tramo.municipio
+        value: tramo.clave_camino
+          + tramo.clave_beneficiario
+          + (tramo.municipio
             ? `: ${tramo.municipio}`
             : '')
-        // + (tramo.localidad
-        // ? `-${tramo.localidad}`
-        // : ''),
       }))
     })
 
