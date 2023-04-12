@@ -38,14 +38,18 @@
           <div
             v-for="(option, index) in options"
             :key="index"
-            style="padding: 10px; width: max-content;"
           >
-            <p
-              class="menu--text"
-              @click="option.action(item)"
+            <div
+              v-show="Object.hasOwnProperty.call(option, 'isVisible') ? option.isVisible(item) : true"
+              style="padding: 10px; width: max-content;"
             >
-              {{ option.label }}
-            </p>
+              <p
+                class="menu--text"
+                @click="option.action(item)"
+              >
+                {{ option.label }}
+              </p>
+            </div>
           </div>
         </div>
       </td>
@@ -80,6 +84,7 @@ export default {
         {
           label: 'example',
           action: (context) => console.log(context),
+          isVisible: () => false,
         }
       ]),
     },
