@@ -124,5 +124,8 @@
       ".*\\.(vue)$": "vue-jest",
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     }
+  },
+  "engines" : {
+    "node" : ">12 <14"
   }
 }
