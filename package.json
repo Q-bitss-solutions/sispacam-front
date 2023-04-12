@@ -41,7 +41,7 @@
     "idle-vue": ">=2.0.5",
     "jwt-decode": ">=2.2.0",
     "moment": ">=2.24.0",
-    "vee-validate": "^2.2.15",
+    "vee-validate": "^3.4.15",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-currency-filter": "^5.2.0",
