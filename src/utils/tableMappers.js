@@ -23,4 +23,12 @@ const mapAssignmentsTable = (roads) => roads
     status: road.estatus ? 'Activo' : 'Inactivo',
   }))
 
-export { mapPhysicalAdvancesTable, mapAssignmentsTable }
+const mapRepresentativesTable = (representatives) => representatives
+  .map((representative) => ({
+    fullName: `${representative.nombre_representante} ${representative.primer_a_representante} ${representative.segundo_a_representante}`,
+    rfc: representative.rfc,
+    initDate: representative.fecha_inicio,
+    endDate: representative.fecha_fin,
+  }))
+
+export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable }
