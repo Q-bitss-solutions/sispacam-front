@@ -30,11 +30,20 @@ import Assignments from '@/views/v2/Assignments.vue'
 import PhysicalAdvances from '@/views/v2/PhysicalAdvances.vue'
 import Representatives from '@/views/v2/Representatives/Index.vue'
 import NewRepresentative from '@/views/v2/Representatives/New.vue'
+import NewPhysicalAdvances from '@/views/v2/PhysicalAdvances/New.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/asignaciones/:assignmentId/avances-fisicos/nuevo',
+    name: 'NewPhysicalAdvances',
+    component: NewPhysicalAdvances,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   {
     path: '/convenios/:agreementId/representantes',
     name: 'Representatives',
