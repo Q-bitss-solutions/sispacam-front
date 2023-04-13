@@ -1,6 +1,6 @@
 <template>
   <validation-provider
-    :rules="rules"
+    :rules="disabled ? '' : rules"
     v-slot="{ errors }"
     style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 15px; max-width: 768px; width: 100%; margin: auto;"
   >
