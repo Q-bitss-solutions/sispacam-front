@@ -77,11 +77,20 @@ export default {
       ],
       featureOptions: [
         {
-          label: 'Ver avance fisico',
+          label: 'Ver avances fisicos',
           action: (assignment) => this.$router.push({
             name: 'PhysicalAdvances',
             params: {
               roadKey: assignment.roadKey,
+            },
+          }),
+        },
+        {
+          label: 'Nuevo avance fisico',
+          action: (assignment) => this.$router.push({
+            name: 'NewPhysicalAdvances',
+            params: {
+              assignmentId: assignment.id,
             },
           }),
         },
