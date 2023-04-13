@@ -11,16 +11,17 @@ const mapPhysicalAdvancesTable = (advances) => advances
     status: advance.residente_asignado.estatus ? 'Activo' : 'Inactivo',
   }))
 
-const mapAssignmentsTable = (roads) => roads
-  .map((road) => ({
-    roadKey: road.camino.clave_camino,
-    roadName: road.camino.nombre_camino,
-    yearAgreement: road.convenio.anio,
-    agreementSection: road.convenio.tramo,
-    initDate: road.fecha_inicio,
-    endDate: road.fecha_fin,
-    lastDateRoad: road.ultimo_avance_fisico.fecha_registro,
-    status: road.estatus ? 'Activo' : 'Inactivo',
+const mapAssignmentsTable = (assignments) => assignments
+  .map((assignment) => ({
+    id: assignment.id,
+    roadKey: assignment.camino.clave_camino,
+    roadName: assignment.camino.nombre_camino,
+    yearAgreement: assignment.convenio.anio,
+    agreementSection: assignment.convenio.tramo,
+    initDate: assignment.fecha_inicio,
+    endDate: assignment.fecha_fin,
+    lastDateRoad: assignment.ultimo_avance_fisico.fecha_registro,
+    status: assignment.estatus ? 'Activo' : 'Inactivo',
   }))
 
 const mapRepresentativesTable = (representatives) => representatives
