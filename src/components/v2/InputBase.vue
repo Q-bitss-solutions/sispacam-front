@@ -2,7 +2,7 @@
   <validation-provider
     :rules="disabled ? '' : rules"
     v-slot="{ errors }"
-    style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 15px; max-width: 768px; width: 100%; margin: auto;"
+    class="wrapper-input-base"
   >
     <label
       :for="id"
@@ -103,3 +103,18 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+
+@media (min-width: 768px) {
+  .wrapper-input-base {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 15px;
+    max-width: 640px;
+    width: 100%;
+    margin: auto;
+  }
+}
+
+</style>
