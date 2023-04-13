@@ -54,7 +54,7 @@
     <input-base
       id="gender"
       v-model="form.gender"
-      :options="[{ value: 'M', label: 'Masculino' }, { value: 'F', label: 'Femenino' }]"
+      :options="[{ value: 'H', label: 'Masculino' }, { value: 'M', label: 'Femenino' }]"
       type="radio"
       label="Género *"
       rules="required"
