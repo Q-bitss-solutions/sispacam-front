@@ -16,4 +16,14 @@ const mapRepresentativePayload = (representative) => ({
   cp: representative.cp,
 })
 
-export { mapRepresentativePayload }
+const mapPhysicalAdvancePayload = (physicalAdvance) => ({
+  rodera1_izq: physicalAdvance.firstRutToLeft,
+  rodera2_izq: physicalAdvance.secondRutToLeft,
+  empedrado_izq: physicalAdvance.cobbledToLeft,
+  rodera1_der: physicalAdvance.firstRutToRight,
+  rodera2_der: physicalAdvance.secondRutToRight,
+  empedrado_der: physicalAdvance.cobbledToRight,
+  empedrado_central: physicalAdvance.cobbledToCenter,
+})
+
+export { mapRepresentativePayload, mapPhysicalAdvancePayload }
