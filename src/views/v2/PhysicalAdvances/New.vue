@@ -56,6 +56,7 @@ export default {
   },
   created() {
     this.getAssignment()
+    this.$store.state.breadcrumb = ['Nuevo avance fisico']
   },
 }
 </script>
