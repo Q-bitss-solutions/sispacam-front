@@ -125,7 +125,7 @@
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     }
   },
-  "engines" : {
-    "node" : ">12 <14"
+  "engines": {
+    "node": ">=12 <=14"
   }
 }
