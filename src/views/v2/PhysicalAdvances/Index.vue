@@ -42,8 +42,8 @@ export default {
           field: 'advanceDate',
         },
         {
-          label: 'Semana',
-          field: 'week',
+          label: 'Quincena',
+          field: 'fortnight',
         },
         {
           label: 'Porcentaje avance',

@@ -26,8 +26,8 @@ import store from "../store/index";
 import PresupuestoBaseKilometro from "../views/PresupuestoBaseKilometro.vue"
 
 //
-import Assignments from '@/views/v2/Assignments.vue'
-import PhysicalAdvances from '@/views/v2/PhysicalAdvances.vue'
+import Assignments from '@/views/v2/Assignments/Index.vue'
+import PhysicalAdvances from '@/views/v2/PhysicalAdvances/Index.vue'
 import Representatives from '@/views/v2/Representatives/Index.vue'
 import NewRepresentative from '@/views/v2/Representatives/New.vue'
 import NewPhysicalAdvances from '@/views/v2/PhysicalAdvances/New.vue'
