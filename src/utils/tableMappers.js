@@ -1,3 +1,5 @@
+const decimalPlaces = 2
+
 const mapPhysicalAdvancesTable = (advances) => advances
   .map((advance) => ({
     roadName: advance.camino.nombre_camino,
@@ -5,9 +7,9 @@ const mapPhysicalAdvancesTable = (advances) => advances
     initDate: advance.residente_asignado.fecha_inicio,
     endDate: advance.residente_asignado.fecha_fin,
     advanceDate: advance.fecha_registro,
-    week: advance.semana,
-    percentageProgress: `${advance.avance_semanal_porcentaje}%`,
-    fullPercentage: `${advance.avance_acumulado_porcentaje}%`,
+    fortnight: advance.quincena,
+    percentageProgress: `${advance.avance_quincenal_porcentaje.toFixed(decimalPlaces)} %`,
+    fullPercentage: `${advance.avance_acumulado_porcentaje.toFixed(decimalPlaces)} %`,
     status: advance.residente_asignado.estatus ? 'Activo' : 'Inactivo',
   }))
 
