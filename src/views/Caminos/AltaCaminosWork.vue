@@ -14,12 +14,6 @@
             Beneficiario
           </a>
         </li>
-        <li v-if="($route.params.obraId && this.$store.getters['user/StateRol'] == 'NORMATIVO' && isCanceled == false)"
-          role="presentation" id="tabAsina">
-          <a href="#asignarresidente" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
-            Asignar
-          </a>
-        </li>
         <li v-if="$route.params.obraId" role="presentation" id="tabAsina" :class="getActiveTab === 'tabConv' ? 'active' : ''">
           <a href="#convenio" aria-controls="profile" role="tab" data-toggle="tab" aria-expanded="true">
             Programación
@@ -59,7 +53,6 @@
 <script>
 import { mapMutations } from 'vuex'
 import convenio from '@/components/convenio';
-import { getupdate } from '@/api/alta-camino';
 import { getDetalleCamino } from '@/api/caminos';
 import AsignarResidente from '@/components/AsignarResidente';
 import DatosFinancieros from '@/components/AltaDeCaminos/DatosFinancieros';
