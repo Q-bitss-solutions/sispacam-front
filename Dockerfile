@@ -1,5 +1,5 @@
 # build stage
-FROM node:10 as build-stage
+FROM node:14 as build-stage
 LABEL MAINTAINER J. Miguel Pantaleon <jose.pantaleon@infotec.mx>
 ARG VUE_APP_BASE_URL
 ARG VUE_APP_SITE_KEY
