@@ -168,7 +168,7 @@
             <h3 slot="header">Suspender Obra {{ data.clave }}</h3>
             <div slot="body">
                 <div class="modal-body text-left">
-                    <p>Escriba la justificación de suspencion:</p>
+                    <p>Escriba la justificación de suspención:</p>
                     <div class="form-group">
                         <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
                             placeholder="Justificación de suspencion" v-model="formSuspencion.motivoSuspencion"></textarea>
