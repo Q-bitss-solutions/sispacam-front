@@ -4,6 +4,7 @@
       :options="featureOptions"
       :headers="headers"
       :data="physicalAdvances"
+      has-colored-borders
     />
   </div>
 </template>
