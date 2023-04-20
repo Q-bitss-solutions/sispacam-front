@@ -19,7 +19,7 @@ const mapPhysicalAdvancesTable = (advances) => advances
       : advance.variacion_porcentaje_convenio >= -25
         ? 'border-yellow'
         : 'border-red',
-    borderTitle: `Variación del ${advance.variacion_porcentaje_convenio.toFixed(decimalPlaces)} %`,
+    borderTitle: `Variación del ${-1.0*advance.variacion_porcentaje_convenio.toFixed(decimalPlaces)} %`,
   }))
 
 const mapAssignmentsTable = (assignments) => assignments

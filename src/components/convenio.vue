@@ -487,7 +487,7 @@ export default {
         {
           label: 'Editar convenio',
           action: (ctx) => this.toEdit(ctx),
-          isVisible: () => false // isNormativo,
+          isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
         },
         {
           label: 'Eliminar tramo',

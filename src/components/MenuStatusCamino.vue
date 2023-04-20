@@ -171,7 +171,7 @@
                     <p>Escriba la justificación de suspensión:</p>
                     <div class="form-group">
                         <textarea rows="3" maxlength="350" id="motivoReactivacion" class="form-control" value=""
-                            placeholder="Justificación de suspencion" v-model="formSuspencion.motivoSuspencion"></textarea>
+                            placeholder="Justificación de suspensión" v-model="formSuspencion.motivoSuspencion"></textarea>
                         <small v-if="!$v.formSuspencion.motivoSuspencion.required" class="form-text form-text-error">
                             Este campo es obligatorio
                         </small>

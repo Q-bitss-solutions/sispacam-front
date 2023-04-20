@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 const ENDPOINT_RESIDENTE = '/residentes/'
-const ENDPOINT_ASIGNACION = '/convenio/'
+const ENDPOINT_ASIGNACION = '/convenios/'
 
 export function getListaResidentes() {
   return request({

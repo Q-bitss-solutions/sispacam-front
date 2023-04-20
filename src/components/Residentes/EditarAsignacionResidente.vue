@@ -18,7 +18,7 @@
 				<select name="residentes" id="residente_dropdown" class="form-control" v-model="selected_residente" @change="elegirResidente(selected_residente)">
 					<option value="" disabled>Seleccionar...</option>
 					<option v-for="(residente, index) in residentes" :key="index" :value="residente.id">
-						{{ residente.id_residente.nombre }} {{ residente.id_residente.a_paterno }} {{ residente.id_residente.a_materno }} | {{ residente.id_residente.centro_sict }}
+						{{ residente.residente.nombre }} {{ residente.residente.a_paterno }} {{ residente.residente.a_materno }} | {{ residente.residente.centro_sict }}
 					</option>
 				</select>
 			</div>
