@@ -1,3 +1,6 @@
+import { typeRoads } from '@/utils/helpers'
+
+
 const decimalPlaces = 2
 
 const mapPhysicalAdvancesTable = (advances) => advances
@@ -34,4 +37,10 @@ const mapRepresentativesTable = (representatives) => representatives
     endDate: representative.fecha_fin,
   }))
 
-export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable }
+const mapRoadsTable = (roads) => roads
+  .map((road) => ({
+    ...road,
+    type: typeRoads[road.tipo_camino],
+  }))
+
+export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable }
