@@ -27,7 +27,7 @@
                     </div>
                 </ul>
             </div>
-            <div class="menuDesplegable" v-if="data.estatus.id === 2">
+            <div class="menuDesplegable" v-if="data.estatus.id === 5">
                 <ul><a>
                         <el-button size="small" type="danger" @click="classMenuDespegable()">
                             <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
@@ -53,7 +53,7 @@
                     </div>
                 </ul>
             </div>
-            <div class="menuDesplegable" v-if="data.estatus.id === 3">
+            <div class="menuDesplegable" v-if="data.estatus.id === 4">
                 <ul><a>
                         <el-button size="small" style="background: #FFFF33" class="btn btn-sm"
                             @click="classMenuDespegable()">
@@ -80,7 +80,7 @@
                     </div>
                 </ul>
             </div>
-            <div class="menuDesplegable" v-if="data.estatus.id === 4">
+            <div class="menuDesplegable" v-if="data.estatus.id === 2">
                 <ul><a>
                         <el-button size="small"
                             style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(216,239,25,1) 48%, rgba(232,222,15,1) 100%);"
@@ -108,7 +108,7 @@
                     </div>
                 </ul>
             </div>
-            <div class="menuDesplegable" v-if="data.estatus.id === 5">
+            <div class="menuDesplegable" v-if="data.estatus.id === 3">
                 <ul><a>
                         <el-button size="small"
                             style="background: linear-gradient(90deg, rgba(0,255,34,1) 0%, rgba(232,15,15,1) 100%);"
@@ -371,7 +371,7 @@ export default {
         async suspenderCamino(data) {
             let formData = new FormData();
             formData.append("id_camino", data.id);
-            formData.append("id_estatus", 3);
+            formData.append("id_estatus", 4);
             formData.append("justificacion", this.formSuspencion.motivoSuspencion);
             formData.append("archivo", this.formSuspencion.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
@@ -382,7 +382,7 @@ export default {
         async cancelarCamino(data) {
             let formData = new FormData();
             formData.append("id_camino", data.id);
-            formData.append("id_estatus", 2);
+            formData.append("id_estatus", 5);
             formData.append("justificacion", this.formCancelacion.motivoCancelacion);
             formData.append("archivo", this.formCancelacion.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
@@ -393,7 +393,7 @@ export default {
         async reactivarCamino(data) {
             let formData = new FormData();
             formData.append("id_camino", data.id);
-            formData.append("id_estatus", 5);
+            formData.append("id_estatus", 3);
             formData.append("justificacion", this.formReactivar.motivoReactivacion);
             formData.append("archivo", this.formReactivar.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
@@ -409,7 +409,7 @@ export default {
         async reanudarCamino(data) {
             let formData = new FormData();
             formData.append("id_camino", data.id);
-            formData.append("id_estatus", 4);
+            formData.append("id_estatus", 2);
             formData.append("justificacion", this.formReanudar.motivoReanudar);
             formData.append("archivo", this.formReanudar.file);
             console.log('dataEndpoint suspender: ', data.clave, formData)
