@@ -117,16 +117,16 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md-10" style="font-size: x-small;">
-            <small class="form-text" style="font-size: 10px">
+          <div style="font-size: 14px;">
+            <strong>
               Valores aceptados
-            </small>
+            </strong>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lat: 14.517000 a 32.754000
             </small>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lon: -117.080000 a -86.363800
             </small>
             <br />
