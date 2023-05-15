@@ -344,7 +344,7 @@
               <td>{{ mes.descripcion }}</td>
               <td>
                 <vue-numeric v-bind:precision="2" separator="," class="form-control avance-mes"
-                  v-model="mesesMetas[key].avance" :read-only="btnIsDisabled">
+                  v-model="mesesMetas[key].avance" placeholder="0.00" :read-only="btnIsDisabled">
                 </vue-numeric>
               </td>
             </tr>
@@ -1137,7 +1137,7 @@ export default {
     clearMesasAvance() {
       this.dataAvance = []
       this.mesesMetas.map(m => {
-        m.avance = 0
+        m.avance = ''
       })
     },
     closeModalCalMeta() {
