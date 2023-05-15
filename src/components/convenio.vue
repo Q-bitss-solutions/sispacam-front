@@ -490,8 +490,12 @@ export default {
           isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
         },
         {
-          label: 'Eliminar tramo',
+          label: 'Eliminar convenio',
           action: (ctx) => this.deleteConvenio(ctx),
+        },
+        {
+          label: 'Agregar convenio modificatorio',
+          action: (ctx) => console.log('heyy'),
         },
         {
           label: 'Presupuesto',
