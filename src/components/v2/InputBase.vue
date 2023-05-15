@@ -8,7 +8,7 @@
       :for="id"
       style="grid-column: span 1 / span 1; margin: 0px; margin-top: auto; margin-bottom: auto;"
     >
-      {{ label }}
+      {{ rules.includes('required') ? `${label} *` : label }}
     </label>
     <div style="grid-column: span 2 / span 2;">
       <el-date-picker
