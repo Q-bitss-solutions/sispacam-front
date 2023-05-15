@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col-md-4" style="margin-bottom: 15px">
+    <div class="col-md-3" style="margin-bottom: 15px">
       <el-input
         v-model="params.clave_camino"
         placeholder="Buscar por clave camino"

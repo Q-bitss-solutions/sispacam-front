@@ -40,7 +40,7 @@
       id="cobbledToCenter"
       v-model="form.cobbledToCenter"
       placeholder="Ingresa los metros del empedrado"
-      label="Empedrado (m)"
+      label="Empedrado (m) *"
       rules="required"
       :disabled="['5.0'].includes(roadWidth)"
     />

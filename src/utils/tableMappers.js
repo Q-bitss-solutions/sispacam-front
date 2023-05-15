@@ -1,3 +1,6 @@
+import { typeRoads } from '@/utils/helpers'
+
+
 const decimalPlaces = 2
 
 const mapPhysicalAdvancesTable = (advances) => advances
@@ -11,6 +14,12 @@ const mapPhysicalAdvancesTable = (advances) => advances
     percentageProgress: `${advance.avance_quincenal_porcentaje.toFixed(decimalPlaces)} %`,
     fullPercentage: `${advance.avance_acumulado_porcentaje.toFixed(decimalPlaces)} %`,
     status: advance.residente_asignado.estatus ? 'Activo' : 'Inactivo',
+    borderColorClass: advance.variacion_porcentaje_convenio >= -15
+      ? 'border-green'
+      : advance.variacion_porcentaje_convenio >= -25
+        ? 'border-yellow'
+        : 'border-red',
+    borderTitle: `Variación del ${-1.0*advance.variacion_porcentaje_convenio.toFixed(decimalPlaces)} %`,
   }))
 
 const mapAssignmentsTable = (assignments) => assignments
@@ -34,4 +43,10 @@ const mapRepresentativesTable = (representatives) => representatives
     endDate: representative.fecha_fin,
   }))
 
-export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable }
+const mapRoadsTable = (roads) => roads
+  .map((road) => ({
+    ...road,
+    type: typeRoads[road.tipo_camino],
+  }))
+
+export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable }

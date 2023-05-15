@@ -95,6 +95,7 @@ import { getListaCaminos } from "@/api/caminos";
 import ButtonGrid from "@/components/ButtonGrid";
 import MenuStatusCamino from "@/components/MenuStatusCamino";
 import { fetchRoadStatus } from "@/api/caminos";
+import { mapRoadsTable } from "@/utils/tableMappers";
 
 Vue.use(GridPlugin);
 
@@ -131,7 +132,7 @@ export default {
           headerText: "Municipio",
         },
         {
-          field: "tipo_camino",
+          field: "type",
           headerText: "Tipo de obra",
         },
         {
@@ -151,10 +152,11 @@ export default {
   methods: {
     async searchCaminos() {
       try {
-        this.roadList = await getListaCaminos({
+        const data = await getListaCaminos({
           ...this.params,
           estatus: this.roadStatusToString(),
         });
+        this.roadList = mapRoadsTable(data)
       } catch (error) {
         console.error(error);
       }
@@ -171,23 +173,8 @@ export default {
     },
     async getRoads() {
       try {
-        this.roadList = await getListaCaminos();
-        // Muestra el tipo de camino human-readable
-        this.roadList.map((road) => {
-          switch (road.tipo_camino) {
-            case "A":
-              road.tipo_camino = "Agencia";
-              break;
-            case "C":
-              road.tipo_camino = "Cabecera";
-              break;
-            case "O":
-              road.tipo_camino = "Otro";
-              break;
-          }
-
-          return road;
-        });
+        const data = await getListaCaminos();
+        this.roadList = mapRoadsTable(data)
       } catch (error) {
         console.error(error);
       }
