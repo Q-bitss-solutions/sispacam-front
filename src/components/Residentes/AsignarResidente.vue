@@ -3,9 +3,9 @@
 		<div class="row">
 			<div class="col-md-12">
 				<label for="tramo">*Convenio:</label>
-				<select name="convenios" id="convenio_dropdown" class="form-control" v-model="form.id_convenio">
+				<select name="convenios" id="convenio_dropdown" class="form-control" v-model="form.convenio">
 					<option value="" disabled>Seleccionar...</option>
-					<option v-for="(convenio, index) in convenios" :key="index" :value="convenio.id">
+					<option v-for="(convenio, index) in convenios" :key="index" :value="convenio">
 						{{ convenio.anio }}
 					</option>
 				</select>
@@ -33,7 +33,7 @@
 			<div class="col-md-6">
 				<label for="tramo">Fecha de Fin:</label>
 				<div class="col-md_12">
-					<input class="form-control" type="date" name="f-oficio" id="f-oficio" v-model="form.fecha_fin" />
+					<input class="form-control" type="date" name="f-oficio" id="f-oficio" :value="dateEnd" disabled />
 				</div>
 			</div>
 		</div>
@@ -69,17 +69,16 @@ export default {
 			residentes: [],
 			convenios: [],
 			form: {
-				id_convenio: null,
+				convenio: null,
 				id_residente: null,
 				fecha_inicio: null,
-				fecha_fin: null,
 			}
 
 		}
 	},
 	computed: {
 		ValidForm() {
-			if (this.form.id_convenio &&
+			if (this.form.convenio &&
 				this.form.id_residente &&
 				this.form.fecha_inicio
 			) {
@@ -93,12 +92,13 @@ export default {
 			let p = {
 				'id_residente': this.form.id_residente,
 				'fecha_inicio': this.form.fecha_inicio,
-			}
-			if (this.form.fecha_fin) {
-				p.fecha_fin = this.form.fecha_fin
+				'fecha_fin': this.dateEnd
 			}
 			return p
-		}
+		},
+		dateEnd() {
+			return this.form.convenio ? `${this.form.convenio.anio}-12-31` : ''
+		},
 	},
 
 	methods: {
@@ -109,7 +109,7 @@ export default {
 
 		async postResidente() {
 			try {
-				const response = await agregaAsignacionAConvenio(this.form.id_convenio, this.payload)
+				const response = await agregaAsignacionAConvenio(this.form.convenio.id, this.payload)
 				this.closeModal()
 				this.$swal("", "La asignación se creó con éxito", 'success')
 			} catch (err) {
