@@ -10,28 +10,28 @@
       id="name"
       v-model="form.name"
       placeholder="Ingresa el nombre(s)"
-      label="Nombre(s) *"
+      label="Nombre(s)"
       rules="required"
     />
     <input-base
       id="firstSurname"
       v-model="form.firstSurname"
       placeholder="Ingresa el segundo apellido"
-      label="Primer Apellido *"
+      label="Primer Apellido"
       rules="required"
     />
     <input-base
       id="secondSurname"
       v-model="form.secondSurname"
       placeholder="Ingresa el segundo apellido"
-      label="Segundo Apellido *"
+      label="Segundo Apellido"
       rules="required"
       />
     <input-base
       id="rfc"
       v-model="form.rfc"
       placeholder="Ingresa el RFC"
-      label="RFC *"
+      label="RFC"
       rules="required|rfc"
       upper-case
     />
@@ -39,14 +39,14 @@
       id="curp"
       v-model="form.curp"
       placeholder="Ingresa el CURP"
-      label="CURP *"
+      label="CURP"
       rules="required|curp"
       upper-case
     />
     <input-base
       id="birthday"
       v-model="form.birthday"
-      label="Fecha de nacimiento *"
+      label="Fecha de nacimiento"
       type="date"
       rules="required"
       placeholder="Selecciona la fecha de nacimiento"
@@ -56,7 +56,7 @@
       v-model="form.gender"
       :options="[{ value: 'H', label: 'Masculino' }, { value: 'M', label: 'Femenino' }]"
       type="radio"
-      label="Género *"
+      label="Género"
       rules="required"
     />
     <span class="divider-span">
@@ -66,28 +66,28 @@
       id="cp"
       v-model="form.cp"
       placeholder="Ingresa el codigo postal"
-      label="C.P. *"
+      label="C.P."
       rules="required|numeric|digits:5"
     />
     <input-base
       id="colony"
       v-model="form.colony"
       placeholder="Ingresa la colonia"
-      label="Colonia *"
+      label="Colonia"
       rules="required"
     />
     <input-base
       id="street"
       v-model="form.street"
       placeholder="Ingresa la calle"
-      label="Calle *"
+      label="Calle"
       rules="required"
     />
     <input-base
       id="externalNumber"
       v-model="form.externalNumber"
       placeholder="Ingresa el número exterior"
-      label="Núm. Exterior *"
+      label="Núm. Exterior"
       rules="required"
     />
     <span class="divider-span">
@@ -97,7 +97,7 @@
       id="clabe"
       v-model="form.clabe"
       placeholder="Ingresa la clabe interbancaria"
-      label="Clabe Interbancaria *"
+      label="Clabe Interbancaria"
       rules="required|numeric|digits:18"
     />
     <span class="divider-span">
@@ -106,7 +106,7 @@
     <input-base
       id="initDate"
       v-model="form.initDate"
-      label="Fecha inicio *"
+      label="Fecha inicio"
       placeholder="Seleciona la fecha inicio"
       type="date"
       rules="required"
@@ -115,7 +115,7 @@
       id="endDate"
       v-model="form.endDate"
       placeholder="Seleciona la fecha fin"
-      label="Fecha fin *"
+      label="Fecha fin"
       type="date"
       rules="required"
     />

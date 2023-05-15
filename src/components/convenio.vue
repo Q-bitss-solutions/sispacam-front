@@ -117,16 +117,16 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md-10" style="font-size: x-small;">
-            <small class="form-text" style="font-size: 10px">
+          <div style="font-size: 14px;">
+            <strong>
               Valores aceptados
-            </small>
+            </strong>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lat: 14.517000 a 32.754000
             </small>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lon: -117.080000 a -86.363800
             </small>
             <br />
@@ -344,7 +344,7 @@
               <td>{{ mes.descripcion }}</td>
               <td>
                 <vue-numeric v-bind:precision="2" separator="," class="form-control avance-mes"
-                  v-model="mesesMetas[key].avance" :read-only="btnIsDisabled">
+                  v-model="mesesMetas[key].avance" placeholder="0.00" :read-only="btnIsDisabled">
                 </vue-numeric>
               </td>
             </tr>
@@ -490,8 +490,12 @@ export default {
           isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
         },
         {
-          label: 'Eliminar tramo',
+          label: 'Eliminar convenio',
           action: (ctx) => this.deleteConvenio(ctx),
+        },
+        {
+          label: 'Agregar convenio modificatorio',
+          action: (ctx) => console.log('heyy'),
         },
         {
           label: 'Presupuesto',
@@ -1133,7 +1137,7 @@ export default {
     clearMesasAvance() {
       this.dataAvance = []
       this.mesesMetas.map(m => {
-        m.avance = 0
+        m.avance = ''
       })
     },
     closeModalCalMeta() {

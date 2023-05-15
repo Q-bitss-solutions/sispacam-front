@@ -25,16 +25,18 @@
 
     <!-- Tabla Frentes de camino -->
     <!-- TODO: Rebuild - Cambiar nombre del componente -->
-    <div class="row">
-      <TablaFrentesCamino @deleteBeneficiario="GetConvenios(camino.id)"
-        :frentes="this.convenios"></TablaFrentesCamino>
-    </div>
+    <div v-if="convenios.length > 1">
+      <div class="row">
+        <TablaFrentesCamino @deleteBeneficiario="GetConvenios(camino.id)"
+          :frentes="convenios"></TablaFrentesCamino>
+      </div>
 
-    <hr class="red" />
+      <hr class="red" />
 
-    <div class="row">
-      <div class="col-md-8">
-        <AgregadoFrentes :metrics="metrics"></AgregadoFrentes>
+      <div class="row">
+        <div class="col-md-8">
+          <AgregadoFrentes :metrics="metrics"></AgregadoFrentes>
+        </div>
       </div>
     </div>
 
