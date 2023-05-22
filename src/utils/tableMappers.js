@@ -1,4 +1,4 @@
-import { typeRoads } from '@/utils/helpers'
+import { typeRoads, pesosFormatter, capitalizeFirstLetter } from '@/utils/helpers'
 
 
 const decimalPlaces = 2
@@ -49,4 +49,15 @@ const mapRoadsTable = (roads) => roads
     type: typeRoads[road.tipo_camino],
   }))
 
-export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable }
+const mapBaseBudgetTable = (paymentConcepts) => paymentConcepts
+  .map((paymentConcept) => ({
+    paymentConcept: `${capitalizeFirstLetter(paymentConcept.partida.concepto.descripcion.toLowerCase())}: ${capitalizeFirstLetter(paymentConcept.partida.descripcion.toLowerCase())}`,
+    quantityPerKm: paymentConcept.cantidad,
+    unitMeasurement: paymentConcept.partida.unidad_medida.descripcion,
+    amountPerKm: pesosFormatter(paymentConcept.importe_kilometro),
+    unitPrice: pesosFormatter(paymentConcept.importe),
+    totalAmountLength: '',
+    totalWeightedPercentage: `${paymentConcept.porcentaje_ponderado.toFixed(decimalPlaces)}%`,
+  }))
+
+export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable, mapBaseBudgetTable }

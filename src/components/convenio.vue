@@ -499,10 +499,11 @@ export default {
         },
         {
           label: 'Presupuesto',
-          action: (ctx) => {
-            this.$store.commit('setIdConcevenio', ctx.id)
-            this.$router.push(`/presupuesto/${this.$route.params.obraId}/${ctx.anio}/${this.$store.state.camino.ancho}/${ctx.id}/${ctx.meta}/`)
-          },
+          action: (agreement) => this.$router.push({
+            name: 'Budget',
+            params: {
+              agreementId: agreement.id
+            }}),
         },
         {
           label: 'Representantes',

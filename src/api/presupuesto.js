@@ -64,3 +64,16 @@ export function updateConcepto(id_convenio, data){
         data: data
     })   
 }
+
+export function fetchBaseBudget({ roadWidth, category, paymentConcept, year }){
+    return request ({
+        url:'/presupuesto/base/',
+        method: 'GET',
+        params: {
+            ancho_camino: roadWidth,
+            categoria: category,
+            partida: paymentConcept,
+            anio: year,
+        }
+    })
+}

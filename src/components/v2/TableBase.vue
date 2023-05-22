@@ -62,6 +62,15 @@
         </div>
       </td>
     </tr>
+    <tr>
+      <td
+        v-for="(footer, index) in footers"
+        :colspan="footer.colSpan"
+        :key="index"
+      >
+        {{ footer.label }}
+      </td>
+    </tr>
   </table>
 </template>
 
@@ -72,28 +81,37 @@ export default {
     headers: {
       type: Array,
       default: () => ([
-        {
+        /* {
           label: 'Example Header',
           field: 'example'
-        }
+        } */
       ]),
     },
     data: {
       type: Array,
       default: () => ([
-        {
+        /* {
           example: 'value 1',
-        }
+        } */
       ]),
     },
     options: {
       type: Array,
       default: () => ([
-        {
+        /* {
           label: 'example',
           action: (context) => console.log(context),
           isVisible: () => false,
-        }
+        } */
+      ]),
+    },
+    footers: {
+      type: Array,
+      default: () => ([
+        /* {
+          label: 'Total',
+          colSpan: 1,
+        } */
       ]),
     },
     hasColoredBorders: {
