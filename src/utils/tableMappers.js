@@ -27,12 +27,19 @@ const mapAssignmentsTable = (assignments) => assignments
     id: assignment.id,
     roadKey: assignment.camino.clave_camino,
     roadName: assignment.camino.nombre_camino,
-    yearAgreement: assignment.convenio.anio,
+    beneficiary: assignment.beneficiario.municipio.nombre,
+    progressPercentage: `${Number(assignment.ultimo_avance_fisico.avance_acumulado_porcentaje).toFixed(decimalPlaces)}%`,
+    amount: Number(assignment.convenio.monto).toFixed(decimalPlaces),
+    meta: Number(assignment.convenio.meta).toFixed(decimalPlaces),
     agreementSection: assignment.convenio.tramo,
-    initDate: assignment.fecha_inicio,
-    endDate: assignment.fecha_fin,
     lastDateRoad: assignment.ultimo_avance_fisico.fecha_registro,
     status: assignment.estatus ? 'Activo' : 'Inactivo',
+    borderColorClass: assignment.variacion_porcentaje_convenio >= -15
+      ? 'border-green'
+      : assignment.variacion_porcentaje_convenio >= -25
+        ? 'border-yellow'
+        : 'border-red',
+    borderTitle: `Variación del ${-1.0*assignment.variacion_porcentaje_convenio.toFixed(decimalPlaces)} %`,
   }))
 
 const mapRepresentativesTable = (representatives) => representatives
