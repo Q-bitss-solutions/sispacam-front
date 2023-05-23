@@ -28,7 +28,7 @@ const mapAssignmentsTable = (assignments) => assignments
     roadKey: assignment.camino.clave_camino,
     roadName: assignment.camino.nombre_camino,
     beneficiary: assignment.beneficiario.municipio.nombre,
-    progressPercentage: assignment.ultimo_avance_fisico.avance_acumulado_porcentaje,
+    progressPercentage: `${Number(assignment.ultimo_avance_fisico.avance_acumulado_porcentaje).toFixed(decimalPlaces)}%`,
     amount: Number(assignment.convenio.monto).toFixed(decimalPlaces),
     meta: Number(assignment.convenio.meta).toFixed(decimalPlaces),
     agreementSection: assignment.convenio.tramo,
