@@ -47,26 +47,22 @@ export default {
         },
         {
           label: 'Importe total por longitud',
-          field: 'totalAmountLength',
+          field: 'totalAmountAgreementFormatter',
         },
         {
           label: 'Porcentaje ponderado total',
-          field: 'totalWeightedPercentage',
+          field: 'totalWeightedPercentageFormatter',
         },
       ],
       featureOptions: [],
       paymentConcepts: [],
-      budgets: [
-        {
-          example: '400'
-        }
-      ],
       yearAgreement: null,
       roadWidth: null,
       roadWidthId: null,
       baseBudget: null,
       currentBudget: null,
       baseAndCurrentVariance: null,
+      metaAgreement: null,
     }
   },
   computed: {
@@ -77,9 +73,22 @@ export default {
           colSpan: 3,
         },
         {
-          label: sumAll(this.paymentConcepts.map(concept => concept.amountPerKm)),
+          label: pesosFormatter(sumAll(this.paymentConcepts.map(concept => concept.amountPerKm))),
           colSpan: 1,
-        }
+        },
+        {
+          // dummy
+          label: '',
+          colSpan: 1,
+        },
+        {
+          label: pesosFormatter(sumAll(this.paymentConcepts.map(concept => concept.totalAmountAgreement))),
+          colSpan: 1,
+        },
+        {
+          label: `${sumAll(this.paymentConcepts.map(concept => concept.totalWeightedPercentage)).toFixed(0)}%`,
+          colSpan: 1,
+        },
       ]
     },
     items() {
@@ -116,9 +125,10 @@ export default {
       this.baseBudget = agreement.presupuesto.presupuesto_base
       this.currentBudget = agreement.presupuesto.presupuesto_real
       this.baseAndCurrentVariance = agreement.presupuesto.variacion
+      this.metaAgreement = agreement.meta
     },
     async getBaseBudget() {
-      const data = await fetchBaseBudget({ roadWidth: this.roadWidthId, year: this.yearAgreement })
+      const data = await fetchBaseBudget({ roadWidth: this.roadWidthId, year: this.yearAgreement, metaAgreement: this.metaAgreement })
       this.paymentConcepts = mapBaseBudgetTable(data)
     },
   },

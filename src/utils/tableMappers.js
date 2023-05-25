@@ -27,7 +27,7 @@ const mapAssignmentsTable = (assignments) => assignments
     id: assignment.id,
     roadKey: assignment.camino.clave_camino,
     roadName: assignment.camino.nombre_camino,
-    beneficiary: assignment.beneficiario.municipio.nombre,
+    beneficiary: assignment.beneficiario.municipio.nombre || '',
     progressPercentage: `${Number(assignment.ultimo_avance_fisico.avance_acumulado_porcentaje).toFixed(decimalPlaces)}%`,
     amount: Number(assignment.convenio.monto).toFixed(decimalPlaces),
     meta: Number(assignment.convenio.meta).toFixed(decimalPlaces),
@@ -63,8 +63,10 @@ const mapBaseBudgetTable = (paymentConcepts) => paymentConcepts
     unitMeasurement: paymentConcept.partida.unidad_medida.descripcion,
     amountPerKm: pesosFormatter(paymentConcept.importe_kilometro),
     unitPrice: pesosFormatter(paymentConcept.importe),
-    totalAmountLength: '',
-    totalWeightedPercentage: `${paymentConcept.porcentaje_ponderado.toFixed(decimalPlaces)}%`,
+    totalAmountAgreementFormatter: pesosFormatter(paymentConcept.importe_longitud),
+    totalAmountAgreement: paymentConcept.importe_longitud,
+    totalWeightedPercentageFormatter: `${paymentConcept.porcentaje_ponderado.toFixed(decimalPlaces)}%`,
+    totalWeightedPercentage: paymentConcept.porcentaje_ponderado,
   }))
 
 export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable, mapBaseBudgetTable }
