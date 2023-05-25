@@ -59,7 +59,7 @@ export default {
                 commit('setLoginError', false)
 
                 if (response.perfil === 'RESIDENTE') {
-                    router.push({ name: 'Assignments' })
+                    return router.push({ name: 'Assignments' })
                 }
 
                 return router.push({ name: 'Caminos' })
