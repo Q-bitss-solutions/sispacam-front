@@ -779,6 +779,7 @@ export default {
       this.form.archivo = null
       this.form.es_modificatorio = false
       this.form.modificatorio = 0
+      this.form.beneficiario_id = 0
       this.isDisabled = false
       this.btnIsDisabled = false
       this.beneficiario_id = 0
@@ -875,7 +876,7 @@ export default {
         formData.append("lon_final", this.form.lon_final);
       }
       formData.append("estatus", "A");
-      formData.append("beneficiario_id", this.beneficiario_id);
+      formData.append("beneficiario_id", this.form.beneficiario_id);
       let avanceMes = []
       this.mesesMetas.map(e => {
         avanceMes.push({
