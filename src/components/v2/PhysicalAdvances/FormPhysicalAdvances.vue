@@ -92,6 +92,10 @@ export default {
       required: true,
       validator: (roadWidth) => ['4.0', '4.5', '5.0', '5.5', '6.0'].includes(roadWidth)
     },
+    physicalAdvance: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   components: {
     InputBase,
@@ -100,13 +104,13 @@ export default {
   data: function () {
     return {
       form: {
-        firstRutToRight: '',
-        secondRutToRight: '',
-        firstRutToLeft: '',
-        secondRutToLeft: '',
-        cobbledToRight: '',
-        cobbledToCenter: '',
-        cobbledToLeft: '',
+        firstRutToRight: this.physicalAdvance.firstRutToRight || '',
+        secondRutToRight: this.physicalAdvance.secondRutToRight || '',
+        firstRutToLeft: this.physicalAdvance.firstRutToLeft || '',
+        secondRutToLeft: this.physicalAdvance.secondRutToLeft || '',
+        cobbledToRight: this.physicalAdvance.cobbledToRight || '',
+        cobbledToCenter: this.physicalAdvance.cobbledToCenter || '',
+        cobbledToLeft: this.physicalAdvance.cobbledToLeft || '',
       }
     }
   },
