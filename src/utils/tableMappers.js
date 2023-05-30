@@ -1,10 +1,13 @@
-import { typeRoads, pesosFormatter, capitalizeFirstLetter } from '@/utils/helpers'
+import { pesosFormatter, capitalizeFirstLetter } from '@/utils/helpers'
+import { typeRoads } from '@/utils/constants'
 
 
 const decimalPlaces = 2
 
 const mapPhysicalAdvancesTable = (advances) => advances
   .map((advance) => ({
+    id: advance.id,
+    assignmentId: advance.residente_asignado.id,
     roadName: advance.camino.nombre_camino,
     agreementSection: advance.convenio.tramo,
     initDate: advance.residente_asignado.fecha_inicio,
