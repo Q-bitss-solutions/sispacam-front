@@ -26,14 +26,14 @@
 
       <!-- REGION -->
       <div class="col-md-12">
-        <label class="control-label" for="region">*Region</label>
+        <label class="control-label" for="region">Region</label>
 
         <input id="region" v-model="region" placeholder="Región" maxlength="40" class="e-input" />
       </div>
 
       <!-- UBICACION -->
       <div class="col-md-12">
-        <label class="control-label" for="region">*Ubicación</label>
+        <label class="control-label" for="region">Ubicación</label>
 
         <input id="ubicacion" v-model="ubicacion" placeholder="Ubicación" maxlength="40" class="e-input" />
       </div>
@@ -163,14 +163,7 @@ export default {
       return this.municipiosData[(this.clave_municipio*1)-1]
     },
     ValidForm(){
-      if(this.clave_municipio != "" &&
-        this.region != "" &&
-        this.ubicacion != ""
-      ){
-        return true
-      }else{
-        return false
-      }
+      return this.clave_municipio
     },
     payload(){
       return{

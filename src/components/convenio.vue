@@ -117,16 +117,16 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-md-10" style="font-size: x-small;">
-            <small class="form-text" style="font-size: 10px">
+          <div style="font-size: 14px;">
+            <strong>
               Valores aceptados
-            </small>
+            </strong>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lat: 14.517000 a 32.754000
             </small>
             <br />
-            <small class="form-text" style="font-size: 10px">
+            <small>
               Lon: -117.080000 a -86.363800
             </small>
             <br />
@@ -344,7 +344,7 @@
               <td>{{ mes.descripcion }}</td>
               <td>
                 <vue-numeric v-bind:precision="2" separator="," class="form-control avance-mes"
-                  v-model="mesesMetas[key].avance" :read-only="btnIsDisabled">
+                  v-model="mesesMetas[key].avance" placeholder="0.00" :read-only="btnIsDisabled">
                 </vue-numeric>
               </td>
             </tr>
@@ -490,15 +490,20 @@ export default {
           isVisible: () => (this.$store.getters['user/StateRol'] == 'NORMATIVO'),
         },
         {
-          label: 'Eliminar tramo',
+          label: 'Eliminar convenio',
           action: (ctx) => this.deleteConvenio(ctx),
         },
         {
+          label: 'Agregar convenio modificatorio',
+          action: (ctx) => console.log('heyy'),
+        },
+        {
           label: 'Presupuesto',
-          action: (ctx) => {
-            this.$store.commit('setIdConcevenio', ctx.id)
-            this.$router.push(`/presupuesto/${this.$route.params.obraId}/${ctx.anio}/${this.$store.state.camino.ancho}/${ctx.id}/${ctx.meta}/`)
-          },
+          action: (agreement) => this.$router.push({
+            name: 'Budget',
+            params: {
+              agreementId: agreement.id
+            }}),
         },
         {
           label: 'Representantes',
@@ -774,6 +779,7 @@ export default {
       this.form.archivo = null
       this.form.es_modificatorio = false
       this.form.modificatorio = 0
+      this.form.beneficiario_id = 0
       this.isDisabled = false
       this.btnIsDisabled = false
       this.beneficiario_id = 0
@@ -870,7 +876,7 @@ export default {
         formData.append("lon_final", this.form.lon_final);
       }
       formData.append("estatus", "A");
-      formData.append("beneficiario_id", this.beneficiario_id);
+      formData.append("beneficiario_id", this.form.beneficiario_id);
       let avanceMes = []
       this.mesesMetas.map(e => {
         avanceMes.push({
@@ -1133,7 +1139,7 @@ export default {
     clearMesasAvance() {
       this.dataAvance = []
       this.mesesMetas.map(m => {
-        m.avance = 0
+        m.avance = ''
       })
     },
     closeModalCalMeta() {

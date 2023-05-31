@@ -25,6 +25,7 @@
       :options="featureOptions"
       :headers="headers"
       :data="assignments"
+      has-colored-borders
     />
   </div>
 </template>
@@ -47,32 +48,36 @@ export default {
           field: 'roadKey',
         },
         {
+          label: 'Beneficiario',
+          field: 'beneficiary',
+        },
+        {
           label: 'Nombre camino',
           field: 'roadName',
         },
         {
-          label: 'Año convenio',
-          field: 'yearAgreement',
-        },
-        {
-          label: 'Convenio tramo',
+          label: 'Tramo',
           field: 'agreementSection',
         },
         {
-          label: 'Fecha inicio',
-          field: 'initDate',
+          label: 'Monto (mdp)',
+          field: 'amount',
         },
         {
-          label: 'Fecha fin',
-          field: 'endDate',
+          label: 'Meta (km)',
+          field: 'meta',
         },
         {
-          label: 'Fecha último avance',
-          field: 'lastDateRoad',
+          label: 'Avance (%)',
+          field: 'progressPercentage',
         },
         {
           label: 'Estatus',
           field: 'status',
+        },
+        {
+          label: 'Fecha último avance',
+          field: 'lastDateRoad',
         },
       ],
       featureOptions: [

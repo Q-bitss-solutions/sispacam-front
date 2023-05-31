@@ -26,4 +26,14 @@ const mapPhysicalAdvancePayload = (physicalAdvance) => ({
   empedrado_central: physicalAdvance.cobbledToCenter,
 })
 
-export { mapRepresentativePayload, mapPhysicalAdvancePayload }
+const mapPhysicalAdvance = (physicalAdvance) => ({
+  firstRutToRight: `${physicalAdvance.rodera1_der}`,
+  secondRutToRight: `${physicalAdvance.rodera2_der}`,
+  firstRutToLeft: `${physicalAdvance.rodera1_izq}`,
+  secondRutToLeft: `${physicalAdvance.rodera2_izq}`,
+  cobbledToRight: `${physicalAdvance.empedrado_der}`,
+  cobbledToCenter: `${physicalAdvance.empedrado_central}`,
+  cobbledToLeft: `${physicalAdvance.empedrado_izq}`,
+})
+
+export { mapRepresentativePayload, mapPhysicalAdvancePayload, mapPhysicalAdvance }

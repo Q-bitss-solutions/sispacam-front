@@ -1,10 +1,13 @@
-import { typeRoads } from '@/utils/helpers'
+import { pesosFormatter, capitalizeFirstLetter } from '@/utils/helpers'
+import { typeRoads } from '@/utils/constants'
 
 
 const decimalPlaces = 2
 
 const mapPhysicalAdvancesTable = (advances) => advances
   .map((advance) => ({
+    id: advance.id,
+    assignmentId: advance.residente_asignado.id_asignacion,
     roadName: advance.camino.nombre_camino,
     agreementSection: advance.convenio.tramo,
     initDate: advance.residente_asignado.fecha_inicio,
@@ -27,12 +30,19 @@ const mapAssignmentsTable = (assignments) => assignments
     id: assignment.id,
     roadKey: assignment.camino.clave_camino,
     roadName: assignment.camino.nombre_camino,
-    yearAgreement: assignment.convenio.anio,
+    beneficiary: assignment.beneficiario.municipio.nombre || '',
+    progressPercentage: `${Number(assignment.ultimo_avance_fisico.avance_acumulado_porcentaje).toFixed(decimalPlaces)}%`,
+    amount: Number(assignment.convenio.monto).toFixed(decimalPlaces),
+    meta: Number(assignment.convenio.meta).toFixed(decimalPlaces),
     agreementSection: assignment.convenio.tramo,
-    initDate: assignment.fecha_inicio,
-    endDate: assignment.fecha_fin,
     lastDateRoad: assignment.ultimo_avance_fisico.fecha_registro,
     status: assignment.estatus ? 'Activo' : 'Inactivo',
+    borderColorClass: assignment.variacion_porcentaje_convenio >= -15
+      ? 'border-green'
+      : assignment.variacion_porcentaje_convenio >= -25
+        ? 'border-yellow'
+        : 'border-red',
+    borderTitle: `Variación del ${-1.0*assignment.variacion_porcentaje_convenio.toFixed(decimalPlaces)} %`,
   }))
 
 const mapRepresentativesTable = (representatives) => representatives
@@ -49,4 +59,17 @@ const mapRoadsTable = (roads) => roads
     type: typeRoads[road.tipo_camino],
   }))
 
-export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable }
+const mapBaseBudgetTable = (paymentConcepts) => paymentConcepts
+  .map((paymentConcept) => ({
+    paymentConcept: `${capitalizeFirstLetter(paymentConcept.partida.concepto.descripcion.toLowerCase())}: ${capitalizeFirstLetter(paymentConcept.partida.descripcion.toLowerCase())}`,
+    quantityPerKm: paymentConcept.cantidad,
+    unitMeasurement: paymentConcept.partida.unidad_medida.descripcion,
+    amountPerKm: pesosFormatter(paymentConcept.importe_kilometro),
+    unitPrice: pesosFormatter(paymentConcept.importe),
+    totalAmountAgreementFormatter: pesosFormatter(paymentConcept.importe_longitud),
+    totalAmountAgreement: paymentConcept.importe_longitud,
+    totalWeightedPercentageFormatter: `${paymentConcept.porcentaje_ponderado.toFixed(decimalPlaces)}%`,
+    totalWeightedPercentage: paymentConcept.porcentaje_ponderado,
+  }))
+
+export { mapPhysicalAdvancesTable, mapAssignmentsTable, mapRepresentativesTable, mapRoadsTable, mapBaseBudgetTable }

@@ -31,11 +31,29 @@ import PhysicalAdvances from '@/views/v2/PhysicalAdvances/Index.vue'
 import Representatives from '@/views/v2/Representatives/Index.vue'
 import NewRepresentative from '@/views/v2/Representatives/New.vue'
 import NewPhysicalAdvances from '@/views/v2/PhysicalAdvances/New.vue'
+import UpdatePhysicalAdvances from '@/views/v2/PhysicalAdvances/Update.vue'
+import Budget from '@/views/v2/Budget/Index'
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/asignaciones/:assignmentId/avances-fisicos/:physicalAdvanceId/actualizar',
+    name: 'UpdatePhysicalAdvances',
+    component: UpdatePhysicalAdvances,
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
+    path: '/convenios/:agreementId/presupuesto',
+    name: 'Budget',
+    component: Budget,
+    meta: {
+      requiresAuth: true,
+    }
+  },
   {
     path: '/asignaciones/:assignmentId/avances-fisicos/nuevo',
     name: 'NewPhysicalAdvances',

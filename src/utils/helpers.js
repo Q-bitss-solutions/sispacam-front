@@ -1,7 +1,15 @@
-const typeRoads = {
-  'A': 'Agencia',
-  'C': 'Cabecera',
-  'O': 'Otro',
+const sumAll = (array) => array.reduce((a, b) => Number(a) + Number(b), 0)
+
+const pesosFormatter = (value) => {
+  const formatter = new Intl.NumberFormat('es-MX', {
+    style: 'currency',
+    minimumFractionDigits: 2,
+    currency: 'MXN'
+  })
+
+  return formatter.format(value)
 }
 
-export { typeRoads }
+const capitalizeFirstLetter = (value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
+
+export { sumAll, pesosFormatter, capitalizeFirstLetter }

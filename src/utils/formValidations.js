@@ -1,5 +1,10 @@
 import { extend } from 'vee-validate';
-import { required, numeric, } from 'vee-validate/dist/rules';
+import { required, numeric, double } from 'vee-validate/dist/rules';
+
+extend('decimal', {
+  ...double,
+  message: `Este campo deberia ser numerico y tener hasta {decimals} decimales.`,
+})
 
 extend('required', {
   ...required,

@@ -62,7 +62,10 @@ export default {
       featureOptions: [
         {
           label: 'Editar',
-          action: (context) => console.log(context),
+          action: (physicalAdvance) => this.$router.push({ name: 'UpdatePhysicalAdvances', params: {
+            physicalAdvanceId: physicalAdvance.id,
+            assignmentId: physicalAdvance.assignmentId,
+          }}),
         },
         {
           label: 'Rechazar',

@@ -57,11 +57,12 @@ export default {
                 commit('setUserRol', response.perfil)
                 commit('setAuthenticated', true)
                 commit('setLoginError', false)
-                if(response.perfil=="RESIDENTE"){
-                    router.replace('/obras')
-                }else{
-                    router.replace("/caminos")
+
+                if (response.perfil === 'RESIDENTE') {
+                    return router.push({ name: 'Assignments' })
                 }
+
+                return router.push({ name: 'Caminos' })
 
             }
             }catch(e){

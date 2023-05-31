@@ -147,3 +147,10 @@ export function getBeneficiario(id_beneficiario){
     method: 'get'
   })
 }
+
+export function fetchAgreementById(id){
+  return request({
+    url:`/convenios/${id}/`,
+    method: 'GET'
+  })
+}
