@@ -190,7 +190,9 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.VUE_APP_PREFIX_DOMAIN_URL || '/',
+  base: process.env.NODE_ENV === 'production'
+    ? process.env.VUE_APP_PREFIX_DOMAIN_URL
+    : '/',
   routes,
 })
 
