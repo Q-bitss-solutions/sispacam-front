@@ -1,6 +1,7 @@
 import { login, refreshToken } from '@/api/user'
 import router from '@/router'
 import jwtDecode from 'jwt-decode'
+import { isResident } from '@/utils/localStorage'
 
 export default {
     namespaced: true,
@@ -58,7 +59,7 @@ export default {
                 commit('setAuthenticated', true)
                 commit('setLoginError', false)
 
-                if (response.perfil === 'RESIDENTE') {
+                if (isResident()) {
                     return router.push({ name: 'Assignments' })
                 }
 
