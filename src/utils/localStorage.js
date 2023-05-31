@@ -7,7 +7,7 @@ const currentUser = () => {
     return null
   }
 
-  return JSON.parse(local)
+  return JSON.parse(local).user
 }
 
 const hasRole = (role) => {

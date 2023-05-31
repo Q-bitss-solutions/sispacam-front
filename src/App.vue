@@ -35,10 +35,26 @@
                   Asignaciones
                 </router-link>
               </li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/altacamino">Alta</a></li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/caminos">Caminos</a></li>
-              <li v-if="this.$store.getters['user/StateRol']=='NORMATIVO'?true:false"><a href="/presupuesto/base/kilometro">Presupuesto Base por Kilómetro</a></li>
-              <li v-if="$route.params.obraId"><a :href="'/editcamino/' + $route.params.obraId">{{ $route.params.obraId}}</a></li>
+              <li v-if="isNormative">
+                <router-link to="/altacamino">
+                  Alta camino
+                </router-link>
+              </li>
+              <li v-if="isNormative">
+                <router-link to="/caminos">
+                  Caminos
+                </router-link>
+              </li>
+              <li v-if="isNormative">
+                <router-link to="/presupuesto/base/kilometro">
+                  Presupuesto Base por Kilómetro
+                </router-link>
+              </li>
+              <li v-if="$route.params.obraId">
+                <router-link :to="'/editcamino/' + $route.params.obraId">
+                  {{ $route.params.obraId }}
+                </router-link>
+              </li>
             </ul>
           </li>
           <!-- SUBMENÚ Finaciero-->
@@ -127,11 +143,13 @@
 import { mapMutations } from 'vuex'
 import { mapActions } from "vuex"
 import { CaminoPut } from '@/api/alta-camino';
+import { isNormative as isRoleNormative } from '@/utils/localStorage'
 
 export default {
   data () {
     return {
-      breadcrumbs: []
+      breadcrumbs: [],
+      isNormative: isRoleNormative(),
     }
   },
   computed: {
