@@ -19,7 +19,7 @@ export function fetchPhysicalAdvanceById(physicalAdvanceId){
 export function putPhysicalAdvance({ physicalAdvance, physicalAdvanceId }){
 	return request({
 		url: `/avance-fisico/${physicalAdvanceId}/`,
-		method: 'PUT',
+		method: 'PATCH',
 		data: mapPhysicalAdvancePayload(physicalAdvance)
 	})
 }
