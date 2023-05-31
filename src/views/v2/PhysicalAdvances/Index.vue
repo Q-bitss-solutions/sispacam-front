@@ -14,6 +14,7 @@ import TableBase from '@/components/v2/TableBase.vue'
 import { mapMutations } from 'vuex'
 import { fetchPhysicalAdvancesByRoad } from '@/api/caminos'
 import { mapPhysicalAdvancesTable } from '@/utils/tableMappers'
+import { isNormative, isCoordinator, isResident } from '@/utils/localStorage'
 
 export default {
   name: 'PhysicalAdvances',
@@ -68,12 +69,24 @@ export default {
           }}),
         },
         {
+          label: 'Enviar',
+          action: (context) => alert('Acción para enviar avance físico.'),
+          isVisible: () => isResident(),
+        },
+        {
           label: 'Rechazar',
-          action: (context) => console.log(context),
+          action: (context) => alert('Acción para rechazar avance físico.'),
+          isVisible: () => isNormative() || isCoordinator(),
         },
         {
           label: 'Aprobar',
-          action: (context) => console.log(context),
+          action: (context) => alert('Acción para aprobar avance físico.'),
+          isVisible: () => isNormative() || isCoordinator(),
+        },
+        {
+          label: 'Cerrar',
+          action: (context) => alert('Acción para cerrar avance físico.'),
+          isVisible: () => isNormative(),
         },
       ],
     }
