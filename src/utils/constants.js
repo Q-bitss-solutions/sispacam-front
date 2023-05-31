@@ -4,4 +4,10 @@ const typeRoads = {
   O: 'Otro',
 }
 
-export { typeRoads }
+const ROLES = {
+  RESIDENT: 'RESIDENTE',
+  COORDINATOR: 'COORDINADOR',
+  NORMATIVE: 'NORMATIVO',
+}
+
+export { typeRoads, ROLES }
