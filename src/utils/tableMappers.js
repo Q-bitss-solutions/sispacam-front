@@ -7,7 +7,7 @@ const decimalPlaces = 2
 const mapPhysicalAdvancesTable = (advances) => advances
   .map((advance) => ({
     id: advance.id,
-    assignmentId: advance.residente_asignado.id,
+    assignmentId: advance.residente_asignado.id_asignacion,
     roadName: advance.camino.nombre_camino,
     agreementSection: advance.convenio.tramo,
     initDate: advance.residente_asignado.fecha_inicio,
