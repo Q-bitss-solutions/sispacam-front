@@ -1,9 +1,3 @@
-const typeRoads = {
-  'A': 'Agencia',
-  'C': 'Cabecera',
-  'O': 'Otro',
-}
-
 const sumAll = (array) => array.reduce((a, b) => Number(a) + Number(b), 0)
 
 const pesosFormatter = (value) => {
@@ -18,4 +12,4 @@ const pesosFormatter = (value) => {
 
 const capitalizeFirstLetter = (value) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`
 
-export { typeRoads, sumAll, pesosFormatter, capitalizeFirstLetter }
+export { sumAll, pesosFormatter, capitalizeFirstLetter }
