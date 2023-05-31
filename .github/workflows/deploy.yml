@@ -23,6 +23,7 @@ jobs:
       - name: Install and Build 🔧
         env:
           VUE_APP_BASE_URL: ${{ secrets.VUE_APP_BASE_URL }}
+          VUE_APP_PREFIX_DOMAIN_URL: ${{ secrets.VUE_APP_PREFIX_DOMAIN_URL }}
         run: |
           npm i
           npm run build
