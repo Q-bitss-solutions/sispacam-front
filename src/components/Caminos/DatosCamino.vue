@@ -509,7 +509,7 @@ export default {
                     const response = await altaCamino(data).finally(() => {
                         loadingInstance.close()
                     })
-                    this.idcamino = response
+                    this.idcamino = response.clave_camino
                     /* $('#addCamino').modal('show') */
                     this.$swal('EXITO', `Se guardaron correctamente los datos del camino ${this.idcamino}`, "success")
                     this.btnSaveDisabled = false
